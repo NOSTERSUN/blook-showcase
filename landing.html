@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLOOK — The Class of Calm</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#EAE0D5;color:#1A1510;line-height:1.6}
+
+nav{position:fixed;top:0;left:0;right:0;background:rgba(234,224,213,0.98);border-bottom:1px solid rgba(201,168,122,0.22);padding:20px 52px;z-index:1000;display:flex;justify-content:space-between;align-items:center}
+nav a{text-decoration:none;color:#6B5E52;font-size:0.85rem;letter-spacing:0.2em;margin:0 20px;cursor:pointer}
+nav a:hover{color:#C9A87A}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#C9A87A;font-style:italic}
+.exp-btn{border:1px solid #C9A87A;color:#C9A87A;padding:8px 16px;border-radius:3px;transition:all 0.3s}
+.exp-btn:hover{background:#C9A87A;color:#EAE0D5}
+
+.hero{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding-top:80px;background:linear-gradient(135deg,#EAE0D5 0%,#D8CFC2 100%)}
+.hero h1{font-family:'Playfair Display',serif;font-size:4rem;margin-bottom:20px;color:#1A1510}
+.hero .subtitle{font-size:1.2rem;color:#C9A87A;margin-bottom:30px}
+.hero p{max-width:600px;margin:0 auto 40px;color:#6B5E52;font-size:1rem}
+.cta{background:#C9A87A;color:white;padding:15px 40px;text-decoration:none;display:inline-block;font-size:0.9rem;letter-spacing:0.15em;transition:all 0.3s}
+.cta:hover{background:#9A7852;transform:translateY(-2px)}
+
+section{max-width:1200px;margin:0 auto;padding:100px 52px}
+.section-title{font-family:'Playfair Display',serif;font-size:3rem;text-align:center;margin-bottom:80px;color:#1A1510}
+.section-title em{color:#C9A87A}
+
+.product{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:100px;padding:60px;background:white;border:1px solid rgba(201,168,122,0.22)}
+.product.alt{direction:rtl}
+.product.alt > div{direction:ltr}
+.product img{width:100%;display:block;margin-bottom:20px}
+.product h3{font-family:'Cormorant Garamond',serif;font-size:2.2rem;margin-bottom:10px;color:#1A1510}
+.product .subtitle{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:#C9A87A;margin-bottom:20px}
+.product p{color:#6B5E52;margin-bottom:15px;line-height:1.8}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
+.feature{padding:15px;background:#f5f5f5;border-left:3px solid #C9A87A}
+.feature strong{color:#1A1510;display:block;margin-bottom:5px}
+.feature{font-size:0.9rem;color:#6B5E52}
+
+.scents{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin:30px 0}
+.scent-card{border:1px solid #D0C5B8;padding:20px;background:#F9F7F3}
+.scent-card h4{color:#C9A87A;margin-bottom:10px;font-family:'Cormorant Garamond',serif}
+.scent-card p{font-size:0.85rem;color:#6B5E52;margin:8px 0}
+
+#contact{background:#D8CFC2;text-align:center}
+.contact-box{max-width:600px;margin:0 auto}
+.contact-box h2{font-family:'Playfair Display',serif;font-size:2.5rem;margin-bottom:30px}
+.contact-box p{margin-bottom:20px;font-size:1rem}
+.contact-info{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:50px 0}
+.contact-info a{color:#C9A87A;text-decoration:none;font-weight:bold}
+
+footer{background:#1A1510;color:#EAE0D5;text-align:center;padding:30px;font-size:0.85rem;letter-spacing:0.1em}
+
+@media(max-width:768px){
+  .product{grid-template-columns:1fr;padding:30px}
+  .hero h1{font-size:2.2rem}
+  .section-title{font-size:2rem}
+  nav{padding:15px 26px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">BLOOK</a>
+  <div>
+    <a href="#products">PRODUCTS</a>
+    <a href="#contact">CONTACT</a>
+    <a href="3d.html" class="exp-btn">3D EXPERIENCE</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <h1>The Scent of <em style="color:#C9A87A">Luxury</em></h1>
+    <p class="subtitle">The Class of Calm</p>
+    <p>Premium home fragrance collection inspired by the world's finest hotels</p>
+    <a href="#products" class="cta" onclick="return false">EXPLORE COLLECTION</a>
+  </div>
+</section>
+
+<section id="products">
+  <h2 class="section-title">Our <em>Collection</em></h2>
+
+  <!-- Product 1 -->
+  <div class="product">
+    <div>
+      <img src="assets/prod-diffuser_250-1.png" alt="Reed Diffuser 250ml">
+    </div>
+    <div>
+      <h3>Luxury Hotel Collection</h3>
+      <p class="subtitle">Reed Diffuser · 250 ML</p>
+      <p>A premium apothecary-style reed diffuser inspired by the world's finest hotels. Long-lasting, non-irritating, and elegantly crafted for spaces that deserve a higher class of calm.</p>
+      <div class="features">
+        <div class="feature"><strong>Non-irritating</strong>Safe & certified formula</div>
+        <div class="feature"><strong>3-4 Weeks</strong>Long-lasting fragrance</div>
+        <div class="feature"><strong>Coverage</strong>20-30 sq.m.</div>
+        <div class="feature"><strong>4 Scents</strong>Hotel-grade selection</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product 2 -->
+  <div class="product alt">
+    <div>
+      <img src="assets/prod-diffuser_50-1.png" alt="Reed Diffuser 50ml">
+    </div>
+    <div>
+      <h3>Pocket Hotel Collection</h3>
+      <p class="subtitle">Reed Diffuser · 50 ML</p>
+      <p>The same hotel-grade formula in a compact matte-black bottle. Perfect for desks, bedrooms and personal spaces. Crafted to carry the calm wherever it's needed.</p>
+      <div class="features">
+        <div class="feature"><strong>4 Scents</strong>Hotel-grade selection</div>
+        <div class="feature"><strong>2-3 Weeks</strong>Long-lasting fragrance</div>
+        <div class="feature"><strong>Coverage</strong>10-15 sq.m.</div>
+        <div class="feature"><strong>Portable</strong>Perfect for travel</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product 3 -->
+  <div class="product">
+    <div>
+      <img src="assets/prod-diffuser_gift-1.png" alt="Gift Set">
+    </div>
+    <div>
+      <h3>The Complete Set</h3>
+      <p class="subtitle">Gift Set · Premium</p>
+      <p>Two sizes, one timeless scent. A 250ml amber bottle and a 50ml matte-black companion, presented in a luxurious magnetic-close gift box — the perfect expression of calm.</p>
+      <div class="features">
+        <div class="feature"><strong>2 Bottles</strong>250ml + 50ml pair</div>
+        <div class="feature"><strong>2-3 Months</strong>Combined fragrance</div>
+        <div class="feature"><strong>Magnetic Box</strong>Premium packaging</div>
+        <div class="feature"><strong>Gift Ready</strong>Luxury presentation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product 4 -->
+  <div class="product alt">
+    <div>
+      <img src="assets/3d-pillow-product.png" alt="Aroma Comfort Pillow">
+    </div>
+    <div>
+      <h3>Aroma Comfort Pillow</h3>
+      <p class="subtitle">Pillow · Comfort</p>
+      <p>Indulge in ultimate comfort with our premium pillow collection. Crafted with soft, breathable fabrics and ergonomic support, each pillow brings the calm of BLOOK to your rest.</p>
+      <div class="features">
+        <div class="feature"><strong>Premium Fabric</strong>Soft & breathable</div>
+        <div class="feature"><strong>Ergonomic</strong>Perfect support</div>
+        <div class="feature"><strong>Luxury Design</strong>Elegant styling</div>
+        <div class="feature"><strong>Restful Sleep</strong>All-night comfort</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product 5 -->
+  <div class="product">
+    <div>
+      <img src="assets/3d-sofa-brown.png" alt="Premium Comfort Sofa">
+    </div>
+    <div>
+      <h3>Premium Comfort Sofa</h3>
+      <p class="subtitle">Sofa · Premium</p>
+      <p>Experience the perfect balance of style and comfort. Our premium sofa collection, available in four sophisticated colors, creates the ideal sanctuary for your calm moments.</p>
+      <div class="features">
+        <div class="feature"><strong>4 Colors</strong>Brown, Orange, White, Yellow</div>
+        <div class="feature"><strong>High-Quality</strong>Premium fabric</div>
+        <div class="feature"><strong>Design</strong>Luxury styling</div>
+        <div class="feature"><strong>Comfort</strong>Maximum relaxation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-box">
+    <h2 class="section-title">Get in <em>Touch</em></h2>
+    <p>Discover the class of calm. For inquiries, collaborations, or to learn more about BLOOK, we'd love to hear from you.</p>
+
+    <div class="contact-info">
+      <div>
+        <h4>Email</h4>
+        <a href="mailto:hello@blook.com">hello@blook.com</a>
+      </div>
+      <div>
+        <h4>Follow Us</h4>
+        <a href="#">Instagram · Facebook</a>
+      </div>
+    </div>
+
+    <a href="mailto:hello@blook.com" class="cta">SEND INQUIRY</a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 BLOOK — The Class of Calm. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
