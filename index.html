@@ -4,202 +4,496 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BLOOK — The Class of Calm</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.4/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.4/dist/ScrollTrigger.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2D2016;
+  --gold:#D4AF37;
+  --gold-dim:#B8956A;
+  --bg:#FFFBF7;
+  --bg2:#F5EFE7;
+  --bg3:#EDE5D8;
+  --neutral:#8B7355;
+  --dim:#A69880;
+  --border:rgba(212,175,55,.15);
+  --border2:rgba(212,175,55,.3);
+}
 html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:#EAE0D5;color:#1A1510;line-height:1.6}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--primary);line-height:1.6;overflow-x:hidden}
+::selection{background:var(--gold);color:white}
 
-nav{position:fixed;top:0;left:0;right:0;background:rgba(234,224,213,0.98);border-bottom:1px solid rgba(201,168,122,0.22);padding:20px 52px;z-index:1000;display:flex;justify-content:space-between;align-items:center}
-nav a{text-decoration:none;color:#6B5E52;font-size:0.85rem;letter-spacing:0.2em;margin:0 20px;cursor:pointer}
-nav a:hover{color:#C9A87A}
-.logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#C9A87A;font-style:italic}
-.exp-btn{border:1px solid #C9A87A;color:#C9A87A;padding:8px 16px;border-radius:3px;transition:all 0.3s}
-.exp-btn:hover{background:#C9A87A;color:#EAE0D5}
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 60px;height:80px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,251,247,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all .4s}
+nav.scrolled{height:64px;box-shadow:0 1px 30px rgba(45,32,22,.06)}
+.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none}
+.nav-logo img{height:36px}
+.nav-mark{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--gold);font-style:italic;letter-spacing:-.03em;line-height:1}
+.nav-mark span{font-size:.55rem;display:block;font-style:normal;letter-spacing:.35em;color:var(--neutral);margin-top:2px;font-family:'Inter',sans-serif}
+.nav-links{display:flex;align-items:center;gap:40px}
+.nav-links a{text-decoration:none;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--neutral);transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
+.nav-links a:hover{color:var(--primary)}
+.nav-links a:hover::after{width:100%}
+.nav-exp{border:1px solid var(--border2);padding:10px 22px;font-size:.65rem;letter-spacing:.18em;color:var(--gold-dim);transition:all .3s}
+.nav-exp:hover{background:var(--gold);color:white;border-color:var(--gold)}
+.nav-exp::after{display:none}
 
-.hero{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding-top:80px;background:linear-gradient(135deg,#EAE0D5 0%,#D8CFC2 100%)}
-.hero h1{font-family:'Playfair Display',serif;font-size:4rem;margin-bottom:20px;color:#1A1510}
-.hero .subtitle{font-size:1.2rem;color:#C9A87A;margin-bottom:30px}
-.hero p{max-width:600px;margin:0 auto 40px;color:#6B5E52;font-size:1rem}
-.cta{background:#C9A87A;color:white;padding:15px 40px;text-decoration:none;display:inline-block;font-size:0.9rem;letter-spacing:0.15em;transition:all 0.3s}
-.cta:hover{background:#9A7852;transform:translateY(-2px)}
+/* ── HERO ── */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:120px 60px 80px}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 40%,var(--bg3) 100%)}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:900px}
+.hero-eyebrow{font-size:.65rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;opacity:0}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:400;line-height:1.08;margin-bottom:30px;opacity:0}
+.hero-title em{font-style:italic;color:var(--gold);font-weight:400}
+.hero-desc{font-size:1.05rem;line-height:1.9;color:var(--neutral);max-width:540px;margin:0 auto 50px;font-weight:300;opacity:0}
+.hero-cta{display:inline-flex;align-items:center;gap:14px;background:var(--gold);color:white;padding:18px 44px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .4s;font-family:inherit;border:none;cursor:pointer;opacity:0}
+.hero-cta:hover{background:var(--primary);transform:translateY(-3px);box-shadow:0 12px 40px rgba(45,32,22,.15)}
+.hero-cta svg{width:16px;height:16px;transition:transform .3s}
+.hero-cta:hover svg{transform:translateX(4px)}
+.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0}
+.hero-scroll span{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.3;transform:scaleY(.5)}}
 
-section{max-width:1200px;margin:0 auto;padding:100px 52px}
-.section-title{font-family:'Playfair Display',serif;font-size:3rem;text-align:center;margin-bottom:80px;color:#1A1510}
-.section-title em{color:#C9A87A}
+/* ── DIVIDER ── */
+.divider{display:flex;align-items:center;justify-content:center;gap:20px;padding:20px 60px}
+.div-line{flex:1;height:1px;background:var(--border)}
+.div-diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);opacity:.5}
 
-.product{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:100px;padding:60px;background:white;border:1px solid rgba(201,168,122,0.22)}
-.product.alt{direction:rtl}
-.product.alt > div{direction:ltr}
-.product img{width:100%;display:block;margin-bottom:20px}
-.product h3{font-family:'Cormorant Garamond',serif;font-size:2.2rem;margin-bottom:10px;color:#1A1510}
-.product .subtitle{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:#C9A87A;margin-bottom:20px}
-.product p{color:#6B5E52;margin-bottom:15px;line-height:1.8}
-.features{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
-.feature{padding:15px;background:#f5f5f5;border-left:3px solid #C9A87A}
-.feature strong{color:#1A1510;display:block;margin-bottom:5px}
-.feature{font-size:0.9rem;color:#6B5E52}
+/* ── SECTION HEADER ── */
+.sec-header{text-align:center;padding:120px 60px 80px;max-width:800px;margin:0 auto}
+.sec-eyebrow{font-size:.6rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:400;line-height:1.15;margin-bottom:24px}
+.sec-title em{color:var(--gold);font-style:italic}
+.sec-desc{font-size:.95rem;color:var(--neutral);line-height:1.8;max-width:500px;margin:0 auto;font-weight:300}
 
-.scents{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin:30px 0}
-.scent-card{border:1px solid #D0C5B8;padding:20px;background:#F9F7F3}
-.scent-card h4{color:#C9A87A;margin-bottom:10px;font-family:'Cormorant Garamond',serif}
-.scent-card p{font-size:0.85rem;color:#6B5E52;margin:8px 0}
+/* ── PRODUCT SHOWCASE ── */
+.product-section{padding:0 0 140px}
+.product-block{max-width:1400px;margin:0 auto;padding:80px 60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.product-block.alt .product-visual{order:2}
+.product-block.alt .product-info{order:1}
 
-#contact{background:#D8CFC2;text-align:center}
-.contact-box{max-width:600px;margin:0 auto}
-.contact-box h2{font-family:'Playfair Display',serif;font-size:2.5rem;margin-bottom:30px}
-.contact-box p{margin-bottom:20px;font-size:1rem}
-.contact-info{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:50px 0}
-.contact-info a{color:#C9A87A;text-decoration:none;font-weight:bold}
+.product-visual{position:relative}
+.product-carousel{position:relative;aspect-ratio:1;background:var(--bg2);overflow:hidden;border-radius:4px}
+.product-carousel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+.product-carousel img.active{opacity:1}
+.carousel-controls{display:flex;align-items:center;justify-content:space-between;margin-top:20px}
+.carousel-dots{display:flex;gap:8px}
+.carousel-dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);cursor:pointer;transition:all .3s;border:none}
+.carousel-dot.active{width:28px;border-radius:4px;background:var(--gold)}
+.carousel-arrows{display:flex;gap:8px}
+.carousel-arrow{width:40px;height:40px;border:1px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;color:var(--neutral);font-size:1.1rem}
+.carousel-arrow:hover{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.05)}
 
-footer{background:#1A1510;color:#EAE0D5;text-align:center;padding:30px;font-size:0.85rem;letter-spacing:0.1em}
+.product-info{padding:20px 0}
+.prod-eyebrow{font-size:.6rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.prod-name{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;line-height:1.15;margin-bottom:10px}
+.prod-sub{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:var(--gold-dim);margin-bottom:28px}
+.prod-desc{font-size:.92rem;line-height:1.9;color:var(--neutral);font-weight:300;margin-bottom:40px;max-width:460px}
+.prod-features{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.prod-feat{padding:20px 24px;background:var(--bg2);border-left:2px solid var(--gold);transition:all .3s}
+.prod-feat:hover{background:var(--bg3);transform:translateX(4px)}
+.prod-feat strong{font-size:.82rem;color:var(--primary);display:block;margin-bottom:4px;font-weight:500}
+.prod-feat span{font-size:.78rem;color:var(--neutral);font-weight:300}
 
+/* ── SCENT CARDS ── */
+.scent-section{margin-top:50px}
+.scent-label{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.scent-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.scent-card{border:1px solid var(--border);padding:18px 20px;transition:all .3s;cursor:default}
+.scent-card:hover{border-color:var(--gold);background:rgba(212,175,55,.03)}
+.scent-name{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--gold);font-weight:600;margin-bottom:10px}
+.scent-notes{font-size:.72rem;color:var(--neutral);line-height:1.7}
+.scent-notes strong{color:var(--primary);font-weight:500}
+
+/* ── BRAND STORY ── */
+.brand-strip{padding:120px 60px;background:var(--primary);color:var(--bg);text-align:center;position:relative;overflow:hidden}
+.brand-strip::before{content:'BK';position:absolute;font-family:'Cormorant Garamond',serif;font-size:30vw;font-style:italic;color:rgba(255,255,255,.02);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.brand-quote{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,3vw,2.2rem);font-style:italic;line-height:1.6;max-width:700px;margin:0 auto 30px;position:relative;z-index:1;font-weight:300}
+.brand-attr{font-size:.65rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);position:relative;z-index:1}
+
+/* ── CONTACT ── */
+.contact{padding:120px 60px;text-align:center}
+.contact-inner{max-width:600px;margin:0 auto}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin:60px 0;text-align:center}
+.contact-block h4{font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:12px;color:var(--primary)}
+.contact-block a{color:var(--gold);text-decoration:none;font-size:.9rem;transition:color .3s}
+.contact-block a:hover{color:var(--primary)}
+.contact-cta{display:inline-block;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:16px 44px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .4s;font-family:inherit;cursor:pointer}
+.contact-cta:hover{background:var(--gold);color:white}
+
+/* ── FOOTER ── */
+footer{background:var(--primary);padding:50px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.foot-brand{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold);font-style:italic}
+.foot-copy{font-size:.7rem;color:rgba(255,251,247,.35);letter-spacing:.12em}
+.foot-links{display:flex;gap:24px}
+.foot-links a{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,251,247,.4);text-decoration:none;transition:color .3s}
+.foot-links a:hover{color:var(--gold)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .product-block{grid-template-columns:1fr;gap:50px;padding:60px 40px}
+  .product-block.alt .product-visual{order:1}
+  .product-block.alt .product-info{order:2}
+  .scent-grid{grid-template-columns:1fr}
+}
 @media(max-width:768px){
-  .product{grid-template-columns:1fr;padding:30px}
-  .hero h1{font-size:2.2rem}
-  .section-title{font-size:2rem}
-  nav{padding:15px 26px}
+  nav{padding:0 28px;height:64px}
+  .nav-links{gap:20px}
+  .nav-exp{display:none}
+  .hero{padding:100px 28px 60px}
+  .sec-header{padding:80px 28px 50px}
+  .product-block{padding:40px 28px}
+  .prod-features{grid-template-columns:1fr}
+  .brand-strip{padding:80px 28px}
+  .contact{padding:80px 28px}
+  footer{padding:30px 28px;flex-direction:column;text-align:center}
+  .contact-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="#" class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">BLOOK</a>
-  <div>
-    <a href="#products">PRODUCTS</a>
-    <a href="#contact">CONTACT</a>
-    <a href="3d.html" class="exp-btn">3D EXPERIENCE</a>
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">
+    <div class="nav-mark">BLOOK<span>THE CLASS OF CALM</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="#products">Products</a>
+    <a href="#contact">Contact</a>
+    <a href="3d.html" class="nav-exp">3D Experience</a>
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <div>
-    <h1>The Scent of <em style="color:#C9A87A">Luxury</em></h1>
-    <p class="subtitle">The Class of Calm</p>
-    <p>Premium home fragrance collection inspired by the world's finest hotels</p>
-    <a href="#products" class="cta" onclick="return false">EXPLORE COLLECTION</a>
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Premium Home Fragrance</p>
+    <h1 class="hero-title">The Scent<br>of <em>Luxury</em></h1>
+    <p class="hero-desc">Hotel-grade fragrances inspired by the world's finest resorts. Each product is crafted to bring the class of calm into your everyday moments.</p>
+    <a href="#products" class="hero-cta">
+      Explore Collection
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
+<!-- PRODUCTS -->
 <section id="products">
-  <h2 class="section-title">Our <em>Collection</em></h2>
-
-  <!-- Product 1 -->
-  <div class="product">
-    <div>
-      <img src="assets/prod-diffuser_250-1.png" alt="Reed Diffuser 250ml">
-    </div>
-    <div>
-      <h3>Luxury Hotel Collection</h3>
-      <p class="subtitle">Reed Diffuser · 250 ML</p>
-      <p>A premium apothecary-style reed diffuser inspired by the world's finest hotels. Long-lasting, non-irritating, and elegantly crafted for spaces that deserve a higher class of calm.</p>
-      <div class="features">
-        <div class="feature"><strong>Non-irritating</strong>Safe & certified formula</div>
-        <div class="feature"><strong>3-4 Weeks</strong>Long-lasting fragrance</div>
-        <div class="feature"><strong>Coverage</strong>20-30 sq.m.</div>
-        <div class="feature"><strong>4 Scents</strong>Hotel-grade selection</div>
-      </div>
-    </div>
+  <div class="sec-header">
+    <p class="sec-eyebrow">Our Collection</p>
+    <h2 class="sec-title">Crafted for <em>Calm</em></h2>
+    <p class="sec-desc">Five premium products designed to elevate your space with timeless elegance and refined comfort.</p>
   </div>
 
-  <!-- Product 2 -->
-  <div class="product alt">
-    <div>
-      <img src="assets/prod-diffuser_50-1.png" alt="Reed Diffuser 50ml">
-    </div>
-    <div>
-      <h3>Pocket Hotel Collection</h3>
-      <p class="subtitle">Reed Diffuser · 50 ML</p>
-      <p>The same hotel-grade formula in a compact matte-black bottle. Perfect for desks, bedrooms and personal spaces. Crafted to carry the calm wherever it's needed.</p>
-      <div class="features">
-        <div class="feature"><strong>4 Scents</strong>Hotel-grade selection</div>
-        <div class="feature"><strong>2-3 Weeks</strong>Long-lasting fragrance</div>
-        <div class="feature"><strong>Coverage</strong>10-15 sq.m.</div>
-        <div class="feature"><strong>Portable</strong>Perfect for travel</div>
-      </div>
-    </div>
-  </div>
+  <div class="product-section">
 
-  <!-- Product 3 -->
-  <div class="product">
-    <div>
-      <img src="assets/prod-diffuser_gift-1.png" alt="Gift Set">
-    </div>
-    <div>
-      <h3>The Complete Set</h3>
-      <p class="subtitle">Gift Set · Premium</p>
-      <p>Two sizes, one timeless scent. A 250ml amber bottle and a 50ml matte-black companion, presented in a luxurious magnetic-close gift box — the perfect expression of calm.</p>
-      <div class="features">
-        <div class="feature"><strong>2 Bottles</strong>250ml + 50ml pair</div>
-        <div class="feature"><strong>2-3 Months</strong>Combined fragrance</div>
-        <div class="feature"><strong>Magnetic Box</strong>Premium packaging</div>
-        <div class="feature"><strong>Gift Ready</strong>Luxury presentation</div>
+    <!-- PRODUCT 1: Reed Diffuser 250ml -->
+    <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+    <div class="product-block" data-product="0">
+      <div class="product-visual">
+        <div class="product-carousel" data-carousel="0">
+          <img src="assets/prod-diffuser_250-1.png" alt="Reed Diffuser 250ml" class="active">
+          <img src="assets/prod-diffuser_250-2.png" alt="Reed Diffuser 250ml">
+          <img src="assets/prod-diffuser_250-3.png" alt="Reed Diffuser 250ml">
+          <img src="assets/prod-diffuser_250-4.png" alt="Reed Diffuser 250ml">
+        </div>
+        <div class="carousel-controls">
+          <div class="carousel-dots" data-dots="0"></div>
+          <div class="carousel-arrows">
+            <button class="carousel-arrow" data-prev="0">&#8249;</button>
+            <button class="carousel-arrow" data-next="0">&#8250;</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="prod-eyebrow">Reed Diffuser · 250 ML</p>
+        <h3 class="prod-name">Luxury Hotel Collection</h3>
+        <p class="prod-sub">The Signature Amber Bottle</p>
+        <p class="prod-desc">A premium apothecary-style reed diffuser inspired by the world's finest hotels. Long-lasting, non-irritating, and elegantly crafted for spaces that deserve a higher class of calm.</p>
+        <div class="prod-features">
+          <div class="prod-feat"><strong>Non-irritating</strong><span>Safe & certified formula</span></div>
+          <div class="prod-feat"><strong>3–4 Weeks</strong><span>Long-lasting fragrance</span></div>
+          <div class="prod-feat"><strong>20–30 sq.m.</strong><span>Room coverage</span></div>
+          <div class="prod-feat"><strong>4 Scents</strong><span>Hotel-grade selection</span></div>
+        </div>
+        <div class="scent-section">
+          <p class="scent-label">Available Scents</p>
+          <div class="scent-grid">
+            <div class="scent-card"><div class="scent-name">Marriott</div><div class="scent-notes"><strong>Top:</strong> Bergamot · Lime · Mandarin<br><strong>Mid:</strong> Lavender · Geranium · Jasmine<br><strong>Base:</strong> Rose · Musk</div></div>
+            <div class="scent-card"><div class="scent-name">Sheraton</div><div class="scent-notes"><strong>Top:</strong> Bergamot · Orange<br><strong>Mid:</strong> Rose · Jasmine · Peony<br><strong>Base:</strong> Ylang · Amber · Oakmoss</div></div>
+            <div class="scent-card"><div class="scent-name">Four Seasons</div><div class="scent-notes"><strong>Top:</strong> Citrus · Bergamot · Lemon<br><strong>Mid:</strong> Jasmine · Floral · Herbal<br><strong>Base:</strong> Driftwood · Musk · Amber</div></div>
+            <div class="scent-card"><div class="scent-name">Shangri-La</div><div class="scent-notes"><strong>Top:</strong> Green Tea · White Peach<br><strong>Mid:</strong> Lily · Muguet · Violet<br><strong>Base:</strong> White Musk · Sandalwood</div></div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Product 4 -->
-  <div class="product alt">
-    <div>
-      <img src="assets/3d-pillow-product.png" alt="Aroma Comfort Pillow">
-    </div>
-    <div>
-      <h3>Aroma Comfort Pillow</h3>
-      <p class="subtitle">Pillow · Comfort</p>
-      <p>Indulge in ultimate comfort with our premium pillow collection. Crafted with soft, breathable fabrics and ergonomic support, each pillow brings the calm of BLOOK to your rest.</p>
-      <div class="features">
-        <div class="feature"><strong>Premium Fabric</strong>Soft & breathable</div>
-        <div class="feature"><strong>Ergonomic</strong>Perfect support</div>
-        <div class="feature"><strong>Luxury Design</strong>Elegant styling</div>
-        <div class="feature"><strong>Restful Sleep</strong>All-night comfort</div>
+    <!-- PRODUCT 2: Reed Diffuser 50ml -->
+    <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+    <div class="product-block alt" data-product="1">
+      <div class="product-visual">
+        <div class="product-carousel" data-carousel="1">
+          <img src="assets/prod-diffuser_50-1.png" alt="Reed Diffuser 50ml" class="active">
+          <img src="assets/prod-diffuser_50-2.png" alt="Reed Diffuser 50ml">
+          <img src="assets/prod-diffuser_50-3.png" alt="Reed Diffuser 50ml">
+        </div>
+        <div class="carousel-controls">
+          <div class="carousel-dots" data-dots="1"></div>
+          <div class="carousel-arrows">
+            <button class="carousel-arrow" data-prev="1">&#8249;</button>
+            <button class="carousel-arrow" data-next="1">&#8250;</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="prod-eyebrow">Reed Diffuser · 50 ML</p>
+        <h3 class="prod-name">Pocket Hotel Collection</h3>
+        <p class="prod-sub">4 Luxury Hotel Scents</p>
+        <p class="prod-desc">The same hotel-grade formula in a compact matte-black bottle. Perfect for desks, bedrooms and personal spaces. Crafted to carry the calm wherever it's needed.</p>
+        <div class="prod-features">
+          <div class="prod-feat"><strong>4 Scents</strong><span>Hotel-grade selection</span></div>
+          <div class="prod-feat"><strong>2–3 Weeks</strong><span>Long-lasting fragrance</span></div>
+          <div class="prod-feat"><strong>10–15 sq.m.</strong><span>Room coverage</span></div>
+          <div class="prod-feat"><strong>Portable</strong><span>Perfect for travel</span></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Product 5 -->
-  <div class="product">
-    <div>
-      <img src="assets/3d-sofa-brown.png" alt="Premium Comfort Sofa">
-    </div>
-    <div>
-      <h3>Premium Comfort Sofa</h3>
-      <p class="subtitle">Sofa · Premium</p>
-      <p>Experience the perfect balance of style and comfort. Our premium sofa collection, available in four sophisticated colors, creates the ideal sanctuary for your calm moments.</p>
-      <div class="features">
-        <div class="feature"><strong>4 Colors</strong>Brown, Orange, White, Yellow</div>
-        <div class="feature"><strong>High-Quality</strong>Premium fabric</div>
-        <div class="feature"><strong>Design</strong>Luxury styling</div>
-        <div class="feature"><strong>Comfort</strong>Maximum relaxation</div>
+    <!-- PRODUCT 3: Gift Set -->
+    <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+    <div class="product-block" data-product="2">
+      <div class="product-visual">
+        <div class="product-carousel" data-carousel="2">
+          <img src="assets/prod-diffuser_gift-1.png" alt="Gift Set" class="active">
+          <img src="assets/prod-diffuser_gift-2.png" alt="Gift Set">
+          <img src="assets/prod-diffuser_gift-3.png" alt="Gift Set">
+          <img src="assets/prod-diffuser_gift-4.png" alt="Gift Set">
+        </div>
+        <div class="carousel-controls">
+          <div class="carousel-dots" data-dots="2"></div>
+          <div class="carousel-arrows">
+            <button class="carousel-arrow" data-prev="2">&#8249;</button>
+            <button class="carousel-arrow" data-next="2">&#8250;</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="prod-eyebrow">Gift Set · Premium</p>
+        <h3 class="prod-name">The Complete Set</h3>
+        <p class="prod-sub">Home Fragrance Gift Box</p>
+        <p class="prod-desc">Two sizes, one timeless scent. A 250ml amber bottle and a 50ml matte-black companion, presented in a luxurious magnetic-close gift box — the perfect expression of calm.</p>
+        <div class="prod-features">
+          <div class="prod-feat"><strong>2 Bottles</strong><span>250ml + 50ml pair</span></div>
+          <div class="prod-feat"><strong>2–3 Months</strong><span>Combined fragrance</span></div>
+          <div class="prod-feat"><strong>Magnetic Box</strong><span>Premium packaging</span></div>
+          <div class="prod-feat"><strong>Gift Ready</strong><span>Luxury presentation</span></div>
+        </div>
       </div>
     </div>
+
+    <!-- PRODUCT 4: Pillow -->
+    <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+    <div class="product-block alt" data-product="3">
+      <div class="product-visual">
+        <div class="product-carousel" data-carousel="3">
+          <img src="assets/3d-pillow-product.png" alt="Aroma Comfort Pillow" class="active">
+          <img src="assets/3d-pillow-package.png" alt="Aroma Comfort Pillow">
+        </div>
+        <div class="carousel-controls">
+          <div class="carousel-dots" data-dots="3"></div>
+          <div class="carousel-arrows">
+            <button class="carousel-arrow" data-prev="3">&#8249;</button>
+            <button class="carousel-arrow" data-next="3">&#8250;</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="prod-eyebrow">Pillow · Comfort</p>
+        <h3 class="prod-name">Aroma Comfort Pillow</h3>
+        <p class="prod-sub">Luxury Rest & Support</p>
+        <p class="prod-desc">Indulge in ultimate comfort with our premium pillow collection. Crafted with soft, breathable fabrics and ergonomic support, each pillow brings the calm of BLOOK to your rest.</p>
+        <div class="prod-features">
+          <div class="prod-feat"><strong>Premium Fabric</strong><span>Soft & breathable</span></div>
+          <div class="prod-feat"><strong>Ergonomic</strong><span>Perfect support</span></div>
+          <div class="prod-feat"><strong>Luxury Design</strong><span>Elegant styling</span></div>
+          <div class="prod-feat"><strong>Restful Sleep</strong><span>All-night comfort</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT 5: Sofa -->
+    <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+    <div class="product-block" data-product="4">
+      <div class="product-visual">
+        <div class="product-carousel" data-carousel="4">
+          <img src="assets/3d-sofa-brown.png" alt="Premium Comfort Sofa" class="active">
+          <img src="assets/3d-sofa-orange.png" alt="Premium Comfort Sofa">
+          <img src="assets/3d-sofa-white.png" alt="Premium Comfort Sofa">
+          <img src="assets/3d-sofa-yellow.png" alt="Premium Comfort Sofa">
+        </div>
+        <div class="carousel-controls">
+          <div class="carousel-dots" data-dots="4"></div>
+          <div class="carousel-arrows">
+            <button class="carousel-arrow" data-prev="4">&#8249;</button>
+            <button class="carousel-arrow" data-next="4">&#8250;</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <p class="prod-eyebrow">Sofa · Premium</p>
+        <h3 class="prod-name">Premium Comfort Sofa</h3>
+        <p class="prod-sub">4 Luxury Colors Available</p>
+        <p class="prod-desc">Experience the perfect balance of style and comfort. Our premium sofa collection, available in four sophisticated colors, creates the ideal sanctuary for your calm moments.</p>
+        <div class="prod-features">
+          <div class="prod-feat"><strong>4 Colors</strong><span>Brown · Orange · White · Yellow</span></div>
+          <div class="prod-feat"><strong>High-Quality</strong><span>Premium fabric</span></div>
+          <div class="prod-feat"><strong>Premium Design</strong><span>Luxury styling</span></div>
+          <div class="prod-feat"><strong>Maximum Comfort</strong><span>Ergonomic build</span></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<section id="contact">
-  <div class="contact-box">
-    <h2 class="section-title">Get in <em>Touch</em></h2>
-    <p>Discover the class of calm. For inquiries, collaborations, or to learn more about BLOOK, we'd love to hear from you.</p>
+<!-- BRAND STORY -->
+<div class="brand-strip">
+  <p class="brand-quote">"We believe that calm is a luxury everyone deserves. Each product is a reminder to slow down, breathe deeply, and enjoy the finest things in life."</p>
+  <p class="brand-attr">— BLOOK · The Class of Calm</p>
+</div>
 
-    <div class="contact-info">
-      <div>
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="sec-header" style="padding:0 0 40px">
+      <p class="sec-eyebrow">Get in Touch</p>
+      <h2 class="sec-title">Let's <em>Connect</em></h2>
+      <p class="sec-desc">For inquiries, collaborations, or to discover more about BLOOK — we'd love to hear from you.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-block">
         <h4>Email</h4>
-        <a href="mailto:hello@blook.com">hello@blook.com</a>
+        <a href="mailto:info@blookliving.com">info@blookliving.com</a>
       </div>
-      <div>
+      <div class="contact-block">
         <h4>Follow Us</h4>
         <a href="#">Instagram · Facebook</a>
       </div>
     </div>
-
-    <a href="mailto:hello@blook.com" class="cta">SEND INQUIRY</a>
+    <a href="mailto:info@blookliving.com" class="contact-cta">Send Inquiry</a>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <p>&copy; 2026 BLOOK — The Class of Calm. All rights reserved.</p>
+  <div class="foot-brand">BLOOK</div>
+  <div class="foot-links">
+    <a href="#products">Products</a>
+    <a href="#contact">Contact</a>
+    <a href="3d.html">3D Experience</a>
+  </div>
+  <div class="foot-copy">&copy; 2026 BLOOK — The Class of Calm</div>
 </footer>
 
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Nav shrink on scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// Hero entrance
+const tl=gsap.timeline({delay:.3});
+tl.to('.hero-eyebrow',{opacity:1,y:0,duration:.8,ease:'power3.out'})
+  .to('.hero-title',{opacity:1,y:0,duration:1,ease:'power3.out'},'-=.5')
+  .to('.hero-desc',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.6')
+  .to('.hero-cta',{opacity:1,y:0,duration:.7,ease:'power3.out'},'-=.5')
+  .to('.hero-scroll',{opacity:1,duration:.6},'-=.3');
+
+// Set initial states
+gsap.set(['.hero-eyebrow','.hero-title','.hero-desc','.hero-cta'],{y:30});
+
+// Section header reveal
+document.querySelectorAll('.sec-header').forEach(h=>{
+  gsap.from(h.children,{
+    scrollTrigger:{trigger:h,start:'top 80%'},
+    y:40,opacity:0,duration:.8,stagger:.15,ease:'power3.out'
+  });
+});
+
+// Product blocks reveal
+document.querySelectorAll('.product-block').forEach(b=>{
+  const vis=b.querySelector('.product-visual');
+  const info=b.querySelector('.product-info');
+  gsap.from(vis,{
+    scrollTrigger:{trigger:b,start:'top 75%'},
+    x:b.classList.contains('alt')?60:-60,opacity:0,duration:1,ease:'power3.out'
+  });
+  gsap.from(info,{
+    scrollTrigger:{trigger:b,start:'top 75%'},
+    x:b.classList.contains('alt')?-60:60,opacity:0,duration:1,delay:.2,ease:'power3.out'
+  });
+});
+
+// Brand strip reveal
+gsap.from('.brand-quote',{
+  scrollTrigger:{trigger:'.brand-strip',start:'top 75%'},
+  y:40,opacity:0,duration:1,ease:'power3.out'
+});
+gsap.from('.brand-attr',{
+  scrollTrigger:{trigger:'.brand-strip',start:'top 70%'},
+  opacity:0,duration:.8,delay:.3,ease:'power3.out'
+});
+
+// Carousel logic
+document.querySelectorAll('[data-carousel]').forEach(carousel=>{
+  const id=carousel.dataset.carousel;
+  const imgs=carousel.querySelectorAll('img');
+  const dotsContainer=document.querySelector(`[data-dots="${id}"]`);
+  let current=0;
+
+  imgs.forEach((_,i)=>{
+    const dot=document.createElement('button');
+    dot.className='carousel-dot'+(i===0?' active':'');
+    dot.onclick=()=>goTo(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function goTo(idx){
+    imgs[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current=idx;
+    imgs[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+  }
+
+  const prev=document.querySelector(`[data-prev="${id}"]`);
+  const next=document.querySelector(`[data-next="${id}"]`);
+  if(prev) prev.onclick=()=>goTo((current-1+imgs.length)%imgs.length);
+  if(next) next.onclick=()=>goTo((current+1)%imgs.length);
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
 </body>
 </html>
-/* Cache buster */
