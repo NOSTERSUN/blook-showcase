@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLOOK — The Class of Calm</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.4/dist/gsap.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#EAE0D5;--bg2:#D8CFC2;--bg3:#D0C5B8;
+  --gold:#C9A87A;--gold2:#9A7852;--gold3:#E8D0A8;
+  --text:#1A1510;--dim:#6B5E52;--dim2:#8B7B70;
+  --border:rgba(201,168,122,.22);--border2:rgba(201,168,122,.4);
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow:hidden;cursor:none}
+
+/* ── cursor ── */
+#c-dot{position:fixed;width:7px;height:7px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s,border .25s}
+#c-dot.h{width:30px;height:30px;background:transparent;border:1px solid var(--gold)}
+#c-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(201,168,122,.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
+
+/* ── canvas ── */
+#webgl{position:fixed;inset:0;width:100%;height:100%;z-index:1}
+
+/* ── loader ── */
+#loader{position:fixed;inset:0;background:#EAE0D5;z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
+.ld-mono{font-family:'Cormorant Garamond',serif;font-size:2rem;letter-spacing:.5em;color:var(--gold);font-weight:300}
+.ld-bar{width:180px;height:1px;background:var(--border2)}
+.ld-fill{height:100%;width:0;background:var(--gold)}
+.ld-sub{font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:var(--dim)}
+
+/* ── nav ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:26px 52px}
+.n-logo{display:flex;align-items:center;gap:13px;text-decoration:none}
+.n-mono{font-family:'Cormorant Garamond',serif;font-size:1.85rem;color:var(--gold);line-height:1;font-style:italic;letter-spacing:-.04em}
+.n-mono .k{margin-left:-.12em}
+.n-txt{display:flex;flex-direction:column;gap:2px}
+.n-brand{font-family:'Cormorant Garamond',serif;font-size:.95rem;letter-spacing:.38em;color:var(--gold);line-height:1}
+.n-tagline{font-size:.42rem;letter-spacing:.42em;color:var(--gold2);text-transform:uppercase}
+.n-links{display:flex;gap:38px;list-style:none}
+.n-links a{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-decoration:none;cursor:none;transition:color .3s}
+.n-links a:hover{color:var(--gold)}
+
+/* ── vignettes ── */
+.vl{position:fixed;left:0;top:0;width:38%;height:100%;background:linear-gradient(to right,rgba(234,224,213,.95) 0%,transparent 100%);z-index:20;pointer-events:none}
+.vb{position:fixed;bottom:0;left:0;right:0;height:180px;background:linear-gradient(to top,rgba(234,224,213,.9) 0%,transparent 100%);z-index:20;pointer-events:none}
+.vt{position:fixed;top:0;left:0;right:0;height:130px;background:linear-gradient(to bottom,rgba(234,224,213,.8) 0%,transparent 100%);z-index:20;pointer-events:none}
+
+/* ── hero ── */
+#hero{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;justify-content:center;pointer-events:none;padding-left:52px}
+.h-eye{font-size:.6rem;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.h-title{font-family:'Playfair Display',serif;font-size:3.8rem;font-weight:400;line-height:1.04;margin-bottom:18px}
+.h-title em{font-style:italic;color:var(--gold)}
+.h-desc{font-size:.8rem;line-height:1.85;color:var(--dim);font-weight:300;max-width:280px;margin-bottom:28px}
+.h-hint{display:flex;align-items:center;gap:12px;font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--dim2)}
+.h-line{width:44px;height:1px;background:var(--gold);animation:pline 2.2s ease-in-out infinite}
+@keyframes pline{0%,100%{transform:scaleX(1);opacity:1}50%{transform:scaleX(.3);opacity:.3}}
+
+/* ── product selector ── */
+#sel{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:center;padding:0 52px 30px;gap:1px}
+.s-tab{flex:1;max-width:270px;background:rgba(234,224,213,.8);border:1px solid var(--border);border-bottom:none;padding:18px 22px;cursor:none;transition:all .35s;display:flex;align-items:center;gap:14px;backdrop-filter:blur(12px)}
+.s-tab:hover,.s-tab.on{border-color:var(--border2);background:rgba(216,207,194,.95)}
+.s-bar{width:20px;height:1px;background:var(--dim2);transition:all .35s;flex-shrink:0}
+.s-tab.on .s-bar,.s-tab:hover .s-bar{background:var(--gold);width:28px}
+.s-num{font-size:.55rem;letter-spacing:.3em;color:var(--dim)}
+.s-name{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--text);letter-spacing:.05em}
+.s-size{font-size:.58rem;letter-spacing:.18em;color:var(--gold2)}
+
+/* ── detail panel ── */
+#panel{position:fixed;right:0;top:0;height:100vh;width:420px;background:rgba(216,207,194,.96);border-left:1px solid var(--border);z-index:300;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+#panel::-webkit-scrollbar{width:2px}
+#panel::-webkit-scrollbar-thumb{background:var(--border2)}
+#cls{position:absolute;top:22px;right:22px;background:transparent;border:1px solid var(--border);color:var(--dim);width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:none;font-size:.95rem;transition:all .3s;z-index:10}
+#cls:hover{border-color:var(--gold);color:var(--gold)}
+
+/* gallery */
+.gal{position:relative;width:100%;aspect-ratio:1;background:var(--bg3);overflow:hidden;flex-shrink:0}
+.gal-main{width:100%;height:100%}
+.gal-main img{width:100%;height:100%;object-fit:cover;transition:opacity .3s}
+.gal-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
+.gal-dot{width:5px;height:5px;border-radius:50%;background:rgba(242,235,224,.25);cursor:none;transition:all .25s}
+.gal-dot.on{background:var(--gold);width:18px;border-radius:3px}
+.gal-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(7,6,4,.6);border:1px solid var(--border);color:var(--gold);width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:none;font-size:.75rem;transition:all .3s}
+.gal-arrow:hover{background:var(--bg3);border-color:var(--border2)}
+#g-prev{left:12px}
+#g-next{right:12px}
+
+/* panel info */
+.pinfo{padding:28px 36px 52px;display:flex;flex-direction:column;gap:18px}
+.p-eye{font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold)}
+.p-name{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:400;line-height:1.1}
+.p-sub{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--dim)}
+.p-desc{font-size:.78rem;line-height:1.85;color:var(--dim);font-weight:300}
+.p-divider{height:1px;background:var(--border)}
+
+/* scent */
+.sc-lbl{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.sc-pills{display:flex;flex-wrap:wrap;gap:7px}
+.sc-pill{padding:7px 15px;border:1px solid var(--border);font-family:'Cormorant Garamond',serif;font-size:.9rem;letter-spacing:.08em;cursor:none;transition:all .3s;color:var(--dim)}
+.sc-pill:hover,.sc-pill.on{border-color:var(--gold);color:var(--gold);background:rgba(201,168,122,.07)}
+.sc-notes{font-size:.72rem;line-height:1.8;color:var(--dim);font-weight:300;border-left:1px solid var(--border2);padding-left:14px;overflow:hidden;max-height:0;transition:max-height .4s ease,opacity .3s}
+.sc-notes.show{max-height:120px}
+.n-row{display:flex;gap:10px;margin-bottom:1px}
+.n-k{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold2);width:48px;flex-shrink:0;padding-top:3px}
+
+/* features */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.feat{padding:13px 14px;border:1px solid var(--border);transition:border-color .3s}
+.feat:hover{border-color:var(--border2)}
+.feat-ic{font-size:1rem;margin-bottom:6px}
+.feat-tx{font-size:.67rem;line-height:1.5;color:var(--dim)}
+
+/* sizing badge */
+.size-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border2)}
+.sb-val{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--gold)}
+.sb-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="ld-mono">BLOOK</div>
+  <div class="ld-bar"><div class="ld-fill" id="lf"></div></div>
+  <div class="ld-sub">The Class of Calm</div>
+</div>
+
+<!-- Cursor -->
+<div id="c-dot"></div>
+<div id="c-ring"></div>
+
+<!-- Vignettes -->
+<div class="vl"></div><div class="vb"></div><div class="vt"></div>
+
+<!-- Canvas -->
+<canvas id="webgl"></canvas>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="#" class="n-logo">
+    <div class="n-mono"><span>B</span><span class="k">K</span></div>
+    <div class="n-txt">
+      <div class="n-brand">BLOOK</div>
+      <div class="n-tagline">The Class of Calm</div>
+    </div>
+  </a>
+  <ul class="n-links">
+    <li><a href="#">Collection</a></li>
+    <li><a href="#">Story</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="h-eye">Reed Diffuser Collection</div>
+  <h1 class="h-title">The Scent<br>of <em>Luxury</em></h1>
+  <p class="h-desc">Hotel-grade fragrances for the refined moments of your everyday calm.</p>
+  <div class="h-hint"><div class="h-line"></div>Click to explore</div>
+</section>
+
+<!-- Product Tabs -->
+<div id="sel">
+  <button class="s-tab on" data-i="0">
+    <div class="s-bar"></div>
+    <div><div class="s-num">01</div><div class="s-name">Reed Diffuser</div><div class="s-size">250 ML</div></div>
+  </button>
+  <button class="s-tab" data-i="1">
+    <div class="s-bar"></div>
+    <div><div class="s-num">02</div><div class="s-name">Reed Diffuser</div><div class="s-size">50 ML</div></div>
+  </button>
+  <button class="s-tab" data-i="2">
+    <div class="s-bar"></div>
+    <div><div class="s-num">03</div><div class="s-name">Gift Set</div><div class="s-size">PREMIUM</div></div>
+  </button>
+  <button class="s-tab" data-i="3">
+    <div class="s-bar"></div>
+    <div><div class="s-num">04</div><div class="s-name">Pillow</div><div class="s-size">COMFORT</div></div>
+  </button>
+  <button class="s-tab" data-i="4">
+    <div class="s-bar"></div>
+    <div><div class="s-num">05</div><div class="s-name">Sofa</div><div class="s-size">PREMIUM</div></div>
+  </button>
+</div>
+
+<!-- Detail Panel -->
+<div id="panel">
+  <button id="cls">✕</button>
+
+  <!-- Gallery -->
+  <div class="gal">
+    <div class="gal-main"><img id="gimg" src="" alt=""></div>
+    <button class="gal-arrow" id="g-prev">&#8249;</button>
+    <button class="gal-arrow" id="g-next">&#8250;</button>
+    <div class="gal-dots" id="gdots"></div>
+  </div>
+
+  <!-- Info -->
+  <div class="pinfo">
+    <div>
+      <div class="p-eye" id="peye"></div>
+      <h2 class="p-name" id="pname"></h2>
+      <div class="p-sub" id="psub"></div>
+    </div>
+
+    <p class="p-desc" id="pdesc"></p>
+
+    <div class="p-divider"></div>
+
+    <!-- Scent -->
+    <div>
+      <div class="sc-lbl">Select Scent · เลือกกลิ่น</div>
+      <div class="sc-pills" id="spills"></div>
+    </div>
+
+    <div class="sc-notes" id="snotes">
+      <div class="n-row"><span class="n-k">Top</span><span id="ntop"></span></div>
+      <div class="n-row"><span class="n-k">Middle</span><span id="nmid"></span></div>
+      <div class="n-row"><span class="n-k">Base</span><span id="nbase"></span></div>
+    </div>
+
+    <div class="p-divider"></div>
+
+    <!-- Features -->
+    <div>
+      <div class="sc-lbl" style="margin-bottom:12px">Features</div>
+      <div class="feat-grid" id="fgrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+const DATA = [
+  {
+    eye:'Reed Diffuser · 250 ML', name:'Luxury Hotel Collection',
+    sub:'The Signature Amber Bottle',
+    desc:'A premium apothecary-style reed diffuser inspired by the world\'s finest hotels. Long-lasting, non-irritating, and elegantly crafted for spaces that deserve a higher class of calm.',
+    imgs:['assets/prod-diffuser_250-1.png','assets/prod-diffuser_250-2.png','assets/prod-diffuser_250-3.png','assets/prod-diffuser_250-4.png'],
+    scents:[
+      {n:'MARRIOTT',    top:'Bergamot · Lime · Mandarin · Citrus',         mid:'Lavender · Geranium · Jasmine · Lily of Valley', base:'Rose · Musk · Rosys Green'},
+      {n:'SHERATON',    top:'Bergamot · Lime · Orange Blackcurrant',        mid:'Rose · Jasmine · Peony · Lily of Valley',        base:'Ylang · Amber · Oakmoss · Patchouli'},
+      {n:'FOUR SEASONS',top:'Citrus · Bergamot · Lemon',                   mid:'Jasmine · Floral · Herbal · Watery',             base:'Driftwood · Musk · Amber · Tender Wood'},
+      {n:'SHANGRI-LA',  top:'Green Tea · White Peach · Magnolia',           mid:'Lily · Muguet · Violet · Iris',                  base:'White Musk · Sandalwood · Amber'},
+    ],
+    feats:[
+      {ic:'🌿',tx:'ไม่ฉุน ไม่แสบจมูก\nNon-irritating formula'},
+      {ic:'✓', tx:'ปลอดภัย ผ่านมาตรฐาน\nSafe & certified'},
+      {ic:'⏱',tx:'หอมนาน 3–4 สัปดาห์\n3–4 weeks fragrance'},
+      {ic:'◻',tx:'พื้นที่ 20–30 ตร.ว.\n20–30 sq.m. coverage'},
+    ],
+    type:'amber250'
+  },
+  {
+    eye:'Reed Diffuser · 50 ML', name:'Pocket Hotel Collection',
+    sub:'4 Luxury Hotel Scents',
+    desc:'The same hotel-grade formula in a compact matte-black bottle. Perfect for desks, bedrooms and personal spaces. Crafted to carry the calm wherever it\'s needed.',
+    imgs:['assets/prod-diffuser_50-1.png','assets/prod-diffuser_50-2.png','assets/prod-diffuser_50-3.png'],
+    scents:[
+      {n:'FOUR SEASONS',top:'Citrus · Bergamot · Lemon',                   mid:'Jasmine · Floral · Herbal · Watery',             base:'Driftwood · Musk · Amber'},
+      {n:'SHANGRI-LA',  top:'Green Tea · White Peach · Magnolia',           mid:'Lily · Muguet · Violet',                         base:'White Musk · Sandalwood · Amber'},
+      {n:'SHERATON',    top:'Bergamot · Lime · Orange Blackcurrant',        mid:'Rose · Jasmine · Lily of Valley',                base:'Ylang · Amber · Oakmoss'},
+      {n:'MARRIOTT',    top:'Bergamot · Lime · Mandarin · Citrus',         mid:'Lavender · Geranium · Jasmine',                  base:'Rose · Musk · Rosys Green'},
+    ],
+    feats:[
+      {ic:'🏨',tx:'4 กลิ่นโรงแรมหรู\n4 luxury hotel scents'},
+      {ic:'🌿',tx:'ไม่ฉุน ไม่แสบจมูก\nNon-irritating formula'},
+      {ic:'⏱',tx:'หอมนาน 2–3 สัปดาห์\n2–3 weeks fragrance'},
+      {ic:'◻',tx:'พื้นที่ 10–15 ตร.ว.\n10–15 sq.m. coverage'},
+    ],
+    type:'black50'
+  },
+  {
+    eye:'Gift Set · Premium', name:'The Complete Set',
+    sub:'Home Fragrance Gift Box',
+    desc:'Two sizes, one timeless scent. A 250ml amber bottle and a 50ml matte-black companion, presented in a luxurious magnetic-close gift box — the perfect expression of calm.',
+    imgs:['assets/prod-diffuser_gift-1.png','assets/prod-diffuser_gift-2.png','assets/prod-diffuser_gift-3.png','assets/prod-diffuser_gift-4.png'],
+    scents:[
+      {n:'MARRIOTT',    top:'Bergamot · Lime · Mandarin · Citrus',         mid:'Lavender · Geranium · Jasmine',                  base:'Rose · Musk · Rosys Green'},
+      {n:'FOUR SEASONS',top:'Citrus · Bergamot · Lemon',                   mid:'Jasmine · Floral · Herbal',                      base:'Driftwood · Musk · Amber'},
+    ],
+    feats:[
+      {ic:'🎁',tx:'กล่องแม่เหล็กพรีเมียม\nPremium magnetic box'},
+      {ic:'⏱',tx:'หอมนาน 2–3 เดือน\n2–3 months total'},
+      {ic:'◻',tx:'พื้นที่ 15–20 ตร.ว.\n15–20 sq.m. coverage'},
+      {ic:'✨',tx:'เหมาะเป็นของขวัญ\nPerfect as a gift'},
+    ],
+    type:'giftset'
+  },
+  {
+    eye:'Pillow · Comfort', name:'Aroma Comfort Pillow',
+    sub:'Luxury Rest & Support',
+    desc:'Indulge in ultimate comfort with our premium pillow collection. Crafted with soft, breathable fabrics and ergonomic support, each pillow brings the calm of BLOOK to your rest.',
+    imgs:['assets/3d-pillow-product.png','assets/3d-pillow-package.png'],
+    scents:[],
+    feats:[
+      {ic:'🛏️',tx:'สะดวกสบาย สนับสนุนเยี่ยม\nUltimate comfort & support'},
+      {ic:'🌬️',tx:'ผ้าระบายอากาศ\nBreathable fabric'},
+      {ic:'✨',tx:'ออกแบบอย่างหรู\nLuxury design'},
+      {ic:'🧘',tx:'ช่วยให้นอนสบาย\nPromotes restful sleep'},
+    ],
+    type:'pillow'
+  },
+  {
+    eye:'Sofa · Premium', name:'Premium Comfort Sofa',
+    sub:'4 Luxury Colors Available',
+    desc:'Experience the perfect balance of style and comfort. Our premium sofa collection, available in four sophisticated colors, creates the ideal sanctuary for your calm moments.',
+    imgs:['assets/3d-sofa-brown.png','assets/3d-sofa-orange.png','assets/3d-sofa-white.png','assets/3d-sofa-yellow.png'],
+    scents:[],
+    feats:[
+      {ic:'🛋️',tx:'สไตล์ออกแบบพรีเมียม\nPremium design'},
+      {ic:'🎨',tx:'4 สีให้เลือก\n4 luxury colors'},
+      {ic:'🧵',tx:'ผ้าคุณภาพสูง\nHigh-quality fabric'},
+      {ic:'💺',tx:'ความสบายสูงสุด\nMaximum comfort'},
+    ],
+    type:'sofa'
+  }
+];
+
+// ══════════════════════════════════════════════
+// RENDERER
+// ══════════════════════════════════════════════
+const cvs = document.getElementById('webgl');
+const renderer = new THREE.WebGLRenderer({canvas:cvs, antialias:true});
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.35;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xEAE0D5);
+scene.fog = new THREE.FogExp2(0xEAE0D5, 0.04);
+
+const camera = new THREE.PerspectiveCamera(44, innerWidth/innerHeight, 0.1, 60);
+camera.position.set(0, 1.1, 7.2);
+camera.lookAt(0, 0.4, 0);
+
+// ── Lights ──
+scene.add(new THREE.AmbientLight(0xEADCC8, 1.2));
+
+const key = new THREE.DirectionalLight(0xfff8ee, 2.0);
+key.position.set(5, 9, 5); key.castShadow = true;
+key.shadow.mapSize.set(2048,2048);
+Object.assign(key.shadow.camera,{left:-8,right:8,top:7,bottom:-7,near:.5,far:25});
+scene.add(key);
+
+const fill = new THREE.DirectionalLight(0xD4A8B0, .5);
+fill.position.set(-5,3,2); scene.add(fill);
+
+const rim = new THREE.DirectionalLight(0x8B6F47, .28);
+rim.position.set(0,2,-5); scene.add(rim);
+
+// ── Floor ──
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(24,20),
+  new THREE.MeshStandardMaterial({color:0xDCD2C5, roughness:.08, metalness:.4})
+);
+floor.rotation.x = -Math.PI/2; floor.position.y = 0;
+floor.receiveShadow = true; scene.add(floor);
+
+// back wall
+const wall = new THREE.Mesh(
+  new THREE.PlaneGeometry(28,14),
+  new THREE.MeshStandardMaterial({color:0xE8DDD0, roughness:1})
+);
+wall.position.z = -4.5; wall.receiveShadow = true; scene.add(wall);
+
+// ══════════════════════════════════════════════
+// TEXTURES
+// ══════════════════════════════════════════════
+function labelTex(dark) {
+  const W=512, H=320, cv=document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  const c=cv.getContext('2d');
+  c.clearRect(0,0,W,H);
+  const gold='#C9A87A', col = dark ? '#F2EBE0' : '#C9A87A';
+
+  // thin border lines top/bottom
+  c.strokeStyle=gold; c.globalAlpha=.22; c.lineWidth=.8;
+  c.beginPath(); c.moveTo(W/2-72,30); c.lineTo(W/2+72,30); c.stroke();
+  c.beginPath(); c.moveTo(W/2-55,H-28); c.lineTo(W/2+55,H-28); c.stroke();
+  c.globalAlpha=1;
+
+  // BK monogram
+  c.font='italic 88px Garamond,"Times New Roman",serif';
+  c.fillStyle=col; c.textAlign='center'; c.textBaseline='middle';
+  c.fillText('BK', W/2, 130);
+
+  // BLOOK
+  c.font='400 26px Garamond,"Times New Roman",serif';
+  c.fillStyle=col; c.textAlign='center'; c.textBaseline='alphabetic';
+  c.fillText('BLOOK', W/2+1, 192);
+
+  // tagline
+  c.font='300 11px Arial,sans-serif';
+  c.fillStyle=col; c.globalAlpha=.5;
+  c.fillText('THE CLASS OF CALM', W/2, 218);
+  c.globalAlpha=1;
+
+  // Reed Diffuser
+  c.font='300 10px Arial,sans-serif';
+  c.fillStyle=col; c.globalAlpha=.35;
+  c.fillText('REED DIFFUSER', W/2, 238);
+  c.globalAlpha=1;
+
+  return new THREE.CanvasTexture(cv);
+}
+
+function giftBoxTex() {
+  const W=1024, H=512, cv=document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  const c=cv.getContext('2d');
+
+  // matte black bg
+  c.fillStyle='#0A0906'; c.fillRect(0,0,W,H);
+
+  // gold border
+  c.strokeStyle='#C9A87A'; c.globalAlpha=.28; c.lineWidth=1.2;
+  c.strokeRect(14,14,W-28,H-28);
+  c.strokeRect(22,22,W-44,H-44);
+  c.globalAlpha=1;
+
+  // BK
+  c.font='italic 160px Garamond,"Times New Roman",serif';
+  c.fillStyle='#C9A87A'; c.textAlign='center'; c.textBaseline='middle';
+  c.fillText('BK', W/2, H/2-30);
+
+  c.font='400 52px Garamond,"Times New Roman",serif';
+  c.fillStyle='#C9A87A'; c.textBaseline='alphabetic';
+  c.fillText('BLOOK', W/2, H/2+60);
+
+  c.font='300 18px Arial,sans-serif';
+  c.fillStyle='#C9A87A'; c.globalAlpha=.45;
+  c.fillText('THE CLASS OF CALM', W/2, H/2+92);
+  c.fillText('HOME FRAGRANCE DIFFUSER', W/2, H-38);
+  c.globalAlpha=1;
+
+  return new THREE.CanvasTexture(cv);
+}
+
+// ══════════════════════════════════════════════
+// BOTTLE BUILDERS
+// ══════════════════════════════════════════════
+function reeds(group, startY, count, lean) {
+  const mat = new THREE.MeshStandardMaterial({color:0x0d0b08, roughness:.65});
+  for (let i=0; i<count; i++) {
+    const a = (i/count)*Math.PI*2;
+    const wrap = new THREE.Group();
+    wrap.position.y = startY;
+    wrap.rotation.y = a;
+    const h = .68 + Math.random()*.22;
+    const geo = new THREE.CylinderGeometry(.0055,.004,h,5);
+    const m = new THREE.Mesh(geo,mat);
+    m.position.y = h/2;
+    m.rotation.z = lean;
+    wrap.add(m);
+    group.add(wrap);
+  }
+}
+
+function buildAmber250() {
+  const g = new THREE.Group();
+  const pts = [
+    new THREE.Vector2(0,.0),
+    new THREE.Vector2(.125,.0),
+    new THREE.Vector2(.128,.04),
+    new THREE.Vector2(.126,.48),
+    new THREE.Vector2(.115,.55),
+    new THREE.Vector2(.078,.62),
+    new THREE.Vector2(.056,.67),
+    new THREE.Vector2(.054,.76),
+    new THREE.Vector2(0,.76),
+  ];
+  const bodyMat = new THREE.MeshPhysicalMaterial({
+    color:0x7B5018, roughness:.04, metalness:0,
+    transparent:true, opacity:.88,
+    transmission:.28, ior:1.52, thickness:.35
+  });
+  const body = new THREE.Mesh(new THREE.LatheGeometry(pts,52), bodyMat);
+  body.castShadow = true; g.add(body);
+
+  // glass inner (slightly smaller, darker to give thickness illusion)
+  const innerMat = new THREE.MeshPhysicalMaterial({
+    color:0x4A2E0A, transparent:true, opacity:.35, roughness:.08, side:THREE.BackSide
+  });
+  const inner = new THREE.Mesh(new THREE.LatheGeometry(pts,52), innerMat);
+  inner.scale.setScalar(.94); g.add(inner);
+
+  // label overlay cylinder
+  const lMat = new THREE.MeshStandardMaterial({map:labelTex(false), transparent:true, roughness:.25, side:THREE.FrontSide});
+  const lMesh = new THREE.Mesh(new THREE.CylinderGeometry(.128,.128,.3,52,1,true), lMat);
+  lMesh.position.y = .22; g.add(lMesh);
+
+  // gold cap
+  const capMat = new THREE.MeshStandardMaterial({color:0xB88C22, metalness:.94, roughness:.06});
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(.057,.057,.092,36), capMat);
+  cap.position.y = .806; cap.castShadow=true; g.add(cap);
+  const capT = new THREE.Mesh(new THREE.CircleGeometry(.057,36), capMat);
+  capT.position.y=.853; capT.rotation.x=-Math.PI/2; g.add(capT);
+
+  reeds(g, .855, 9, .26);
+  return g;
+}
+
+function buildBlack50() {
+  const g = new THREE.Group();
+  const pts = [
+    new THREE.Vector2(0,.0),
+    new THREE.Vector2(.078,.0),
+    new THREE.Vector2(.081,.035),
+    new THREE.Vector2(.079,.3),
+    new THREE.Vector2(.068,.36),
+    new THREE.Vector2(.042,.42),
+    new THREE.Vector2(.039,.50),
+    new THREE.Vector2(0,.50),
+  ];
+  const bodyMat = new THREE.MeshPhysicalMaterial({
+    color:0x0d0b09, roughness:.1, metalness:.05,
+    clearcoat:.8, clearcoatRoughness:.04
+  });
+  const body = new THREE.Mesh(new THREE.LatheGeometry(pts,52), bodyMat);
+  body.castShadow=true; g.add(body);
+
+  const lMat = new THREE.MeshStandardMaterial({map:labelTex(true), transparent:true, roughness:.3, side:THREE.FrontSide});
+  const lMesh = new THREE.Mesh(new THREE.CylinderGeometry(.081,.081,.2,52,1,true), lMat);
+  lMesh.position.y=.155; g.add(lMesh);
+
+  const capMat = new THREE.MeshStandardMaterial({color:0xB88C22, metalness:.94, roughness:.06});
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(.041,.041,.065,36), capMat);
+  cap.position.y=.533; g.add(cap);
+  const capT = new THREE.Mesh(new THREE.CircleGeometry(.041,36), capMat);
+  capT.position.y=.565; capT.rotation.x=-Math.PI/2; g.add(capT);
+
+  reeds(g, .567, 8, .24);
+  return g;
+}
+
+function miniBottle(dark) {
+  const g = new THREE.Group();
+  const pts = dark ? [
+    new THREE.Vector2(0,0),new THREE.Vector2(.078,0),new THREE.Vector2(.079,.28),
+    new THREE.Vector2(.065,.34),new THREE.Vector2(.04,.39),new THREE.Vector2(0,.39)
+  ] : [
+    new THREE.Vector2(0,0),new THREE.Vector2(.12,0),new THREE.Vector2(.122,.04),
+    new THREE.Vector2(.12,.45),new THREE.Vector2(.105,.52),new THREE.Vector2(.072,.58),
+    new THREE.Vector2(.053,.62),new THREE.Vector2(0,.62)
+  ];
+  const mat = new THREE.MeshPhysicalMaterial(dark
+    ? {color:0x0d0b09, roughness:.1, metalness:.05, clearcoat:.8, clearcoatRoughness:.04}
+    : {color:0x7B5018, roughness:.04, metalness:0, transparent:true, opacity:.9, transmission:.2, ior:1.5, thickness:.3}
+  );
+  g.add(new THREE.Mesh(new THREE.LatheGeometry(pts,36), mat));
+  const capY = dark ? .425 : .652;
+  const capR = dark ? .043 : .056;
+  const capMat = new THREE.MeshStandardMaterial({color:0xB88C22, metalness:.94, roughness:.06});
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(capR,capR,.065,24), capMat);
+  cap.position.y = capY; g.add(cap);
+  reeds(g, capY+.065, 6, dark ? .22 : .24);
+  return g;
+}
+
+function buildGiftSet() {
+  const g = new THREE.Group();
+
+  // Gift box (vertical, slightly angled back)
+  const bTex = giftBoxTex();
+  const bMats = Array(6).fill(null).map((_,i)=> new THREE.MeshStandardMaterial(
+    i===4 ? {map:bTex, roughness:.18, metalness:.1}
+           : {color:0x0A0906, roughness:.18, metalness:.2}
+  ));
+  const box = new THREE.Mesh(new THREE.BoxGeometry(.54,.76,.22), bMats);
+  box.position.set(.05,.38,-.28); box.rotation.y=.18; box.castShadow=true; g.add(box);
+
+  // Lid (partially open)
+  const lidMat = new THREE.MeshStandardMaterial({color:0x0e0c09, roughness:.14, metalness:.25});
+  const lid = new THREE.Mesh(new THREE.BoxGeometry(.54,.035,.22), lidMat);
+  lid.position.set(.05,.77,-.36); lid.rotation.x=.52; lid.castShadow=true; g.add(lid);
+
+  // Gold ribbon-like edge on lid
+  const ribMat = new THREE.MeshStandardMaterial({color:0xB88C22, metalness:.7, roughness:.2});
+  const rib = new THREE.Mesh(new THREE.BoxGeometry(.54,.008,.22), ribMat);
+  rib.position.set(.05,.753,-.28); rib.rotation.x=.52; g.add(rib);
+
+  // Two bottles in front of box
+  const bA = miniBottle(false);
+  bA.position.set(-.22,0,0); g.add(bA);
+
+  const bB = miniBottle(true);
+  bB.position.set(.22,0,.04); g.add(bB);
+
+  return g;
+}
+
+function buildPillow() {
+  const g = new THREE.Group();
+
+  const pillowMat = new THREE.MeshStandardMaterial({
+    color:0xF2E8D8, roughness:.3, metalness:.05
+  });
+  const pillow = new THREE.Mesh(new THREE.BoxGeometry(.6,.3,.5), pillowMat);
+  pillow.castShadow = true;
+  pillow.position.y = .15;
+  g.add(pillow);
+
+  const borderMat = new THREE.MeshStandardMaterial({
+    color:0xD4C4B0, roughness:.4
+  });
+  const border = new THREE.Mesh(new THREE.BoxGeometry(.62,.02,.52), borderMat);
+  border.position.y = .31;
+  g.add(border);
+
+  return g;
+}
+
+function buildSofa() {
+  const g = new THREE.Group();
+
+  const sofaMat = new THREE.MeshStandardMaterial({
+    color:0xC9A87A, roughness:.25, metalness:.08
+  });
+  const seat = new THREE.Mesh(new THREE.BoxGeometry(.8,.3,.6), sofaMat);
+  seat.castShadow = true;
+  seat.position.y = .15;
+  g.add(seat);
+
+  const armMat = new THREE.MeshStandardMaterial({
+    color:0xA8875F, roughness:.3
+  });
+  const armL = new THREE.Mesh(new THREE.BoxGeometry(.1,.4,.6), armMat);
+  armL.castShadow = true;
+  armL.position.set(-.45, .2, 0);
+  g.add(armL);
+
+  const armR = new THREE.Mesh(new THREE.BoxGeometry(.1,.4,.6), armMat);
+  armR.castShadow = true;
+  armR.position.set(.45, .2, 0);
+  g.add(armR);
+
+  const backrest = new THREE.Mesh(new THREE.BoxGeometry(.8,.35,.1), sofaMat);
+  backrest.castShadow = true;
+  backrest.position.set(0, .35, -.35);
+  backrest.rotation.z = .15;
+  g.add(backrest);
+
+  return g;
+}
+
+// ── Place products ──
+const XPOS = [-3.2, -1.1, 0, 1.1, 3.2];
+const products3D = [buildAmber250(), buildBlack50(), buildGiftSet(), buildPillow(), buildSofa()];
+
+products3D.forEach((p,i) => {
+  p.position.set(XPOS[i], 0, 0);
+  p.userData = {i, baseY:0};
+  if (i === 1) p.rotation.y = 0;
+  else if (i === 0) p.rotation.y = .1;
+  else if (i === 2) p.rotation.y = -.08;
+  else if (i === 3) p.rotation.y = .12;
+  else if (i === 4) p.rotation.y = -.12;
+  scene.add(p);
+});
+
+// Per-product lights
+const pLights = products3D.map((p,i) => {
+  const l = new THREE.PointLight(0xC9A87A, 0, 5.5);
+  l.position.set(XPOS[i], 2.2, 1.2); scene.add(l); return l;
+});
+
+// Subtle ground light per product
+const gLights = products3D.map((p,i) => {
+  const l = new THREE.PointLight(0xC9A87A, 0, 2);
+  l.position.set(XPOS[i], .05, .8); scene.add(l); return l;
+});
+
+// ══════════════════════════════════════════════
+// INTERACTION
+// ══════════════════════════════════════════════
+const raycaster = new THREE.Raycaster();
+const mpos = new THREE.Vector2();
+let hovIdx = -1, activeIdx = 0, panelOpen = false;
+let baseCamX = 0;
+
+// Tag all meshes with product index
+products3D.forEach((p,pi) => p.traverse(c => { if(c.isMesh) c.userData.pi = pi; }));
+const allMeshes = [];
+products3D.forEach(p => p.traverse(c => { if(c.isMesh) allMeshes.push(c); }));
+
+// Cursor
+const dot = document.getElementById('c-dot');
+const ring = document.getElementById('c-ring');
+let mx=0,my=0,rx=0,ry=0;
+window.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  mpos.x=(e.clientX/innerWidth)*2-1;
+  mpos.y=-(e.clientY/innerHeight)*2+1;
+});
+
+function checkHover() {
+  raycaster.setFromCamera(mpos, camera);
+  const hits = raycaster.intersectObjects(allMeshes);
+  const ni = hits.length ? hits[0].object.userData.pi : -1;
+  if (ni === hovIdx) return;
+
+  if (hovIdx >= 0) {
+    const p = products3D[hovIdx];
+    gsap.to(p.position, {y:p.userData.baseY, duration:.5, ease:'power2.out'});
+    gsap.to(p.scale, {x:1,y:1,z:1, duration:.5, ease:'power2.out'});
+    gsap.to(pLights[hovIdx], {intensity: hovIdx===activeIdx ? .7 : 0, duration:.4});
+    gsap.to(gLights[hovIdx], {intensity: hovIdx===activeIdx ? .3 : 0, duration:.4});
+    dot.classList.remove('h');
+  }
+  if (ni >= 0) {
+    const p = products3D[ni];
+    gsap.to(p.position, {y:p.userData.baseY+.2, duration:.5, ease:'back.out(1.4)'});
+    gsap.to(p.scale, {x:1.055,y:1.055,z:1.055, duration:.45, ease:'back.out(1.8)'});
+    gsap.to(pLights[ni], {intensity:1.8, duration:.4});
+    gsap.to(gLights[ni], {intensity:.5, duration:.4});
+    dot.classList.add('h');
+  } else {
+    dot.classList.remove('h');
+  }
+  hovIdx = ni;
+}
+
+// Select product
+function selectProduct(idx, openP) {
+  // deactivate old light if different
+  if (idx !== activeIdx) {
+    gsap.to(pLights[activeIdx], {intensity:0, duration:.5});
+    gsap.to(gLights[activeIdx], {intensity:0, duration:.5});
+  }
+  activeIdx = idx;
+  document.querySelectorAll('.s-tab').forEach((t,i) => t.classList.toggle('on', i===idx));
+
+  // Nudge camera toward product
+  const tx = XPOS[idx] * .22;
+  gsap.to(camera.position, {x: panelOpen ? tx - 1.1 : tx, duration:1, ease:'power2.inOut'});
+
+  gsap.to(pLights[idx], {intensity:.7, duration:.6});
+  gsap.to(gLights[idx], {intensity:.3, duration:.6});
+
+  if (openP) openPanel(idx);
+}
+
+cvs.addEventListener('click', () => { if(hovIdx >= 0) selectProduct(hovIdx, true); });
+
+document.querySelectorAll('.s-tab').forEach(t => {
+  t.addEventListener('click', () => selectProduct(+t.dataset.i, true));
+});
+
+// ── Panel ──
+const panel = document.getElementById('panel');
+gsap.set(panel, {x:'100%'});
+
+let galIdx = 0, galImgs = [];
+
+function openPanel(idx) {
+  const d = DATA[idx]; panelOpen = true;
+  galImgs = d.imgs; galIdx = 0;
+  renderGallery();
+
+  document.getElementById('peye').textContent = d.eye;
+  document.getElementById('pname').textContent = d.name;
+  document.getElementById('psub').textContent = d.sub;
+  document.getElementById('pdesc').textContent = d.desc;
+
+  // scents
+  const sp = document.getElementById('spills');
+  const snSection = document.getElementById('snotes').parentElement;
+  const scLbl = Array.from(document.querySelectorAll('.sc-lbl')).find(x => x.textContent.includes('Select Scent'));
+  if (d.scents.length > 0) {
+    sp.innerHTML = d.scents.map((s,i) =>
+      `<div class="sc-pill${i===0?' on':''}" data-si="${i}">${s.n}</div>`
+    ).join('');
+    sp.querySelectorAll('.sc-pill').forEach(p => p.addEventListener('click', () => {
+      sp.querySelectorAll('.sc-pill').forEach(x=>x.classList.remove('on'));
+      p.classList.add('on');
+      showNotes(d.scents[+p.dataset.si]);
+    }));
+    showNotes(d.scents[0]);
+    if (scLbl) scLbl.parentElement.style.display = 'block';
+  } else {
+    sp.innerHTML = '';
+    document.getElementById('snotes').style.display = 'none';
+    if (scLbl) scLbl.parentElement.style.display = 'none';
+  }
+
+  // features
+  document.getElementById('fgrid').innerHTML = d.feats.map(f =>
+    `<div class="feat"><div class="feat-ic">${f.ic}</div><div class="feat-tx">${f.tx.replace('\n','<br>')}</div></div>`
+  ).join('');
+
+  gsap.to(panel, {x:0, duration:.7, ease:'power3.out'});
+  baseCamX = XPOS[idx] * .22;
+  gsap.to(camera.position, {x: baseCamX - 1.1, duration:.8, ease:'power2.inOut'});
+}
+
+function closePanel() {
+  panelOpen = false;
+  gsap.to(panel, {x:'100%', duration:.5, ease:'power2.in'});
+  gsap.to(camera.position, {x: XPOS[activeIdx]*.22, duration:.8, ease:'power2.inOut'});
+}
+
+function showNotes(s) {
+  document.getElementById('ntop').textContent = s.top;
+  document.getElementById('nmid').textContent = s.mid;
+  document.getElementById('nbase').textContent = s.base;
+  const n = document.getElementById('snotes');
+  n.classList.add('show');
+  gsap.fromTo(n, {opacity:0},{opacity:1, duration:.35});
+}
+
+function renderGallery() {
+  const img = document.getElementById('gimg');
+  gsap.to(img, {opacity:0, duration:.2, onComplete:()=>{
+    img.src = galImgs[galIdx];
+    gsap.to(img, {opacity:1, duration:.3});
+  }});
+  const dots = document.getElementById('gdots');
+  dots.innerHTML = galImgs.map((_,i) =>
+    `<div class="gal-dot${i===galIdx?' on':''}" data-gi="${i}"></div>`
+  ).join('');
+  dots.querySelectorAll('.gal-dot').forEach(d => d.addEventListener('click', ()=>{
+    galIdx=+d.dataset.gi; renderGallery();
+  }));
+}
+
+document.getElementById('g-prev').addEventListener('click', () => {
+  galIdx = (galIdx-1+galImgs.length)%galImgs.length; renderGallery();
+});
+document.getElementById('g-next').addEventListener('click', () => {
+  galIdx = (galIdx+1)%galImgs.length; renderGallery();
+});
+document.getElementById('cls').addEventListener('click', closePanel);
+
+// ══════════════════════════════════════════════
+// RENDER LOOP
+// ══════════════════════════════════════════════
+const clock = new THREE.Clock();
+(function loop() {
+  requestAnimationFrame(loop);
+  const t = clock.getElapsedTime();
+
+  // cursor
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+  rx+=(mx-rx)*.09; ry+=(my-ry)*.09;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+
+  // idle rotation
+  products3D.forEach((p,i) => {
+    p.rotation.y += i===hovIdx ? .014 : .0025;
+  });
+
+  // breath
+  camera.position.y = 1.1 + Math.sin(t*.22)*.028;
+
+  checkHover();
+  renderer.render(scene, camera);
+})();
+
+// ── Resize ──
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+// ══════════════════════════════════════════════
+// INTRO
+// ══════════════════════════════════════════════
+const lf = document.getElementById('lf');
+const loader = document.getElementById('loader');
+
+// drop products below floor initially
+products3D.forEach(p => { p.position.y = -5; });
+
+gsap.to(lf, {
+  width:'100%', duration:2, ease:'power1.inOut',
+  onComplete() {
+    gsap.to(loader, {opacity:0, duration:.7, delay:.15,
+      onComplete() { loader.remove(); }
+    });
+
+    // products spring up staggered
+    const posArr = products3D.map(p => p.position);
+    gsap.to(posArr, {
+      y:0, duration:1.8, stagger:.15,
+      ease:'elastic.out(.75,.42)', delay:.2
+    });
+
+    // activate first product light
+    gsap.to(pLights[0], {intensity:.7, duration:2, delay:.8});
+    gsap.to(gLights[0], {intensity:.3, duration:2, delay:.8});
+
+    gsap.from('#nav',  {y:-22,opacity:0, duration:.9, ease:'power3.out', delay:.5});
+    gsap.from('#hero', {x:-28,opacity:0, duration:1.2, ease:'power3.out', delay:.8});
+    gsap.from('.s-tab',{y:22, opacity:0, duration:.8, stagger:.1, ease:'power2.out', delay:1.0});
+  }
+});
+</script>
+</body>
+</html>
