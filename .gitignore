@@ -1,0 +1,18 @@
+# Large design files
+*.psd
+*.ai
+Products.zip
+
+# Development
+node_modules/
+.env
+memory/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keep logo and product folders but ignore if needed
+# logo*/
+# products/
+# Package/
