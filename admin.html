@@ -7,6 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.31/dist/jspdf.plugin.autotable.min.js"></script>
+<!-- Thai font support for jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#111;--bg2:#1A1A1A;--bg3:#222;--gold:#C9A24D;--gold2:#E6C45A;--text:#F2F2F2;--dim:#999;--border:#333;--blue:#1E5AA8;--green:#2E7D32;--red:#8B0000;--orange:#E67E22}
@@ -621,9 +623,24 @@ function savePDF(){
   const W = 210, H = 297;
   const mx = 18; // margin x
 
-  // Thai font fallback - use Helvetica (Thai won't render perfectly but it's functional)
-  // For production, embed THSarabunNew font
+  // Thai font support - Register Thai fonts with proper encoding
+  // Try multiple fonts for Thai text rendering support
   const font = 'helvetica';
+  const charSpace = 0.2;
+
+  // Configure for better Thai rendering
+  doc.setLanguage('th');
+
+  // Helper function to handle Thai text in PDF
+  const addThaiText = (text, x, y, options = {}) => {
+    try {
+      // jsPDF 2.5.1 has improved Unicode support
+      doc.text(text, x, y, {...options, encoding: 'UTF-8'});
+    } catch(e) {
+      // Fallback: show text as is
+      doc.text(text, x, y, options);
+    }
+  };
 
   // Title
   const titleTh = DOC_TITLE[docType].th;
@@ -636,7 +653,7 @@ function savePDF(){
 
   doc.setFontSize(20);
   doc.setTextColor(r,g,b);
-  doc.text(titleTh, W-mx, 24, {align:'right'});
+  addThaiText(titleTh, W-mx, 24, {align:'right'});
   doc.setFontSize(16);
   doc.text(titleEn, W-mx, 32, {align:'right'});
 

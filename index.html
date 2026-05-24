@@ -177,6 +177,9 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .social-chip{display:flex;align-items:center;gap:8px;padding:12px 20px;border:1px solid var(--border);text-decoration:none;color:var(--primary);font-size:.85rem;transition:all .3s;border-radius:20px;font-weight:500}
 .social-chip:hover{border-color:var(--gold);background:rgba(184,134,11,.08);color:var(--gold)}
 .social-chip svg{width:18px;height:18px;fill:var(--gold);flex-shrink:0}
+.social-chip[href*="lin.ee"] {border-color:#06C755;color:#06C755}
+.social-chip[href*="lin.ee"] svg {fill:#06C755}
+.social-chip[href*="lin.ee"]:hover{border-color:#06C755;background:rgba(6,199,85,.08);color:#06C755}
 
 /* -- FOOTER -- */
 footer{background:var(--primary);border-top:1px solid var(--border);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
@@ -204,7 +207,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   .nav-links{gap:12px}
   .nav-links a{font-size:.7rem;letter-spacing:.15em}
   .nav-exp{display:none}
-  #admin-btn{font-size:.65rem;opacity:.3}
+  #admin-btn{font-size:.45rem;opacity:.6;color:var(--gold)}
   .hero{padding:90px 20px 50px;min-height:90vh}
   .hero-title{font-size:clamp(2.2rem,8vw,3.5rem)}
   .hero-eyebrow{font-size:.65rem;letter-spacing:.35em}
@@ -241,6 +244,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   .reviews-grid{grid-template-columns:repeat(2,1fr)}
   .social-chip{min-width:auto;padding:8px 12px;font-size:.72rem}
   .nav-links a{font-size:.62rem;letter-spacing:.1em}
+  #admin-btn{font-size:.4rem;opacity:.6;color:var(--gold)}
 }
 </style>
 </head>
@@ -430,10 +434,10 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     <div class="product-block" data-product="4">
       <div class="product-visual">
         <div class="product-carousel" id="sofa-carousel">
-          <img src="assets/3d-pillow-1.png" alt="โซฟาสีเหลือง" class="active" data-color="brown">
-          <img src="assets/3d-pillow-2.png" alt="โซฟาสีส้ม" data-color="orange">
-          <img src="assets/3d-pillow-3.png" alt="โซฟาสีขาว" data-color="white">
-          <img src="assets/3d-pillow-4.png" alt="โซฟาสีน้ำตาล" data-color="yellow">
+          <img src="assets/3d-sofa-brown.png" alt="โซฟาสีน้ำตาล" class="active" data-color="brown">
+          <img src="assets/3d-sofa-orange.png" alt="โซฟาสีส้ม" data-color="orange">
+          <img src="assets/3d-sofa-white.png" alt="โซฟาสีขาว" data-color="white">
+          <img src="assets/3d-sofa-yellow.png" alt="โซฟาสีเหลือง" data-color="yellow">
         </div>
         <div class="color-swatches">
           <span class="color-swatch-label">เลือกสี:</span>
@@ -536,7 +540,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
         <h4>โทรศัพท์</h4>
         <a href="tel:+66937364796">093-736-4796</a>
       </div>
-      <div class="contact-block">
+      <div class="contact-block" style="display:none">
         <h4>สำนักงาน</h4>
         <p>บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</p>
         <p class="contact-addr">3/134 ต.บางสมัคร อ.บางปะกง จ.ฉะเชิงเทรา 24180</p>
