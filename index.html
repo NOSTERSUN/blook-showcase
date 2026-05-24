@@ -129,6 +129,18 @@ nav.scrolled{height:64px;box-shadow:0 1px 30px rgba(0,0,0,.3)}
 .swatch-white{background:#E8E4DF}
 .swatch-yellow{background:#D4B84D}
 
+/* -- ABOUT / ARTICLE -- */
+.about{padding:120px 60px;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.about-inner{max-width:900px;margin:0 auto}
+.about-columns{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:60px}
+.about-col h4{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.2rem;color:var(--gold);margin-bottom:20px;letter-spacing:.15em;text-transform:uppercase}
+.about-col p{font-size:.95rem;line-height:2.1;color:var(--neutral);font-weight:300;margin-bottom:18px}
+.about-col p:last-child{margin-bottom:0}
+
+/* -- E-COMMERCE STANDALONE -- */
+.ecommerce{padding:100px 60px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+.ecommerce .shop-grid{margin-top:0}
+
 /* -- REVIEWS -- */
 .reviews{padding:120px 60px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .reviews-header{text-align:center;margin-bottom:60px}
@@ -198,6 +210,8 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   .product-block.alt .product-info{order:2}
   .scent-grid{grid-template-columns:1fr}
   .reviews-grid{grid-template-columns:repeat(2,1fr)}
+  .about-columns{grid-template-columns:1fr;gap:40px}
+  .ecommerce{padding:80px 40px}
   nav{padding:0 36px}
   .hero{padding:110px 40px 70px}
 }
@@ -229,8 +243,10 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   .brand-quote{font-size:clamp(1.2rem,4vw,1.8rem)}
   .reviews{padding:60px 20px}
   .reviews-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+  .about{padding:60px 20px}
+  .ecommerce{padding:60px 20px}
   .contact{padding:60px 20px}
-  .contact-grid{grid-template-columns:1fr;gap:30px;margin:40px 0}
+  .contact-grid{grid-template-columns:1fr!important;gap:30px;margin:40px 0}
   .line-qr-section{margin:40px auto}
   .line-btn{padding:14px 28px;font-size:.92rem}
   .social-grid{flex-direction:column;align-items:center}
@@ -258,6 +274,7 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   </a>
   <div class="nav-links">
     <a href="#products">สินค้า</a>
+    <a href="#about">บทความ</a>
     <a href="#contact">ติดต่อเรา</a>
     <a href="3d.html" class="nav-exp">3D Experience</a>
   </div>
@@ -467,6 +484,51 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   <p class="brand-attr">— BLOOK · The Class of Calm</p>
 </div>
 
+<!-- ABOUT / ARTICLE -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="sec-header" style="padding:0 0 20px">
+      <p class="sec-eyebrow">เกี่ยวกับเรา</p>
+      <h2 class="sec-title">Blook <em>Living</em></h2>
+      <p class="sec-desc">The Class of Calm</p>
+    </div>
+    <div class="about-columns">
+      <div class="about-col">
+        <h4>ภาษาไทย</h4>
+        <p>Blook Living คือแบรนด์เฟอร์นิเจอร์และของแต่งบ้านที่ออกแบบมาเพื่อสร้าง "พื้นที่แห่งการพักผ่อน" ให้กับทุกช่วงเวลาของชีวิต เราเชื่อว่าความสบาย ความเรียบง่าย และความหรูอย่างมีรสนิยม สามารถอยู่ร่วมกันได้อย่างลงตัว ผ่านงานออกแบบที่ทันสมัย วัสดุคุณภาพ และรายละเอียดที่ใส่ใจในทุกชิ้นงาน</p>
+        <p>ผลิตภัณฑ์หลักของเรา เช่น Bean Bag Sofa, หมอน และ Home Fragrance ถูกพัฒนาภายใต้แนวคิด "The Class of Calm" เพื่อมอบความรู้สึกอบอุ่น ผ่อนคลาย และสะท้อนตัวตนของผู้ใช้งาน ไม่ว่าจะเป็นมุมพักผ่อนในบ้าน คอนโด หรือพื้นที่สร้างแรงบันดาลใจในทุกวัน</p>
+        <p>Blook Living ไม่ได้ขายเพียงสินค้า แต่เรากำลังออกแบบประสบการณ์ของการใช้ชีวิตที่สบายขึ้น เรียบง่ายขึ้น และมีความหมายมากขึ้นในทุกวัน</p>
+      </div>
+      <div class="about-col">
+        <h4>English</h4>
+        <p>Blook Living is a modern furniture and lifestyle brand created to bring comfort, elegance, and calm into everyday living. We believe that a relaxing space can improve both mood and quality of life, which is why every product is thoughtfully designed with simplicity, functionality, and premium aesthetics in mind.</p>
+        <p>Our signature products, including bean bag sofas, pillows, and home fragrances, are inspired by the concept "The Class of Calm." Each piece is made to create a warm and peaceful atmosphere while reflecting a modern luxury lifestyle.</p>
+        <p>At Blook Living, we do more than create furniture — we create experiences that help people feel relaxed, comfortable, and truly at home every day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- E-COMMERCE -->
+<section class="ecommerce" id="shop">
+  <p class="sec-eyebrow">ช้อปออนไลน์</p>
+  <h2 class="sec-title" style="margin-bottom:40px">สั่งซื้อ<em>สินค้า</em></h2>
+  <div class="shop-grid">
+    <a href="https://shopee.co.th/blookliving" class="shop-link" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2.4c-1.77 0-3.2 1.63-3.2 3.64 0 .11 0 .21.01.32H5.07C3.93 6.36 3 7.38 3 8.63v10.74C3 20.62 3.93 21.64 5.07 21.64h13.86c1.14 0 2.07-1.02 2.07-2.27V8.63c0-1.25-.93-2.27-2.07-2.27h-3.74c.01-.11.01-.21.01-.32 0-2.01-1.43-3.64-3.2-3.64zm0 1.5c.94 0 1.7.96 1.7 2.14 0 .11-.01.21-.02.32h-3.36c-.01-.11-.02-.21-.02-.32 0-1.18.76-2.14 1.7-2.14zm-4 9.1c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zm8 0c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zm-6.5 2.5h5c.28 0 .5.22.5.5s-.22.5-.5.5h-5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5z"/></svg>
+      <span>Shopee</span>
+    </a>
+    <a href="https://s.lazada.co.th/s.Z6Iput?c=b" class="shop-link" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.09 7.5 12 10.82 4.91 7.5 12 4.18zM4 8.83l7 3.5v7.84l-7-3.5V8.83zm9 11.34V12.33l7-3.5v7.84l-7 3.5z"/></svg>
+      <span>Lazada</span>
+    </a>
+    <a href="https://www.etsy.com/people/8x3r7fi1d3zvgn4g" class="shop-link" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      <span>Etsy</span>
+    </a>
+  </div>
+</section>
+
 <!-- CUSTOMER REVIEWS -->
 <section class="reviews" id="reviews">
   <div class="reviews-header">
@@ -510,7 +572,7 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
       <h2 class="sec-title">มา<em>เชื่อมต่อ</em>กัน</h2>
       <p class="sec-desc">สำหรับสอบถามข้อมูล การร่วมงาน หรือเพื่อค้นพบเพิ่มเติมเกี่ยวกับ BLOOK — เรายินดีรับฟังจากคุณ</p>
     </div>
-    <div class="contact-grid">
+    <div class="contact-grid" style="grid-template-columns:1fr 1fr 1fr">
       <div class="contact-block">
         <h4>อีเมล</h4>
         <a href="mailto:info@blookliving.com">info@blookliving.com</a>
@@ -518,6 +580,19 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
       <div class="contact-block">
         <h4>โทรศัพท์</h4>
         <a href="tel:+66937364796">093-736-4796</a>
+      </div>
+      <div class="contact-block">
+        <h4>ที่อยู่สำนักงาน</h4>
+        <p style="color:var(--neutral);font-size:.9rem;line-height:1.8">
+          บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)<br>
+          เลขที่ 3/134 ต.บางสมัคร<br>
+          อ.บางปะกง จ.ฉะเชิงเทรา 24180
+        </p>
+        <p style="color:var(--dim);font-size:.82rem;line-height:1.8;margin-top:8px">
+          Blook Living Co., Ltd. (Head Office)<br>
+          3/134 Bang Samak, Bang Pakong,<br>
+          Chachoengsao 24180, Thailand
+        </p>
       </div>
     </div>
 
@@ -563,25 +638,6 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
       </div>
     </div>
 
-    <!-- E-COMMERCE -->
-    <div class="shop-section">
-      <p class="shop-label">ช้อปออนไลน์</p>
-      <div class="shop-grid">
-        <a href="https://shopee.co.th/blookliving" class="shop-link" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 2.4c-1.77 0-3.2 1.63-3.2 3.64 0 .11 0 .21.01.32H5.07C3.93 6.36 3 7.38 3 8.63v10.74C3 20.62 3.93 21.64 5.07 21.64h13.86c1.14 0 2.07-1.02 2.07-2.27V8.63c0-1.25-.93-2.27-2.07-2.27h-3.74c.01-.11.01-.21.01-.32 0-2.01-1.43-3.64-3.2-3.64zm0 1.5c.94 0 1.7.96 1.7 2.14 0 .11-.01.21-.02.32h-3.36c-.01-.11-.02-.21-.02-.32 0-1.18.76-2.14 1.7-2.14zm-4 9.1c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zm8 0c.28 0 .5.22.5.5s-.22.5-.5.5-.5-.22-.5-.5.22-.5.5-.5zm-6.5 2.5h5c.28 0 .5.22.5.5s-.22.5-.5.5h-5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5z"/></svg>
-          <span>Shopee</span>
-        </a>
-        <a href="https://s.lazada.co.th/s.Z6Iput?c=b" class="shop-link" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.09 7.5 12 10.82 4.91 7.5 12 4.18zM4 8.83l7 3.5v7.84l-7-3.5V8.83zm9 11.34V12.33l7-3.5v7.84l-7 3.5z"/></svg>
-          <span>Lazada</span>
-        </a>
-        <a href="#" class="shop-link" style="opacity:.5;pointer-events:none">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-          <span>Etsy (เร็วๆ นี้)</span>
-        </a>
-      </div>
-    </div>
-
     <div style="margin-top:50px">
       <a href="mailto:info@blookliving.com" class="contact-cta">สอบถามเพิ่มเติม</a>
     </div>
@@ -593,6 +649,8 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   <div class="foot-brand">BLOOK</div>
   <div class="foot-links">
     <a href="#products">สินค้า</a>
+    <a href="#about">บทความ</a>
+    <a href="#shop">ช้อป</a>
     <a href="#reviews">รีวิว</a>
     <a href="#contact">ติดต่อ</a>
     <a href="3d.html">3D Experience</a>
@@ -649,6 +707,22 @@ gsap.from('.brand-quote',{
 gsap.from('.brand-attr',{
   scrollTrigger:{trigger:'.brand-strip',start:'top 70%'},
   opacity:0,duration:.8,delay:.3,ease:'power3.out'
+});
+
+// About section reveal
+gsap.from('.about .sec-header',{
+  scrollTrigger:{trigger:'.about',start:'top 80%'},
+  y:40,opacity:0,duration:.8,ease:'power3.out'
+});
+gsap.from('.about-col',{
+  scrollTrigger:{trigger:'.about-columns',start:'top 85%'},
+  y:30,opacity:0,duration:.8,stagger:.2,ease:'power3.out'
+});
+
+// E-commerce reveal
+gsap.from('.ecommerce',{
+  scrollTrigger:{trigger:'.ecommerce',start:'top 85%'},
+  y:30,opacity:0,duration:.8,ease:'power3.out'
 });
 
 // Reviews reveal
