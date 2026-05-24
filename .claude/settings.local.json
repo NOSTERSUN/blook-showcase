@@ -2,7 +2,28 @@
   "permissions": {
     "allow": [
       "Bash(git add *)",
-      "Bash(git commit -m 'Initial BLOOK product showcase site *)"
+      "Bash(git commit -m 'Initial BLOOK product showcase site *)",
+      "Bash(git push *)",
+      "Bash(nslookup blookliving.com)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__list_connected_browsers",
+      "Bash(gh api *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m ' *)",
+      "Bash(curl -sI \"https://nostersun.github.io/blook-showcase/\")",
+      "Bash(python -c \"import pandas as pd; df=pd.read_excel\\('assets/00.BK_Sell_Master_Data.xlsx', sheet_name='Products'\\); print\\(df.to_string\\(\\)\\)\")",
+      "Bash(python -c \"import pandas as pd; df=pd.read_excel\\('assets/00.BK_Sell_Master_Data.xlsx', sheet_name='Sales'\\); print\\(df.to_string\\(\\)\\)\")",
+      "mcp__Claude_in_Chrome__switch_browser",
+      "Bash(curl -L \"https://th.shp.ee/WvMa5M6U\" -o sofa-yellow-temp.html)",
+      "Bash(git commit -m 'อัพเดท reviews grid: 6/4/3 column + Pillow carousel 4 ภาพ *)",
+      "Bash(git commit -m 'ย้ายปุ่มออกเอกสารไปบนซ้าย + แก้ PDF error handling *)",
+      "Bash(git commit -m 'เอา 3D Experience ออก + ย้าย Diamond ไปขวา + แก้ jsPDF error *)",
+      "Bash(git commit -m 'แก้ jsPDF library error - เปลี่ยนเป็น jsDelivr CDN *)",
+      "Bash(git commit -m 'ปรับสมดุล Typography + เข้มสี + ลด spacing *)",
+      "Bash(git commit -m 'ลด font-size gap + ลด spacing ทั้งหมด + เพิ่มปุ่มสลับภาษา *)",
+      "Bash(git commit -m 'แก้ language toggle + ปรับ UI ติดต่อเรา *)",
+      "Bash(git commit -m 'เพิ่ม Review Crawler Python script + คำแนะนำการใช้ *)",
+      "Bash(python crawl_reviews.py --setup)"
     ]
   }
 }
