@@ -11,64 +11,64 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --primary:#F2EBE0;
-  --gold:#C9A96E;
-  --gold-dim:#A68B5B;
-  --bg:#0A0A08;
-  --bg2:#141210;
-  --bg3:#1C1A16;
-  --neutral:#9B917F;
-  --dim:#6B6358;
-  --border:rgba(201,169,110,.12);
-  --border2:rgba(201,169,110,.28);
+  --primary:#2D2016;
+  --gold:#A0784A;
+  --gold-light:#C9A96E;
+  --gold-dim:#8B6B3D;
+  --bg:#FFFFFF;
+  --bg2:#FAF8F5;
+  --bg3:#F2EDE6;
+  --neutral:#6B5E50;
+  --dim:#9A8E7F;
+  --border:rgba(160,120,74,.12);
+  --border2:rgba(160,120,74,.30);
 }
 html{scroll-behavior:smooth}
 body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:var(--primary);line-height:1.6;overflow-x:hidden}
-::selection{background:var(--gold);color:var(--bg)}
+::selection{background:var(--gold-light);color:#fff}
 
 /* -- NAV -- */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 60px;height:80px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,8,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all .4s;border-bottom:1px solid var(--border)}
-nav.scrolled{height:64px;box-shadow:0 1px 30px rgba(0,0,0,.3)}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 60px;height:80px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all .4s;border-bottom:1px solid var(--border)}
+nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none}
-.nav-logo img{height:36px}
 .nav-mark{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:2rem;color:var(--gold);font-style:italic;letter-spacing:-.03em;line-height:1}
-.nav-mark span{font-size:.55rem;display:block;font-style:normal;letter-spacing:.35em;color:var(--neutral);margin-top:2px;font-family:'Inter','Noto Sans Thai',sans-serif}
+.nav-mark span{font-size:.55rem;display:block;font-style:normal;letter-spacing:.35em;color:var(--dim);margin-top:2px;font-family:'Inter','Noto Sans Thai',sans-serif}
 .nav-links{display:flex;align-items:center;gap:40px}
 .nav-links a{text-decoration:none;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:var(--neutral);transition:color .3s;position:relative}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
 .nav-links a:hover{color:var(--primary)}
 .nav-links a:hover::after{width:100%}
 .nav-exp{border:1px solid var(--border2);padding:10px 22px;font-size:.65rem;letter-spacing:.18em;color:var(--gold);transition:all .3s}
-.nav-exp:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.nav-exp:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
 .nav-exp::after{display:none}
 
 /* -- HERO -- */
 .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:120px 60px 80px}
-.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#0A0A08 0%,#12100C 40%,#1A1714 100%)}
-.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.1) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#FAF8F5 0%,#F5F0E8 40%,#EDE6DA 100%)}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
 .hero-content{position:relative;z-index:2;text-align:center;max-width:900px}
 .hero-eyebrow{font-size:.75rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;opacity:0}
-.hero-title{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:400;line-height:1.08;margin-bottom:30px;opacity:0}
+.hero-title{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:400;line-height:1.08;margin-bottom:30px;opacity:0;color:var(--primary)}
 .hero-title em{font-style:italic;color:var(--gold);font-weight:400}
 .hero-desc{font-size:1.15rem;line-height:2;color:var(--neutral);max-width:580px;margin:0 auto 50px;font-weight:300;opacity:0}
-.hero-cta{display:inline-flex;align-items:center;gap:14px;background:var(--gold);color:var(--bg);padding:20px 48px;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .4s;font-family:inherit;border:none;cursor:pointer;opacity:0;font-weight:500}
-.hero-cta:hover{background:#E0C080;transform:translateY(-3px);box-shadow:0 12px 40px rgba(201,169,110,.25)}
+.hero-cta{display:inline-flex;align-items:center;gap:14px;background:var(--gold);color:#fff;padding:20px 48px;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .4s;font-family:inherit;border:none;cursor:pointer;opacity:0;font-weight:500}
+.hero-cta:hover{background:var(--gold-dim);transform:translateY(-3px);box-shadow:0 12px 40px rgba(160,120,74,.2)}
 .hero-cta svg{width:16px;height:16px;transition:transform .3s}
 .hero-cta:hover svg{transform:translateX(4px)}
 .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0}
 .hero-scroll span{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
-.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease-in-out infinite}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold-light),transparent);animation:scrollPulse 2s ease-in-out infinite}
 @keyframes scrollPulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.3;transform:scaleY(.5)}}
 
 /* -- DIVIDER -- */
 .divider{display:flex;align-items:center;justify-content:center;gap:20px;padding:20px 60px}
 .div-line{flex:1;height:1px;background:var(--border)}
-.div-diamond{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);opacity:.5}
+.div-diamond{width:6px;height:6px;background:var(--gold-light);transform:rotate(45deg);opacity:.5}
 
 /* -- SECTION HEADER -- */
 .sec-header{text-align:center;padding:120px 60px 80px;max-width:800px;margin:0 auto}
 .sec-eyebrow{font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
-.sec-title{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:24px}
+.sec-title{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:24px;color:var(--primary)}
 .sec-title em{color:var(--gold);font-style:italic}
 .sec-desc{font-size:1.05rem;color:var(--neutral);line-height:1.9;max-width:540px;margin:0 auto;font-weight:300}
 
@@ -79,25 +79,25 @@ nav.scrolled{height:64px;box-shadow:0 1px 30px rgba(0,0,0,.3)}
 .product-block.alt .product-info{order:1}
 
 .product-visual{position:relative}
-.product-carousel{position:relative;aspect-ratio:1;background:#181614;overflow:hidden;border-radius:4px;border:1px solid var(--border)}
+.product-carousel{position:relative;aspect-ratio:1;background:var(--bg3);overflow:hidden;border-radius:8px;border:1px solid var(--border)}
 .product-carousel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
 .product-carousel img.active{opacity:1}
 .carousel-controls{display:flex;align-items:center;justify-content:space-between;margin-top:20px}
 .carousel-dots{display:flex;gap:8px}
-.carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(242,235,224,.15);cursor:pointer;transition:all .3s;border:none}
+.carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(45,32,22,.12);cursor:pointer;transition:all .3s;border:none}
 .carousel-dot.active{width:28px;border-radius:4px;background:var(--gold)}
 .carousel-arrows{display:flex;gap:8px}
-.carousel-arrow{width:40px;height:40px;border:1px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;color:var(--neutral);font-size:1.1rem}
-.carousel-arrow:hover{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.05)}
+.carousel-arrow{width:40px;height:40px;border:1px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;color:var(--neutral);font-size:1.1rem;border-radius:4px}
+.carousel-arrow:hover{border-color:var(--gold);color:var(--gold);background:rgba(160,120,74,.06)}
 
 .product-info{padding:20px 0}
 .prod-eyebrow{font-size:.72rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
-.prod-name{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;line-height:1.15;margin-bottom:12px}
-.prod-sub{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.25rem;font-style:italic;color:var(--gold-dim);margin-bottom:28px}
+.prod-name{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;line-height:1.15;margin-bottom:12px;color:var(--primary)}
+.prod-sub{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.25rem;font-style:italic;color:var(--gold);margin-bottom:28px}
 .prod-desc{font-size:1rem;line-height:2;color:var(--neutral);font-weight:300;margin-bottom:40px;max-width:480px}
 .prod-features{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.prod-feat{padding:20px 24px;background:rgba(201,169,110,.06);border-left:2px solid var(--gold);transition:all .3s}
-.prod-feat:hover{background:rgba(201,169,110,.12);transform:translateX(4px)}
+.prod-feat{padding:20px 24px;background:rgba(160,120,74,.05);border-left:2px solid var(--gold-light);transition:all .3s;border-radius:0 6px 6px 0}
+.prod-feat:hover{background:rgba(160,120,74,.1);transform:translateX(4px)}
 .prod-feat strong{font-size:.92rem;color:var(--primary);display:block;margin-bottom:4px;font-weight:500}
 .prod-feat span{font-size:.85rem;color:var(--neutral);font-weight:300}
 
@@ -105,117 +105,99 @@ nav.scrolled{height:64px;box-shadow:0 1px 30px rgba(0,0,0,.3)}
 .scent-section{margin-top:50px}
 .scent-label{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
 .scent-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.scent-card{border:1px solid var(--border);padding:18px 20px;transition:all .3s;cursor:default}
-.scent-card:hover{border-color:var(--gold);background:rgba(212,175,55,.03)}
+.scent-card{border:1px solid var(--border);padding:18px 20px;transition:all .3s;cursor:default;border-radius:6px;background:var(--bg)}
+.scent-card:hover{border-color:var(--gold-light);background:rgba(160,120,74,.03)}
 .scent-name{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.05rem;color:var(--gold);font-weight:600;margin-bottom:10px}
 .scent-notes{font-size:.82rem;color:var(--neutral);line-height:1.8}
 .scent-notes strong{color:var(--primary);font-weight:500}
 
 /* -- BRAND STORY -- */
-.brand-strip{padding:120px 60px;background:#161412;color:var(--primary);text-align:center;position:relative;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.brand-strip::before{content:'BK';position:absolute;font-family:'Cormorant Garamond',serif;font-size:30vw;font-style:italic;color:rgba(201,169,110,.03);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
-.brand-quote{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:clamp(1.6rem,3.5vw,2.5rem);font-style:italic;line-height:1.7;max-width:750px;margin:0 auto 30px;position:relative;z-index:1;font-weight:300}
+.brand-strip{padding:120px 60px;background:var(--bg2);color:var(--primary);text-align:center;position:relative;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.brand-strip::before{content:'BK';position:absolute;font-family:'Cormorant Garamond',serif;font-size:30vw;font-style:italic;color:rgba(160,120,74,.04);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.brand-quote{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:clamp(1.6rem,3.5vw,2.5rem);font-style:italic;line-height:1.7;max-width:750px;margin:0 auto 30px;position:relative;z-index:1;font-weight:300;color:var(--neutral)}
 .brand-attr{font-size:.75rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);position:relative;z-index:1}
 
 /* -- COLOR SWATCHES (Sofa) -- */
 .color-swatches{display:flex;gap:12px;margin-top:20px;align-items:center}
 .color-swatch-label{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-right:4px}
-.color-swatch{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:all .3s;position:relative}
+.color-swatch{width:36px;height:36px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;transition:all .3s;position:relative}
 .color-swatch:hover{transform:scale(1.15);border-color:var(--gold)}
-.color-swatch.active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,.3)}
+.color-swatch.active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(160,120,74,.2)}
 .color-swatch.active::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid var(--gold)}
 .swatch-brown{background:#7B5B3A}
 .swatch-orange{background:#D4874D}
-.swatch-white{background:#E8E4DF}
+.swatch-white{background:#E8E4DF;border-color:#ccc}
 .swatch-yellow{background:#D4B84D}
-
-/* -- ABOUT / ARTICLE -- */
-.about{padding:120px 60px;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.about-inner{max-width:900px;margin:0 auto}
-.about-columns{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:60px}
-.about-col h4{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.2rem;color:var(--gold);margin-bottom:20px;letter-spacing:.15em;text-transform:uppercase}
-.about-col p{font-size:.95rem;line-height:2.1;color:var(--neutral);font-weight:300;margin-bottom:18px}
-.about-col p:last-child{margin-bottom:0}
 
 /* -- E-COMMERCE STANDALONE -- */
 .ecommerce{padding:100px 60px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
 .ecommerce .shop-grid{margin-top:0}
 
 /* -- REVIEWS -- */
-.reviews{padding:120px 60px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.reviews-header{text-align:center;margin-bottom:60px}
+.reviews{padding:100px 60px;background:var(--bg);border-top:1px solid var(--border)}
+.reviews-header{text-align:center;margin-bottom:50px}
 .reviews-header .sec-eyebrow{margin-bottom:18px}
 .reviews-header .sec-title{margin-bottom:16px}
 .reviews-header .sec-desc{max-width:500px;margin:0 auto}
-.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.review-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .4s;background:var(--bg3)}
-.review-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
-.review-card img{width:100%;height:auto;display:block}
-.review-card-label{padding:14px 18px;font-size:.82rem;color:var(--neutral);display:flex;align-items:center;gap:8px}
-.review-card-label .stars{color:var(--gold);font-size:1rem;letter-spacing:2px}
+.reviews-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.review-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .4s;background:var(--bg)}
+.review-card:hover{border-color:var(--gold-light);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+.review-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.review-card-label{padding:10px 12px;font-size:.75rem;color:var(--neutral);display:flex;align-items:center;gap:6px}
+.review-card-label .stars{color:var(--gold);font-size:.85rem;letter-spacing:1px}
 
 /* -- E-COMMERCE -- */
-.shop-section{margin-top:50px;text-align:center}
-.shop-label{font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
 .shop-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
-.shop-link{display:flex;align-items:center;gap:10px;padding:16px 28px;border:1px solid var(--border);text-decoration:none;color:var(--primary);font-size:.92rem;font-weight:500;transition:all .3s;min-width:180px;justify-content:center;border-radius:4px}
-.shop-link:hover{border-color:var(--gold);background:rgba(201,169,110,.08);transform:translateY(-2px)}
+.shop-link{display:flex;align-items:center;gap:10px;padding:16px 28px;border:1px solid var(--border2);text-decoration:none;color:var(--primary);font-size:.92rem;font-weight:500;transition:all .3s;min-width:180px;justify-content:center;border-radius:6px}
+.shop-link:hover{border-color:var(--gold);background:rgba(160,120,74,.06);transform:translateY(-2px)}
 .shop-link svg{width:22px;height:22px;fill:var(--gold);flex-shrink:0}
-.shop-link img{width:22px;height:22px;flex-shrink:0}
 .shop-link span{letter-spacing:.05em}
 
 /* -- CONTACT -- */
-.contact{padding:120px 60px;text-align:center}
-.contact-inner{max-width:700px;margin:0 auto}
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin:60px 0;text-align:center}
-.contact-block h4{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.2rem;margin-bottom:12px;color:var(--primary)}
-.contact-block a{color:var(--gold);text-decoration:none;font-size:1rem;transition:color .3s}
+.contact{padding:80px 60px 60px;text-align:center;background:var(--bg2);border-top:1px solid var(--border)}
+.contact-inner{max-width:900px;margin:0 auto}
+.contact-top{display:flex;justify-content:center;align-items:flex-start;gap:60px;flex-wrap:wrap;margin-bottom:40px}
+.contact-block{text-align:center}
+.contact-block h4{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.1rem;margin-bottom:8px;color:var(--primary)}
+.contact-block a{color:var(--gold);text-decoration:none;font-size:.95rem;transition:color .3s}
 .contact-block a:hover{color:var(--primary)}
-.contact-cta{display:inline-block;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:16px 44px;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .4s;font-family:inherit;cursor:pointer}
-.contact-cta:hover{background:var(--gold);color:var(--bg)}
+.contact-block p{color:var(--neutral);font-size:.82rem;line-height:1.7}
+.contact-addr{font-size:.8rem!important;color:var(--dim)!important;margin-top:4px}
 
 /* -- LINE QR -- */
-.line-qr-section{margin:60px auto;text-align:center;max-width:320px}
-.line-qr-img{display:block;width:200px;height:200px;border-radius:12px;border:2px solid var(--border);background:#fff;padding:8px;transition:all .3s;margin:0 auto}
-.line-qr-img:hover{border-color:var(--gold);box-shadow:0 8px 30px rgba(201,169,110,.15)}
-.line-qr-section .qr-caption{margin-top:16px;font-size:.88rem;color:var(--neutral)}
-.line-qr-section a{color:var(--gold);text-decoration:none;font-weight:500}
-.line-qr-section a:hover{color:var(--primary)}
-.line-btn{display:inline-flex;align-items:center;gap:10px;background:#06C755;color:#fff;padding:16px 36px;border-radius:8px;font-size:1rem;font-weight:500;text-decoration:none;transition:all .3s;margin-bottom:24px}
-.line-btn:hover{background:#05b34d;transform:translateY(-2px);box-shadow:0 8px 24px rgba(6,199,85,.3)}
-.line-btn svg{width:24px;height:24px;fill:#fff}
+.line-qr-row{display:flex;align-items:center;justify-content:center;gap:30px;margin:30px 0;flex-wrap:wrap}
+.line-qr-img{width:140px;height:140px;border-radius:10px;border:2px solid var(--border);background:#fff;padding:6px;transition:all .3s}
+.line-qr-img:hover{border-color:var(--gold-light);box-shadow:0 6px 20px rgba(160,120,74,.1)}
+.line-btn{display:inline-flex;align-items:center;gap:10px;background:#06C755;color:#fff;padding:14px 28px;border-radius:8px;font-size:.92rem;font-weight:500;text-decoration:none;transition:all .3s}
+.line-btn:hover{background:#05b34d;transform:translateY(-2px);box-shadow:0 8px 24px rgba(6,199,85,.25)}
+.line-btn svg{width:22px;height:22px;fill:#fff}
 
 /* -- SOCIAL -- */
-.social-section{margin-top:60px}
-.social-label{font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
-.social-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
-.social-link{display:flex;align-items:center;gap:10px;padding:14px 24px;border:1px solid var(--border);text-decoration:none;color:var(--primary);font-size:.88rem;transition:all .3s;min-width:180px;justify-content:center}
-.social-link:hover{border-color:var(--gold);background:rgba(201,169,110,.08);transform:translateY(-2px)}
-.social-link svg{width:20px;height:20px;fill:var(--gold);flex-shrink:0}
-.social-link span{font-weight:400;letter-spacing:.05em}
+.social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:30px}
+.social-chip{display:flex;align-items:center;gap:8px;padding:10px 18px;border:1px solid var(--border);text-decoration:none;color:var(--primary);font-size:.8rem;transition:all .3s;border-radius:20px}
+.social-chip:hover{border-color:var(--gold);background:rgba(160,120,74,.06)}
+.social-chip svg{width:16px;height:16px;fill:var(--gold);flex-shrink:0}
 
 /* -- FOOTER -- */
-footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
-.foot-brand{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.3rem;color:var(--gold);font-style:italic}
-.foot-copy{font-size:.7rem;color:rgba(242,235,224,.25);letter-spacing:.12em}
+footer{background:var(--primary);border-top:1px solid var(--border);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.foot-brand{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.3rem;color:var(--gold-light);font-style:italic}
+.foot-copy{font-size:.7rem;color:rgba(255,255,255,.35);letter-spacing:.12em}
 .foot-links{display:flex;gap:24px}
-.foot-links a{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(242,235,224,.35);text-decoration:none;transition:color .3s}
-.foot-links a:hover{color:var(--gold)}
+.foot-links a{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45);text-decoration:none;transition:color .3s}
+.foot-links a:hover{color:var(--gold-light)}
 
 /* -- RESPONSIVE -- */
-/* iPad / Tablet */
 @media(max-width:1024px){
   .product-block{grid-template-columns:1fr;gap:50px;padding:60px 40px}
   .product-block.alt .product-visual{order:1}
   .product-block.alt .product-info{order:2}
   .scent-grid{grid-template-columns:1fr}
-  .reviews-grid{grid-template-columns:repeat(2,1fr)}
-  .about-columns{grid-template-columns:1fr;gap:40px}
+  .reviews-grid{grid-template-columns:repeat(3,1fr)}
   .ecommerce{padding:80px 40px}
   nav{padding:0 36px}
   .hero{padding:110px 40px 70px}
+  .contact-top{gap:40px}
 }
-/* Mobile */
 @media(max-width:768px){
   nav{padding:0 20px;height:60px}
   .nav-mark{font-size:1.6rem}
@@ -242,25 +224,22 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   .brand-strip{padding:60px 20px}
   .brand-quote{font-size:clamp(1.2rem,4vw,1.8rem)}
   .reviews{padding:60px 20px}
-  .reviews-grid{grid-template-columns:repeat(2,1fr);gap:16px}
-  .about{padding:60px 20px}
+  .reviews-grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .ecommerce{padding:60px 20px}
-  .contact{padding:60px 20px}
-  .contact-grid{grid-template-columns:1fr!important;gap:30px;margin:40px 0}
-  .line-qr-section{margin:40px auto}
-  .line-btn{padding:14px 28px;font-size:.92rem}
-  .social-grid{flex-direction:column;align-items:center}
-  .social-link{min-width:260px}
+  .contact{padding:50px 20px}
+  .contact-top{flex-direction:column;align-items:center;gap:24px}
+  .line-qr-row{flex-direction:column;gap:16px}
+  .social-row{gap:8px}
+  .social-chip{font-size:.75rem;padding:8px 14px}
   footer{padding:30px 20px;flex-direction:column;text-align:center;gap:14px}
   .foot-links{flex-wrap:wrap;justify-content:center;gap:16px}
 }
-/* Small phones (iPhone SE, etc) */
 @media(max-width:390px){
   .hero-title{font-size:2rem}
   .hero-desc{font-size:.9rem}
   .prod-name{font-size:1.5rem}
-  .reviews-grid{grid-template-columns:1fr}
-  .social-link{min-width:220px;padding:12px 18px;font-size:.82rem}
+  .reviews-grid{grid-template-columns:repeat(2,1fr)}
+  .social-chip{min-width:auto;padding:8px 12px;font-size:.72rem}
   .nav-links a{font-size:.62rem;letter-spacing:.1em}
 }
 </style>
@@ -403,10 +382,10 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
         <p class="prod-eyebrow">Gift Set · Premium</p>
         <h3 class="prod-name">The Complete Set</h3>
         <p class="prod-sub">เซ็ทของขวัญน้ำหอมปรับอากาศ</p>
-        <p class="prod-desc">สองขนาด หนึ่งกลิ่นหอมเหนือกาลเวลา ขวด Amber 250 มล. คู่กับขวดแมตต์แบล็ค 50 มล. นำเสนอในกล่องของขวัญแม่เหล็กสุดหรู — การแสดงออกแห่งความสงบที่สมบูรณ์แบบ</p>
+        <p class="prod-desc">2 ขวดขนาด 50 มล. ในแบบแมตต์แบล็คสุดเท่ เลือกกลิ่นได้ตามใจ นำเสนอในกล่องของขวัญแม่เหล็กสุดหรู พร้อมมอบความสงบเป็นของขวัญที่สมบูรณ์แบบ</p>
         <div class="prod-features">
-          <div class="prod-feat"><strong>2 ขวด</strong><span>250 มล. + 50 มล.</span></div>
-          <div class="prod-feat"><strong>2–3 เดือน</strong><span>กลิ่นหอมรวม</span></div>
+          <div class="prod-feat"><strong>2 ขวด</strong><span>50 มล. x 2</span></div>
+          <div class="prod-feat"><strong>4–6 สัปดาห์</strong><span>กลิ่นหอมรวม</span></div>
           <div class="prod-feat"><strong>กล่องแม่เหล็ก</strong><span>แพ็คเกจพรีเมียม</span></div>
           <div class="prod-feat"><strong>พร้อมมอบ</strong><span>สำหรับเป็นของขวัญ</span></div>
         </div>
@@ -484,7 +463,6 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   <p class="brand-attr">— BLOOK · The Class of Calm</p>
 </div>
 
-
 <!-- E-COMMERCE -->
 <section class="ecommerce" id="shop">
   <p class="sec-eyebrow">ช้อปออนไลน์</p>
@@ -543,12 +521,10 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="contact-inner">
-    <div class="sec-header" style="padding:0 0 40px">
-      <p class="sec-eyebrow">ติดต่อเรา</p>
-      <h2 class="sec-title">มา<em>เชื่อมต่อ</em>กัน</h2>
-      <p class="sec-desc">สำหรับสอบถามข้อมูล การร่วมงาน หรือเพื่อค้นพบเพิ่มเติมเกี่ยวกับ BLOOK — เรายินดีรับฟังจากคุณ</p>
-    </div>
-    <div class="contact-grid" style="grid-template-columns:1fr 1fr 1fr">
+    <p class="sec-eyebrow">ติดต่อเรา</p>
+    <h2 class="sec-title" style="margin-bottom:30px">มา<em>เชื่อมต่อ</em>กัน</h2>
+
+    <div class="contact-top">
       <div class="contact-block">
         <h4>อีเมล</h4>
         <a href="mailto:info@blookliving.com">info@blookliving.com</a>
@@ -558,22 +534,14 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
         <a href="tel:+66937364796">093-736-4796</a>
       </div>
       <div class="contact-block">
-        <h4>ที่อยู่สำนักงาน</h4>
-        <p style="color:var(--neutral);font-size:.9rem;line-height:1.8">
-          บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)<br>
-          เลขที่ 3/134 ต.บางสมัคร<br>
-          อ.บางปะกง จ.ฉะเชิงเทรา 24180
-        </p>
-        <p style="color:var(--dim);font-size:.82rem;line-height:1.8;margin-top:8px">
-          Blook Living Co., Ltd. (Head Office)<br>
-          3/134 Bang Samak, Bang Pakong,<br>
-          Chachoengsao 24180, Thailand
-        </p>
+        <h4>สำนักงาน</h4>
+        <p>บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</p>
+        <p class="contact-addr">3/134 ต.บางสมัคร อ.บางปะกง จ.ฉะเชิงเทรา 24180</p>
       </div>
     </div>
 
     <!-- LINE OA -->
-    <div class="line-qr-section">
+    <div class="line-qr-row">
       <a href="https://lin.ee/xStcWzC" class="line-btn" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg>
         เพิ่มเพื่อน LINE OA
@@ -581,39 +549,35 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
       <a href="https://lin.ee/xStcWzC" target="_blank" rel="noopener">
         <img class="line-qr-img" src="Line%20OA/QR%20Scan%20to%20add%20friend.jpg" alt="LINE OA QR Code">
       </a>
-      <p class="qr-caption">หรือ Scan QR Code เพื่อเพิ่มเพื่อน</p>
     </div>
 
-    <div class="social-section">
-      <p class="social-label">ติดตามเรา</p>
-      <div class="social-grid">
-        <a href="https://lin.ee/xStcWzC" class="social-link" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2zm-3.07 11.11H7.07c-.32 0-.58-.26-.58-.58V8.94c0-.32.26-.58.58-.58s.58.26.58.58v3.01h1.28c.32 0 .58.26.58.58 0 .32-.26.58-.58.58zm1.83-.58c0 .32-.26.58-.58.58s-.58-.26-.58-.58V8.94c0-.32.26-.58.58-.58s.58.26.58.58v3.59zm4.45 0c0 .24-.15.46-.37.54a.58.58 0 0 1-.63-.13l-2.03-2.76v2.35c0 .32-.26.58-.58.58s-.58-.26-.58-.58V8.94c0-.24.15-.46.37-.54a.58.58 0 0 1 .63.13l2.03 2.76V8.94c0-.32.26-.58.58-.58s.58.26.58.58v3.59zm2.88-2.01c.32 0 .58.26.58.58 0 .32-.26.58-.58.58h-1.28v.85h1.28c.32 0 .58.26.58.58 0 .32-.26.58-.58.58h-1.86c-.32 0-.58-.26-.58-.58V8.94c0-.32.26-.58.58-.58h1.86c.32 0 .58.26.58.58 0 .32-.26.58-.58.58h-1.28v.85h1.28z"/></svg>
-          <span>LINE OA</span>
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=61587451205315" class="social-link" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          <span>Facebook BLOOK</span>
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=61578744795967" class="social-link" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          <span>Facebook Pillow</span>
-        </a>
-        <a href="https://www.instagram.com/p/DYtbiS3R4Ax/?igsh=MW40YjZ5b2szeGtnMw==" class="social-link" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-          <span>Instagram</span>
-        </a>
-        <a href="https://www.tiktok.com/@blookliving" class="social-link" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-          <span>TikTok</span>
-        </a>
-        <a href="https://www.lemon8-app.com/@blookliving?language=th&region=th" class="social-link" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5c0 2.76 2.24 5 5 5s5-2.24 5-5-2.24-5-5-5zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 2a5 5 0 0 0-5 5c0 2.76 2.24 5 5 5s5-2.24 5-5-2.24-5-5-5zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-          <span>Lemon8</span>
-        </a>
-      </div>
+    <!-- SOCIAL -->
+    <div class="social-row">
+      <a href="https://lin.ee/xStcWzC" class="social-chip" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg>
+        <span>LINE OA</span>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61587451205315" class="social-chip" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <span>Facebook BLOOK</span>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61578744795967" class="social-chip" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <span>Facebook Pillow</span>
+      </a>
+      <a href="https://www.instagram.com/p/DYtbiS3R4Ax/?igsh=MW40YjZ5b2szeGtnMw==" class="social-chip" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        <span>Instagram</span>
+      </a>
+      <a href="https://www.tiktok.com/@blookliving" class="social-chip" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        <span>TikTok</span>
+      </a>
+      <a href="https://www.lemon8-app.com/@blookliving?language=th&region=th" class="social-chip" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5c0 2.76 2.24 5 5 5s5-2.24 5-5-2.24-5-5-5zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 2a5 5 0 0 0-5 5c0 2.76 2.24 5 5 5s5-2.24 5-5-2.24-5-5-5zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+        <span>Lemon8</span>
+      </a>
     </div>
-
   </div>
 </section>
 
@@ -628,90 +592,52 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
     <a href="#contact">ติดต่อ</a>
     <a href="3d.html">3D Experience</a>
   </div>
-  <div class="foot-copy"><a href="admin.html" style="color:inherit;text-decoration:none;cursor:default;opacity:.15" title="">&diams;</a> &copy; 2026 BLOOK — The Class of Calm</div>
+  <div class="foot-copy"><a href="admin.html" style="color:rgba(255,255,255,.08);text-decoration:none;cursor:default" title="BK">&diams;</a> &copy; 2026 BLOOK — The Class of Calm</div>
 </footer>
 
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-// Nav shrink on scroll
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
 });
 
-// Hero entrance
 const tl=gsap.timeline({delay:.3});
 tl.to('.hero-eyebrow',{opacity:1,y:0,duration:.8,ease:'power3.out'})
   .to('.hero-title',{opacity:1,y:0,duration:1,ease:'power3.out'},'-=.5')
   .to('.hero-desc',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.6')
   .to('.hero-cta',{opacity:1,y:0,duration:.7,ease:'power3.out'},'-=.5')
   .to('.hero-scroll',{opacity:1,duration:.6},'-=.3');
-
-// Set initial states
 gsap.set(['.hero-eyebrow','.hero-title','.hero-desc','.hero-cta'],{y:30});
 
-// Section header reveal
 document.querySelectorAll('.sec-header').forEach(h=>{
-  gsap.from(h.children,{
-    scrollTrigger:{trigger:h,start:'top 80%'},
-    y:40,opacity:0,duration:.8,stagger:.15,ease:'power3.out'
-  });
+  gsap.from(h.children,{scrollTrigger:{trigger:h,start:'top 80%'},y:40,opacity:0,duration:.8,stagger:.15,ease:'power3.out'});
 });
 
-// Product blocks reveal
 document.querySelectorAll('.product-block').forEach(b=>{
   const vis=b.querySelector('.product-visual');
   const info=b.querySelector('.product-info');
-  gsap.from(vis,{
-    scrollTrigger:{trigger:b,start:'top 75%'},
-    x:b.classList.contains('alt')?60:-60,opacity:0,duration:1,ease:'power3.out'
-  });
-  gsap.from(info,{
-    scrollTrigger:{trigger:b,start:'top 75%'},
-    x:b.classList.contains('alt')?-60:60,opacity:0,duration:1,delay:.2,ease:'power3.out'
-  });
+  gsap.from(vis,{scrollTrigger:{trigger:b,start:'top 75%'},x:b.classList.contains('alt')?60:-60,opacity:0,duration:1,ease:'power3.out'});
+  gsap.from(info,{scrollTrigger:{trigger:b,start:'top 75%'},x:b.classList.contains('alt')?-60:60,opacity:0,duration:1,delay:.2,ease:'power3.out'});
 });
 
-// Brand strip reveal
-gsap.from('.brand-quote',{
-  scrollTrigger:{trigger:'.brand-strip',start:'top 75%'},
-  y:40,opacity:0,duration:1,ease:'power3.out'
-});
-gsap.from('.brand-attr',{
-  scrollTrigger:{trigger:'.brand-strip',start:'top 70%'},
-  opacity:0,duration:.8,delay:.3,ease:'power3.out'
-});
+gsap.from('.brand-quote',{scrollTrigger:{trigger:'.brand-strip',start:'top 75%'},y:40,opacity:0,duration:1,ease:'power3.out'});
+gsap.from('.brand-attr',{scrollTrigger:{trigger:'.brand-strip',start:'top 70%'},opacity:0,duration:.8,delay:.3,ease:'power3.out'});
+gsap.from('.ecommerce',{scrollTrigger:{trigger:'.ecommerce',start:'top 85%'},y:30,opacity:0,duration:.8,ease:'power3.out'});
+gsap.from('.reviews-header',{scrollTrigger:{trigger:'.reviews',start:'top 80%'},y:40,opacity:0,duration:.8,ease:'power3.out'});
+gsap.from('.reviews-grid',{scrollTrigger:{trigger:'.reviews-grid',start:'top 90%'},y:30,opacity:0,duration:.8,ease:'power3.out'});
 
-// E-commerce reveal
-gsap.from('.ecommerce',{
-  scrollTrigger:{trigger:'.ecommerce',start:'top 85%'},
-  y:30,opacity:0,duration:.8,ease:'power3.out'
-});
-
-// Reviews reveal
-gsap.from('.reviews-header',{
-  scrollTrigger:{trigger:'.reviews',start:'top 80%'},
-  y:40,opacity:0,duration:.8,ease:'power3.out'
-});
-gsap.from('.reviews-grid',{
-  scrollTrigger:{trigger:'.reviews-grid',start:'top 90%'},
-  y:30,opacity:0,duration:.8,ease:'power3.out'
-});
-
-// Carousel logic
 document.querySelectorAll('[data-carousel]').forEach(carousel=>{
   const id=carousel.dataset.carousel;
   const imgs=carousel.querySelectorAll('img');
   const dotsContainer=document.querySelector(`[data-dots="${id}"]`);
   let current=0;
-
   imgs.forEach((_,i)=>{
     const dot=document.createElement('button');
     dot.className='carousel-dot'+(i===0?' active':'');
     dot.onclick=()=>goTo(i);
     dotsContainer.appendChild(dot);
   });
-
   function goTo(idx){
     imgs[current].classList.remove('active');
     dotsContainer.children[current].classList.remove('active');
@@ -719,14 +645,12 @@ document.querySelectorAll('[data-carousel]').forEach(carousel=>{
     imgs[current].classList.add('active');
     dotsContainer.children[current].classList.add('active');
   }
-
   const prev=document.querySelector(`[data-prev="${id}"]`);
   const next=document.querySelector(`[data-next="${id}"]`);
   if(prev) prev.onclick=()=>goTo((current-1+imgs.length)%imgs.length);
   if(next) next.onclick=()=>goTo((current+1)%imgs.length);
 });
 
-// Sofa color swatches
 document.querySelectorAll('.color-swatch').forEach(btn=>{
   btn.addEventListener('click',()=>{
     const color=btn.dataset.sofaColor;
@@ -735,14 +659,10 @@ document.querySelectorAll('.color-swatch').forEach(btn=>{
     const swatches=document.querySelectorAll('.color-swatch');
     swatches.forEach(s=>s.classList.remove('active'));
     btn.classList.add('active');
-    imgs.forEach(img=>{
-      img.classList.remove('active');
-      if(img.dataset.color===color) img.classList.add('active');
-    });
+    imgs.forEach(img=>{img.classList.remove('active');if(img.dataset.color===color) img.classList.add('active');});
   });
 });
 
-// Smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const target=document.querySelector(a.getAttribute('href'));
