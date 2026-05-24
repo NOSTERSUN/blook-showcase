@@ -586,14 +586,15 @@ function newForm(){
 
 // ============ PDF GENERATION ============
 function savePDF(){
+  try{
   const custName = document.getElementById('cust-name').value.trim();
   const custAddr = document.getElementById('cust-addr').value.trim();
-  if(!custName){ alert('กรุณากรอก Customer Name'); return; }
-  if(!custAddr){ alert('กรุณากรอก Customer Address'); return; }
+  if(!custName){ alert('❌ กรุณากรอก Customer Name'); return; }
+  if(!custAddr){ alert('❌ กรุณากรอก Customer Address'); return; }
 
   recalc();
   const items = collectItems();
-  if(items.length===0){ alert('กรุณาเพิ่มรายการสินค้า'); return; }
+  if(items.length===0){ alert('❌ กรุณาเพิ่มรายการสินค้า (ตรวจสอบว่ากรอก Product และ Amount)'); return; }
 
   const docType = document.getElementById('doc-type').value;
   const docNo = document.getElementById('doc-no').value.trim();
@@ -839,6 +840,11 @@ function savePDF(){
   // Save
   const fileName = `BLOOK LIVING ${docNo}.pdf`;
   doc.save(fileName);
+  alert('✅ PDF ออกมาแล้ว: ' + fileName);
+  } catch(err){
+    console.error('PDF Error:', err);
+    alert('❌ เกิดข้อผิดพลาด: ' + err.message);
+  }
 }
 </script>
 </body>
