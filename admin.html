@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BKTAX — Document System</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.31/dist/jspdf.plugin.autotable.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#111;--bg2:#1A1A1A;--bg3:#222;--gold:#C9A24D;--gold2:#E6C45A;--text:#F2F2F2;--dim:#999;--border:#333;--blue:#1E5AA8;--green:#2E7D32;--red:#8B0000;--orange:#E67E22}
@@ -614,7 +614,8 @@ function savePDF(){
   const showWht = whtMode!=='NOWHT' && fin.wht > 0.001;
   const showNet = Math.abs(fin.total - fin.net) > 0.005;
 
-  const jsPDF = window.jspdf.jsPDF;
+  const { jsPDF } = window.jspdf;
+  if(!jsPDF){ alert('❌ jsPDF ไม่โหลดสำเร็จ กรุณา refresh หน้า'); return; }
   const doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
   const W = 210, H = 297;
   const mx = 18; // margin x
