@@ -98,9 +98,10 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 
 <!-- LOGIN GATE -->
 <div id="login-gate">
-  <h2>BKTAX Admin</h2>
-  <p style="color:var(--dim);font-size:.85rem">กรุณากรอกรหัสเข้าใช้งาน</p>
-  <input type="password" id="pwd-input" placeholder="Password" autofocus>
+  <div style="font-size:2rem;color:var(--gold);letter-spacing:.2em;margin-bottom:8px">BLOOK</div>
+  <h2 style="margin-bottom:24px">BKTAX Admin</h2>
+  <p style="color:var(--dim);font-size:.85rem;margin-bottom:24px">กรุณากรอกรหัสเข้าใช้งาน</p>
+  <input type="password" id="pwd-input" placeholder="รหัสผ่าน" autofocus>
   <button onclick="checkLogin()">เข้าสู่ระบบ</button>
   <p class="err" id="pwd-err"></p>
 </div>
@@ -348,7 +349,7 @@ function checkLogin(){
     document.getElementById('app').classList.add('active');
     initApp();
   } else {
-    document.getElementById('pwd-err').textContent = 'รหัสไม่ถูกต้อง';
+    document.getElementById('pwd-err').textContent = '❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่';
     document.getElementById('pwd-input').value = '';
     document.getElementById('pwd-input').focus();
   }
@@ -589,12 +590,12 @@ function savePDF(){
   try{
   const custName = document.getElementById('cust-name').value.trim();
   const custAddr = document.getElementById('cust-addr').value.trim();
-  if(!custName){ alert('❌ กรุณากรอก Customer Name'); return; }
-  if(!custAddr){ alert('❌ กรุณากรอก Customer Address'); return; }
+  if(!custName){ alert('❌ ข้อผิดพลาด: กรุณากรอกชื่อลูกค้า (Customer Name)'); return; }
+  if(!custAddr){ alert('❌ ข้อผิดพลาด: กรุณากรอกที่อยู่ลูกค้า (Customer Address)'); return; }
 
   recalc();
   const items = collectItems();
-  if(items.length===0){ alert('❌ กรุณาเพิ่มรายการสินค้า (ตรวจสอบว่ากรอก Product และ Amount)'); return; }
+  if(items.length===0){ alert('❌ ข้อผิดพลาด: กรุณาเพิ่มรายการสินค้า (ตรวจสอบว่ากรอก Product Name และ Amount)'); return; }
 
   const docType = document.getElementById('doc-type').value;
   const docNo = document.getElementById('doc-no').value.trim();
@@ -841,10 +842,10 @@ function savePDF(){
   // Save
   const fileName = `BLOOK LIVING ${docNo}.pdf`;
   doc.save(fileName);
-  alert('✅ PDF ออกมาแล้ว: ' + fileName);
+  alert('✅ สำเร็จ!\n\nไฟล์ได้รับการบันทึก:\n' + fileName);
   } catch(err){
     console.error('PDF Error:', err);
-    alert('❌ เกิดข้อผิดพลาด: ' + err.message);
+    alert('❌ เกิดข้อผิดพลาด:\n' + err.message + '\n\nกรุณาลองใหม่หรือติดต่อผู้ดูแล');
   }
 }
 </script>
