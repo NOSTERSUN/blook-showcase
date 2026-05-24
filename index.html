@@ -43,14 +43,14 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .nav-exp::after{display:none}
 
 /* -- HERO -- */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:120px 60px 80px}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:100px 60px 60px}
 .hero-bg{position:absolute;inset:0;background:linear-gradient(160deg,#FAF8F5 0%,#F5F0E8 40%,#EDE6DA 100%)}
 .hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
 .hero-content{position:relative;z-index:2;text-align:center;max-width:900px}
-.hero-eyebrow{font-size:.75rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;opacity:0}
-.hero-title{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:400;line-height:1.12;margin-bottom:20px;opacity:0;color:var(--primary)}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;opacity:0}
+.hero-title{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:400;line-height:1.15;margin-bottom:16px;opacity:0;color:var(--primary)}
 .hero-title em{font-style:italic;color:var(--gold);font-weight:400}
-.hero-desc{font-size:1rem;line-height:1.9;color:var(--neutral);max-width:580px;margin:0 auto 50px;font-weight:300;opacity:0}
+.hero-desc{font-size:.95rem;line-height:1.8;color:var(--neutral);max-width:580px;margin:0 auto 50px;font-weight:300;opacity:0}
 .hero-cta{display:inline-flex;align-items:center;gap:14px;background:var(--gold);color:#fff;padding:20px 48px;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .4s;font-family:inherit;border:none;cursor:pointer;opacity:0;font-weight:500}
 .hero-cta:hover{background:var(--gold-dim);transform:translateY(-3px);box-shadow:0 12px 40px rgba(160,120,74,.2)}
 .hero-cta svg{width:16px;height:16px;transition:transform .3s}
@@ -61,16 +61,16 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 @keyframes scrollPulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.3;transform:scaleY(.5)}}
 
 /* -- DIVIDER -- */
-.divider{display:flex;align-items:center;justify-content:center;gap:20px;padding:20px 60px}
+.divider{display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 60px}
 .div-line{flex:1;height:1px;background:var(--border)}
 .div-diamond{width:6px;height:6px;background:var(--gold-light);transform:rotate(45deg);opacity:.5}
 
 /* -- SECTION HEADER -- */
-.sec-header{text-align:center;padding:80px 60px 60px;max-width:800px;margin:0 auto}
-.sec-eyebrow{font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
-.sec-title{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:400;line-height:1.2;margin-bottom:18px;color:var(--primary)}
+.sec-header{text-align:center;padding:60px 60px 40px;max-width:800px;margin:0 auto}
+.sec-eyebrow{font-size:.68rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.sec-title{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;line-height:1.25;margin-bottom:14px;color:var(--primary)}
 .sec-title em{color:var(--gold);font-style:italic}
-.sec-desc{font-size:.95rem;color:var(--neutral);line-height:1.85;max-width:540px;margin:0 auto;font-weight:300}
+.sec-desc{font-size:.92rem;color:var(--neutral);line-height:1.8;max-width:540px;margin:0 auto;font-weight:300}
 
 /* -- PRODUCT SHOWCASE -- */
 .product-section{padding:0 0 100px}
@@ -91,10 +91,10 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .carousel-arrow:hover{border-color:var(--gold);color:var(--gold);background:rgba(160,120,74,.06)}
 
 .product-info{padding:0}
-.prod-eyebrow{font-size:.72rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-.prod-name{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(1.8rem,3.2vw,2.8rem);font-weight:400;line-height:1.2;margin-bottom:8px;color:var(--primary)}
-.prod-sub{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.1rem;font-style:italic;color:var(--gold);margin-bottom:20px}
-.prod-desc{font-size:.95rem;line-height:1.85;color:var(--neutral);font-weight:300;margin-bottom:30px;max-width:480px}
+.prod-eyebrow{font-size:.68rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.prod-name{font-family:'Playfair Display','Noto Serif Thai',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:400;line-height:1.25;margin-bottom:6px;color:var(--primary)}
+.prod-sub{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1rem;font-style:italic;color:var(--gold);margin-bottom:16px}
+.prod-desc{font-size:.92rem;line-height:1.8;color:var(--neutral);font-weight:300;margin-bottom:24px;max-width:480px}
 .prod-features{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .prod-feat{padding:20px 24px;background:rgba(160,120,74,.05);border-left:2px solid var(--gold-light);transition:all .3s;border-radius:0 6px 6px 0}
 .prod-feat:hover{background:rgba(160,120,74,.1);transform:translateX(4px)}
@@ -112,9 +112,9 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .scent-notes strong{color:var(--primary);font-weight:500}
 
 /* -- BRAND STORY -- */
-.brand-strip{padding:80px 60px;background:var(--bg2);color:var(--primary);text-align:center;position:relative;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.brand-strip{padding:60px 60px;background:var(--bg2);color:var(--primary);text-align:center;position:relative;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .brand-strip::before{content:'BK';position:absolute;font-family:'Cormorant Garamond',serif;font-size:30vw;font-style:italic;color:rgba(184,134,11,.05);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
-.brand-quote{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:clamp(1.4rem,3vw,2.2rem);font-style:italic;line-height:1.7;max-width:750px;margin:0 auto 24px;position:relative;z-index:1;font-weight:300;color:var(--neutral)}
+.brand-quote{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:clamp(1.3rem,2.8vw,2rem);font-style:italic;line-height:1.65;max-width:750px;margin:0 auto 18px;position:relative;z-index:1;font-weight:300;color:var(--neutral)}
 .brand-attr{font-size:.75rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);position:relative;z-index:1}
 
 /* -- COLOR SWATCHES (Sofa) -- */
@@ -130,11 +130,11 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .swatch-yellow{background:#D4B84D}
 
 /* -- E-COMMERCE STANDALONE -- */
-.ecommerce{padding:70px 60px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+.ecommerce{padding:50px 60px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
 .ecommerce .shop-grid{margin-top:0}
 
 /* -- REVIEWS -- */
-.reviews{padding:70px 60px;background:var(--bg);border-top:1px solid var(--border)}
+.reviews{padding:50px 60px;background:var(--bg);border-top:1px solid var(--border)}
 .reviews-header{text-align:center;margin-bottom:50px}
 .reviews-header .sec-eyebrow{margin-bottom:18px}
 .reviews-header .sec-title{margin-bottom:16px}
@@ -154,7 +154,7 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .shop-link span{letter-spacing:.05em}
 
 /* -- CONTACT -- */
-.contact{padding:60px 60px 50px;text-align:center;background:var(--bg2);border-top:1px solid var(--border)}
+.contact{padding:45px 60px 40px;text-align:center;background:var(--bg2);border-top:1px solid var(--border)}
 .contact-inner{max-width:900px;margin:0 auto}
 .contact-top{display:flex;justify-content:center;align-items:flex-start;gap:60px;flex-wrap:wrap;margin-bottom:40px}
 .contact-block{text-align:center}
@@ -250,9 +250,10 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     <div class="nav-mark">BLOOK<span>THE CLASS OF CALM</span></div>
   </a>
   <div class="nav-links">
-    <a href="#products">สินค้า</a>
-    <a href="about.html">บทความ</a>
-    <a href="#contact">ติดต่อเรา</a>
+    <a href="#products" data-th="สินค้า" data-en="Products">สินค้า</a>
+    <a href="about.html" data-th="บทความ" data-en="About">บทความ</a>
+    <a href="#contact" data-th="ติดต่อเรา" data-en="Contact">ติดต่อเรา</a>
+    <button id="lang-toggle" style="background:none;border:none;color:var(--gold);font-size:.8rem;letter-spacing:.15em;cursor:pointer;font-family:inherit;padding:0;opacity:.7;transition:opacity .3s" title="Toggle Language">EN</button>
     <a href="admin.html" style="font-size:1.2rem;color:var(--gold);text-decoration:none;opacity:.5;transition:opacity .3s;position:relative;bottom:2px" title="BKTAX Admin">&diams;</a>
   </div>
 </nav>
@@ -597,6 +598,30 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
 </footer>
 
 <script>
+// ============ LANGUAGE TOGGLE ============
+let currentLang = 'th';
+const langBtn = document.getElementById('lang-toggle');
+const langElements = document.querySelectorAll('[data-th][data-en]');
+
+langBtn.addEventListener('click', ()=>{
+  currentLang = currentLang === 'th' ? 'en' : 'th';
+  langElements.forEach(el => {
+    el.textContent = currentLang === 'th' ? el.dataset.th : el.dataset.en;
+  });
+  langBtn.textContent = currentLang === 'th' ? 'EN' : 'TH';
+  localStorage.setItem('blook-lang', currentLang);
+});
+
+// Load saved language
+const savedLang = localStorage.getItem('blook-lang') || 'th';
+if(savedLang !== 'th'){
+  currentLang = savedLang;
+  langElements.forEach(el => {
+    el.textContent = currentLang === 'en' ? el.dataset.en : el.dataset.th;
+  });
+  langBtn.textContent = currentLang === 'en' ? 'TH' : 'EN';
+}
+
 gsap.registerPlugin(ScrollTrigger);
 
 window.addEventListener('scroll',()=>{
