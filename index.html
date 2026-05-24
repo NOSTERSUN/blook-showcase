@@ -274,7 +274,7 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   </a>
   <div class="nav-links">
     <a href="#products">สินค้า</a>
-    <a href="#about">บทความ</a>
+    <a href="about.html">บทความ</a>
     <a href="#contact">ติดต่อเรา</a>
     <a href="3d.html" class="nav-exp">3D Experience</a>
   </div>
@@ -484,30 +484,6 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   <p class="brand-attr">— BLOOK · The Class of Calm</p>
 </div>
 
-<!-- ABOUT / ARTICLE -->
-<section class="about" id="about">
-  <div class="about-inner">
-    <div class="sec-header" style="padding:0 0 20px">
-      <p class="sec-eyebrow">เกี่ยวกับเรา</p>
-      <h2 class="sec-title">Blook <em>Living</em></h2>
-      <p class="sec-desc">The Class of Calm</p>
-    </div>
-    <div class="about-columns">
-      <div class="about-col">
-        <h4>ภาษาไทย</h4>
-        <p>Blook Living คือแบรนด์เฟอร์นิเจอร์และของแต่งบ้านที่ออกแบบมาเพื่อสร้าง "พื้นที่แห่งการพักผ่อน" ให้กับทุกช่วงเวลาของชีวิต เราเชื่อว่าความสบาย ความเรียบง่าย และความหรูอย่างมีรสนิยม สามารถอยู่ร่วมกันได้อย่างลงตัว ผ่านงานออกแบบที่ทันสมัย วัสดุคุณภาพ และรายละเอียดที่ใส่ใจในทุกชิ้นงาน</p>
-        <p>ผลิตภัณฑ์หลักของเรา เช่น Bean Bag Sofa, หมอน และ Home Fragrance ถูกพัฒนาภายใต้แนวคิด "The Class of Calm" เพื่อมอบความรู้สึกอบอุ่น ผ่อนคลาย และสะท้อนตัวตนของผู้ใช้งาน ไม่ว่าจะเป็นมุมพักผ่อนในบ้าน คอนโด หรือพื้นที่สร้างแรงบันดาลใจในทุกวัน</p>
-        <p>Blook Living ไม่ได้ขายเพียงสินค้า แต่เรากำลังออกแบบประสบการณ์ของการใช้ชีวิตที่สบายขึ้น เรียบง่ายขึ้น และมีความหมายมากขึ้นในทุกวัน</p>
-      </div>
-      <div class="about-col">
-        <h4>English</h4>
-        <p>Blook Living is a modern furniture and lifestyle brand created to bring comfort, elegance, and calm into everyday living. We believe that a relaxing space can improve both mood and quality of life, which is why every product is thoughtfully designed with simplicity, functionality, and premium aesthetics in mind.</p>
-        <p>Our signature products, including bean bag sofas, pillows, and home fragrances, are inspired by the concept "The Class of Calm." Each piece is made to create a warm and peaceful atmosphere while reflecting a modern luxury lifestyle.</p>
-        <p>At Blook Living, we do more than create furniture — we create experiences that help people feel relaxed, comfortable, and truly at home every day.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- E-COMMERCE -->
 <section class="ecommerce" id="shop">
@@ -638,9 +614,6 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
       </div>
     </div>
 
-    <div style="margin-top:50px">
-      <a href="mailto:info@blookliving.com" class="contact-cta">สอบถามเพิ่มเติม</a>
-    </div>
   </div>
 </section>
 
@@ -649,13 +622,13 @@ footer{background:#060604;border-top:1px solid var(--border);padding:50px 60px;d
   <div class="foot-brand">BLOOK</div>
   <div class="foot-links">
     <a href="#products">สินค้า</a>
-    <a href="#about">บทความ</a>
+    <a href="about.html">บทความ</a>
     <a href="#shop">ช้อป</a>
     <a href="#reviews">รีวิว</a>
     <a href="#contact">ติดต่อ</a>
     <a href="3d.html">3D Experience</a>
   </div>
-  <div class="foot-copy">&copy; 2026 BLOOK — The Class of Calm</div>
+  <div class="foot-copy"><a href="admin.html" style="color:inherit;text-decoration:none;cursor:default;opacity:.15" title="">&diams;</a> &copy; 2026 BLOOK — The Class of Calm</div>
 </footer>
 
 <script>
@@ -707,16 +680,6 @@ gsap.from('.brand-quote',{
 gsap.from('.brand-attr',{
   scrollTrigger:{trigger:'.brand-strip',start:'top 70%'},
   opacity:0,duration:.8,delay:.3,ease:'power3.out'
-});
-
-// About section reveal
-gsap.from('.about .sec-header',{
-  scrollTrigger:{trigger:'.about',start:'top 80%'},
-  y:40,opacity:0,duration:.8,ease:'power3.out'
-});
-gsap.from('.about-col',{
-  scrollTrigger:{trigger:'.about-columns',start:'top 85%'},
-  y:30,opacity:0,duration:.8,stagger:.2,ease:'power3.out'
 });
 
 // E-commerce reveal

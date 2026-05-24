@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BKTAX — Document System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#111;--bg2:#1A1A1A;--bg3:#222;--gold:#C9A24D;--gold2:#E6C45A;--text:#F2F2F2;--dim:#999;--border:#333;--blue:#1E5AA8;--green:#2E7D32;--red:#8B0000;--orange:#E67E22}
+body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* -- LOGIN GATE -- */
+#login-gate{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px}
+#login-gate.hidden{display:none}
+#login-gate h2{font-size:1.4rem;color:var(--gold);letter-spacing:.1em}
+#login-gate input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:14px 24px;font-size:1rem;text-align:center;width:200px;border-radius:4px;letter-spacing:.2em;font-family:inherit}
+#login-gate input:focus{outline:none;border-color:var(--gold)}
+#login-gate button{background:var(--gold);color:#111;border:none;padding:12px 36px;font-size:.85rem;letter-spacing:.15em;cursor:pointer;border-radius:4px;font-family:inherit;font-weight:500}
+#login-gate button:hover{background:var(--gold2)}
+#login-gate .err{color:#e74c3c;font-size:.85rem;min-height:20px}
+
+/* -- MAIN APP -- */
+#app{display:none;padding:20px;max-width:1200px;margin:0 auto}
+#app.active{display:block}
+
+.app-header{display:flex;justify-content:space-between;align-items:center;padding:10px 0 20px;border-bottom:1px solid var(--border);margin-bottom:20px}
+.app-header h1{font-size:1.2rem;color:var(--gold);letter-spacing:.1em;font-weight:500}
+.app-header a{color:var(--dim);font-size:.8rem;text-decoration:none;letter-spacing:.1em}
+.app-header a:hover{color:var(--gold)}
+
+/* -- PANELS -- */
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:16px}
+.panel-title{font-size:.82rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;font-weight:600;padding-bottom:10px;border-bottom:1px solid var(--border)}
+
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:.75rem;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+.form-group input,.form-group select,.form-group textarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 12px;font-size:.9rem;border-radius:3px;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold)}
+.form-group select{cursor:pointer}
+.form-group textarea{resize:vertical;min-height:100px;line-height:1.6}
+
+/* -- ITEMS TABLE -- */
+.items-table{width:100%;border-collapse:collapse;margin:12px 0}
+.items-table th{background:var(--bg3);color:var(--gold);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:10px 8px;text-align:left;border-bottom:1px solid var(--border);font-weight:500}
+.items-table td{padding:6px 4px;border-bottom:1px solid rgba(51,51,51,.5)}
+.items-table input{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 8px;font-size:.85rem;width:100%;border-radius:2px;font-family:inherit}
+.items-table input:focus{outline:none;border-color:var(--gold)}
+.items-table .col-no{width:40px;text-align:center}
+.items-table .col-product{min-width:250px}
+.items-table .col-qty{width:70px}
+.items-table .col-disc{width:70px}
+.items-table .col-price{width:120px}
+.items-table .col-amount{width:120px;text-align:right;color:var(--gold);font-weight:500;padding-right:8px}
+.items-table .amount-cell{background:transparent;border:none;color:var(--gold);text-align:right;font-weight:500;cursor:default}
+
+/* -- BUTTONS -- */
+.btn{border:none;padding:10px 20px;font-size:.82rem;letter-spacing:.1em;cursor:pointer;border-radius:3px;font-family:inherit;font-weight:500;transition:all .2s}
+.btn-add{background:var(--green);color:#fff}.btn-add:hover{background:#388E3C}
+.btn-remove{background:var(--orange);color:#fff}.btn-remove:hover{background:#D35400}
+.btn-reset{background:var(--gold);color:#111}.btn-reset:hover{background:var(--gold2)}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#2979FF}
+.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{background:#A00000}
+.btn-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+/* -- TOTALS -- */
+.totals-grid{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end}
+.totals-box{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:16px 20px;min-width:280px}
+.totals-line{display:flex;justify-content:space-between;gap:20px;padding:6px 0;font-size:.9rem}
+.totals-line.big{font-size:1.1rem;color:var(--gold);font-weight:600;padding-top:10px;border-top:1px solid var(--border);margin-top:4px}
+.totals-line .label{color:var(--dim)}
+
+/* -- ACTION BUTTONS -- */
+.action-bar{display:flex;gap:12px;justify-content:flex-end;padding:20px 0;flex-wrap:wrap}
+.action-bar .btn{padding:14px 32px;font-size:.9rem}
+
+/* -- PRODUCT DROPDOWN -- */
+.prod-wrapper{position:relative}
+.prod-dropdown{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--gold);border-top:none;max-height:200px;overflow-y:auto;z-index:100;display:none;border-radius:0 0 4px 4px}
+.prod-dropdown.show{display:block}
+.prod-dropdown div{padding:8px 12px;font-size:.85rem;cursor:pointer;transition:background .15s}
+.prod-dropdown div:hover{background:rgba(201,162,77,.15);color:var(--gold)}
+
+@media(max-width:768px){
+  #app{padding:12px}
+  .form-row{grid-template-columns:1fr}
+  .totals-grid{grid-template-columns:1fr}
+  .items-table{font-size:.8rem}
+  .action-bar{flex-direction:column}
+  .action-bar .btn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN GATE -->
+<div id="login-gate">
+  <h2>BKTAX Admin</h2>
+  <p style="color:var(--dim);font-size:.85rem">กรุณากรอกรหัสเข้าใช้งาน</p>
+  <input type="password" id="pwd-input" placeholder="Password" autofocus>
+  <button onclick="checkLogin()">เข้าสู่ระบบ</button>
+  <p class="err" id="pwd-err"></p>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="app-header">
+    <h1>BKTAX V1 — Document System</h1>
+    <a href="index.html">กลับหน้าหลัก</a>
+  </div>
+
+  <!-- COMPANY + DOCUMENT -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="panel">
+      <div class="panel-title">BLOOK Living Co., Ltd.</div>
+      <div style="font-size:.85rem;line-height:1.8;color:var(--dim)">
+        บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)<br>
+        เลขที่ 3/134 ต.บางสมัคร อ.บางปะกง จ.ฉะเชิงเทรา 24180<br>
+        เลขประจำตัวผู้เสียภาษี: 0245568003791<br>
+        โทร: 093-736-4796 | Email: info@blookliving.com
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Document</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Doc Type</label>
+          <select id="doc-type" onchange="onDocTypeChange()">
+            <option value="QUOTATION">ใบเสนอราคา (Quotation)</option>
+            <option value="BILLING">ใบวางบิล/ใบแจ้งหนี้ (Billing Note/Invoice)</option>
+            <option value="RECEIPT">ใบเสร็จรับเงิน (Receipt)</option>
+            <option value="TAX_RECEIPT" selected>ใบกำกับภาษี/ใบเสร็จรับเงิน (Tax Invoice/Receipt)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Doc No</label>
+          <input type="text" id="doc-no">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="doc-date">
+        </div>
+        <div class="form-group">
+          <label>ผู้ขาย</label>
+          <select id="seller" onchange="onSellerChange()">
+            <option value="">-- เลือก --</option>
+            <option value="Sawarin Porjai" data-tel="096-247-8745">Sawarin Porjai</option>
+            <option value="Wongsatorn Somtana" data-tel="082-484-0926">Wongsatorn Somtana</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>เบอร์ผู้ขาย</label>
+          <input type="text" id="seller-tel" readonly>
+        </div>
+        <div class="form-group">
+          <label>ชื่องาน</label>
+          <input type="text" id="job-name" placeholder="(ถ้ามี)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER -->
+  <div class="panel">
+    <div class="panel-title">Customer (ลูกค้า)</div>
+    <div class="form-row">
+      <div class="form-group" style="flex:2">
+        <label>Customer Name</label>
+        <input type="text" id="cust-name">
+      </div>
+      <div class="form-group">
+        <label>VAT No</label>
+        <input type="text" id="cust-vat">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="flex:3">
+        <label>Address</label>
+        <input type="text" id="cust-addr">
+      </div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="text" id="cust-email">
+      </div>
+    </div>
+  </div>
+
+  <!-- TAX -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="panel">
+      <div class="panel-title">กรณีขายสินค้า (Goods) - VAT</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>VAT Rate (%)</label>
+          <input type="number" id="vat-rate" value="7" step="0.01" oninput="recalc()">
+        </div>
+        <div class="form-group">
+          <label>VAT Mode</label>
+          <select id="vat-mode" onchange="recalc()">
+            <option value="COMPANY">รวม VAT ในราคา (ลูกค้าจ่ายเท่าเดิม)</option>
+            <option value="CUSTOMER">บวก VAT เพิ่มจากราคา</option>
+            <option value="NOVAT">No VAT</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">กรณีให้บริการ (Service) - WHT</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>WHT Rate (%)</label>
+          <input type="number" id="wht-rate" value="0" step="0.01" oninput="recalc()">
+        </div>
+        <div class="form-group">
+          <label>WHT Mode</label>
+          <select id="wht-mode" onchange="recalc()">
+            <option value="NOWHT" selected>ไม่หักภาษี ณ ที่จ่าย</option>
+            <option value="WITHHOLD">ลูกค้าหัก WHT นำส่งให้</option>
+            <option value="GROSSUP">ลูกค้ารับภาระ WHT</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ITEMS -->
+  <div class="panel">
+    <div class="panel-title">รายการสินค้า</div>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th class="col-no">No</th>
+          <th class="col-product">Product</th>
+          <th class="col-qty">Qty</th>
+          <th class="col-disc">Disc(%)</th>
+          <th class="col-price">Unit Price</th>
+          <th class="col-amount">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="items-body"></tbody>
+    </table>
+    <div class="btn-row">
+      <button class="btn btn-add" onclick="addRow()">(+) Add</button>
+      <button class="btn btn-remove" onclick="removeRow()">(-) Remove</button>
+      <button class="btn btn-reset" onclick="resetRows()">Reset</button>
+    </div>
+  </div>
+
+  <!-- NOTE -->
+  <div class="panel">
+    <div class="panel-title">Note</div>
+    <div class="form-group">
+      <textarea id="note-text" rows="5"></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-reset" onclick="applyDefaultNote()">Default Note</button>
+    </div>
+  </div>
+
+  <!-- TOTALS + ACTIONS -->
+  <div class="totals-grid">
+    <div></div>
+    <div class="totals-box">
+      <div class="totals-line"><span class="label">รวมเป็นเงิน :</span><span id="t-subtotal">0.00</span></div>
+      <div class="totals-line"><span class="label" id="t-vat-label">ภาษีมูลค่าเพิ่ม (7.00%) :</span><span id="t-vat">0.00</span></div>
+      <div class="totals-line big"><span class="label">จำนวนเงินทั้งสิ้น :</span><span id="t-total">0.00</span></div>
+      <div class="totals-line" id="t-wht-line" style="display:none"><span class="label" id="t-wht-label">หัก ณ ที่จ่าย :</span><span id="t-wht">0.00</span></div>
+      <div class="totals-line big" id="t-net-line" style="display:none"><span class="label">ยอดชำระ :</span><span id="t-net">0.00</span></div>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <button class="btn btn-primary" onclick="newForm()">New</button>
+    <button class="btn btn-danger" onclick="savePDF()">Save PDF</button>
+  </div>
+</div>
+
+<script>
+// ============ CONFIG ============
+const COMPANY = {
+  name: "บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)",
+  address: "เลขที่ 3/134 ตำบลบางสมัคร อำเภอบางปะกง จังหวัดฉะเชิงเทรา 24180",
+  taxId: "0245568003791",
+  phone: "093-736-4796",
+  email: "info@blookliving.com",
+  signName: "Mr. Wongsatorn Somtana"
+};
+
+const PRODUCTS = [
+  {code:"BBS101",name:"TOGO sofa pocket spring_white_1seat",price:8900},
+  {code:"BBS102",name:"TOGO sofa pocket spring_orange_1seat",price:8900},
+  {code:"BBS103",name:"TOGO sofa pocket spring_yellow_1seat",price:8900},
+  {code:"BBS104",name:"TOGO sofa pocket spring_brown_1seat",price:8900},
+  {code:"PLW001",name:"Pillow pocket spring",price:2290},
+  {code:"RDF101",name:"Reed diffuser_std_four seasons",price:189},
+  {code:"RDF102",name:"Reed diffuser_std_sheraton",price:189},
+  {code:"RDF103",name:"Reed diffuser_std_shangri-la",price:189},
+  {code:"RDF104",name:"Reed diffuser_std_marriott",price:189},
+  {code:"RDF201",name:"Reed diffuser_giftset_four seasons",price:419},
+  {code:"RDF202",name:"Reed diffuser_giftset_sheraton",price:419},
+  {code:"RDF203",name:"Reed diffuser_giftset_shangri-la",price:419},
+  {code:"RDF204",name:"Reed diffuser_giftset_marriott",price:419},
+  {code:"RDF301",name:"Reed diffuser_bestvalue_four seasons",price:449},
+  {code:"RDF302",name:"Reed diffuser_bestvalue_sheraton",price:449},
+  {code:"RDF303",name:"Reed diffuser_bestvalue_shangri-la",price:449},
+  {code:"RDF304",name:"Reed diffuser_bestvalue_marriott",price:449},
+  {code:"TFR001",name:"ค่าจัดส่ง",price:50},
+  {code:"VOU000",name:"Discount Voucher",price:-100}
+];
+
+const DOC_TITLE = {
+  QUOTATION:  {th:"ใบเสนอราคา", en:"Quotation"},
+  BILLING:    {th:"ใบวางบิล/ใบแจ้งหนี้", en:"Billing Note / Invoice"},
+  RECEIPT:    {th:"ใบเสร็จรับเงิน", en:"Receipt"},
+  TAX_RECEIPT:{th:"ใบกำกับภาษี/ใบเสร็จรับเงิน", en:"Tax Invoice / Receipt"}
+};
+
+const DOC_SHORT = {QUOTATION:"QOU",BILLING:"BIL",RECEIPT:"REC",TAX_RECEIPT:"INV"};
+
+const DOC_COLOR = {QUOTATION:"#CAA520",BILLING:"#1E5AA8",RECEIPT:"#00BB00",TAX_RECEIPT:"#006600"};
+
+const SIG_TITLES = {
+  QUOTATION:["ผู้เสนอราคา","ผู้รับเสนอราคา"],
+  BILLING:["ผู้วางบิล","ผู้รับวางบิล"],
+  RECEIPT:["ผู้รับเงิน","ผู้จ่ายเงิน"],
+  TAX_RECEIPT:["ผู้รับเงิน","ผู้จ่ายเงิน"]
+};
+
+const NOTE_TEMPLATES = {
+  QUOTATION:"1. ชำระผ่านบัญชี\nธนาคาร : กสิกรไทย\nเลขบัญชี : 213-8-93674-3\nชื่อบัญชี : บจก. บลู๊ค ลิฟวิ่ง\n2. ราคาในใบเสนอนี้ สำหรับชำระภายใน 15 วัน\n3. สินค้าจะได้รับภายใน 3-5 วัน หลังจากลูกค้าชำระเงิน\n4. บริษัทหวังอย่างยิ่ง ที่จะได้ส่งมอบสินค้าที่ดี มีคุณภาพให้แก่ท่าน",
+  BILLING:"1. ชำระผ่านบัญชี\nธนาคาร : กสิกรไทย\nเลขบัญชี : 213-8-93674-3\nชื่อบัญชี : บจก. บลู๊ค ลิฟวิ่ง",
+  RECEIPT:"1. สินค้าจะได้รับภายใน 3-5 วัน หลังจากลูกค้าชำระเงิน",
+  TAX_RECEIPT:"1. สินค้าจะได้รับภายใน 3-5 วัน หลังจากลูกค้าชำระเงิน"
+};
+
+// ============ LOGIN ============
+function checkLogin(){
+  const pwd = document.getElementById('pwd-input').value.trim();
+  if(pwd === 'BK'){
+    document.getElementById('login-gate').classList.add('hidden');
+    document.getElementById('app').classList.add('active');
+    initApp();
+  } else {
+    document.getElementById('pwd-err').textContent = 'รหัสไม่ถูกต้อง';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+  }
+}
+document.getElementById('pwd-input').addEventListener('keydown',e=>{
+  if(e.key==='Enter') checkLogin();
+});
+
+// ============ APP INIT ============
+let rowCount = 0;
+
+function initApp(){
+  const now = new Date();
+  document.getElementById('doc-date').value = now.toISOString().split('T')[0];
+  makeDocNo();
+  addRow();
+  addRow();
+  applyDefaultNote();
+  recalc();
+}
+
+function makeDocNo(){
+  const type = document.getElementById('doc-type').value;
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(-2);
+  const mm = String(now.getMonth()+1).padStart(2,'0');
+  const dd = String(now.getDate()).padStart(2,'0');
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mi = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('doc-no').value = `${DOC_SHORT[type]||'DOC'}-${yy}${mm}${dd}-${hh}${mi}`;
+}
+
+function onDocTypeChange(){
+  makeDocNo();
+  const note = document.getElementById('note-text');
+  if(!note.value.trim()) applyDefaultNote();
+  recalc();
+}
+
+function onSellerChange(){
+  const sel = document.getElementById('seller');
+  const opt = sel.options[sel.selectedIndex];
+  document.getElementById('seller-tel').value = opt.dataset.tel || '';
+}
+
+function applyDefaultNote(){
+  const type = document.getElementById('doc-type').value;
+  document.getElementById('note-text').value = NOTE_TEMPLATES[type] || '';
+}
+
+// ============ ITEMS ============
+function addRow(){
+  rowCount++;
+  const tbody = document.getElementById('items-body');
+  const tr = document.createElement('tr');
+  tr.dataset.row = rowCount;
+  tr.innerHTML = `
+    <td class="col-no" style="text-align:center;color:var(--dim)">${rowCount}</td>
+    <td class="col-product">
+      <div class="prod-wrapper">
+        <input type="text" class="item-product" placeholder="พิมพ์ชื่อสินค้า..." oninput="filterProducts(this)" onfocus="filterProducts(this)">
+        <div class="prod-dropdown"></div>
+      </div>
+    </td>
+    <td class="col-qty"><input type="number" class="item-qty" value="1" min="0" oninput="recalc()"></td>
+    <td class="col-disc"><input type="number" class="item-disc" value="0" min="0" max="100" oninput="recalc()"></td>
+    <td class="col-price"><input type="number" class="item-price" value="0" step="0.01" oninput="recalc()"></td>
+    <td class="col-amount amount-cell" data-amount="0">0.00</td>
+  `;
+  tbody.appendChild(tr);
+  recalc();
+}
+
+function removeRow(){
+  const tbody = document.getElementById('items-body');
+  if(tbody.rows.length > 0){
+    tbody.deleteRow(tbody.rows.length - 1);
+    rowCount = Math.max(0, rowCount - 1);
+    renumberRows();
+    recalc();
+  }
+}
+
+function resetRows(){
+  const tbody = document.getElementById('items-body');
+  tbody.innerHTML = '';
+  rowCount = 0;
+  addRow();
+  addRow();
+  recalc();
+}
+
+function renumberRows(){
+  const rows = document.getElementById('items-body').rows;
+  for(let i=0;i<rows.length;i++){
+    rows[i].cells[0].textContent = i+1;
+    rows[i].dataset.row = i+1;
+  }
+}
+
+function filterProducts(input){
+  const wrapper = input.parentElement;
+  const dropdown = wrapper.querySelector('.prod-dropdown');
+  const text = input.value.toLowerCase();
+
+  const filtered = text ? PRODUCTS.filter(p =>
+    p.code.toLowerCase().includes(text) || p.name.toLowerCase().includes(text)
+  ) : PRODUCTS;
+
+  if(filtered.length === 0){
+    dropdown.classList.remove('show');
+    return;
+  }
+
+  dropdown.innerHTML = filtered.slice(0,15).map(p =>
+    `<div data-code="${p.code}" data-name="${p.name}" data-price="${p.price}" onclick="pickProduct(this)">${p.code} - ${p.name} (${p.price.toLocaleString()})</div>`
+  ).join('');
+  dropdown.classList.add('show');
+}
+
+function pickProduct(el){
+  const wrapper = el.closest('.prod-wrapper');
+  const input = wrapper.querySelector('.item-product');
+  const tr = el.closest('tr');
+  const priceInput = tr.querySelector('.item-price');
+
+  input.value = `${el.dataset.code} - ${el.dataset.name}`;
+  priceInput.value = el.dataset.price;
+
+  el.closest('.prod-dropdown').classList.remove('show');
+  recalc();
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', e => {
+  if(!e.target.closest('.prod-wrapper')){
+    document.querySelectorAll('.prod-dropdown').forEach(d => d.classList.remove('show'));
+  }
+});
+
+// ============ FINANCE ============
+function safeFloat(v){ const n=parseFloat(String(v).replace(/,/g,'')); return isNaN(n)?0:n; }
+function money(x){ return x.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+function isVoucher(desc){
+  const d = (desc||'').toLowerCase();
+  return d.includes('discount voucher') || d.includes('ส่วนลด') || d.includes('คูปอง') || d.startsWith('vou000');
+}
+
+function collectItems(){
+  const rows = document.getElementById('items-body').rows;
+  const items = [];
+  for(let i=0;i<rows.length;i++){
+    const desc = rows[i].querySelector('.item-product').value.trim();
+    const qty = Math.max(0, safeFloat(rows[i].querySelector('.item-qty').value));
+    const disc = Math.min(100, Math.max(0, safeFloat(rows[i].querySelector('.item-disc').value)));
+    const price = safeFloat(rows[i].querySelector('.item-price').value);
+    let amount = qty * price * (1 - disc/100);
+    if(isVoucher(desc)) amount = -Math.abs(amount);
+
+    rows[i].cells[5].textContent = money(amount);
+    rows[i].cells[5].dataset.amount = amount;
+
+    if(desc && qty > 0){
+      items.push({no:i+1, desc, qty, disc, price, amount});
+    }
+  }
+  return items;
+}
+
+function computeFinance(amounts, vatRate, vatMode, whtRate, whtMode){
+  const base = amounts.reduce((a,b)=>a+b, 0);
+  let subEx, vatAmt, total;
+
+  if(vatMode==='NOVAT' || vatRate<=0){
+    subEx=base; vatAmt=0; total=base;
+  } else if(vatMode==='COMPANY'){
+    total=base; vatAmt=total*(vatRate/(100+vatRate)); subEx=total-vatAmt;
+  } else {
+    subEx=base; vatAmt=subEx*(vatRate/100); total=subEx+vatAmt;
+  }
+
+  let whtAmt=0, net=total;
+  if(whtMode!=='NOWHT' && whtRate>0){
+    whtAmt = subEx*(whtRate/100);
+    net = whtMode==='WITHHOLD' ? total-whtAmt : total;
+  }
+
+  return {subtotal:subEx, vat:vatAmt, total, wht:whtAmt, net};
+}
+
+function recalc(){
+  const items = collectItems();
+  const vatRate = safeFloat(document.getElementById('vat-rate').value);
+  const vatMode = document.getElementById('vat-mode').value;
+  const whtRate = safeFloat(document.getElementById('wht-rate').value);
+  const whtMode = document.getElementById('wht-mode').value;
+
+  const fin = computeFinance(items.map(i=>i.amount), vatRate, vatMode, whtRate, whtMode);
+
+  document.getElementById('t-subtotal').textContent = money(fin.subtotal);
+  document.getElementById('t-vat-label').textContent = `ภาษีมูลค่าเพิ่ม (${vatRate.toFixed(2)}%) :`;
+  document.getElementById('t-vat').textContent = money(fin.vat);
+  document.getElementById('t-total').textContent = money(fin.total);
+  document.getElementById('t-wht').textContent = money(fin.wht);
+  document.getElementById('t-net').textContent = money(fin.net);
+
+  const showWht = whtMode!=='NOWHT' && fin.wht > 0.001;
+  const showNet = Math.abs(fin.total - fin.net) > 0.005;
+  document.getElementById('t-wht-line').style.display = showWht?'flex':'none';
+  document.getElementById('t-wht-label').textContent = `หัก ณ ที่จ่าย (${whtRate.toFixed(2)}%) :`;
+  document.getElementById('t-net-line').style.display = showNet?'flex':'none';
+}
+
+// ============ NEW FORM ============
+function newForm(){
+  document.getElementById('doc-type').value = 'TAX_RECEIPT';
+  makeDocNo();
+  document.getElementById('doc-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('seller').value = '';
+  document.getElementById('seller-tel').value = '';
+  document.getElementById('job-name').value = '';
+  document.getElementById('cust-name').value = '';
+  document.getElementById('cust-addr').value = '';
+  document.getElementById('cust-vat').value = '';
+  document.getElementById('cust-email').value = '';
+  document.getElementById('vat-rate').value = '7';
+  document.getElementById('vat-mode').value = 'COMPANY';
+  document.getElementById('wht-rate').value = '0';
+  document.getElementById('wht-mode').value = 'NOWHT';
+  resetRows();
+  applyDefaultNote();
+  recalc();
+}
+
+// ============ PDF GENERATION ============
+function savePDF(){
+  const custName = document.getElementById('cust-name').value.trim();
+  const custAddr = document.getElementById('cust-addr').value.trim();
+  if(!custName){ alert('กรุณากรอก Customer Name'); return; }
+  if(!custAddr){ alert('กรุณากรอก Customer Address'); return; }
+
+  recalc();
+  const items = collectItems();
+  if(items.length===0){ alert('กรุณาเพิ่มรายการสินค้า'); return; }
+
+  const docType = document.getElementById('doc-type').value;
+  const docNo = document.getElementById('doc-no').value.trim();
+  const docDate = document.getElementById('doc-date').value;
+  const sellerName = document.getElementById('seller').value;
+  const sellerTel = document.getElementById('seller-tel').value;
+  const jobName = document.getElementById('job-name').value.trim();
+  const custVat = document.getElementById('cust-vat').value.trim();
+  const custEmail = document.getElementById('cust-email').value.trim();
+  const vatRate = safeFloat(document.getElementById('vat-rate').value);
+  const vatMode = document.getElementById('vat-mode').value;
+  const whtRate = safeFloat(document.getElementById('wht-rate').value);
+  const whtMode = document.getElementById('wht-mode').value;
+  const noteText = document.getElementById('note-text').value.trim();
+
+  const fin = computeFinance(items.map(i=>i.amount), vatRate, vatMode, whtRate, whtMode);
+  const showWht = whtMode!=='NOWHT' && fin.wht > 0.001;
+  const showNet = Math.abs(fin.total - fin.net) > 0.005;
+
+  const {jsPDF} = window.jspdf;
+  const doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+  const W = 210, H = 297;
+  const mx = 18; // margin x
+
+  // Thai font fallback - use Helvetica (Thai won't render perfectly but it's functional)
+  // For production, embed THSarabunNew font
+  const font = 'helvetica';
+
+  // Title
+  const titleTh = DOC_TITLE[docType].th;
+  const titleEn = DOC_TITLE[docType].en;
+  const titleColor = DOC_COLOR[docType] || '#000000';
+
+  const r = parseInt(titleColor.slice(1,3),16);
+  const g = parseInt(titleColor.slice(3,5),16);
+  const b = parseInt(titleColor.slice(5,7),16);
+
+  doc.setFontSize(20);
+  doc.setTextColor(r,g,b);
+  doc.text(titleTh, W-mx, 24, {align:'right'});
+  doc.setFontSize(16);
+  doc.text(titleEn, W-mx, 32, {align:'right'});
+
+  doc.setFontSize(10);
+  doc.setTextColor(100);
+  doc.text(`Page 1/1`, W-mx, 38, {align:'right'});
+
+  // Company
+  doc.setTextColor(0);
+  doc.setFontSize(13);
+  doc.setFont(font,'bold');
+  doc.text(COMPANY.name, mx, 24);
+
+  doc.setFontSize(10);
+  doc.setFont(font,'normal');
+  doc.text(COMPANY.address, mx, 30);
+  doc.text(`Tax ID: ${COMPANY.taxId}`, mx, 35);
+  doc.text(`Tel: ${COMPANY.phone}   Email: ${COMPANY.email}`, mx, 40);
+
+  // Doc meta box
+  const metaLines = [
+    `Doc No: ${docNo}`,
+    `Date: ${docDate}`,
+    `Seller: ${sellerName||'-'}`,
+    `Tel: ${sellerTel||'-'}`,
+    `Job: ${jobName||'-'}`
+  ];
+  const metaX = W-mx-70, metaY = 44, metaW = 70, metaH = 32;
+  doc.setDrawColor(0);
+  doc.setLineWidth(0.3);
+  doc.rect(metaX, metaY, metaW, metaH);
+  doc.setFontSize(9);
+  let my = metaY + 5;
+  metaLines.forEach(line => {
+    doc.text(line, metaX+3, my);
+    my += 5.5;
+  });
+
+  // Customer
+  const cy = 50;
+  doc.setFontSize(12);
+  doc.setFont(font,'bold');
+  doc.text('Customer', mx, cy);
+  doc.setFontSize(10);
+  doc.setFont(font,'normal');
+  doc.text(`Name: ${custName}`, mx, cy+6);
+  doc.text(`Address: ${custAddr}`, mx, cy+11);
+  doc.text(`Tax ID: ${custVat||'-'}   Email: ${custEmail||'-'}`, mx, cy+16);
+
+  // Items table
+  const hasDisc = items.some(i => i.disc > 0);
+  let tableHead, tableBody, colWidths;
+
+  if(hasDisc){
+    tableHead = [['No','Product','Qty','Disc(%)','Unit Price','Amount']];
+    tableBody = items.map(i => [
+      String(i.no), i.desc, String(i.qty), `${i.disc.toFixed(0)}%`,
+      money(i.price), money(i.amount)
+    ]);
+    colWidths = [10, 78, 14, 16, 28, 28];
+  } else {
+    tableHead = [['No','Product','Qty','Unit Price','Amount']];
+    tableBody = items.map(i => [
+      String(i.no), i.desc, String(i.qty),
+      money(i.price), money(i.amount)
+    ]);
+    colWidths = [10, 90, 14, 30, 30];
+  }
+
+  doc.autoTable({
+    startY: cy + 22,
+    head: tableHead,
+    body: tableBody,
+    margin: {left:mx, right:mx},
+    columnStyles: hasDisc ? {
+      0:{halign:'center',cellWidth:colWidths[0]},
+      1:{cellWidth:colWidths[1]},
+      2:{halign:'center',cellWidth:colWidths[2]},
+      3:{halign:'center',cellWidth:colWidths[3]},
+      4:{halign:'right',cellWidth:colWidths[4]},
+      5:{halign:'right',cellWidth:colWidths[5]}
+    } : {
+      0:{halign:'center',cellWidth:colWidths[0]},
+      1:{cellWidth:colWidths[1]},
+      2:{halign:'center',cellWidth:colWidths[2]},
+      3:{halign:'right',cellWidth:colWidths[3]},
+      4:{halign:'right',cellWidth:colWidths[4]}
+    },
+    headStyles:{
+      fillColor:[51,51,51], textColor:[255,255,255],
+      fontSize:9, fontStyle:'bold', halign:'center'
+    },
+    bodyStyles:{fontSize:9, textColor:[0,0,0]},
+    alternateRowStyles:{fillColor:[245,245,245]},
+    theme:'grid',
+    styles:{lineColor:[180,180,180],lineWidth:0.3}
+  });
+
+  const afterTable = doc.lastAutoTable.finalY + 8;
+
+  // Totals box
+  const boxW = 70, boxX = W-mx-boxW;
+  let lines = 3;
+  if(showWht) lines++;
+  if(showNet) lines++;
+  const boxH = lines*7 + 8;
+  let boxY = afterTable;
+
+  doc.setDrawColor(0);
+  doc.setLineWidth(0.3);
+  doc.rect(boxX, boxY, boxW, boxH);
+
+  let ty = boxY + 6;
+  doc.setFontSize(9);
+  doc.setFont(font,'normal');
+  doc.text('Subtotal:', boxX+3, ty);
+  doc.text(money(fin.subtotal), boxX+boxW-3, ty, {align:'right'});
+  ty += 7;
+
+  doc.text(`VAT (${vatRate.toFixed(2)}%):`, boxX+3, ty);
+  doc.text(money(fin.vat), boxX+boxW-3, ty, {align:'right'});
+  ty += 7;
+
+  doc.setFontSize(11);
+  doc.setFont(font,'bold');
+  doc.text('Total:', boxX+3, ty);
+  doc.text(money(fin.total), boxX+boxW-3, ty, {align:'right'});
+  ty += 7;
+
+  if(showWht){
+    doc.setFontSize(9);
+    doc.setFont(font,'normal');
+    doc.text(`WHT (${whtRate.toFixed(2)}%):`, boxX+3, ty);
+    doc.text(money(fin.wht), boxX+boxW-3, ty, {align:'right'});
+    ty += 7;
+  }
+  if(showNet){
+    doc.setFontSize(12);
+    doc.setFont(font,'bold');
+    doc.text('Net:', boxX+3, ty);
+    doc.text(money(fin.net), boxX+boxW-3, ty, {align:'right'});
+  }
+
+  // Note box
+  if(noteText){
+    const noteX = mx;
+    const noteW = boxX - mx - 8;
+    const noteLines = doc.splitTextToSize(noteText, noteW-6);
+    const noteH = Math.min(noteLines.length * 4.5 + 12, boxH);
+
+    doc.setDrawColor(0);
+    doc.setLineWidth(0.3);
+    doc.rect(noteX, boxY, noteW, noteH);
+
+    doc.setFontSize(10);
+    doc.setFont(font,'bold');
+    doc.text('Note:', noteX+3, boxY+6);
+
+    doc.setFontSize(8);
+    doc.setFont(font,'normal');
+    let ny = boxY + 12;
+    noteLines.forEach(line => {
+      if(ny < boxY+noteH-2){
+        doc.text(line, noteX+3, ny);
+        ny += 4.5;
+      }
+    });
+  }
+
+  // Signatures
+  const sigY = H - 55;
+  const sigTitles = SIG_TITLES[docType] || ['Seller','Buyer'];
+
+  doc.setFontSize(10);
+  doc.setFont(font,'bold');
+  doc.text(sigTitles[0], mx, sigY);
+  doc.text(sigTitles[1], W-mx, sigY, {align:'right'});
+
+  // Stamp boxes
+  const sboxW = 49, sboxH = 25;
+  doc.setLineWidth(0.2);
+  doc.rect(mx+8, sigY+4, sboxW, sboxH);
+  doc.rect(W-mx-8-sboxW, sigY+4, sboxW, sboxH);
+
+  doc.setFontSize(8);
+  doc.setFont(font,'normal');
+  doc.text('Stamp (if any)', mx+8+sboxW/2, sigY+4+sboxH/2, {align:'center'});
+  doc.text('Stamp (if any)', W-mx-8-sboxW/2, sigY+4+sboxH/2, {align:'center'});
+
+  // Sign lines
+  const slY = sigY + sboxH + 10;
+  doc.setLineWidth(0.3);
+  doc.line(mx, slY, mx+70, slY);
+  doc.line(W-mx-70, slY, W-mx, slY);
+
+  doc.setFontSize(8);
+  doc.text(`(${sellerName||'...........'})`, mx, slY+5);
+  doc.text(`(${custName||'...........'})`, W-mx, slY+5, {align:'right'});
+
+  doc.text('Date: ____/________/____', mx, slY+11);
+  doc.text('Date: ____/________/____', W-mx, slY+11, {align:'right'});
+
+  // Save
+  const fileName = `BLOOK LIVING ${docNo}.pdf`;
+  doc.save(fileName);
+}
+</script>
+</body>
+</html>
