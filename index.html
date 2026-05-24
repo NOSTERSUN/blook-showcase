@@ -139,7 +139,7 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .reviews-header .sec-eyebrow{margin-bottom:18px}
 .reviews-header .sec-title{margin-bottom:16px}
 .reviews-header .sec-desc{max-width:500px;margin:0 auto}
-.reviews-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.reviews-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
 .review-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .4s;background:var(--bg)}
 .review-card:hover{border-color:var(--gold-light);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
 .review-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
@@ -188,11 +188,9 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
 
 /* -- RESPONSIVE -- */
 @media(max-width:1024px){
-  .product-block{grid-template-columns:1fr;gap:50px;padding:60px 40px}
-  .product-block.alt .product-visual{order:1}
-  .product-block.alt .product-info{order:2}
+  .product-block{grid-template-columns:1fr 1fr;gap:50px;padding:60px 40px}
   .scent-grid{grid-template-columns:1fr}
-  .reviews-grid{grid-template-columns:repeat(3,1fr)}
+  .reviews-grid{grid-template-columns:repeat(4,1fr)}
   .ecommerce{padding:80px 40px}
   nav{padding:0 36px}
   .hero{padding:110px 40px 70px}
@@ -214,7 +212,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   .sec-title{font-size:clamp(1.8rem,6vw,2.8rem)}
   .sec-desc{font-size:.95rem}
   .divider{padding:16px 20px}
-  .product-block{padding:36px 20px;gap:36px}
+  .product-block{padding:36px 20px;gap:36px;grid-template-columns:1fr}
   .prod-name{font-size:clamp(1.6rem,5vw,2.4rem)}
   .prod-sub{font-size:1.05rem}
   .prod-desc{font-size:.92rem}
@@ -224,7 +222,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   .brand-strip{padding:60px 20px}
   .brand-quote{font-size:clamp(1.2rem,4vw,1.8rem)}
   .reviews{padding:60px 20px}
-  .reviews-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .reviews-grid{grid-template-columns:repeat(3,1fr);gap:12px}
   .ecommerce{padding:60px 20px}
   .contact{padding:50px 20px}
   .contact-top{flex-direction:column;align-items:center;gap:24px}
@@ -397,8 +395,10 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     <div class="product-block alt" data-product="3">
       <div class="product-visual">
         <div class="product-carousel" data-carousel="3">
-          <img src="assets/3d-pillow-product.png" alt="หมอน Aroma Comfort" class="active">
-          <img src="assets/3d-pillow-package.png" alt="หมอน Aroma Comfort">
+          <img src="assets/3d-pillow-1.png" alt="หมอน Aroma Comfort" class="active">
+          <img src="assets/3d-pillow-2.png" alt="หมอน Aroma Comfort">
+          <img src="assets/3d-pillow-3.png" alt="หมอน Aroma Comfort">
+          <img src="assets/3d-pillow-4.png" alt="หมอน Aroma Comfort">
         </div>
         <div class="carousel-controls">
           <div class="carousel-dots" data-dots="3"></div>
