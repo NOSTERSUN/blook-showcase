@@ -614,7 +614,7 @@ function savePDF(){
   const showWht = whtMode!=='NOWHT' && fin.wht > 0.001;
   const showNet = Math.abs(fin.total - fin.net) > 0.005;
 
-  const {jsPDF} = window.jspdf;
+  const jsPDF = window.jspdf.jsPDF;
   const doc = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
   const W = 210, H = 297;
   const mx = 18; // margin x
