@@ -24,7 +24,8 @@
       "Bash(git commit -m 'แก้ language toggle + ปรับ UI ติดต่อเรา *)",
       "Bash(git commit -m 'เพิ่ม Review Crawler Python script + คำแนะนำการใช้ *)",
       "Bash(python crawl_reviews.py --setup)",
-      "Bash(git commit -m 'Update Pillow product: BLOOK Argo Pillow with new product photos *)"
+      "Bash(git commit -m 'Update Pillow product: BLOOK Argo Pillow with new product photos *)",
+      "Bash(git commit -m 'Use new asset folder structure with numbered filenames *)"
     ]
   }
 }
