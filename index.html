@@ -166,8 +166,6 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 
 /* -- LINE QR -- */
 .line-qr-row{display:flex;align-items:center;justify-content:center;gap:30px;margin:30px 0;flex-wrap:wrap}
-.line-qr-img{width:140px;height:140px;border-radius:10px;border:2px solid var(--border);background:#fff;padding:6px;transition:all .3s}
-.line-qr-img:hover{border-color:var(--gold-light);box-shadow:0 6px 20px rgba(160,120,74,.1)}
 .line-btn{display:inline-flex;align-items:center;gap:10px;background:#06C755;color:#fff;padding:14px 28px;border-radius:8px;font-size:.92rem;font-weight:500;text-decoration:none;transition:all .3s}
 .line-btn:hover{background:#05b34d;transform:translateY(-2px);box-shadow:0 8px 24px rgba(6,199,85,.25)}
 .line-btn svg{width:22px;height:22px;fill:#fff}
@@ -552,9 +550,9 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
       </div>
       <div class="contact-block">
         <h4>สำนักงานใหญ่</h4>
-        <p><strong>บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</strong></p>
-        <p class="contact-addr">เลขที่ 3/134 ตำบลบางสมัคร<br>อำเภอบางปะกง จังหวัดฉะเชิงเทรา 24180</p>
-        <p style="margin-top:10px"><strong>เลขประจำตัวผู้เสียภาษี:</strong> 0245568003791</p>
+        <p style="color:var(--gold);font-weight:500"><strong>บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</strong></p>
+        <p style="color:var(--gold)">เลขที่ 3/134 ตำบลบางสมัคร<br>อำเภอบางปะกง จังหวัดฉะเชิงเทรา 24180</p>
+        <p style="color:var(--gold);margin-top:10px"><strong>เลขประจำตัวผู้เสียภาษี:</strong> 0245568003791</p>
       </div>
     </div>
 
@@ -674,10 +672,11 @@ document.querySelectorAll('[data-carousel]').forEach(carousel=>{
   const imgs=carousel.querySelectorAll('img');
   const dotsContainer=document.querySelector(`[data-dots="${id}"]`);
   let current=0;
+  let autoInterval=null;
   imgs.forEach((_,i)=>{
     const dot=document.createElement('button');
     dot.className='carousel-dot'+(i===0?' active':'');
-    dot.onclick=()=>goTo(i);
+    dot.onclick=()=>{goTo(i);resetAuto();};
     dotsContainer.appendChild(dot);
   });
   function goTo(idx){
@@ -687,11 +686,39 @@ document.querySelectorAll('[data-carousel]').forEach(carousel=>{
     imgs[current].classList.add('active');
     dotsContainer.children[current].classList.add('active');
   }
+  function nextSlide(){goTo((current+1)%imgs.length);}
+  function startAuto(){autoInterval=setInterval(nextSlide,4000);}
+  function resetAuto(){clearInterval(autoInterval);startAuto();}
   const prev=document.querySelector(`[data-prev="${id}"]`);
   const next=document.querySelector(`[data-next="${id}"]`);
-  if(prev) prev.onclick=()=>goTo((current-1+imgs.length)%imgs.length);
-  if(next) next.onclick=()=>goTo((current+1)%imgs.length);
+  if(prev) prev.onclick=()=>{goTo((current-1+imgs.length)%imgs.length);resetAuto();};
+  if(next) next.onclick=()=>{nextSlide();resetAuto();};
+  // Pause on hover, resume on leave
+  carousel.addEventListener('mouseenter',()=>clearInterval(autoInterval));
+  carousel.addEventListener('mouseleave',()=>resetAuto());
+  startAuto();
 });
+
+// Auto-slide for Sofa carousel
+(function(){
+  const sofa=document.getElementById('sofa-carousel');
+  if(!sofa) return;
+  const imgs=sofa.querySelectorAll('img');
+  const swatches=document.querySelectorAll('.color-swatch');
+  let idx=0;
+  const colors=['brown','orange','white','yellow'];
+  function nextSofa(){
+    idx=(idx+1)%colors.length;
+    const color=colors[idx];
+    swatches.forEach(s=>s.classList.remove('active'));
+    const targetSwatch=document.querySelector(`[data-sofa-color="${color}"]`);
+    if(targetSwatch) targetSwatch.classList.add('active');
+    imgs.forEach(img=>{img.classList.remove('active');if(img.dataset.color===color) img.classList.add('active');});
+  }
+  let sofaInterval=setInterval(nextSofa,4000);
+  sofa.addEventListener('mouseenter',()=>clearInterval(sofaInterval));
+  sofa.addEventListener('mouseleave',()=>{sofaInterval=setInterval(nextSofa,4000);});
+})();
 
 document.querySelectorAll('.color-swatch').forEach(btn=>{
   btn.addEventListener('click',()=>{
