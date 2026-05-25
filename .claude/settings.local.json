@@ -38,7 +38,8 @@
       "Bash(git commit -m 'Add AI Chatbot with Claude API integration *)",
       "Bash(git commit -m 'Remove chatbot feature completely *)",
       "Bash(git commit -m 'Reduce hero section spacing without changing font sizes *)",
-      "Bash(git commit -m 'Improve TOGO SOFA subtitle text \\(remove awkward number rendering\\) *)"
+      "Bash(git commit -m 'Improve TOGO SOFA subtitle text \\(remove awkward number rendering\\) *)",
+      "Bash(git commit -m 'Redesign PDF document with Thai font support and BLOOK branding *)"
     ]
   }
 }
