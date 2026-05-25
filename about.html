@@ -92,9 +92,10 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     <div class="nav-mark">BLOOK<span>THE CLASS OF CALM</span></div>
   </a>
   <div class="nav-links">
-    <a href="index.html#products">สินค้า</a>
-    <a href="about.html" style="color:var(--primary)">บทความ</a>
-    <a href="index.html#contact">ติดต่อเรา</a>
+    <a href="index.html#products" data-th="สินค้า" data-en="Products">สินค้า</a>
+    <a href="about.html" data-th="บทความ" data-en="About" style="color:var(--primary)">บทความ</a>
+    <a href="index.html#contact" data-th="ติดต่อเรา" data-en="Contact">ติดต่อเรา</a>
+    <button id="lang-toggle" style="background:none;border:none;color:var(--gold);font-size:.8rem;letter-spacing:.15em;cursor:pointer;font-family:inherit;padding:0;opacity:.7;transition:opacity .3s" title="Toggle Language">EN</button>
     <a id="admin-btn" href="admin.html" style="font-size:1.2rem;color:#B8860B;text-decoration:none;opacity:.5;transition:opacity .3s;position:relative;bottom:2px" title="BKTAX Admin">&diams;</a>
   </div>
 </nav>
@@ -158,6 +159,35 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   <div class="foot-brand">BLOOK</div>
   <div class="foot-copy">&copy; 2026 BLOOK — The Class of Calm</div>
 </footer>
+
+<script>
+// Language Toggle (consistent across all pages)
+let currentLang = localStorage.getItem('blook-lang') || 'th';
+
+function initLanguage(){
+  const langBtn = document.getElementById('lang-toggle');
+  const langElements = document.querySelectorAll('[data-th][data-en]');
+
+  if(currentLang === 'en'){
+    langElements.forEach(el => { el.textContent = el.dataset.en; });
+    if(langBtn) langBtn.textContent = 'TH';
+  }
+
+  if(langBtn){
+    langBtn.addEventListener('click', ()=>{
+      currentLang = currentLang === 'th' ? 'en' : 'th';
+      langElements.forEach(el => {
+        el.textContent = currentLang === 'th' ? el.dataset.th : el.dataset.en;
+      });
+      langBtn.textContent = currentLang === 'th' ? 'EN' : 'TH';
+      localStorage.setItem('blook-lang', currentLang);
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initLanguage);
+setTimeout(initLanguage, 100);
+</script>
 
 </body>
 </html>
