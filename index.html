@@ -266,11 +266,11 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   <div class="hero-bg"></div>
   <div class="hero-glow"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Premium Home Fragrance</p>
-    <h1 class="hero-title">กลิ่นหอม<br>แห่ง<em>ความหรูหรา</em></h1>
-    <p class="hero-desc">น้ำหอมปรับอากาศระดับโรงแรมหรู ได้แรงบันดาลใจจากรีสอร์ทชั้นนำระดับโลก ทุกผลิตภัณฑ์สร้างสรรค์เพื่อนำความสงบและหรูหราเข้าสู่ทุกช่วงเวลาของคุณ</p>
-    <a href="#products" class="hero-cta">
-      ดูคอลเลกชัน
+    <p class="hero-eyebrow" data-th="THE CLASS OF CALM" data-en="THE CLASS OF CALM">THE CLASS OF CALM</p>
+    <h1 class="hero-title" data-th="พื้นที่แห่ง<br><em>การพักผ่อน</em>อย่างมีรสนิยม" data-en="A Sanctuary of<br><em>Refined Calm</em>">พื้นที่แห่ง<br><em>การพักผ่อน</em>อย่างมีรสนิยม</h1>
+    <p class="hero-desc" data-th="BLOOK Living สร้างสรรค์ผลิตภัณฑ์เพื่อชีวิตที่ผ่อนคลายและหรูหรา ตั้งแต่หมอนเพื่อสุขภาพ โซฟา TOGO น้ำหอมบ้าน ไปจนถึงเซ็ทของขวัญ ทุกชิ้นออกแบบเพื่อนำความสงบและความหรูหราเข้าสู่ทุกมุมพักผ่อนของคุณ" data-en="BLOOK Living crafts products for a relaxed and luxurious life — from ergonomic pillows and TOGO sofas to home fragrances and gift sets. Every piece is designed to bring serenity and elegance into every corner of your retreat.">BLOOK Living สร้างสรรค์ผลิตภัณฑ์เพื่อชีวิตที่ผ่อนคลายและหรูหรา ตั้งแต่หมอนเพื่อสุขภาพ โซฟา TOGO น้ำหอมบ้าน ไปจนถึงเซ็ทของขวัญ ทุกชิ้นออกแบบเพื่อนำความสงบและความหรูหราเข้าสู่ทุกมุมพักผ่อนของคุณ</p>
+    <a href="#products" class="hero-cta" data-th="เลื่อนชมความหรูหรา" data-en="Explore Our Collection">
+      <span data-th="เลื่อนชมความหรูหรา" data-en="Explore Our Collection">เลื่อนชมความหรูหรา</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
@@ -620,7 +620,7 @@ function initLanguage(){
   // Set initial state
   if(currentLang === 'en'){
     langElements.forEach(el => {
-      el.textContent = el.dataset.en;
+      el.innerHTML = el.dataset.en;
     });
     if(langBtn) langBtn.textContent = 'TH';
   }
@@ -630,7 +630,7 @@ function initLanguage(){
     langBtn.addEventListener('click', ()=>{
       currentLang = currentLang === 'th' ? 'en' : 'th';
       langElements.forEach(el => {
-        el.textContent = currentLang === 'th' ? el.dataset.th : el.dataset.en;
+        el.innerHTML = currentLang === 'th' ? el.dataset.th : el.dataset.en;
       });
       langBtn.textContent = currentLang === 'th' ? 'EN' : 'TH';
       localStorage.setItem('blook-lang', currentLang);

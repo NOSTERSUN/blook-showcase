@@ -169,7 +169,7 @@ function initLanguage(){
   const langElements = document.querySelectorAll('[data-th][data-en]');
 
   if(currentLang === 'en'){
-    langElements.forEach(el => { el.textContent = el.dataset.en; });
+    langElements.forEach(el => { el.innerHTML = el.dataset.en; });
     if(langBtn) langBtn.textContent = 'TH';
   }
 
@@ -177,7 +177,7 @@ function initLanguage(){
     langBtn.addEventListener('click', ()=>{
       currentLang = currentLang === 'th' ? 'en' : 'th';
       langElements.forEach(el => {
-        el.textContent = currentLang === 'th' ? el.dataset.th : el.dataset.en;
+        el.innerHTML = currentLang === 'th' ? el.dataset.th : el.dataset.en;
       });
       langBtn.textContent = currentLang === 'th' ? 'EN' : 'TH';
       localStorage.setItem('blook-lang', currentLang);

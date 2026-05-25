@@ -27,7 +27,8 @@
       "Bash(git commit -m 'Update Pillow product: BLOOK Argo Pillow with new product photos *)",
       "Bash(git commit -m 'Use new asset folder structure with numbered filenames *)",
       "Bash(git commit -m 'Add language toggle to about.html for consistent header across pages *)",
-      "Bash(git commit -m 'Add QR code next to LINE button and ensure EN button on all pages *)"
+      "Bash(git commit -m 'Add QR code next to LINE button and ensure EN button on all pages *)",
+      "Bash(git commit -m 'Rewrite hero section to reflect BLOOK Living brand \\(not just fragrance\\) *)"
     ]
   }
 }
