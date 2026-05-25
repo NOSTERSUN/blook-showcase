@@ -30,7 +30,8 @@
       "Bash(git commit -m 'Add QR code next to LINE button and ensure EN button on all pages *)",
       "Bash(git commit -m 'Rewrite hero section to reflect BLOOK Living brand \\(not just fragrance\\) *)",
       "Bash(git commit --allow-empty -m 'Force update: trigger GitHub Pages rebuild *)",
-      "Bash(git commit -m 'Update product details, fix language toggle, improve mobile UX *)"
+      "Bash(git commit -m 'Update product details, fix language toggle, improve mobile UX *)",
+      "Bash(git commit -m 'Fix product details and language toggle bug *)"
     ]
   }
 }

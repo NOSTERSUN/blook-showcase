@@ -380,7 +380,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
         <p class="prod-desc">สูตรระดับโรงแรมเดียวกัน ในขวดแมตต์แบล็คขนาดกะทัดรัด เหมาะสำหรับโต๊ะทำงาน ห้องนอน และพื้นที่ส่วนตัว สร้างสรรค์ความสงบไปทุกที่</p>
         <div class="prod-features">
           <div class="prod-feat"><strong>4 กลิ่น</strong><span>คัดสรรระดับโรงแรม</span></div>
-          <div class="prod-feat"><strong>สัปดาห์</strong><span>กลิ่นหอมยาวนาน</span></div>
+          <div class="prod-feat"><strong>4–5 สัปดาห์</strong><span>กลิ่นหอมยาวนาน</span></div>
           <div class="prod-feat"><strong>20–30 ตร.ม.</strong><span>ครอบคลุมพื้นที่</span></div>
           <div class="prod-feat"><strong>พกพาสะดวก</strong><span>เหมาะสำหรับเดินทาง/ทดลองใช้</span></div>
         </div>
@@ -449,9 +449,9 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
         <p class="prod-desc">BLOOK Argo Pillow หมอนพรีเมียมที่ออกแบบมาเพื่อรองรับสรีระศีรษะและคออย่างสมบูรณ์แบบ ด้วยวัสดุคุณภาพสูงและดีไซน์ที่ผ่านการคิดมาอย่างพิถีพิถัน มอบการนอนหลับที่ผ่อนคลายและความสงบของ BLOOK สู่ทุกค่ำคืน</p>
         <div class="prod-features">
           <div class="prod-feat"><strong>ผ้าพรีเมียม</strong><span>นุ่ม ระบายอากาศดี</span></div>
-          <div class="prod-feat"><strong>ออกแบบตามสรีระ</strong><span>รองรับได้สมบูรณ์</span></div>
-          <div class="prod-feat"><strong>ดีไซน์หรู</strong><span>สไตล์สง่างาม</span></div>
-          <div class="prod-feat"><strong>นอนหลับสบาย</strong><span>สะดวกสบายตลอดคืน</span></div>
+          <div class="prod-feat"><strong>ออกแบบตามสรีระ</strong><span>รองรับสมบูรณ์ นอนหลับสบายตลอดคืน</span></div>
+          <div class="prod-feat"><strong>รับประกันโครงสร้าง</strong><span>หมอน 1 ปี</span></div>
+          <div class="prod-feat"><strong>พร้อมกล่องพรีเมี่ยม</strong><span>สำหรับมอบเป็นของขวัญเพื่อสุขภาพ</span></div>
         </div>
       </div>
     </div>
@@ -628,35 +628,45 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
 
 <script>
 // ============ LANGUAGE TOGGLE ============
-let currentLang = localStorage.getItem('blook-lang') || 'th';
+(function(){
+  let currentLang = localStorage.getItem('blook-lang') || 'th';
+  let initialized = false;
 
-function initLanguage(){
-  const langBtn = document.getElementById('lang-toggle');
-  const langElements = document.querySelectorAll('[data-th][data-en]');
-
-  // Set initial state
-  if(currentLang === 'en'){
+  function applyLanguage(lang){
+    const langElements = document.querySelectorAll('[data-th][data-en]');
     langElements.forEach(el => {
-      el.innerHTML = el.dataset.en;
+      const txt = lang === 'th' ? el.dataset.th : el.dataset.en;
+      if(txt !== undefined) el.innerHTML = txt;
     });
-    if(langBtn) langBtn.textContent = 'TH';
+    const langBtn = document.getElementById('lang-toggle');
+    if(langBtn) langBtn.textContent = lang === 'th' ? 'EN' : 'TH';
   }
 
-  // Toggle on click
-  if(langBtn){
-    langBtn.addEventListener('click', ()=>{
+  function initLanguage(){
+    if(initialized) return;
+    initialized = true;
+
+    const langBtn = document.getElementById('lang-toggle');
+    if(!langBtn) return;
+
+    // Apply initial language
+    applyLanguage(currentLang);
+
+    // Single click handler
+    langBtn.addEventListener('click', function(e){
+      e.preventDefault();
       currentLang = currentLang === 'th' ? 'en' : 'th';
-      langElements.forEach(el => {
-        el.innerHTML = currentLang === 'th' ? el.dataset.th : el.dataset.en;
-      });
-      langBtn.textContent = currentLang === 'th' ? 'EN' : 'TH';
       localStorage.setItem('blook-lang', currentLang);
+      applyLanguage(currentLang);
     });
   }
-}
 
-document.addEventListener('DOMContentLoaded', initLanguage);
-setTimeout(initLanguage, 100);
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initLanguage);
+  } else {
+    initLanguage();
+  }
+})();
 
 gsap.registerPlugin(ScrollTrigger);
 
