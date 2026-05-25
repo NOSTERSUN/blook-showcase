@@ -198,13 +198,14 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   #admin-btn{font-size:1rem}
 }
 @media(max-width:768px){
-  nav{padding:0 20px;height:60px}
-  .nav-mark{font-size:1.6rem}
-  .nav-mark span{font-size:.5rem;letter-spacing:.25em}
-  .nav-links{gap:12px}
-  .nav-links a{font-size:.7rem;letter-spacing:.15em}
+  nav{padding:0 16px;height:60px}
+  .nav-mark{font-size:1.4rem}
+  .nav-mark span{font-size:.45rem;letter-spacing:.2em}
+  .nav-links{gap:10px}
+  .nav-links a{font-size:.65rem;letter-spacing:.12em}
   .nav-exp{display:none}
-  #admin-btn{font-size:.45rem;opacity:.6;color:var(--gold)}
+  #lang-toggle{font-size:.65rem!important;letter-spacing:.12em!important}
+  #admin-btn{font-size:.5rem!important;opacity:.7;color:#B8860B!important}
   .hero{padding:90px 20px 50px;min-height:90vh}
   .hero-title{font-size:clamp(2.2rem,8vw,3.5rem)}
   .hero-eyebrow{font-size:.65rem;letter-spacing:.35em}
@@ -235,13 +236,29 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   .foot-links{flex-wrap:wrap;justify-content:center;gap:16px}
 }
 @media(max-width:390px){
-  .hero-title{font-size:2rem}
-  .hero-desc{font-size:.9rem}
+  .hero-title{font-size:1.8rem;line-height:1.2}
+  .hero-desc{font-size:.85rem;padding:0 8px}
+  .hero-cta{padding:14px 24px;font-size:.7rem;width:100%;justify-content:center}
   .prod-name{font-size:1.5rem}
-  .reviews-grid{grid-template-columns:repeat(2,1fr)}
-  .social-chip{min-width:auto;padding:8px 12px;font-size:.72rem}
-  .nav-links a{font-size:.62rem;letter-spacing:.1em}
-  #admin-btn{font-size:.4rem;opacity:.6;color:var(--gold)}
+  .prod-desc{font-size:.88rem}
+  .prod-feat{padding:14px 16px}
+  .prod-feat strong{font-size:.92rem}
+  .prod-feat span{font-size:.75rem}
+  .reviews-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .social-row{gap:6px}
+  .social-chip{min-width:auto;padding:7px 11px;font-size:.7rem}
+  .social-chip svg{width:14px;height:14px}
+  .nav-mark{font-size:1.2rem}
+  .nav-mark span{font-size:.4rem}
+  .nav-links{gap:8px}
+  .nav-links a{font-size:.58rem;letter-spacing:.08em}
+  #lang-toggle{font-size:.58rem!important}
+  #admin-btn{font-size:.45rem!important;opacity:.7;color:#B8860B!important}
+  .line-btn{padding:12px 24px;font-size:.85rem}
+  .line-qr-img{width:120px;height:120px}
+  .contact-block h4{font-size:1rem}
+  .contact-addr{font-size:.78rem!important}
+  .sec-title{font-size:1.6rem}
 }
 </style>
 </head>
@@ -269,7 +286,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     <p class="hero-eyebrow" data-th="THE CLASS OF CALM" data-en="THE CLASS OF CALM">THE CLASS OF CALM</p>
     <h1 class="hero-title" data-th="พื้นที่แห่ง<br><em>การพักผ่อน</em>อย่างมีรสนิยม" data-en="A Sanctuary of<br><em>Refined Calm</em>">พื้นที่แห่ง<br><em>การพักผ่อน</em>อย่างมีรสนิยม</h1>
     <p class="hero-desc" data-th="BLOOK Living สร้างสรรค์ผลิตภัณฑ์เพื่อชีวิตที่ผ่อนคลายและหรูหรา ตั้งแต่หมอนเพื่อสุขภาพ โซฟา TOGO น้ำหอมบ้าน ไปจนถึงเซ็ทของขวัญ ทุกชิ้นออกแบบเพื่อนำความสงบและความหรูหราเข้าสู่ทุกมุมพักผ่อนของคุณ" data-en="BLOOK Living crafts products for a relaxed and luxurious life — from ergonomic pillows and TOGO sofas to home fragrances and gift sets. Every piece is designed to bring serenity and elegance into every corner of your retreat.">BLOOK Living สร้างสรรค์ผลิตภัณฑ์เพื่อชีวิตที่ผ่อนคลายและหรูหรา ตั้งแต่หมอนเพื่อสุขภาพ โซฟา TOGO น้ำหอมบ้าน ไปจนถึงเซ็ทของขวัญ ทุกชิ้นออกแบบเพื่อนำความสงบและความหรูหราเข้าสู่ทุกมุมพักผ่อนของคุณ</p>
-    <a href="#products" class="hero-cta" data-th="เลื่อนชมความหรูหรา" data-en="Explore Our Collection">
+    <a href="#products" class="hero-cta">
       <span data-th="เลื่อนชมความหรูหรา" data-en="Explore Our Collection">เลื่อนชมความหรูหรา</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
@@ -319,8 +336,8 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
         <p class="prod-desc">ก้านหอมปรับอากาศสไตล์อะโพเทคารี ระดับพรีเมียม ได้แรงบันดาลใจจากโรงแรมหรูชั้นนำระดับโลก กลิ่นหอมยาวนาน ไม่ระคายเคือง ดีไซน์สุดหรูเพื่อพื้นที่ที่ต้องการความสงบอีกระดับ</p>
         <div class="prod-features">
           <div class="prod-feat"><strong>ไม่ระคายเคือง</strong><span>สูตรปลอดภัย ผ่านการรับรอง</span></div>
-          <div class="prod-feat"><strong>3–4 สัปดาห์</strong><span>กลิ่นหอมยาวนาน</span></div>
-          <div class="prod-feat"><strong>20–30 ตร.ม.</strong><span>ครอบคลุมพื้นที่ห้อง</span></div>
+          <div class="prod-feat"><strong>4–5 เดือน</strong><span>กลิ่นหอมยาวนาน</span></div>
+          <div class="prod-feat"><strong>40–50 ตร.ม.</strong><span>ครอบคลุมพื้นที่ห้อง</span></div>
           <div class="prod-feat"><strong>4 กลิ่น</strong><span>คัดสรรระดับโรงแรม</span></div>
         </div>
         <div class="scent-section">
@@ -363,9 +380,9 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
         <p class="prod-desc">สูตรระดับโรงแรมเดียวกัน ในขวดแมตต์แบล็คขนาดกะทัดรัด เหมาะสำหรับโต๊ะทำงาน ห้องนอน และพื้นที่ส่วนตัว สร้างสรรค์ความสงบไปทุกที่</p>
         <div class="prod-features">
           <div class="prod-feat"><strong>4 กลิ่น</strong><span>คัดสรรระดับโรงแรม</span></div>
-          <div class="prod-feat"><strong>2–3 สัปดาห์</strong><span>กลิ่นหอมยาวนาน</span></div>
-          <div class="prod-feat"><strong>10–15 ตร.ม.</strong><span>ครอบคลุมพื้นที่</span></div>
-          <div class="prod-feat"><strong>พกพาสะดวก</strong><span>เหมาะสำหรับเดินทาง</span></div>
+          <div class="prod-feat"><strong>สัปดาห์</strong><span>กลิ่นหอมยาวนาน</span></div>
+          <div class="prod-feat"><strong>20–30 ตร.ม.</strong><span>ครอบคลุมพื้นที่</span></div>
+          <div class="prod-feat"><strong>พกพาสะดวก</strong><span>เหมาะสำหรับเดินทาง/ทดลองใช้</span></div>
         </div>
       </div>
     </div>
@@ -401,7 +418,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
           <div class="prod-feat"><strong>2 ขวด</strong><span>50 มล. x 2</span></div>
           <div class="prod-feat"><strong>คละกลิ่นได้</strong><span>เลือกตามใจชอบ</span></div>
           <div class="prod-feat"><strong>กล่องแม่เหล็ก</strong><span>แพ็คเกจพรีเมียม</span></div>
-          <div class="prod-feat"><strong>พร้อมมอบ</strong><span>สำหรับเป็นของขวัญ</span></div>
+          <div class="prod-feat"><strong>พร้อมมอบ</strong><span>สำหรับเป็นของขวัญสุดพิเศษ</span></div>
         </div>
       </div>
     </div>
@@ -463,8 +480,8 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
         <p class="prod-sub">มี 4 สีให้เลือก</p>
         <p class="prod-desc">สัมผัสความสมดุลแห่งสไตล์และความสะดวกสบาย คอลเลกชันโซฟาพรีเมียมของเรามี 4 สีสุดเนี้ยบ สร้างพื้นที่พักผ่อนในอุดมคติสำหรับช่วงเวลาแห่งความสงบ</p>
         <div class="prod-features">
-          <div class="prod-feat"><strong>4 สี</strong><span>น้ำตาล · ส้ม · ขาว · เหลือง</span></div>
-          <div class="prod-feat"><strong>คุณภาพสูง</strong><span>ผ้าพรีเมียม</span></div>
+          <div class="prod-feat"><strong>คุณภาพสูง</strong><span>ผ้าพรีเมียม / โครงสร้าง Pocket Spring</span></div>
+          <div class="prod-feat"><strong>รับประกันโครงสร้าง</strong><span>3 ปี</span></div>
           <div class="prod-feat"><strong>ดีไซน์พรีเมียม</strong><span>สไตล์หรูหรา</span></div>
           <div class="prod-feat"><strong>สะดวกสบายสูงสุด</strong><span>ออกแบบตามหลักสรีระ</span></div>
         </div>
