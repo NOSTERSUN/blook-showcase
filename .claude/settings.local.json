@@ -39,7 +39,14 @@
       "Bash(git commit -m 'Remove chatbot feature completely *)",
       "Bash(git commit -m 'Reduce hero section spacing without changing font sizes *)",
       "Bash(git commit -m 'Improve TOGO SOFA subtitle text \\(remove awkward number rendering\\) *)",
-      "Bash(git commit -m 'Redesign PDF document with Thai font support and BLOOK branding *)"
+      "Bash(git commit -m 'Redesign PDF document with Thai font support and BLOOK branding *)",
+      "Bash(PYTHONIOENCODING=utf-8 PYTHONUTF8=1 python -c ' *)",
+      "Bash(PYTHONIOENCODING=utf-8 PYTHONUTF8=1 python mark_duplicates.py)",
+      "Bash(PYTHONIOENCODING=utf-8 PYTHONUTF8=1 python mark_duplicates.py --write)",
+      "Bash(PYTHONIOENCODING=utf-8 PYTHONUTF8=1 python mark_duplicates.py --clean)",
+      "mcp__7deb0808-6732-4e0c-9ccf-c7ed9b98d487__search-designs",
+      "mcp__7deb0808-6732-4e0c-9ccf-c7ed9b98d487__export-design",
+      "Bash(git commit -m 'Add Company Profile PDF \\(from Canva\\) to admin page *)"
     ]
   }
 }
