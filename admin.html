@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Thai:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#111;--bg2:#1A1A1A;--bg3:#222;--gold:#C9A24D;--gold2:#E6C45A;--text:#F2F2F2;--dim:#999;--border:#333;--blue:#1E5AA8;--green:#2E7D32;--red:#8B0000;--orange:#E67E22}
@@ -32,26 +33,56 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .app-header h1{font-size:1.2rem;color:var(--gold);letter-spacing:.1em;font-weight:500}
 .app-header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
-/* -- COMPANY PROFILE VIEWER -- */
-#profile-viewer{position:fixed;inset:0;z-index:10000;background:rgba(10,10,10,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;flex-direction:column}
-#profile-viewer.open{display:flex;animation:pvFade .3s ease}
-@keyframes pvFade{from{opacity:0}to{opacity:1}}
-.pv-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:rgba(20,20,20,.9);border-bottom:1px solid var(--border);flex-shrink:0}
-.pv-title{display:flex;align-items:baseline;gap:14px}
-.pv-actions{display:flex;gap:10px;align-items:center}
-.pv-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:6px;font-size:.82rem;letter-spacing:.05em;cursor:pointer;text-decoration:none;font-family:inherit;transition:all .25s;border:none}
-.pv-dl{background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);color:#111;font-weight:500}
-.pv-dl:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(201,162,77,.35)}
-.pv-close{background:rgba(255,255,255,.08);color:var(--text);width:38px;height:38px;justify-content:center;padding:0}
-.pv-close:hover{background:rgba(255,255,255,.18)}
-.pv-scroll{flex:1;overflow-y:auto;padding:30px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:20px;scroll-behavior:smooth}
-.pv-scroll img{width:100%;max-width:1100px;height:auto;border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.5);background:#fff}
-.pv-pagenum{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(20,20,20,.85);color:var(--gold2);padding:6px 16px;border-radius:20px;font-size:.78rem;letter-spacing:.1em;border:1px solid var(--border);pointer-events:none}
+/* -- TAB NAVIGATION -- */
+.tab-nav{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tab-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--dim);font-size:.9rem;font-family:inherit;cursor:pointer;transition:all .25s;letter-spacing:.03em;margin-bottom:-1px}
+.tab-btn svg{width:17px;height:17px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--gold2);border-bottom-color:var(--gold)}
+.tab-panel{display:none;animation:tabFade .3s ease}
+.tab-panel.active{display:block}
+@keyframes tabFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* -- COMPANY PROFILE DECK -- */
+.profile-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.profile-deck{display:flex;flex-direction:column;gap:18px;align-items:center;max-height:calc(100vh - 240px);overflow-y:auto;padding:6px 4px 30px;scroll-behavior:smooth}
+.profile-deck img{width:100%;max-width:980px;height:auto;border-radius:8px;box-shadow:0 10px 36px rgba(0,0,0,.45);background:#fff;border:1px solid var(--border)}
+
+/* -- FINANCE DASHBOARD -- */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.kpi-card{background:linear-gradient(160deg,var(--bg2) 0%,var(--bg3) 100%);border:1px solid var(--border);border-radius:10px;padding:18px 20px;position:relative;overflow:hidden}
+.kpi-card.accent{border-color:var(--gold)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold)}
+.kpi-label{font-size:.76rem;color:var(--dim);letter-spacing:.05em;margin-bottom:8px}
+.kpi-value{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--gold2);font-weight:600;line-height:1}
+.kpi-sub{font-size:.68rem;color:var(--dim);margin-top:6px;letter-spacing:.08em;text-transform:uppercase}
+.ratio-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.ratio-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.ratio-num{display:block;font-size:1.5rem;font-weight:600;color:var(--text);font-family:'Playfair Display',serif;margin-bottom:6px}
+.ratio-lbl{font-size:.68rem;color:var(--dim);line-height:1.4}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px}
+.chart-card.wide{grid-column:1/-1}
+.chart-title{font-size:.84rem;color:var(--gold);letter-spacing:.06em;margin-bottom:16px;font-weight:600}
+.chart-card canvas{max-height:300px}
+.chart-card.wide canvas{max-height:340px}
+.stmt-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fin-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.fin-table td{padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.05);color:var(--text)}
+.fin-table td:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--dim)}
+.fin-table tr.sub td{color:var(--dim);padding-left:20px;font-size:.8rem}
+.fin-table tr.total td{font-weight:600;color:var(--gold2);border-top:1px solid var(--border);border-bottom:2px solid var(--border)}
+.fin-table tr.head td{color:var(--gold);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;padding-top:14px}
+
+@media(max-width:900px){
+  .kpi-grid,.ratio-strip{grid-template-columns:repeat(2,1fr)}
+  .chart-grid,.stmt-grid{grid-template-columns:1fr}
+}
 @media(max-width:768px){
-  .pv-bar{padding:12px 16px}
-  .pv-title span:last-child{display:none}
-  .pv-btn{padding:8px 14px;font-size:.76rem}
-  .pv-scroll{padding:16px 12px 50px;gap:14px}
+  .tab-btn{padding:12px 14px;font-size:.8rem}
+  .tab-btn svg{width:15px;height:15px}
+  .profile-deck{max-height:none}
+  .kpi-value{font-size:1.4rem}
 }
 .btn-home{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#111;padding:10px 18px;font-size:.78rem;letter-spacing:.1em;text-decoration:none;border-radius:6px;font-weight:600;transition:all .25s;border:1px solid var(--gold)}
 .btn-home:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 6px 16px rgba(201,162,77,.25)}
@@ -127,7 +158,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 <!-- LOGIN GATE -->
 <div id="login-gate">
   <div style="font-size:2rem;color:var(--gold);letter-spacing:.2em;margin-bottom:8px">BLOOK</div>
-  <h2 style="margin-bottom:24px">BKTAX Admin</h2>
+  <h2 style="margin-bottom:24px;font-size:1.1rem;letter-spacing:.2em;color:var(--gold);font-weight:500">ADMIN PORTAL</h2>
   <p style="color:var(--dim);font-size:.85rem;margin-bottom:24px">กรุณากรอกรหัสเข้าใช้งาน</p>
   <input type="password" id="pwd-input" placeholder="รหัสผ่าน" autofocus>
   <button onclick="checkLogin()">เข้าสู่ระบบ</button>
@@ -141,46 +172,127 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 <!-- MAIN APP -->
 <div id="app">
   <div class="app-header">
-    <h1>BKTAX V1 — Document System</h1>
+    <h1 style="display:flex;align-items:baseline;gap:12px"><span style="font-family:'Playfair Display',serif;letter-spacing:.18em;color:var(--gold2)">BLOOK</span><span style="font-size:.8rem;color:var(--dim);letter-spacing:.15em">ADMIN PORTAL</span></h1>
     <div class="app-header-actions">
       <a href="index.html" class="btn-home">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10"/></svg>
-        Home
-      </a>
-      <button onclick="openProfile()" class="btn-home" style="background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);color:#111;border:none;cursor:pointer;font-family:inherit">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Company Profile
-      </button>
-      <a href="Company%20Profile/BLOOK_Company_Profile.pdf" download="BLOOK_Company_Profile.pdf" class="btn-home" style="background:transparent;color:var(--gold);border:1px solid var(--gold)" title="ดาวน์โหลด PDF">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-        Download
-      </a>
-      <a href="about.html" class="btn-home" style="background:transparent;color:var(--dim);border:1px solid var(--border)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        ย้อนกลับ
+        หน้าหลัก
       </a>
     </div>
   </div>
 
-  <!-- COMPANY PROFILE VIEWER (scrollable presentation) -->
-  <div id="profile-viewer">
-    <div class="pv-bar">
-      <div class="pv-title">
-        <span style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold2);letter-spacing:.1em">BLOOK</span>
-        <span style="font-size:.78rem;color:var(--dim);letter-spacing:.15em">COMPANY PROFILE</span>
+  <!-- TAB NAVIGATION -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="profile" onclick="switchTab('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Company Profile
+    </button>
+    <button class="tab-btn" data-tab="finance" onclick="switchTab('finance')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/></svg>
+      งบการเงิน
+    </button>
+    <button class="tab-btn" data-tab="bktax" onclick="switchTab('bktax')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      BKTAX · เอกสาร
+    </button>
+  </div>
+
+  <!-- ============ TAB 1: COMPANY PROFILE ============ -->
+  <div id="tab-profile" class="tab-panel active">
+    <div class="profile-head">
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.3em;color:var(--gold);margin-bottom:4px">PRESENTATION</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--text)">Company Profile</div>
       </div>
-      <div class="pv-actions">
-        <a href="Company%20Profile/BLOOK_Company_Profile.pdf" download="BLOOK_Company_Profile.pdf" class="pv-btn pv-dl">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          ดาวน์โหลด PDF
-        </a>
-        <button class="pv-btn pv-close" onclick="closeProfile()" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
+      <a href="Company%20Profile/BLOOK_Company_Profile.pdf" download="BLOOK_Company_Profile.pdf" class="btn-home" style="background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);color:#111;border:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        ดาวน์โหลด PDF
+      </a>
+    </div>
+    <div class="profile-deck" id="profile-deck"></div>
+  </div>
+
+  <!-- ============ TAB 2: งบการเงิน (FINANCIAL DASHBOARD) ============ -->
+  <div id="tab-finance" class="tab-panel">
+    <div class="profile-head">
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.3em;color:var(--gold);margin-bottom:4px">ANNUAL REPORT · ปีบัญชี 2568</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--text)">งบการเงิน — บริษัท บลู๊ค ลิฟวิ่ง จำกัด</div>
+        <div style="font-size:.78rem;color:var(--dim);margin-top:4px">รอบบัญชีแรก: 26 ก.ค. 2568 (วันจดทะเบียน) — 31 ธ.ค. 2568</div>
+      </div>
+      <a href="งบการเงิน/งบการเงิน บจ.บลู๊ค ลิฟวิ่ง 68 - Draft.pdf" download class="btn-home" style="background:transparent;color:var(--gold);border:1px solid var(--gold)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        งบการเงินฉบับเต็ม (PDF)
+      </a>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">รวมสินทรัพย์</div>
+        <div class="kpi-value">฿810,783</div>
+        <div class="kpi-sub">Total Assets</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">ส่วนของผู้ถือหุ้น</div>
+        <div class="kpi-value">฿787,042</div>
+        <div class="kpi-sub">Shareholders' Equity</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">หนี้สินรวม</div>
+        <div class="kpi-value">฿23,741</div>
+        <div class="kpi-sub">Total Liabilities</div>
+      </div>
+      <div class="kpi-card accent">
+        <div class="kpi-label">ทุนจดทะเบียน</div>
+        <div class="kpi-value">฿1,000,000</div>
+        <div class="kpi-sub">Paid-up Capital · 1,000 หุ้น</div>
       </div>
     </div>
-    <div class="pv-scroll" id="pv-scroll"></div>
+
+    <!-- HEALTH RATIOS -->
+    <div class="ratio-strip">
+      <div class="ratio-item"><span class="ratio-num">31.2×</span><span class="ratio-lbl">อัตราส่วนสภาพคล่อง<br>Current Ratio</span></div>
+      <div class="ratio-item"><span class="ratio-num">97.1%</span><span class="ratio-lbl">ส่วนของผู้ถือหุ้น/สินทรัพย์<br>Equity Ratio</span></div>
+      <div class="ratio-item"><span class="ratio-num">0.03×</span><span class="ratio-lbl">หนี้สิน/ทุน<br>Debt-to-Equity</span></div>
+      <div class="ratio-item"><span class="ratio-num">฿740K</span><span class="ratio-lbl">สินทรัพย์หมุนเวียน<br>Current Assets</span></div>
+    </div>
+
+    <!-- CHARTS GRID -->
+    <div class="chart-grid">
+      <div class="chart-card">
+        <div class="chart-title">โครงสร้างสินทรัพย์ · Asset Composition</div>
+        <canvas id="chart-assets"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">งบดุล · Balance Sheet Structure</div>
+        <canvas id="chart-balance"></canvas>
+      </div>
+      <div class="chart-card wide">
+        <div class="chart-title">ค่าใช้จ่ายในการบริหาร · Administrative Expenses (฿217,034)</div>
+        <canvas id="chart-expenses"></canvas>
+      </div>
+    </div>
+
+    <!-- STATEMENTS TABLES -->
+    <div class="stmt-grid">
+      <div class="panel">
+        <div class="panel-title">งบแสดงฐานะการเงิน · Balance Sheet</div>
+        <table class="fin-table" id="fin-balance"></table>
+      </div>
+      <div class="panel">
+        <div class="panel-title">งบกำไรขาดทุน · Income Statement</div>
+        <table class="fin-table" id="fin-income"></table>
+      </div>
+    </div>
+
+    <p style="font-size:.72rem;color:var(--dim);margin-top:14px;text-align:center;letter-spacing:.05em">
+      * เอกสารฉบับร่าง (DRAFT) · ตัวเลขจากงบการเงินที่จัดทำโดยผู้สอบบัญชีรับอนุญาต · หน่วย: บาท
+    </p>
   </div>
+
+  <!-- ============ TAB 3: BKTAX (DOCUMENT SYSTEM) ============ -->
+  <div id="tab-bktax" class="tab-panel">
 
   <!-- COMPANY + DOCUMENT -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
@@ -350,6 +462,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     <button class="btn btn-primary" onclick="newForm()">New</button>
     <button class="btn btn-danger" onclick="savePDF()">Save PDF</button>
   </div>
+
+  </div><!-- /tab-bktax -->
 </div>
 
 <script>
@@ -427,41 +541,126 @@ document.getElementById('pwd-input').addEventListener('keydown',e=>{
   if(e.key==='Enter') checkLogin();
 });
 
-// ============ COMPANY PROFILE VIEWER ============
+// ============ TAB SYSTEM ============
 const PROFILE_PAGES = 10;
-let profileLoaded = false;
-function openProfile(){
-  const viewer = document.getElementById('profile-viewer');
-  const scroll = document.getElementById('pv-scroll');
-  if(!profileLoaded){
-    let html = '';
-    for(let i=1; i<=PROFILE_PAGES; i++){
-      html += `<img src="assets/company-profile/${i}.jpg" alt="BLOOK Company Profile - หน้า ${i}" loading="lazy">`;
-    }
-    html += '<div class="pv-pagenum" id="pv-pagenum">หน้า 1 / '+PROFILE_PAGES+'</div>';
-    scroll.innerHTML = html;
-    profileLoaded = true;
-    // Track page number on scroll
-    const imgs = scroll.querySelectorAll('img');
-    const pageLabel = document.getElementById('pv-pagenum');
-    scroll.addEventListener('scroll', ()=>{
-      const mid = scroll.scrollTop + scroll.clientHeight/2;
-      let cur = 1;
-      imgs.forEach((img,idx)=>{ if(img.offsetTop <= mid) cur = idx+1; });
-      pageLabel.textContent = `หน้า ${cur} / ${PROFILE_PAGES}`;
-    });
+let profileLoaded = false, financeRendered = false;
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+  if(tab==='profile') loadProfileDeck();
+  if(tab==='finance') renderFinance();
+}
+
+function loadProfileDeck(){
+  if(profileLoaded) return;
+  const deck = document.getElementById('profile-deck');
+  let html='';
+  for(let i=1;i<=PROFILE_PAGES;i++){
+    html += `<img src="assets/company-profile/${i}.jpg" alt="Company Profile หน้า ${i}" loading="lazy">`;
   }
-  viewer.classList.add('open');
-  scroll.scrollTop = 0;
-  document.body.style.overflow = 'hidden';
+  deck.innerHTML = html;
+  profileLoaded = true;
 }
-function closeProfile(){
-  document.getElementById('profile-viewer').classList.remove('open');
-  document.body.style.overflow = '';
+
+// ============ FINANCIAL DASHBOARD ============
+const GOLD='#C9A24D', GOLD2='#E6C45A', BLUE='#5B8FC9', GREEN='#4CAF7D', RED='#D9646E', DIM='#999', GRID='rgba(255,255,255,.06)';
+const baht = v => '฿'+v.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+
+const FIN = {
+  assets:[
+    ['สินค้าคงเหลือ', 449250.75],
+    ['ลูกหนี้หมุนเวียนอื่น', 162293.25],
+    ['เงินให้กู้ยืมระยะสั้น', 69000.00],
+    ['สินทรัพย์หมุนเวียนอื่น', 39670.56],
+    ['อุปกรณ์ (สุทธิ)', 35995.22],
+    ['สินทรัพย์ไม่หมุนเวียนอื่น', 34500.00],
+    ['เงินสดและรายการเทียบเท่า', 20073.31]
+  ],
+  expenses:[
+    ['ค่าเช่าสำนักงาน', 57500.00],
+    ['ค่าขนส่ง', 57338.05],
+    ['ค่าวัสดุอุปกรณ์', 44058.30],
+    ['ค่าธรรมเนียมจดจัดตั้ง', 14000.00],
+    ['ค่าตรวจสอบบัญชี', 9000.00],
+    ['ค่าจ้างและบริการ', 7098.00],
+    ['ค่าอบรมสัมมนา', 4500.00],
+    ['ค่าบริการทำบัญชี', 4400.00],
+    ['ค่าใช้จ่ายเบ็ดเตล็ด', 4269.70],
+    ['ค่าบริการระบบ', 4072.31],
+    ['ค่าไฟฟ้า', 1956.71],
+    ['อื่นๆ', 8840.68]
+  ]
+};
+
+function renderFinance(){
+  if(financeRendered) return;
+  financeRendered = true;
+  Chart.defaults.color = DIM;
+  Chart.defaults.font.family = "'Inter','Noto Sans Thai',sans-serif";
+
+  // Asset donut
+  new Chart(document.getElementById('chart-assets'), {
+    type:'doughnut',
+    data:{labels:FIN.assets.map(a=>a[0]),datasets:[{data:FIN.assets.map(a=>a[1]),
+      backgroundColor:[GOLD,GOLD2,BLUE,GREEN,'#C98F5B','#8B7BC9','#5BC9C0'],borderColor:'#1A1A1A',borderWidth:2}]},
+    options:{plugins:{legend:{position:'right',labels:{boxWidth:12,padding:8,font:{size:11}}}},cutout:'58%'}
+  });
+
+  // Balance sheet stacked bar
+  new Chart(document.getElementById('chart-balance'), {
+    type:'bar',
+    data:{labels:['สินทรัพย์','หนี้สิน + ทุน'],datasets:[
+      {label:'สินทรัพย์หมุนเวียน',data:[740287.87,0],backgroundColor:GOLD},
+      {label:'สินทรัพย์ไม่หมุนเวียน',data:[70495.22,0],backgroundColor:GOLD2},
+      {label:'หนี้สิน',data:[0,23740.91],backgroundColor:RED},
+      {label:'ทุน + กำไรสะสม',data:[0,787042.18],backgroundColor:GREEN}
+    ]},
+    options:{plugins:{legend:{position:'bottom',labels:{boxWidth:11,padding:8,font:{size:10}}}},
+      scales:{x:{stacked:true,grid:{color:GRID}},y:{stacked:true,grid:{color:GRID},ticks:{callback:v=>'฿'+(v/1000)+'K'}}}}
+  });
+
+  // Expenses horizontal bar
+  new Chart(document.getElementById('chart-expenses'), {
+    type:'bar',
+    data:{labels:FIN.expenses.map(e=>e[0]),datasets:[{data:FIN.expenses.map(e=>e[1]),
+      backgroundColor:FIN.expenses.map((_,i)=>i<3?GOLD:GOLD2),borderRadius:4}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>baht(c.parsed.x)}}},
+      scales:{x:{grid:{color:GRID},ticks:{callback:v=>'฿'+(v/1000)+'K'}},y:{grid:{display:false},ticks:{font:{size:10}}}}}
+  });
+
+  // Balance sheet table
+  document.getElementById('fin-balance').innerHTML = `
+    <tr class="head"><td colspan="2">สินทรัพย์ · Assets</td></tr>
+    <tr class="sub"><td>เงินสดและรายการเทียบเท่าเงินสด</td><td>20,073.31</td></tr>
+    <tr class="sub"><td>ลูกหนี้หมุนเวียนอื่น</td><td>162,293.25</td></tr>
+    <tr class="sub"><td>เงินให้กู้ยืมระยะสั้น</td><td>69,000.00</td></tr>
+    <tr class="sub"><td>สินค้าคงเหลือ</td><td>449,250.75</td></tr>
+    <tr class="sub"><td>สินทรัพย์หมุนเวียนอื่น</td><td>39,670.56</td></tr>
+    <tr class="sub"><td>อุปกรณ์ (สุทธิ)</td><td>35,995.22</td></tr>
+    <tr class="sub"><td>สินทรัพย์ไม่หมุนเวียนอื่น</td><td>34,500.00</td></tr>
+    <tr class="total"><td>รวมสินทรัพย์</td><td>810,783.09</td></tr>
+    <tr class="head"><td colspan="2">หนี้สินและส่วนของผู้ถือหุ้น</td></tr>
+    <tr class="sub"><td>เจ้าหนี้หมุนเวียนอื่น</td><td>23,740.91</td></tr>
+    <tr class="sub"><td>ทุนจดทะเบียนและชำระแล้ว</td><td>1,000,000.00</td></tr>
+    <tr class="sub"><td>ขาดทุนสะสม</td><td>(212,957.82)</td></tr>
+    <tr class="total"><td>รวมหนี้สินและส่วนของผู้ถือหุ้น</td><td>810,783.09</td></tr>`;
+
+  // Income statement table
+  document.getElementById('fin-income').innerHTML = `
+    <tr class="head"><td colspan="2">รายได้ · Revenue</td></tr>
+    <tr class="sub"><td>รายได้อื่น</td><td>4,075.93</td></tr>
+    <tr class="total"><td>รวมรายได้</td><td>4,075.93</td></tr>
+    <tr class="head"><td colspan="2">ค่าใช้จ่าย · Expenses</td></tr>
+    <tr class="sub"><td>ค่าใช้จ่ายในการบริหาร</td><td>217,033.75</td></tr>
+    <tr class="total"><td>รวมค่าใช้จ่าย</td><td>217,033.75</td></tr>
+    <tr class="head"><td colspan="2">ผลการดำเนินงาน</td></tr>
+    <tr class="sub"><td>ต้นทุนทางการเงิน</td><td>-</td></tr>
+    <tr class="sub"><td>ภาษีเงินได้นิติบุคคล</td><td>-</td></tr>
+    <tr class="total"><td>ขาดทุนสุทธิ</td><td style="color:#D9646E">(212,957.82)</td></tr>`;
 }
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape') closeProfile();
-});
 
 // ============ APP INIT ============
 let rowCount = 0;
@@ -474,6 +673,7 @@ function initApp(){
   addRow();
   applyDefaultNote();
   recalc();
+  loadProfileDeck(); // default tab = Company Profile
 }
 
 function makeDocNo(){

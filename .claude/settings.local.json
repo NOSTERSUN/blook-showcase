@@ -46,7 +46,16 @@
       "Bash(PYTHONIOENCODING=utf-8 PYTHONUTF8=1 python mark_duplicates.py --clean)",
       "mcp__7deb0808-6732-4e0c-9ccf-c7ed9b98d487__search-designs",
       "mcp__7deb0808-6732-4e0c-9ccf-c7ed9b98d487__export-design",
-      "Bash(git commit -m 'Add Company Profile PDF \\(from Canva\\) to admin page *)"
+      "Bash(git commit -m 'Add Company Profile PDF \\(from Canva\\) to admin page *)",
+      "Bash(curl -sI \"https://blookliving.com/Company%20Profile/BLOOK_Company_Profile.pdf\")",
+      "Bash(awk '{printf \"%.1f MB\\\\n\", $2/1024/1024}')",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' https://blookliving.com/assets/company-profile/__TRACKED_VAR__.jpg)",
+      "Bash(python -c ' *)",
+      "Bash(grep -n 'id=\"app\"\\\\|<!-- \\\\|class=\"actions\"\\\\|savePDF\\(\\)\\\\|<script>\\\\|</div>$\\\\|btn-row\\\\|TOTALS\\\\|totals' admin.html)",
+      "Bash(grep -n 'savePDF\\(\\)\\\\|<!-- ACTIONS\\\\|newForm\\(\\)\\\\|id=\"app\"\\\\|^<script>\\\\|</div>\\\\s*$' admin.html)",
+      "Bash(sed -n '40,70p')",
+      "Bash(sed -n '320,345p' admin.html)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }
