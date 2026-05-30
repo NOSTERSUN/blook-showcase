@@ -129,6 +129,44 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .swatch-white{background:#E8E4DF;border-color:#ccc}
 .swatch-yellow{background:#D4B84D}
 
+/* -- SOFA GALLERY -- */
+.sofa-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+.sofa-gallery img{width:100%;aspect-ratio:1.3/1;object-fit:cover;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:all .3s}
+.sofa-gallery img:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 8px 24px rgba(184,134,11,.15)}
+.sofa-gallery-label{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin:24px 0 -6px}
+
+/* -- LIGHTBOX -- */
+#lightbox{position:fixed;inset:0;z-index:10000;background:rgba(10,8,6,.94);display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out}
+#lightbox.open{display:flex;animation:lbFade .25s ease}
+@keyframes lbFade{from{opacity:0}to{opacity:1}}
+#lightbox img{max-width:92%;max-height:92%;object-fit:contain;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+#lightbox .lb-close{position:absolute;top:20px;right:26px;color:#fff;font-size:2rem;cursor:pointer;opacity:.7;line-height:1}
+#lightbox .lb-close:hover{opacity:1}
+#lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.8rem;cursor:pointer;transition:all .2s}
+#lightbox .lb-nav:hover{background:var(--gold)}
+#lightbox .lb-prev{left:24px}
+#lightbox .lb-next{right:24px}
+
+/* -- FLOATING CONTACT FAB -- */
+.contact-fab{position:fixed;right:26px;bottom:26px;z-index:9000;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.fab-actions{display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.contact-fab.open .fab-actions{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.fab-item{display:flex;align-items:center;gap:10px;text-decoration:none;justify-content:flex-end}
+.fab-item .fab-tag{background:#fff;color:var(--primary);font-size:.78rem;font-weight:500;padding:7px 12px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.12);white-space:nowrap}
+.fab-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.2);flex-shrink:0;transition:transform .2s}
+.fab-icon:hover{transform:scale(1.1)}
+.fab-icon svg{width:23px;height:23px;fill:#fff}
+.fab-call{background:#2E7D32}
+.fab-line{background:#06C755}
+.fab-fb{background:#0084FF}
+.fab-toggle{width:60px;height:60px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(184,134,11,.4);transition:all .3s}
+.fab-toggle:hover{background:var(--gold-dim)}
+.fab-toggle svg{width:28px;height:28px;fill:#fff;transition:transform .3s}
+.contact-fab.open .fab-toggle{background:var(--primary)}
+.contact-fab.open .fab-toggle .fab-open-ic{display:none}
+.fab-close-ic{display:none}
+.contact-fab.open .fab-toggle .fab-close-ic{display:block}
+
 /* -- E-COMMERCE STANDALONE -- */
 .ecommerce{padding:50px 60px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
 .ecommerce .shop-grid{margin-top:0}
@@ -477,6 +515,13 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
           <button class="color-swatch swatch-white" data-sofa-color="white" title="ขาว"></button>
           <button class="color-swatch swatch-yellow" data-sofa-color="yellow" title="เหลือง"></button>
         </div>
+        <p class="sofa-gallery-label" data-th="แกลเลอรี" data-en="Gallery">แกลเลอรี</p>
+        <div class="sofa-gallery">
+          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg" alt="TOGO Sofa gallery 1" loading="lazy" onclick="openLightbox(0)">
+          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg" alt="TOGO Sofa gallery 2" loading="lazy" onclick="openLightbox(1)">
+          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg" alt="TOGO Sofa gallery 3" loading="lazy" onclick="openLightbox(2)">
+          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg" alt="TOGO Sofa gallery 4" loading="lazy" onclick="openLightbox(3)">
+        </div>
       </div>
       <div class="product-info">
         <p class="prod-eyebrow">Sofa · Premium</p>
@@ -615,6 +660,36 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     </div>
   </div>
 </section>
+
+<!-- LIGHTBOX (Sofa gallery) -->
+<div id="lightbox" onclick="if(event.target.id==='lightbox')closeLightbox()">
+  <span class="lb-close" onclick="closeLightbox()">&times;</span>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">&#8249;</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lb-nav lb-next" onclick="lbNav(1)">&#8250;</button>
+</div>
+
+<!-- FLOATING CONTACT BUTTON -->
+<div class="contact-fab" id="contact-fab">
+  <div class="fab-actions">
+    <a class="fab-item" href="tel:+66937364796">
+      <span class="fab-tag" data-th="โทรหาเรา" data-en="Call us">โทรหาเรา</span>
+      <span class="fab-icon fab-call"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span>
+    </a>
+    <a class="fab-item" href="https://line.me/R/ti/p/@blookliving" target="_blank" rel="noopener">
+      <span class="fab-tag" data-th="แอด LINE" data-en="Add LINE">แอด LINE</span>
+      <span class="fab-icon fab-line"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg></span>
+    </a>
+    <a class="fab-item" href="https://m.me/61587451205315" target="_blank" rel="noopener">
+      <span class="fab-tag" data-th="ทักแชท Facebook" data-en="Message Facebook">ทักแชท Facebook</span>
+      <span class="fab-icon fab-fb"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.13 2 11.23c0 2.9 1.36 5.49 3.5 7.19V22l3.2-1.76c.85.24 1.76.36 2.7.36 5.52 0 10-4.13 10-9.23S17.52 2 12 2zm1.01 12.43l-2.55-2.72-4.97 2.72 5.47-5.81 2.61 2.72 4.91-2.72-5.47 5.81z"/></svg></span>
+    </a>
+  </div>
+  <button class="fab-toggle" id="fab-toggle" aria-label="ติดต่อเรา" onclick="document.getElementById('contact-fab').classList.toggle('open')">
+    <svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+    <svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+  </button>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -773,6 +848,19 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     const target=document.querySelector(a.getAttribute('href'));
     if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
   });
+});
+
+// ============ SOFA GALLERY LIGHTBOX ============
+const SOFA_GALLERY=['assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg'];
+let lbIdx=0;
+function openLightbox(i){lbIdx=i;document.getElementById('lightbox-img').src=SOFA_GALLERY[i];document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+function lbNav(d){if(window.event)window.event.stopPropagation();lbIdx=(lbIdx+d+SOFA_GALLERY.length)%SOFA_GALLERY.length;document.getElementById('lightbox-img').src=SOFA_GALLERY[lbIdx];}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('open'))return;
+  if(e.key==='Escape')closeLightbox();
+  if(e.key==='ArrowLeft')lbNav(-1);
+  if(e.key==='ArrowRight')lbNav(1);
 });
 </script>
 </body>

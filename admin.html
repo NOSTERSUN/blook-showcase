@@ -171,6 +171,10 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .form-group label{font-size:.75rem;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
 .form-group input,.form-group select,.form-group textarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:10px 12px;font-size:.9rem;border-radius:3px;font-family:inherit}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold)}
+/* Fields awaiting admin input — lighter shade + subtle gold cue */
+.form-group input.await,.form-group select.await{background:#34302a;border-color:rgba(201,162,77,.35)}
+.form-group input.await::placeholder{color:#a99b86}
+.form-group input.await:focus,.form-group select.await:focus{background:#3a352d;border-color:var(--gold)}
 .form-group select{cursor:pointer}
 .form-group textarea{resize:vertical;min-height:100px;line-height:1.6}
 
@@ -305,6 +309,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
           <option value="2568">ปีบัญชี 2568</option>
           <option value="2569">ปีบัญชี 2569</option>
           <option value="2570">ปีบัญชี 2570</option>
+          <option value="2571">ปีบัญชี 2571</option>
+          <option value="2572">ปีบัญชี 2572</option>
         </select>
         <button id="fin-summary-btn" class="btn-summary" onclick="renderSummary()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/></svg>
@@ -357,7 +363,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         </div>
         <div class="form-group">
           <label>ผู้ขาย</label>
-          <select id="seller" onchange="onSellerChange()">
+          <select id="seller" class="await" onchange="onSellerChange()">
             <option value="">-- เลือก --</option>
             <option value="Sawarin Porjai" data-tel="096-247-8745">Sawarin Porjai</option>
             <option value="Wongsatorn Somtana" data-tel="082-484-0926">Wongsatorn Somtana</option>
@@ -371,7 +377,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         </div>
         <div class="form-group">
           <label>ชื่องาน</label>
-          <input type="text" id="job-name" placeholder="(ถ้ามี)">
+          <input type="text" id="job-name" class="await" placeholder="(ถ้ามี)">
         </div>
       </div>
     </div>
@@ -383,21 +389,21 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     <div class="form-row">
       <div class="form-group" style="flex:2">
         <label>Customer Name</label>
-        <input type="text" id="cust-name">
+        <input type="text" id="cust-name" class="await">
       </div>
       <div class="form-group">
         <label>VAT No</label>
-        <input type="text" id="cust-vat">
+        <input type="text" id="cust-vat" class="await">
       </div>
     </div>
     <div class="form-row">
       <div class="form-group" style="flex:3">
         <label>Address</label>
-        <input type="text" id="cust-addr">
+        <input type="text" id="cust-addr" class="await">
       </div>
       <div class="form-group">
         <label>E-mail</label>
-        <input type="text" id="cust-email">
+        <input type="text" id="cust-email" class="await">
       </div>
     </div>
   </div>
@@ -808,6 +814,7 @@ function renderFinance(year){
 
 // ---- Key financials comparison summary (SET style) ----
 function yearMetrics(D){
+  if(!D) return {eps:null, roa:null, roe:null, margin:null};
   return {
     eps: D.netProfit / D.shares,
     roa: D.totalAssets ? D.netProfit / D.totalAssets * 100 : null,
@@ -815,26 +822,30 @@ function yearMetrics(D){
     margin: (D.revenue && D.revenue > D.expensesTotal*0.3) ? D.netProfit / D.revenue * 100 : null
   };
 }
+// Fixed 5-year comparison span (blank columns ready for future statements)
+const SUMMARY_YEARS = ['2568','2569','2570','2571','2572'];
 function renderSummary(){
   const sb=document.getElementById('fin-summary-btn'); if(sb) sb.classList.add('active');
   destroyCharts();
   document.getElementById('fin-eyebrow').textContent = 'KEY FINANCIALS · ผลประกอบการสำคัญ (เปรียบเทียบรายปี)';
   document.getElementById('fin-period').textContent = 'หน่วย: บาท · เลือกปีจากเมนูเพื่อกลับสู่แดชบอร์ดรายปี';
 
-  const years = Object.keys(FIN_YEARS).sort();
-  const last = years.length-1;
+  const years = SUMMARY_YEARS;
+  // Highlight the latest year that actually has data
+  let last = -1; years.forEach((y,i)=>{ if(FIN_YEARS[y]) last=i; });
   const num = v => v==null?'—':(v<0?'('+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+')':v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}));
-  const pct = v => v==null?'n/m':v.toFixed(2)+'%';
+  const pct = v => v==null?'—':v.toFixed(2)+'%';
   const cls = i => i===last?' class="col-latest"':'';
-  const M = years.map(y=>yearMetrics(FIN_YEARS[y]));
+  const G = years.map(y=>FIN_YEARS[y]||null);
+  const M = G.map(d=>yearMetrics(d));
+  const val = (d,key)=> d ? d[key] : null;
   const row = (label,vals,neg,isPct)=>{
     const isNeg = neg && vals.some(v=>v!=null&&v<0);
     return `<tr${isNeg?' class="neg"':''}><td class="metric">${label}</td>`+
       vals.map((v,i)=>`<td${cls(i)}>${isPct?pct(v):num(v)}</td>`).join('')+`</tr>`;
   };
   const colHead = years.map((y,i)=>`<th${cls(i)}>ปีบัญชี ${y}</th>`).join('');
-  const periodRow = `<tr><td class="metric">งวดบัญชี</td>`+years.map((y,i)=>`<td${cls(i)} style="font-size:.7rem;color:var(--dim);font-weight:400">${FIN_YEARS[y].periodShort||('สิ้นปี '+y)}</td>`).join('')+`</tr>`;
-  const G = years.map(y=>FIN_YEARS[y]);
+  const periodRow = `<tr><td class="metric">งวดบัญชี</td>`+years.map((y,i)=>`<td${cls(i)} style="font-size:.68rem;color:var(--dim);font-weight:400">${FIN_YEARS[y]?(FIN_YEARS[y].periodShort||('สิ้นปี '+y)):'รอปิดงบ'}</td>`).join('')+`</tr>`;
 
   document.getElementById('fin-body').innerHTML = `
     <div class="summary-wrap">
@@ -843,12 +854,12 @@ function renderSummary(){
       <tbody>
         ${periodRow}
         <tr class="sec"><td colspan="${years.length+1}">บัญชีทางการเงินที่สำคัญ</td></tr>
-        ${row('สินทรัพย์รวม', G.map(d=>d.totalAssets))}
-        ${row('หนี้สินรวม', G.map(d=>d.liabilities))}
-        ${row('ส่วนของผู้ถือหุ้น', G.map(d=>d.equity))}
-        ${row('ทุนที่ชำระแล้ว', G.map(d=>d.capital))}
-        ${row('รายได้รวม', G.map(d=>d.revenue))}
-        ${row('กำไร (ขาดทุน) สุทธิ', G.map(d=>d.netProfit), true)}
+        ${row('สินทรัพย์รวม', G.map(d=>val(d,'totalAssets')))}
+        ${row('หนี้สินรวม', G.map(d=>val(d,'liabilities')))}
+        ${row('ส่วนของผู้ถือหุ้น', G.map(d=>val(d,'equity')))}
+        ${row('ทุนที่ชำระแล้ว', G.map(d=>val(d,'capital')))}
+        ${row('รายได้รวม', G.map(d=>val(d,'revenue')))}
+        ${row('กำไร (ขาดทุน) สุทธิ', G.map(d=>val(d,'netProfit')), true)}
         ${row('กำไรต่อหุ้น (บาท)', M.map(m=>m.eps), true)}
         <tr class="sec"><td colspan="${years.length+1}">อัตราส่วนทางการเงินที่สำคัญ</td></tr>
         ${row('ROA (%)', M.map(m=>m.roa), true, true)}
@@ -858,7 +869,7 @@ function renderSummary(){
     </table>
     </div>
     <p style="font-size:.72rem;color:var(--dim);margin-top:12px;text-align:center;letter-spacing:.03em">
-      * คำนวณจากงบการเงินแต่ละปี · ปีล่าสุดไฮไลต์สีทอง · n/m = อัตราส่วนยังไม่มีนัยสำคัญ (รายได้ในช่วงเริ่มต้นกิจการ) · ( ) = ค่าติดลบ
+      * เปรียบเทียบ 5 ปีบัญชี · ปีที่ปิดงบแล้วไฮไลต์สีทอง · “—” = ยังไม่มีข้อมูล (รอปิดงบ) · ( ) = ค่าติดลบ
     </p>`;
 }
 
