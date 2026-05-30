@@ -52,9 +52,15 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 @keyframes tabFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* -- COMPANY PROFILE DECK -- */
-.profile-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:20px;flex-wrap:wrap}
-.profile-deck{display:flex;flex-direction:column;gap:18px;align-items:center;max-height:calc(100vh - 240px);overflow-y:auto;padding:6px 4px 30px;scroll-behavior:smooth}
-.profile-deck img{width:100%;max-width:980px;height:auto;border-radius:8px;box-shadow:0 10px 36px rgba(0,0,0,.45);background:#fff;border:1px solid var(--border)}
+.profile-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+/* Slide stage — fit each slide fully (contain), minimal floating controls */
+.profile-stage{position:relative;display:flex;align-items:center;justify-content:center;height:calc(100vh - 168px);background:#0d0d0d;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+#profile-slide{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;border-radius:3px}
+.slide-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:rgba(160,160,160,.12);border:1px solid rgba(200,200,200,.18);color:#ccc;font-size:1.7rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;z-index:5;backdrop-filter:blur(4px);padding-bottom:3px}
+.slide-nav:hover{background:rgba(201,162,77,.9);color:#111;border-color:transparent}
+.slide-nav.prev{left:14px}
+.slide-nav.next{right:14px}
+.slide-count{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(15,15,15,.78);color:var(--gold2);padding:4px 14px;border-radius:14px;font-size:.74rem;letter-spacing:.12em;border:1px solid var(--border);pointer-events:none}
 
 /* -- FINANCE DASHBOARD -- */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
@@ -96,11 +102,6 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .btn-dl svg{width:14px;height:14px;flex-shrink:0}
 
 /* -- COMPANY PROFILE full-width + scroll button -- */
-.profile-wrap{position:relative}
-.profile-deck.full img{max-width:100%}
-.scroll-down-btn{position:fixed;right:28px;bottom:28px;width:46px;height:46px;border-radius:50%;background:rgba(180,180,180,.14);border:1px solid rgba(200,200,200,.2);color:#bbb;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;z-index:50;backdrop-filter:blur(4px)}
-.scroll-down-btn:hover{background:rgba(200,200,200,.25);color:#fff}
-.scroll-down-btn svg{width:20px;height:20px}
 
 /* -- FINANCIAL ANALYST TOOLTIP -- */
 [data-tip]{cursor:help}
@@ -115,11 +116,26 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .v-watch{background:rgba(230,196,90,.16);color:var(--gold2)}
 .v-risk{background:rgba(217,100,110,.16);color:#E88A92}
 
-/* -- YEAR SELECTOR -- */
+/* -- YEAR SELECTOR + SUMMARY -- */
 .year-select{background:var(--bg3);border:1px solid var(--border);color:var(--gold2);padding:8px 14px;border-radius:6px;font-family:inherit;font-size:.82rem;cursor:pointer;letter-spacing:.05em}
 .year-select:focus{outline:none;border-color:var(--gold)}
+.btn-summary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--gold2);padding:9px 16px;font-size:.78rem;letter-spacing:.05em;border:1px solid var(--gold);border-radius:6px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .25s}
+.btn-summary:hover,.btn-summary.active{background:rgba(201,162,77,.12)}
+.btn-summary svg{width:15px;height:15px}
 .fin-empty{text-align:center;padding:80px 20px;color:var(--dim)}
 .fin-empty svg{width:48px;height:48px;stroke:var(--gold);opacity:.5;margin-bottom:16px}
+/* Key-financials comparison table (SET style) */
+.summary-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px}
+.summary-table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:560px}
+.summary-table th,.summary-table td{padding:11px 14px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.summary-table th:first-child,.summary-table td:first-child{text-align:left;white-space:normal}
+.summary-table thead th{background:var(--bg3);color:var(--text);border-bottom:1px solid var(--border);font-weight:600;font-size:.8rem}
+.summary-table thead th.col-latest{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111}
+.summary-table td.col-latest{background:rgba(201,162,77,.08);color:var(--gold2);font-weight:600}
+.summary-table tr.sec td{background:var(--bg2);color:var(--gold);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding-top:12px}
+.summary-table tbody td{border-bottom:1px solid rgba(255,255,255,.05);color:var(--text)}
+.summary-table td.metric{color:var(--dim);font-weight:400}
+.summary-table tr.neg td:not(.metric){color:#E88A92}
 
 @media(max-width:900px){
   .kpi-grid,.ratio-strip{grid-template-columns:repeat(2,1fr)}
@@ -136,7 +152,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
   .tab-btn svg{width:15px;height:15px}
   .sidebar-home{margin-top:0;padding:10px 12px;font-size:.76rem}
   .content{padding:18px 14px}
-  .profile-deck{max-height:none}
+  .profile-stage{height:calc(100vh - 220px);min-height:300px}
   .kpi-value{font-size:1.35rem}
   .profile-head{flex-direction:column;align-items:flex-start}
 }
@@ -268,11 +284,11 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         ดาวน์โหลด PDF
       </button>
     </div>
-    <div class="profile-wrap">
-      <div class="profile-deck full" id="profile-deck"></div>
-      <button class="scroll-down-btn" id="profile-scroll-btn" title="เลื่อนลง" onclick="scrollProfile()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
+    <div class="profile-stage" id="profile-stage">
+      <img id="profile-slide" alt="BLOOK Company Profile">
+      <button class="slide-nav prev" onclick="profileNav(-1)" aria-label="ก่อนหน้า">‹</button>
+      <button class="slide-nav next" onclick="profileNav(1)" aria-label="ถัดไป">›</button>
+      <div class="slide-count" id="slide-count"></div>
     </div>
   </div>
 
@@ -284,12 +300,16 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--text)">งบการเงิน — บริษัท บลู๊ค ลิฟวิ่ง จำกัด</div>
         <div style="font-size:.78rem;color:var(--dim);margin-top:4px" id="fin-period">รอบบัญชีแรก: 26 ก.ค. 2568 (วันจดทะเบียน) — 31 ธ.ค. 2568</div>
       </div>
-      <div style="display:flex;gap:10px;align-items:center">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <select class="year-select" id="fin-year" onchange="renderFinance(this.value)">
           <option value="2568">ปีบัญชี 2568</option>
           <option value="2569">ปีบัญชี 2569</option>
           <option value="2570">ปีบัญชี 2570</option>
         </select>
+        <button id="fin-summary-btn" class="btn-summary" onclick="renderSummary()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/></svg>
+          สรุปผลประกอบการ
+        </button>
         <button id="fin-dl-btn" class="btn-dl">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
           งบการเงินฉบับเต็ม (PDF)
@@ -577,16 +597,25 @@ function switchTab(tab){
   if(tab==='finance') renderFinance();
 }
 
-function loadProfileDeck(){
-  if(profileLoaded) return;
-  const deck = document.getElementById('profile-deck');
-  let html='';
-  for(let i=1;i<=PROFILE_PAGES;i++){
-    html += `<img src="assets/company-profile/${i}.jpg" alt="Company Profile หน้า ${i}" loading="lazy">`;
-  }
-  deck.innerHTML = html;
-  profileLoaded = true;
+let profileIdx = 1;
+function loadProfileDeck(){ profileIdx = 1; showSlide(); }
+function showSlide(){
+  const img = document.getElementById('profile-slide');
+  if(!img) return;
+  img.src = `assets/company-profile/${profileIdx}.jpg`;
+  document.getElementById('slide-count').textContent = `${profileIdx} / ${PROFILE_PAGES}`;
 }
+function profileNav(dir){
+  profileIdx = ((profileIdx - 1 + dir + PROFILE_PAGES) % PROFILE_PAGES) + 1;
+  showSlide();
+}
+// Keyboard arrows when Company Profile tab is active
+document.addEventListener('keydown', e=>{
+  const onProfile = document.getElementById('tab-profile')?.classList.contains('active');
+  if(!onProfile) return;
+  if(e.key==='ArrowLeft') profileNav(-1);
+  if(e.key==='ArrowRight') profileNav(1);
+});
 
 // ============ FINANCIAL DASHBOARD (multi-year, data-driven) ============
 const GOLD='#C9A24D', GOLD2='#E6C45A', BRONZE='#9C6B3F', BLUE='#5B8FC9', GREEN='#4CAF7D', RED='#D9646E', PURPLE='#8B7BC9', TEAL='#5BC9C0', DIM='#999', GRID='rgba(255,255,255,.06)';
@@ -598,6 +627,7 @@ const FIN_YEARS = {
   '2568': {
     eyebrow:'ANNUAL REPORT · ปีบัญชี 2568',
     period:'รอบบัญชีแรก: 26 ก.ค. 2568 (วันจดทะเบียน) — 31 ธ.ค. 2568',
+    periodShort:'26 ก.ค.–31 ธ.ค. 68',
     pdf:'งบการเงิน/งบการเงิน บจ.บลู๊ค ลิฟวิ่ง 68 - Draft.pdf',
     draft:true,
     totalAssets:810783.09, currentAssets:740287.87, nonCurrentAssets:70495.22,
@@ -640,6 +670,7 @@ function destroyCharts(){ _charts.forEach(c=>{try{c.destroy()}catch(e){}}); _cha
 function renderFinance(year){
   year = year || document.getElementById('fin-year').value || '2568';
   document.getElementById('fin-year').value = year;
+  const sb=document.getElementById('fin-summary-btn'); if(sb) sb.classList.remove('active');
   Chart.defaults.color = DIM;
   Chart.defaults.font.family = "'Inter','Noto Sans Thai',sans-serif";
   destroyCharts();
@@ -775,6 +806,62 @@ function renderFinance(year){
   initFinTips();
 }
 
+// ---- Key financials comparison summary (SET style) ----
+function yearMetrics(D){
+  return {
+    eps: D.netProfit / D.shares,
+    roa: D.totalAssets ? D.netProfit / D.totalAssets * 100 : null,
+    roe: D.equity ? D.netProfit / D.equity * 100 : null,
+    margin: (D.revenue && D.revenue > D.expensesTotal*0.3) ? D.netProfit / D.revenue * 100 : null
+  };
+}
+function renderSummary(){
+  const sb=document.getElementById('fin-summary-btn'); if(sb) sb.classList.add('active');
+  destroyCharts();
+  document.getElementById('fin-eyebrow').textContent = 'KEY FINANCIALS · ผลประกอบการสำคัญ (เปรียบเทียบรายปี)';
+  document.getElementById('fin-period').textContent = 'หน่วย: บาท · เลือกปีจากเมนูเพื่อกลับสู่แดชบอร์ดรายปี';
+
+  const years = Object.keys(FIN_YEARS).sort();
+  const last = years.length-1;
+  const num = v => v==null?'—':(v<0?'('+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+')':v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}));
+  const pct = v => v==null?'n/m':v.toFixed(2)+'%';
+  const cls = i => i===last?' class="col-latest"':'';
+  const M = years.map(y=>yearMetrics(FIN_YEARS[y]));
+  const row = (label,vals,neg,isPct)=>{
+    const isNeg = neg && vals.some(v=>v!=null&&v<0);
+    return `<tr${isNeg?' class="neg"':''}><td class="metric">${label}</td>`+
+      vals.map((v,i)=>`<td${cls(i)}>${isPct?pct(v):num(v)}</td>`).join('')+`</tr>`;
+  };
+  const colHead = years.map((y,i)=>`<th${cls(i)}>ปีบัญชี ${y}</th>`).join('');
+  const periodRow = `<tr><td class="metric">งวดบัญชี</td>`+years.map((y,i)=>`<td${cls(i)} style="font-size:.7rem;color:var(--dim);font-weight:400">${FIN_YEARS[y].periodShort||('สิ้นปี '+y)}</td>`).join('')+`</tr>`;
+  const G = years.map(y=>FIN_YEARS[y]);
+
+  document.getElementById('fin-body').innerHTML = `
+    <div class="summary-wrap">
+    <table class="summary-table">
+      <thead><tr><th>รายการ</th>${colHead}</tr></thead>
+      <tbody>
+        ${periodRow}
+        <tr class="sec"><td colspan="${years.length+1}">บัญชีทางการเงินที่สำคัญ</td></tr>
+        ${row('สินทรัพย์รวม', G.map(d=>d.totalAssets))}
+        ${row('หนี้สินรวม', G.map(d=>d.liabilities))}
+        ${row('ส่วนของผู้ถือหุ้น', G.map(d=>d.equity))}
+        ${row('ทุนที่ชำระแล้ว', G.map(d=>d.capital))}
+        ${row('รายได้รวม', G.map(d=>d.revenue))}
+        ${row('กำไร (ขาดทุน) สุทธิ', G.map(d=>d.netProfit), true)}
+        ${row('กำไรต่อหุ้น (บาท)', M.map(m=>m.eps), true)}
+        <tr class="sec"><td colspan="${years.length+1}">อัตราส่วนทางการเงินที่สำคัญ</td></tr>
+        ${row('ROA (%)', M.map(m=>m.roa), true, true)}
+        ${row('ROE (%)', M.map(m=>m.roe), true, true)}
+        ${row('อัตรากำไรสุทธิ (%)', M.map(m=>m.margin), true, true)}
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:.72rem;color:var(--dim);margin-top:12px;text-align:center;letter-spacing:.03em">
+      * คำนวณจากงบการเงินแต่ละปี · ปีล่าสุดไฮไลต์สีทอง · n/m = อัตราส่วนยังไม่มีนัยสำคัญ (รายได้ในช่วงเริ่มต้นกิจการ) · ( ) = ค่าติดลบ
+    </p>`;
+}
+
 // ---- Analyst opinion tooltip ----
 let _tipEl=null;
 function initFinTips(){
@@ -799,12 +886,6 @@ function positionTip(e){
   if(x+w>innerWidth-10) x=e.clientX-w-pad;
   if(y+h>innerHeight-10) y=e.clientY-h-pad;
   _tipEl.style.left=Math.max(10,x)+'px'; _tipEl.style.top=Math.max(10,y)+'px';
-}
-
-// ---- Company Profile scroll-down button ----
-function scrollProfile(){
-  const d=document.getElementById('profile-deck');
-  d.scrollBy({top:d.clientHeight*0.85,behavior:'smooth'});
 }
 
 // ============ APP INIT ============
