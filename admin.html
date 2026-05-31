@@ -1396,6 +1396,10 @@ async function savePDF(){
     const titleColor = DOC_COLOR[docType] || '#A0784A';
     const sigTitles = SIG_TITLES[docType] || ['ผู้ขาย / Seller','ผู้ซื้อ / Buyer'];
     const hasDisc = items.some(i => i.disc > 0);
+    // Document assets + payment docs (Quotation, Billing) show Kasikorn QR
+    const FRAME='assets/Document/frame.png', BKLOGO='assets/Document/BKlogo1.png';
+    const KASILOGO='assets/Document/KASI_logo.png', KASIQR='assets/Document/KASI_QR.jpg';
+    const isPayDoc = (docType==='QUOTATION' || docType==='BILLING');
 
     // Build product rows
     let itemRows = '';
@@ -1426,20 +1430,22 @@ async function savePDF(){
 
     const html = `
       <div id="pdf-render" style="
+        position:relative;
         width:794px;
-        padding:50px 55px;
+        min-height:1123px;
+        padding:54px 58px;
         background:#FFFFFF;
         font-family:'Inter','Noto Sans Thai',sans-serif;
         color:#1A0F08;
         font-size:12px;
         line-height:1.55;
       ">
+        <img src="${FRAME}" style="position:absolute;left:0;top:0;width:794px;height:1123px;z-index:5;pointer-events:none" alt="">
         <!-- HEADER -->
         <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:24px;border-bottom:2px solid ${titleColor};margin-bottom:24px">
           <div style="flex:1">
-            <div style="font-family:'Playfair Display','Noto Serif Thai',serif;font-size:32px;font-weight:600;color:${titleColor};letter-spacing:.15em;line-height:1">BLOOK</div>
-            <div style="font-size:10px;letter-spacing:.3em;color:#8B7D74;margin-top:4px">THE CLASS OF CALM</div>
-            <div style="margin-top:18px;font-size:11px;line-height:1.7;color:#5C4E46">
+            <img src="${BKLOGO}" style="width:180px;height:auto;display:block" alt="BLOOK LIVING">
+            <div style="margin-top:16px;font-size:11px;line-height:1.7;color:#5C4E46">
               <div style="font-weight:600;color:#1A0F08">${escapeHtml(COMPANY.name)}</div>
               <div>${escapeHtml(COMPANY.address)}</div>
               <div>เลขประจำตัวผู้เสียภาษี: ${COMPANY.taxId}</div>
@@ -1490,10 +1496,20 @@ async function savePDF(){
 
         <!-- NOTE + TOTALS -->
         <div style="display:flex;gap:20px;margin-bottom:30px">
-          <div style="flex:1;${noteText ? `border:1px solid #E8DCC0;padding:14px 18px;background:#FFFCF6;border-radius:4px` : ''}">
+          <div style="flex:1;${(noteText||isPayDoc) ? `border:1px solid #E8DCC0;padding:14px 18px;background:#FFFCF6;border-radius:4px` : ''}">
             ${noteText ? `
               <div style="font-size:10px;letter-spacing:.25em;color:${titleColor};font-weight:600;margin-bottom:8px">NOTE · หมายเหตุ</div>
               <div style="font-size:11px;color:#5C4E46;line-height:1.7;white-space:pre-wrap">${escapeHtml(noteText)}</div>
+            ` : ''}
+            ${isPayDoc ? `
+              <div style="display:flex;gap:14px;align-items:center;${noteText?'margin-top:14px;padding-top:14px;border-top:1px dashed #E8DCC0':''}">
+                <div style="flex:1">
+                  <div style="font-size:10px;letter-spacing:.2em;color:${titleColor};font-weight:600;margin-bottom:6px">ชำระเงิน · PAYMENT</div>
+                  <img src="${KASILOGO}" style="height:24px;width:auto;display:block;margin-bottom:6px" alt="KBank">
+                  <div style="font-size:10.5px;color:#5C4E46;line-height:1.6">ธนาคารกสิกรไทย<br>บจก. บลู๊ค ลิฟวิ่ง<br>สแกน QR เพื่อชำระเงิน</div>
+                </div>
+                <img src="${KASIQR}" style="width:92px;height:auto;border:1px solid #E8DCC0;border-radius:6px;background:#fff" alt="Payment QR">
+              </div>
             ` : ''}
           </div>
           <div style="width:280px;flex-shrink:0">
