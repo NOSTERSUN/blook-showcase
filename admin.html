@@ -150,11 +150,11 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .biz-card>*{position:relative;z-index:1}
 .biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.18),transparent 70%);z-index:0}
 .biz-card::after{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(var(--gold),var(--gold2));z-index:2}
-.biz-bk{position:absolute;right:-10px;bottom:-34px;font-family:'Playfair Display',serif;font-style:italic;font-size:8.5rem;line-height:1;color:rgba(184,134,11,.10);z-index:0;pointer-events:none;user-select:none}
+.biz-bk{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:5.4rem;line-height:1;color:rgba(184,134,11,.16);z-index:0;pointer-events:none;user-select:none;letter-spacing:.02em}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
-.biz-photo{width:66px;height:66px;border-radius:50%;object-fit:cover;object-position:center 18%;border:2px solid var(--gold);flex-shrink:0;box-shadow:0 3px 10px rgba(120,90,40,.2)}
+.biz-photo{flex:0 0 66px;width:66px;height:66px;aspect-ratio:1/1;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(120,90,40,.2)}
 .biz-name{font-family:'Playfair Display',serif;font-size:1.2rem;color:#2B2016;line-height:1.15}
 .biz-name span{font-size:.82rem;color:#B8860B;font-family:'Inter',sans-serif}
 .biz-role{font-size:.72rem;color:#A0784A;letter-spacing:.08em;margin-top:3px;font-weight:500}
