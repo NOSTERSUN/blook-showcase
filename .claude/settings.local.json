@@ -58,7 +58,9 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(node --check admin_check.js)",
       "Bash(rm -f admin_check.js)",
-      "Bash(curl -s \"https://blookliving.com/admin.html\")"
+      "Bash(curl -s \"https://blookliving.com/admin.html\")",
+      "Bash(curl -s \"https://blookliving.com/index.html\")",
+      "Bash(awk -F: '$1>840 && $1<900')"
     ]
   }
 }

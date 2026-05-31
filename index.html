@@ -50,7 +50,11 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .hero-eyebrow{font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;opacity:0}
 .hero-title{font-family:'Fraunces','Noto Serif Thai',serif;font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:400;line-height:1.15;margin-bottom:12px;opacity:0;color:var(--primary)}
 .hero-title em{font-style:italic;color:var(--gold);font-weight:400}
-.hero-desc{font-size:.95rem;line-height:1.8;color:var(--neutral);max-width:580px;margin:0 auto 28px;font-weight:300;opacity:0}
+.hero-desc{font-size:.95rem;line-height:1.8;color:var(--neutral);max-width:580px;margin:0 auto 24px;font-weight:300;opacity:0}
+.hero-social{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 26px;max-width:560px;opacity:0}
+.hero-social a{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:18px;text-decoration:none;color:var(--neutral);font-size:.76rem;font-weight:500;transition:all .3s;background:rgba(255,255,255,.55)}
+.hero-social a:hover{border-color:var(--gold);color:var(--gold);background:#fff;transform:translateY(-2px)}
+.hero-social svg{width:15px;height:15px;fill:var(--gold);flex-shrink:0}
 .hero-cta{display:inline-flex;align-items:center;gap:14px;background:var(--gold);color:#fff;padding:18px 44px;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .4s;font-family:inherit;border:none;cursor:pointer;opacity:0;font-weight:500}
 .hero-cta:hover{background:var(--gold-dim);transform:translateY(-3px);box-shadow:0 12px 40px rgba(160,120,74,.2)}
 .hero-cta svg{width:16px;height:16px;transition:transform .3s}
@@ -70,7 +74,7 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .sec-eyebrow{font-size:.68rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
 .sec-title{font-family:'Fraunces','Noto Serif Thai',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;line-height:1.25;margin-bottom:14px;color:var(--primary)}
 .sec-title em{color:var(--gold);font-style:italic}
-.sec-desc{font-size:.92rem;color:var(--neutral);line-height:1.8;max-width:540px;margin:0 auto;font-weight:300}
+.sec-desc{font-size:1.02rem;color:var(--neutral);line-height:1.85;max-width:560px;margin:0 auto;font-weight:300}
 
 /* -- PRODUCT SHOWCASE -- */
 .product-section{padding:0 0 100px}
@@ -94,12 +98,12 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .prod-eyebrow{font-size:.68rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
 .prod-name{font-family:'Fraunces','Noto Serif Thai',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:400;line-height:1.25;margin-bottom:6px;color:var(--primary)}
 .prod-sub{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1rem;font-style:italic;color:var(--gold);margin-bottom:16px}
-.prod-desc{font-size:.92rem;line-height:1.8;color:var(--neutral);font-weight:300;margin-bottom:24px;max-width:480px}
+.prod-desc{font-size:1.05rem;line-height:1.85;color:var(--neutral);font-weight:300;margin-bottom:24px;max-width:480px}
 .prod-features{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .prod-feat{padding:20px 24px;background:rgba(160,120,74,.05);border-left:2px solid var(--gold-light);transition:all .3s;border-radius:0 6px 6px 0}
 .prod-feat:hover{background:rgba(160,120,74,.1);transform:translateX(4px)}
-.prod-feat strong{font-size:.92rem;color:var(--primary);display:block;margin-bottom:4px;font-weight:500}
-.prod-feat span{font-size:.85rem;color:var(--neutral);font-weight:300}
+.prod-feat strong{font-size:1.05rem;color:var(--primary);display:block;margin-bottom:5px;font-weight:500}
+.prod-feat span{font-size:.95rem;color:var(--neutral);font-weight:300;line-height:1.5}
 
 /* -- SCENT CARDS -- */
 .scent-section{margin-top:50px}
@@ -107,8 +111,8 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .scent-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .scent-card{border:1px solid var(--border);padding:18px 20px;transition:all .3s;cursor:default;border-radius:6px;background:var(--bg)}
 .scent-card:hover{border-color:var(--gold-light);background:rgba(160,120,74,.03)}
-.scent-name{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.05rem;color:var(--gold);font-weight:600;margin-bottom:10px}
-.scent-notes{font-size:.82rem;color:var(--neutral);line-height:1.8}
+.scent-name{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.2rem;color:var(--gold);font-weight:600;margin-bottom:10px}
+.scent-notes{font-size:.92rem;color:var(--neutral);line-height:1.85}
 .scent-notes strong{color:var(--primary);font-weight:500}
 
 /* -- BRAND STORY -- */
@@ -120,7 +124,7 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 /* -- COLOR SWATCHES (Sofa) -- */
 .color-swatches{display:flex;gap:12px;margin-top:20px;align-items:center}
 .color-swatch-label{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-right:4px}
-.color-swatch{width:36px;height:36px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;transition:all .3s;position:relative}
+.color-swatch{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;transition:all .3s;position:relative}
 .color-swatch:hover{transform:scale(1.15);border-color:var(--gold)}
 .color-swatch.active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(160,120,74,.2)}
 .color-swatch.active::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid var(--gold)}
@@ -129,11 +133,12 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .swatch-white{background:#E8E4DF;border-color:#ccc}
 .swatch-yellow{background:#D4B84D}
 
-/* -- SOFA GALLERY -- */
-.sofa-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
-.sofa-gallery img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;transition:all .3s}
+/* -- SOFA GALLERY (full-width row under sofa block) -- */
+.sofa-gallery-wrap{grid-column:1/-1;margin-top:10px}
+.sofa-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:14px}
+.sofa-gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;transition:all .3s}
 .sofa-gallery img:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 10px 30px rgba(184,134,11,.18)}
-.sofa-gallery-label{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin:24px 0 -2px}
+.sofa-gallery-label{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
 
 /* -- LIGHTBOX -- */
 #lightbox{position:fixed;inset:0;z-index:10000;background:rgba(10,8,6,.94);display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out}
@@ -256,9 +261,10 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   .divider{padding:16px 20px}
   .product-block{padding:36px 20px;gap:36px;grid-template-columns:1fr}
   .prod-name{font-size:clamp(1.6rem,5vw,2.4rem)}
-  .prod-sub{font-size:1.05rem}
-  .prod-desc{font-size:.92rem}
+  .prod-sub{font-size:1.1rem}
+  .prod-desc{font-size:1rem}
   .prod-features{grid-template-columns:1fr}
+  .sofa-gallery{grid-template-columns:repeat(2,1fr)}
   .prod-feat{padding:16px 18px}
   .carousel-arrow{width:36px;height:36px}
   .brand-strip{padding:60px 20px}
@@ -279,10 +285,10 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   .hero-desc{font-size:.85rem;padding:0 8px}
   .hero-cta{padding:14px 24px;font-size:.7rem;width:100%;justify-content:center}
   .prod-name{font-size:1.5rem}
-  .prod-desc{font-size:.88rem}
+  .prod-desc{font-size:.96rem}
   .prod-feat{padding:14px 16px}
-  .prod-feat strong{font-size:.92rem}
-  .prod-feat span{font-size:.75rem}
+  .prod-feat strong{font-size:1rem}
+  .prod-feat span{font-size:.86rem}
   .reviews-grid{grid-template-columns:repeat(2,1fr);gap:8px}
   .social-row{gap:6px}
   .social-chip{min-width:auto;padding:7px 11px;font-size:.7rem}
@@ -327,7 +333,14 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   <div class="hero-content">
     <p class="hero-eyebrow" data-th="THE CLASS OF CALM" data-en="THE CLASS OF CALM">THE CLASS OF CALM</p>
     <h1 class="hero-title" data-th="พื้นที่แห่ง<br><em>การพักผ่อน</em>อย่างมีรสนิยม" data-en="A Sanctuary of<br><em>Refined Calm</em>">พื้นที่แห่ง<br><em>การพักผ่อน</em>อย่างมีรสนิยม</h1>
-    <p class="hero-desc" data-th="BLOOK Living สร้างสรรค์ผลิตภัณฑ์เพื่อชีวิตที่ผ่อนคลายและหรูหรา ตั้งแต่หมอนเพื่อสุขภาพ โซฟา TOGO น้ำหอมบ้าน ไปจนถึงเซ็ทของขวัญ ทุกชิ้นออกแบบเพื่อนำความสงบและความหรูหราเข้าสู่ทุกมุมพักผ่อนของคุณ" data-en="BLOOK Living crafts products for a relaxed and luxurious life — from ergonomic pillows and TOGO sofas to home fragrances and gift sets. Every piece is designed to bring serenity and elegance into every corner of your retreat.">BLOOK Living สร้างสรรค์ผลิตภัณฑ์เพื่อชีวิตที่ผ่อนคลายและหรูหรา ตั้งแต่หมอนเพื่อสุขภาพ โซฟา TOGO น้ำหอมบ้าน ไปจนถึงเซ็ทของขวัญ ทุกชิ้นออกแบบเพื่อนำความสงบและความหรูหราเข้าสู่ทุกมุมพักผ่อนของคุณ</p>
+    <p class="hero-desc" data-th="BLOOK LIVING สร้างสรรค์ผลิตภัณฑ์เพื่อชีวิตที่ผ่อนคลายและหรูหรา ตั้งแต่หมอนเพื่อสุขภาพ โซฟา TOGO น้ำหอมบ้าน ไปจนถึงเซ็ทของขวัญ ทุกชิ้นออกแบบเพื่อนำความสงบและความหรูหราเข้าสู่ทุกมุมพักผ่อนของคุณ" data-en="BLOOK LIVING crafts products for a relaxed and luxurious life — from ergonomic pillows and TOGO sofas to home fragrances and gift sets. Every piece is designed to bring serenity and elegance into every corner of your retreat.">BLOOK LIVING สร้างสรรค์ผลิตภัณฑ์เพื่อชีวิตที่ผ่อนคลายและหรูหรา ตั้งแต่หมอนเพื่อสุขภาพ โซฟา TOGO น้ำหอมบ้าน ไปจนถึงเซ็ทของขวัญ ทุกชิ้นออกแบบเพื่อนำความสงบและความหรูหราเข้าสู่ทุกมุมพักผ่อนของคุณ</p>
+    <div class="hero-social">
+      <a href="https://www.tiktok.com/@blookliving" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>TikTok</a>
+      <a href="https://www.facebook.com/profile.php?id=61587451205315" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook BLOOK</a>
+      <a href="https://www.facebook.com/profile.php?id=61578744795967" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>Facebook Pillow</a>
+      <a href="https://www.instagram.com/blook.living?igsh=ZTF6eTQ2OWIweGNm" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>Instagram</a>
+      <a href="https://www.lemon8-app.com/@blookliving?language=th&region=th" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5c0 2.76 2.24 5 5 5s5-2.24 5-5-2.24-5-5-5zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 2a5 5 0 0 0-5 5c0 2.76 2.24 5 5 5s5-2.24 5-5-2.24-5-5-5zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>Lemon8</a>
+    </div>
     <a href="#products" class="hero-cta">
       <span data-th="เลื่อนชมความหรูหรา" data-en="Explore Our Collection">เลื่อนชมความหรูหรา</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -515,13 +528,6 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
           <button class="color-swatch swatch-white" data-sofa-color="white" title="ขาว"></button>
           <button class="color-swatch swatch-yellow" data-sofa-color="yellow" title="เหลือง"></button>
         </div>
-        <p class="sofa-gallery-label" data-th="แกลเลอรี" data-en="Gallery">แกลเลอรี</p>
-        <div class="sofa-gallery">
-          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg" alt="TOGO Sofa gallery 1" loading="lazy" onclick="openLightbox(0)">
-          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg" alt="TOGO Sofa gallery 2" loading="lazy" onclick="openLightbox(1)">
-          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg" alt="TOGO Sofa gallery 3" loading="lazy" onclick="openLightbox(2)">
-          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg" alt="TOGO Sofa gallery 4" loading="lazy" onclick="openLightbox(3)">
-        </div>
       </div>
       <div class="product-info">
         <p class="prod-eyebrow">Sofa · Premium</p>
@@ -533,6 +539,15 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
           <div class="prod-feat"><strong data-th="รับประกันโครงสร้าง" data-en="Structure Warranty">รับประกันโครงสร้าง</strong><span data-th="3 ปี" data-en="3 years">3 ปี</span></div>
           <div class="prod-feat"><strong data-th="ดีไซน์พรีเมียม" data-en="Premium Design">ดีไซน์พรีเมียม</strong><span data-th="สไตล์หรูหรา" data-en="Luxurious style">สไตล์หรูหรา</span></div>
           <div class="prod-feat"><strong data-th="สะดวกสบายสูงสุด" data-en="Ultimate Comfort">สะดวกสบายสูงสุด</strong><span data-th="ออกแบบตามหลักสรีระ" data-en="Ergonomically designed">ออกแบบตามหลักสรีระ</span></div>
+        </div>
+      </div>
+      <div class="sofa-gallery-wrap">
+        <p class="sofa-gallery-label" data-th="แกลเลอรี TOGO SOFA" data-en="TOGO SOFA Gallery">แกลเลอรี TOGO SOFA</p>
+        <div class="sofa-gallery">
+          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg" alt="TOGO Sofa gallery 1" loading="lazy" onclick="openLightbox(0)">
+          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg" alt="TOGO Sofa gallery 2" loading="lazy" onclick="openLightbox(1)">
+          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg" alt="TOGO Sofa gallery 3" loading="lazy" onclick="openLightbox(2)">
+          <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg" alt="TOGO Sofa gallery 4" loading="lazy" onclick="openLightbox(3)">
         </div>
       </div>
     </div>
@@ -618,7 +633,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
       </div>
       <div class="contact-block">
         <h4 data-th="สำนักงานใหญ่" data-en="Head Office">สำนักงานใหญ่</h4>
-        <p style="color:var(--gold);font-weight:500" data-th="<strong>บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</strong>" data-en="<strong>Blook Living Co., Ltd. (Head Office)</strong>"><strong>บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</strong></p>
+        <p style="color:var(--gold);font-weight:500" data-th="<strong>บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</strong>" data-en="<strong>BLOOK LIVING Co., Ltd. (Head Office)</strong>"><strong>บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</strong></p>
         <p style="color:var(--gold)" data-th="เลขที่ 3/134 ตำบลบางสมัคร<br>อำเภอบางปะกง จังหวัดฉะเชิงเทรา 24180" data-en="3/134 Bang Samak Sub-district,<br>Bang Pakong District, Chachoengsao 24180">เลขที่ 3/134 ตำบลบางสมัคร<br>อำเภอบางปะกง จังหวัดฉะเชิงเทรา 24180</p>
         <p style="color:var(--gold);margin-top:10px" data-th="<strong>เลขประจำตัวผู้เสียภาษี:</strong> 0245568003791" data-en="<strong>Tax ID:</strong> 0245568003791"><strong>เลขประจำตัวผู้เสียภาษี:</strong> 0245568003791</p>
       </div>
@@ -673,15 +688,15 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
 <div class="contact-fab" id="contact-fab">
   <div class="fab-actions">
     <a class="fab-item" href="tel:+66937364796">
-      <span class="fab-tag" data-th="โทรหาเรา" data-en="Call us">โทรหาเรา</span>
+      <span class="fab-tag">Call</span>
       <span class="fab-icon fab-call"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span>
     </a>
     <a class="fab-item" href="https://line.me/R/ti/p/@blookliving" target="_blank" rel="noopener">
-      <span class="fab-tag" data-th="แอด LINE" data-en="Add LINE">แอด LINE</span>
+      <span class="fab-tag">Line</span>
       <span class="fab-icon fab-line"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg></span>
     </a>
     <a class="fab-item" href="https://m.me/61587451205315" target="_blank" rel="noopener">
-      <span class="fab-tag" data-th="ทักแชท Facebook" data-en="Message Facebook">ทักแชท Facebook</span>
+      <span class="fab-tag">Facebook</span>
       <span class="fab-icon fab-fb"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.13 2 11.23c0 2.9 1.36 5.49 3.5 7.19V22l3.2-1.76c.85.24 1.76.36 2.7.36 5.52 0 10-4.13 10-9.23S17.52 2 12 2zm1.01 12.43l-2.55-2.72-4.97 2.72 5.47-5.81 2.61 2.72 4.91-2.72-5.47 5.81z"/></svg></span>
     </a>
   </div>
@@ -757,9 +772,10 @@ const tl=gsap.timeline({delay:.3});
 tl.to('.hero-eyebrow',{opacity:1,y:0,duration:.8,ease:'power3.out'})
   .to('.hero-title',{opacity:1,y:0,duration:1,ease:'power3.out'},'-=.5')
   .to('.hero-desc',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.6')
-  .to('.hero-cta',{opacity:1,y:0,duration:.7,ease:'power3.out'},'-=.5')
+  .to('.hero-social',{opacity:1,y:0,duration:.6,ease:'power3.out'},'-=.5')
+  .to('.hero-cta',{opacity:1,y:0,duration:.7,ease:'power3.out'},'-=.4')
   .to('.hero-scroll',{opacity:1,duration:.6},'-=.3');
-gsap.set(['.hero-eyebrow','.hero-title','.hero-desc','.hero-cta'],{y:30});
+gsap.set(['.hero-eyebrow','.hero-title','.hero-desc','.hero-social','.hero-cta'],{y:30});
 
 document.querySelectorAll('.sec-header').forEach(h=>{
   gsap.from(h.children,{scrollTrigger:{trigger:h,start:'top 80%'},y:40,opacity:0,duration:.8,stagger:.15,ease:'power3.out'});
@@ -862,6 +878,13 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft')lbNav(-1);
   if(e.key==='ArrowRight')lbNav(1);
 });
+
+// Collapse the contact FAB to a single button while scrolling
+let _fabScrollT;
+window.addEventListener('scroll',()=>{
+  const fab=document.getElementById('contact-fab');
+  if(fab&&fab.classList.contains('open')) fab.classList.remove('open');
+},{passive:true});
 </script>
 </body>
 </html>
