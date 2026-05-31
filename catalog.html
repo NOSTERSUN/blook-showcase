@@ -6,6 +6,8 @@
 <title>BLOOK LIVING — Catalog | แคตตาล็อกสินค้า</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Noto+Serif+Thai:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--primary:#1A0F08;--gold:#B8860B;--gold-light:#DAA520;--gold-dim:#8B6914;--bg2:#FAF8F5;--bg3:#F2EDE6;--neutral:#5C4E46;--dim:#8B7D74;--border:rgba(184,134,11,.18)}
@@ -103,7 +105,7 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
     <a href="index.html" class="icon-btn" title="กลับหน้าหลัก" aria-label="กลับหน้าหลัก">
       <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/></svg>
     </a>
-    <button class="icon-btn primary" title="ดาวน์โหลด PDF" aria-label="Download PDF" onclick="window.print()">
+    <button class="icon-btn primary" id="dl-btn" title="ดาวน์โหลด PDF ลงเครื่อง" aria-label="Download PDF" onclick="downloadCatalog()">
       <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
     </button>
   </div>
@@ -301,5 +303,27 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
 
 </div>
 <script src="assets/contact-widget.js"></script>
+<script>
+async function downloadCatalog(){
+  const btn=document.getElementById('dl-btn');
+  const orig=btn.innerHTML;
+  btn.disabled=true; btn.style.opacity='.6';
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="animation:spin 1s linear infinite"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z" opacity=".3"/><path d="M12 2a10 10 0 0110 10h-2a8 8 0 00-8-8z"/></svg>';
+  if(!document.getElementById('spin-kf')){const s=document.createElement('style');s.id='spin-kf';s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';document.head.appendChild(s);}
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const pages = document.querySelectorAll('.page');
+    for(let i=0;i<pages.length;i++){
+      const canvas = await html2canvas(pages[i],{scale:2,useCORS:true,backgroundColor:'#ffffff',windowWidth:1200,windowHeight:1700});
+      const img = canvas.toDataURL('image/jpeg',0.92);
+      if(i>0) pdf.addPage();
+      pdf.addImage(img,'JPEG',0,0,210,297);
+    }
+    pdf.save('BLOOK_LIVING_Catalog_2025.pdf');
+  }catch(e){ alert('ดาวน์โหลดไม่สำเร็จ: '+e.message); }
+  btn.disabled=false; btn.style.opacity=''; btn.innerHTML=orig;
+}
+</script>
 </body>
 </html>

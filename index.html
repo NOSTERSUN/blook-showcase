@@ -151,19 +151,20 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .gov-bar .gov-title{font-family:'Fraunces','Noto Serif Thai',serif;font-size:1.2rem;color:var(--gold-light);letter-spacing:.05em}
 .gov-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:1.5rem;cursor:pointer;line-height:1;transition:all .2s}
 .gov-close:hover{background:var(--gold)}
-.gov-grid{flex:1;overflow-y:auto;padding:24px 28px 50px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));grid-auto-flow:dense;gap:14px;align-content:start}
-.gov-tile{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;cursor:zoom-in;border:1px solid rgba(218,165,32,.15);opacity:0;transform:translateY(14px) scale(.97);animation:govIn .55s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--d,0s)}
-.gov-tile.wide{grid-column:span 2;aspect-ratio:2/1}
+/* Masonry: full images (no crop), natural varied heights = dynamic */
+.gov-grid{flex:1;overflow-y:auto;padding:24px 28px 50px;column-count:4;column-gap:14px}
+.gov-tile{position:relative;break-inside:avoid;margin:0 0 14px;border-radius:12px;overflow:hidden;cursor:zoom-in;border:1px solid rgba(218,165,32,.15);background:#15110c;opacity:0;transform:translateY(16px);animation:govIn .55s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--d,0s)}
 @keyframes govIn{to{opacity:1;transform:none}}
-.gov-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.22,1,.36,1)}
-.gov-tile:hover img{transform:scale(1.1)}
-.gov-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,15,8,.6),transparent 55%);opacity:0;transition:opacity .35s}
+.gov-tile img{width:100%;height:auto;display:block;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.gov-tile:hover img{transform:scale(1.05)}
+.gov-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,15,8,.55),transparent 50%);opacity:0;transition:opacity .35s}
 .gov-tile:hover::after{opacity:1}
 .gov-tile:hover{border-color:var(--gold)}
 .gov-zoom{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.5);transition:all .35s cubic-bezier(.34,1.56,.64,1);z-index:2}
 .gov-tile:hover .gov-zoom{opacity:1;transform:scale(1)}
 .gov-zoom svg{width:38px;height:38px;fill:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
-@media(max-width:560px){.gov-tile.wide{grid-column:span 2;aspect-ratio:2/1}}
+@media(max-width:1024px){.gov-grid{column-count:3}}
+@media(max-width:680px){.gov-grid{column-count:2;padding:18px 14px 40px}}
 
 /* -- SHARE SHEET -- */
 #share-sheet{position:fixed;inset:0;z-index:10001;background:rgba(10,8,6,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
@@ -966,7 +967,7 @@ const ALL_GALLERY=[
 ];
 function openGallery(){
   const g=document.getElementById('gov-grid');
-  if(!g.dataset.done){ g.innerHTML=ALL_GALLERY.map((src,i)=>`<figure class="gov-tile${i%7===0?' wide':''}" style="--d:${(i%14)*0.035}s" onclick="openLightbox(${i},ALL_GALLERY)"><img src="${src}" loading="lazy" alt="BLOOK gallery ${i+1}"><span class="gov-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14zm.5-7v2H8v2H6V9h2V7z"/></svg></span></figure>`).join(''); g.dataset.done='1'; }
+  if(!g.dataset.done){ g.innerHTML=ALL_GALLERY.map((src,i)=>`<figure class="gov-tile" style="--d:${(i%14)*0.035}s" onclick="openLightbox(${i},ALL_GALLERY)"><img src="${src}" loading="lazy" alt="BLOOK gallery ${i+1}"><span class="gov-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14zm.5-7v2H8v2H6V9h2V7z"/></svg></span></figure>`).join(''); g.dataset.done='1'; }
   document.getElementById('gallery-overlay').classList.add('open'); document.body.style.overflow='hidden';
 }
 function closeGallery(){document.getElementById('gallery-overlay').classList.remove('open');document.body.style.overflow='';}

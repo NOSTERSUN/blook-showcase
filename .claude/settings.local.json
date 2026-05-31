@@ -63,7 +63,8 @@
       "Bash(awk -F: '$1>840 && $1<900')",
       "PowerShell($p=\"C:\\\\Users\\\\PC\\\\Desktop\\\\BLOOK DEV\\\\assets\\\\company-profile\"; Write-Host \"=== company-profile files ===\"; Get-ChildItem $p | Sort-Object Name | ForEach-Object { Write-Host \\(\"{0}  {1} KB\" -f $_.Name, [math]::Round\\($_.Length/1KB\\)\\) })",
       "Bash(sed -n '105,108p' about.html)",
-      "Bash(sed -n '142,143p' about.html)"
+      "Bash(sed -n '142,143p' about.html)",
+      "Bash(git commit -m 'Remove unused CEO_PIC PNG originals \\(keep compressed .jpg\\) *)"
     ]
   }
 }

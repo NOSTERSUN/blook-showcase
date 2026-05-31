@@ -147,12 +147,14 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .biz-card-wrap{display:flex;flex-direction:column;gap:10px}
 .biz-card{background:linear-gradient(150deg,#FFFDF8 0%,#F4EBDA 100%);border:1px solid #E6D6B8;border-radius:14px;padding:20px 22px;position:relative;overflow:hidden;color:#2B2016;box-shadow:0 6px 22px rgba(120,90,40,.12)}
-.biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.18),transparent 70%)}
-.biz-card::after{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(var(--gold),var(--gold2))}
+.biz-card>*{position:relative;z-index:1}
+.biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.18),transparent 70%);z-index:0}
+.biz-card::after{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(var(--gold),var(--gold2));z-index:2}
+.biz-bk{position:absolute;right:-10px;bottom:-34px;font-family:'Playfair Display',serif;font-style:italic;font-size:8.5rem;line-height:1;color:rgba(184,134,11,.10);z-index:0;pointer-events:none;user-select:none}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
-.biz-photo{width:66px;height:66px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;box-shadow:0 3px 10px rgba(120,90,40,.2)}
+.biz-photo{width:66px;height:66px;border-radius:50%;object-fit:cover;object-position:center 18%;border:2px solid var(--gold);flex-shrink:0;box-shadow:0 3px 10px rgba(120,90,40,.2)}
 .biz-name{font-family:'Playfair Display',serif;font-size:1.2rem;color:#2B2016;line-height:1.15}
 .biz-name span{font-size:.82rem;color:#B8860B;font-family:'Inter',sans-serif}
 .biz-role{font-size:.72rem;color:#A0784A;letter-spacing:.08em;margin-top:3px;font-weight:500}
@@ -678,7 +680,7 @@ function switchTab(tab){
 const TEAM = [
   {name:'Mr. Wongsatorn Somtana', nick:'Sun',   role:'Founder & CEO',                  tel:'082-484-0926', email:'info@blookliving.com', line:'@blookliving', photo:'assets/CEO_PIC/1.jpg'},
   {name:'Ms. Sawarin Porjai',     nick:'Kam',   role:'Co-Founder & Marketing Director', tel:'096-247-8745', email:'info@blookliving.com', line:'@blookliving', photo:'assets/CEO_PIC/2.jpg'},
-  {name:'Mr. Wuttichai Porjai',   nick:'Champ', role:'Co-Founder & R&D',                tel:'096-247-8745', email:'info@blookliving.com', line:'@blookliving', photo:'assets/CEO_PIC/3.jpg'}
+  {name:'Mr. Wuttichai Porjai',   nick:'Champ', role:'Co-Founder & R&D',                tel:'096-923-9625', email:'info@blookliving.com', line:'@blookliving', photo:'assets/CEO_PIC/3.jpg'}
 ];
 const _svgTel='<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>';
 const _svgMail='<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>';
@@ -693,6 +695,7 @@ function renderCards(){
   g.innerHTML = TEAM.map((p,i)=>`
     <div class="biz-card-wrap">
       <div class="biz-card" id="bizcard-${i}">
+        <span class="biz-bk">BK</span>
         <div class="biz-logo">BLOOK<small>THE CLASS OF CALM</small></div>
         <div class="biz-person">
           <img class="biz-photo" src="${p.photo}" alt="${p.name}" crossorigin="anonymous">
@@ -746,11 +749,12 @@ async function shareCard(i){
 // ---- Channel share sheet (desktop fallback; same channels as main site) ----
 const SHARE_CHANNELS=[
   {k:'line',label:'LINE',cls:'ss-line',svg:'<path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/>',url:(u,t)=>`https://social-plugins.line.me/lineit/share?url=${u}&text=${t}`},
-  {k:'fb',label:'Facebook',cls:'ss-fb',svg:'<path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/>',url:(u)=>`https://www.facebook.com/sharer/sharer.php?u=${u}`},
+  {k:'msg',label:'Messenger',cls:'ss-msg',svg:'<path d="M12 2C6.48 2 2 6.13 2 11.23c0 2.9 1.36 5.49 3.5 7.19V22l3.2-1.76c.85.24 1.76.36 2.7.36 5.52 0 10-4.13 10-9.23S17.52 2 12 2zm1.01 12.43l-2.55-2.72-4.97 2.72 5.47-5.81 2.61 2.72 4.91-2.72-5.47 5.81z"/>',url:(u)=>`https://www.facebook.com/dialog/send?app_id=140586622674265&link=${u}&redirect_uri=${u}`},
   {k:'ig',label:'Instagram',cls:'ss-ig',svg:'<path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85s.01-3.58.07-4.85C2.38 3.93 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.41-10.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/>',copy:true},
   {k:'tt',label:'TikTok',cls:'ss-tt',svg:'<path d="M12.53.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>',copy:true},
-  {k:'wa',label:'WhatsApp',cls:'ss-wa',svg:'<path d="M.06 24l1.68-6.13A11.86 11.86 0 01.16 11.9C.16 5.34 5.5 0 12.06 0a11.82 11.82 0 018.41 3.49 11.82 11.82 0 013.48 8.42c0 6.56-5.34 11.9-11.9 11.9a11.9 11.9 0 01-5.69-1.45L.06 24zM6.6 20.13c1.68.99 3.28 1.59 5.4 1.59 5.45 0 9.89-4.43 9.89-9.88a9.86 9.86 0 00-9.88-9.89c-5.46 0-9.89 4.43-9.89 9.88 0 2.23.65 3.9 1.74 5.65l-.99 3.63 3.73-.98zm11.36-5.55c-.07-.12-.27-.2-.57-.35-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-1.7-.85-2.82-1.52-3.94-3.45-.3-.51.3-.47.85-1.57.09-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.42z"/>',url:(u,t)=>`https://wa.me/?text=${t}%20${u}`},
-  {k:'mail',label:'Email',cls:'ss-mail',svg:'<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>',url:(u,t)=>`mailto:?subject=${t}&body=${u}`}
+  {k:'mail',label:'Email',cls:'ss-mail',svg:'<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>',url:(u,t)=>`mailto:?subject=${t}&body=${u}`},
+  {k:'fb',label:'Facebook',cls:'ss-fb',svg:'<path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/>',url:(u)=>`https://www.facebook.com/sharer/sharer.php?u=${u}`},
+  {k:'wa',label:'WhatsApp',cls:'ss-wa',svg:'<path d="M.06 24l1.68-6.13A11.86 11.86 0 01.16 11.9C.16 5.34 5.5 0 12.06 0a11.82 11.82 0 018.41 3.49 11.82 11.82 0 013.48 8.42c0 6.56-5.34 11.9-11.9 11.9a11.9 11.9 0 01-5.69-1.45L.06 24zM6.6 20.13c1.68.99 3.28 1.59 5.4 1.59 5.45 0 9.89-4.43 9.89-9.88a9.86 9.86 0 00-9.88-9.89c-5.46 0-9.89 4.43-9.89 9.88 0 2.23.65 3.9 1.74 5.65l-.99 3.63 3.73-.98zm11.36-5.55c-.07-.12-.27-.2-.57-.35-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-1.7-.85-2.82-1.52-3.94-3.45-.3-.51.3-.47.85-1.57.09-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.42z"/>',url:(u,t)=>`https://wa.me/?text=${t}%20${u}`}
 ];
 let _shareCtx={url:'https://blookliving.com',text:'BLOOK LIVING'};
 function openShare(url,text){
