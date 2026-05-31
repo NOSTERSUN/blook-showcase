@@ -51,8 +51,7 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .hero-title{font-family:'Fraunces','Noto Serif Thai',serif;font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:400;line-height:1.15;margin-bottom:12px;opacity:0;color:var(--primary)}
 .hero-title em{font-style:italic;color:var(--gold);font-weight:400}
 .hero-desc{font-size:.95rem;line-height:1.8;color:var(--neutral);max-width:580px;margin:0 auto 24px;font-weight:300;opacity:0}
-.hero-social{display:flex;flex-wrap:nowrap;justify-content:center;gap:7px;margin:0 auto 26px;max-width:100%;opacity:0;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
-.hero-social::-webkit-scrollbar{display:none}
+.hero-social{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 26px;max-width:620px;opacity:0}
 .hero-social a{display:flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--border);border-radius:18px;text-decoration:none;color:var(--neutral);font-size:.72rem;font-weight:500;transition:all .3s;background:rgba(255,255,255,.55);white-space:nowrap}
 .hero-social a:hover{border-color:var(--gold);color:var(--gold);background:#fff;transform:translateY(-2px)}
 .hero-social svg{width:14px;height:14px;fill:var(--gold);flex-shrink:0}
@@ -142,6 +141,36 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .sofa-gallery-label{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
 
 /* -- LIGHTBOX -- */
+/* -- GALLERY BUTTON + OVERLAY -- */
+.gallery-btn{display:inline-flex;align-items:center;gap:9px;margin-top:24px;padding:12px 26px;border:1px solid var(--border2);border-radius:30px;background:transparent;color:var(--gold);font-family:inherit;font-size:.82rem;letter-spacing:.08em;cursor:pointer;transition:all .3s}
+.gallery-btn:hover{background:var(--gold);color:#fff;border-color:var(--gold);transform:translateY(-2px);box-shadow:0 10px 26px rgba(184,134,11,.22)}
+.gallery-btn svg{width:16px;height:16px}
+#gallery-overlay{position:fixed;inset:0;z-index:9999;background:rgba(12,9,6,.97);display:none;flex-direction:column;padding:0}
+#gallery-overlay.open{display:flex;animation:lbFade .3s ease}
+.gov-bar{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:1px solid rgba(218,165,32,.18);flex-shrink:0}
+.gov-bar .gov-title{font-family:'Fraunces','Noto Serif Thai',serif;font-size:1.2rem;color:var(--gold-light);letter-spacing:.05em}
+.gov-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:1.5rem;cursor:pointer;line-height:1;transition:all .2s}
+.gov-close:hover{background:var(--gold)}
+.gov-grid{flex:1;overflow-y:auto;padding:24px 28px 50px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;align-content:start}
+.gov-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:zoom-in;transition:all .3s;border:1px solid rgba(218,165,32,.15)}
+.gov-grid img:hover{transform:scale(1.03);border-color:var(--gold)}
+
+/* -- SHARE SHEET -- */
+#share-sheet{position:fixed;inset:0;z-index:10001;background:rgba(10,8,6,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
+#share-sheet.open{display:flex;animation:lbFade .2s ease}
+.share-panel{background:#fff;width:100%;max-width:460px;border-radius:18px 18px 0 0;padding:22px 24px 30px;animation:sheetUp .3s cubic-bezier(.34,1.3,.64,1)}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.share-panel h4{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--primary);margin-bottom:4px}
+.share-panel .ss-sub{font-size:.78rem;color:var(--dim);margin-bottom:18px}
+.share-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ss-item{display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:none;cursor:pointer;font-family:inherit;font-size:.72rem;color:var(--neutral)}
+.ss-ic{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.ss-item:hover .ss-ic{transform:scale(1.1)}
+.ss-ic svg{width:26px;height:26px;fill:#fff}
+.ss-line{background:#06C755}.ss-msg{background:#0084FF}.ss-ig{background:linear-gradient(45deg,#f09433,#dc2743,#bc1888)}.ss-wa{background:#25D366}.ss-wx{background:#07C160}.ss-mail{background:#8B6B3D}.ss-copy{background:#5C4E46}
+.share-close{margin-top:20px;width:100%;padding:13px;border:1px solid var(--border);background:var(--bg2);border-radius:10px;font-family:inherit;font-size:.85rem;color:var(--neutral);cursor:pointer}
+.share-close:hover{background:var(--bg3)}
+
 #lightbox{position:fixed;inset:0;z-index:10000;background:rgba(10,8,6,.94);display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out}
 #lightbox.open{display:flex;animation:lbFade .25s ease}
 @keyframes lbFade{from{opacity:0}to{opacity:1}}
@@ -190,7 +219,7 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .reviews-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
 .review-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .4s;background:var(--bg)}
 .review-card:hover{border-color:var(--gold-light);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
-.review-card img{width:100%;aspect-ratio:3/4;object-fit:contain;display:block;background:linear-gradient(160deg,var(--gold-light) 0%,var(--gold) 100%)}
+.review-card img{width:100%;aspect-ratio:3/4;object-fit:contain;display:block;background:linear-gradient(160deg,#FAF8F5 0%,#F2EDE6 100%)}
 .review-card-label{padding:10px 12px;font-size:.75rem;color:var(--neutral);display:flex;align-items:center;gap:6px}
 .review-card-label .stars{color:var(--gold);font-size:.85rem;letter-spacing:1px}
 
@@ -364,6 +393,10 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     <p class="sec-eyebrow" data-th="คอลเลกชันของเรา" data-en="OUR COLLECTION">คอลเลกชันของเรา</p>
     <h2 class="sec-title" data-th="สร้างสรรค์เพื่อ<em>ความสงบ</em>" data-en="Crafted for <em>Serenity</em>">สร้างสรรค์เพื่อ<em>ความสงบ</em></h2>
     <p class="sec-desc" data-th="5 ผลิตภัณฑ์ระดับพรีเมียม ออกแบบเพื่อยกระดับพื้นที่ของคุณด้วยความสง่างามและความสะดวกสบายเหนือกาลเวลา" data-en="5 premium products designed to elevate your space with timeless elegance and comfort">5 ผลิตภัณฑ์ระดับพรีเมียม ออกแบบเพื่อยกระดับพื้นที่ของคุณด้วยความสง่างามและความสะดวกสบายเหนือกาลเวลา</p>
+    <button class="gallery-btn" onclick="openGallery()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span data-th="ดูแกลเลอรีทั้งหมด" data-en="View Full Gallery">ดูแกลเลอรีทั้งหมด</span>
+    </button>
   </div>
 
   <div class="product-section">
@@ -686,12 +719,31 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   </div>
 </section>
 
-<!-- LIGHTBOX (Sofa gallery) -->
+<!-- FULL GALLERY OVERLAY -->
+<div id="gallery-overlay">
+  <div class="gov-bar">
+    <span class="gov-title" data-th="แกลเลอรีสินค้า BLOOK" data-en="BLOOK Product Gallery">แกลเลอรีสินค้า BLOOK</span>
+    <button class="gov-close" onclick="closeGallery()">&times;</button>
+  </div>
+  <div class="gov-grid" id="gov-grid"></div>
+</div>
+
+<!-- LIGHTBOX -->
 <div id="lightbox" onclick="if(event.target.id==='lightbox')closeLightbox()">
   <span class="lb-close" onclick="closeLightbox()">&times;</span>
   <button class="lb-nav lb-prev" onclick="lbNav(-1)">&#8249;</button>
   <img id="lightbox-img" src="" alt="">
   <button class="lb-nav lb-next" onclick="lbNav(1)">&#8250;</button>
+</div>
+
+<!-- SHARE SHEET -->
+<div id="share-sheet" onclick="if(event.target.id==='share-sheet')closeShare()">
+  <div class="share-panel">
+    <h4 data-th="แชร์ BLOOK LIVING" data-en="Share BLOOK LIVING">แชร์ BLOOK LIVING</h4>
+    <p class="ss-sub" data-th="เลือกช่องทางที่ต้องการ" data-en="Choose a channel">เลือกช่องทางที่ต้องการ</p>
+    <div class="share-grid" id="share-grid"></div>
+    <button class="share-close" onclick="closeShare()" data-th="ปิด" data-en="Close">ปิด</button>
+  </div>
 </div>
 
 <!-- FLOATING CONTACT BUTTON -->
@@ -879,12 +931,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// ============ SOFA GALLERY LIGHTBOX ============
+// ============ LIGHTBOX (generic, array-based) ============
 const SOFA_GALLERY=['assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg'];
-let lbIdx=0;
-function openLightbox(i){lbIdx=i;document.getElementById('lightbox-img').src=SOFA_GALLERY[i];document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
-function lbNav(d){if(window.event)window.event.stopPropagation();lbIdx=(lbIdx+d+SOFA_GALLERY.length)%SOFA_GALLERY.length;document.getElementById('lightbox-img').src=SOFA_GALLERY[lbIdx];}
+let lbImages=SOFA_GALLERY, lbIdx=0;
+function openLightbox(i,arr){ lbImages=arr||SOFA_GALLERY; lbIdx=i; document.getElementById('lightbox-img').src=lbImages[i]; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');if(!document.getElementById('gallery-overlay').classList.contains('open'))document.body.style.overflow='';}
+function lbNav(d){if(window.event)window.event.stopPropagation();lbIdx=(lbIdx+d+lbImages.length)%lbImages.length;document.getElementById('lightbox-img').src=lbImages[lbIdx];}
 document.addEventListener('keydown',e=>{
   if(!document.getElementById('lightbox').classList.contains('open'))return;
   if(e.key==='Escape')closeLightbox();
@@ -892,17 +944,52 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight')lbNav(1);
 });
 
-// Share the website (Web Share API + clipboard fallback)
-async function shareSite(){
-  const data={title:'BLOOK LIVING — The Class of Calm',text:'BLOOK LIVING — เฟอร์นิเจอร์และของแต่งบ้านระดับพรีเมียม',url:'https://blookliving.com'};
-  try{
-    if(navigator.share){ await navigator.share(data); }
-    else { await navigator.clipboard.writeText(data.url); alert('คัดลอกลิงก์แล้ว: '+data.url); }
-  }catch(e){ /* user cancelled */ }
+// ============ FULL PRODUCT GALLERY ============
+const ALL_GALLERY=[
+  'assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg',
+  'assets/Sofa/3d-sofa-brown.png','assets/Sofa/3d-sofa-orange.png','assets/Sofa/3d-sofa-white.png','assets/Sofa/3d-sofa-yellow.png',
+  'assets/Pillow/1.jpg','assets/Pillow/2.jpg','assets/Pillow/3.jpg','assets/Pillow/4.jpg','assets/Pillow/5.jpg',
+  'assets/diffuser_250/1.png','assets/diffuser_250/2.png','assets/diffuser_250/3.png','assets/diffuser_250/4.png','assets/diffuser_250/5.png','assets/diffuser_250/6.png','assets/diffuser_250/7.png','assets/diffuser_250/8.png',
+  'assets/diffuser_50/1.png','assets/diffuser_50/2.png','assets/diffuser_50/3.png','assets/diffuser_50/4.png','assets/diffuser_50/5.png','assets/diffuser_50/6.png','assets/diffuser_50/7.png',
+  'assets/diffuser_gift/1.png','assets/diffuser_gift/2.png','assets/diffuser_gift/3.png','assets/diffuser_gift/4.png','assets/diffuser_gift/5.png','assets/diffuser_gift/6.png','assets/diffuser_gift/7.png','assets/diffuser_gift/8.png'
+];
+function openGallery(){
+  const g=document.getElementById('gov-grid');
+  if(!g.dataset.done){ g.innerHTML=ALL_GALLERY.map((src,i)=>`<img src="${src}" loading="lazy" alt="BLOOK gallery ${i+1}" onclick="openLightbox(${i},ALL_GALLERY)">`).join(''); g.dataset.done='1'; }
+  document.getElementById('gallery-overlay').classList.add('open'); document.body.style.overflow='hidden';
 }
+function closeGallery(){document.getElementById('gallery-overlay').classList.remove('open');document.body.style.overflow='';}
+
+// ============ SHARE SHEET (channel-first) ============
+const SHARE_CHANNELS=[
+  {k:'line', label:'LINE', cls:'ss-line', svg:'<path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/>', url:(u,t)=>`https://social-plugins.line.me/lineit/share?url=${u}&text=${t}`},
+  {k:'msg', label:'Messenger', cls:'ss-msg', svg:'<path d="M12 2C6.48 2 2 6.13 2 11.23c0 2.9 1.36 5.49 3.5 7.19V22l3.2-1.76c.85.24 1.76.36 2.7.36 5.52 0 10-4.13 10-9.23S17.52 2 12 2zm1.01 12.43l-2.55-2.72-4.97 2.72 5.47-5.81 2.61 2.72 4.91-2.72-5.47 5.81z"/>', url:(u)=>`https://www.facebook.com/sharer/sharer.php?u=${u}`},
+  {k:'ig', label:'Instagram', cls:'ss-ig', svg:'<path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85s.01-3.58.07-4.85C2.38 3.93 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.41-10.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/>', url:()=>`https://www.instagram.com/blook.living`},
+  {k:'wa', label:'WhatsApp', cls:'ss-wa', svg:'<path d="M.06 24l1.68-6.13A11.86 11.86 0 01.16 11.9C.16 5.34 5.5 0 12.06 0a11.82 11.82 0 018.41 3.49 11.82 11.82 0 013.48 8.42c0 6.56-5.34 11.9-11.9 11.9a11.9 11.9 0 01-5.69-1.45L.06 24zM6.6 20.13c1.68.99 3.28 1.59 5.4 1.59 5.45 0 9.89-4.43 9.89-9.88a9.86 9.86 0 00-9.88-9.89c-5.46 0-9.89 4.43-9.89 9.88 0 2.23.65 3.9 1.74 5.65l-.99 3.63 3.73-.98zm11.36-5.55c-.07-.12-.27-.2-.57-.35-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.42z"/>', url:(u,t)=>`https://wa.me/?text=${t}%20${u}`},
+  {k:'wx', label:'WeChat', cls:'ss-wx', svg:'<path d="M8.69 11.52c-.48 0-.96-.32-.96-.81 0-.48.48-.8.96-.8.49 0 .81.32.81.8 0 .49-.32.81-.81.81zm4.84-1.61c-.49 0-.97.32-.97.8 0 .49.48.81.97.81.48 0 .8-.32.8-.81 0-.48-.32-.8-.8-.8zM9.5 4C5.36 4 2 6.69 2 10.02c0 1.83 1.02 3.47 2.65 4.58L4 17l2.5-1.37c.81.22 1.65.37 2.5.37.21 0 .42-.01.62-.03a4.8 4.8 0 01-.2-1.37c0-2.9 2.82-5.25 6.3-5.25.23 0 .46.01.68.04C15.84 5.96 12.96 4 9.5 4zm12.5 9.27c0-2.5-2.5-4.54-5.59-4.54-3.25 0-5.91 2.04-5.91 4.54s2.66 4.54 5.91 4.54c.68 0 1.36-.12 2-.3L20 18.5l-.5-1.86c1.5-.92 2.5-2.37 2.5-3.37zm-7.46-.81c-.4 0-.72-.27-.72-.67 0-.41.32-.68.72-.68.41 0 .68.27.68.68 0 .4-.27.67-.68.67zm3.92 0c-.4 0-.72-.27-.72-.67 0-.41.32-.68.72-.68.41 0 .68.27.68.68 0 .4-.27.67-.68.67z"/>', copy:true},
+  {k:'mail', label:'Email', cls:'ss-mail', svg:'<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>', url:(u,t)=>`mailto:?subject=${t}&body=${u}`}
+];
+let _shareCtx={url:'https://blookliving.com',text:'BLOOK LIVING — The Class of Calm'};
+function openShare(url,text){
+  _shareCtx={url:url||'https://blookliving.com', text:text||'BLOOK LIVING — The Class of Calm'};
+  const g=document.getElementById('share-grid');
+  let html=SHARE_CHANNELS.map(c=>`<button class="ss-item" onclick="shareVia('${c.k}')"><span class="ss-ic ${c.cls}"><svg viewBox="0 0 24 24">${c.svg}</svg></span>${c.label}</button>`).join('');
+  html+=`<button class="ss-item" onclick="shareVia('copy')"><span class="ss-ic ss-copy"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></span>คัดลอกลิงก์</button>`;
+  g.innerHTML=html;
+  document.getElementById('share-sheet').classList.add('open');
+}
+function closeShare(){document.getElementById('share-sheet').classList.remove('open');}
+async function shareVia(k){
+  const u=encodeURIComponent(_shareCtx.url), t=encodeURIComponent(_shareCtx.text);
+  if(k==='copy'){ try{await navigator.clipboard.writeText(_shareCtx.url);alert('คัดลอกลิงก์แล้ว');}catch(e){} closeShare(); return; }
+  const ch=SHARE_CHANNELS.find(c=>c.k===k);
+  if(ch.copy){ try{await navigator.clipboard.writeText(_shareCtx.url);alert('คัดลอกลิงก์แล้ว — เปิด '+ch.label+' แล้ววางเพื่อแชร์');}catch(e){} closeShare(); return; }
+  window.open(ch.url(u,t),'_blank','noopener'); closeShare();
+}
+// FAB share button opens the channel sheet
+function shareSite(){ openShare('https://blookliving.com','BLOOK LIVING — The Class of Calm'); }
 
 // Collapse the contact FAB to a single button while scrolling
-let _fabScrollT;
 window.addEventListener('scroll',()=>{
   const fab=document.getElementById('contact-fab');
   if(fab&&fab.classList.contains('open')) fab.classList.remove('open');

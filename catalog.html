@@ -8,73 +8,78 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Noto+Serif+Thai:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#1A0F08;--gold:#B8860B;--gold-light:#DAA520;--gold-dim:#8B6914;--bg:#FFFFFF;--bg2:#FAF8F5;--bg3:#F2EDE6;--neutral:#5C4E46;--dim:#8B7D74;--border:rgba(184,134,11,.15)}
-body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:var(--bg3);color:var(--primary);line-height:1.6}
+:root{--primary:#1A0F08;--gold:#B8860B;--gold-light:#DAA520;--gold-dim:#8B6914;--bg2:#FAF8F5;--bg3:#F2EDE6;--neutral:#5C4E46;--dim:#8B7D74;--border:rgba(184,134,11,.18)}
+body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;color:var(--primary);line-height:1.55}
 .serif{font-family:'Fraunces','Noto Serif Thai',serif}
 
-/* Toolbar (hidden in print) */
-.cat-bar{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:14px 28px;background:rgba(26,15,8,.96);backdrop-filter:blur(10px)}
-.cat-bar .b{font-family:'Fraunces',serif;font-size:1.3rem;letter-spacing:.16em;color:var(--gold-light)}
+/* Toolbar (icon-only, hidden in print) */
+.cat-bar{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:rgba(26,15,8,.96);backdrop-filter:blur(10px)}
+.cat-bar .b{font-family:'Fraunces',serif;font-size:1.2rem;letter-spacing:.16em;color:var(--gold-light)}
 .cat-bar-actions{display:flex;gap:10px}
-.cat-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:7px;font-size:.8rem;letter-spacing:.05em;cursor:pointer;text-decoration:none;font-family:inherit;border:1px solid rgba(218,165,32,.4);transition:all .25s}
-.cat-btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;border:none;font-weight:600}
-.cat-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(184,134,11,.35)}
-.cat-btn.ghost{background:transparent;color:var(--gold-light)}
-.cat-btn.ghost:hover{background:rgba(218,165,32,.12)}
-.cat-btn svg{width:15px;height:15px;fill:currentColor}
+.icon-btn{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(218,165,32,.4);background:transparent;color:var(--gold-light);transition:all .25s}
+.icon-btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;border:none}
+.icon-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(184,134,11,.4)}
+.icon-btn:hover{background:rgba(218,165,32,.14)}
+.icon-btn svg{width:20px;height:20px;fill:currentColor}
 
-/* Catalog pages */
-.catalog{max-width:900px;margin:24px auto;display:flex;flex-direction:column;gap:24px;padding:0 16px}
-.page{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.08)}
+/* A4 pages */
+.catalog{display:flex;flex-direction:column;align-items:center;gap:18px;padding:18px 10px 50px}
+.page{width:210mm;min-height:297mm;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.14);padding:16mm 15mm;position:relative;display:flex;flex-direction:column;overflow:hidden}
+.pg-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.pg-head .pg-logo{font-family:'Fraunces',serif;font-size:1.1rem;letter-spacing:.16em;color:var(--gold)}
+.pg-head .pg-cat{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
+.pg-foot{margin-top:auto;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.6rem;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
 
 /* Cover */
-.cover{background:linear-gradient(160deg,#FAF8F5,#EDE6DA);text-align:center;padding:90px 40px}
-.cover .eyebrow{font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.cover h1{font-family:'Fraunces',serif;font-size:clamp(2.4rem,6vw,4rem);line-height:1.1;color:var(--primary)}
+.cover{justify-content:center;align-items:center;text-align:center;background:linear-gradient(160deg,#FAF8F5,#EDE6DA)}
+.cover .eyebrow{font-size:.74rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.cover h1{font-family:'Fraunces',serif;font-size:4rem;line-height:1.05;color:var(--primary)}
 .cover h1 em{font-style:italic;color:var(--gold)}
-.cover .tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:var(--gold);margin-top:14px}
-.cover .meta{margin-top:40px;font-size:.78rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+.cover .tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.7rem;color:var(--gold);margin-top:16px}
+.cover .meta{margin-top:50px;font-size:.8rem;letter-spacing:.25em;color:var(--dim);text-transform:uppercase}
+.cover .cover-img{width:62%;max-width:330px;aspect-ratio:1;object-fit:contain;margin:34px auto 0}
 
-/* Product spread */
-.prod{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch}
-.prod.alt .p-img{order:2}
-.p-img{background:var(--bg3);aspect-ratio:1;overflow:hidden}
-.p-img img{width:100%;height:100%;object-fit:cover}
-.p-body{padding:44px 40px;display:flex;flex-direction:column;justify-content:center}
-.p-eyebrow{font-size:.66rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.p-name{font-family:'Fraunces',serif;font-size:2rem;line-height:1.15;color:var(--primary);margin-bottom:6px}
-.p-sub{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-style:italic;font-size:1.15rem;color:var(--gold);margin-bottom:16px}
-.p-desc{font-size:.95rem;line-height:1.85;color:var(--neutral);font-weight:300;margin-bottom:20px}
-.p-feats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.p-feat{border-left:2px solid var(--gold-light);padding:8px 14px;background:rgba(184,134,11,.04)}
-.p-feat b{display:block;font-size:.9rem;color:var(--primary);font-weight:500}
+/* Product page */
+.p-eyebrow{font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-top:16px}
+.p-name{font-family:'Fraunces',serif;font-size:2.4rem;line-height:1.1;color:var(--primary);margin-top:6px}
+.p-sub{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-style:italic;font-size:1.3rem;color:var(--gold);margin-top:6px}
+.p-master{width:100%;height:88mm;background:var(--bg3);border-radius:8px;overflow:hidden;margin-top:14px}
+.p-master img{width:100%;height:100%;object-fit:cover}
+.p-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.p-thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+.p-desc{font-size:.95rem;line-height:1.85;color:var(--neutral);font-weight:300;margin-top:16px}
+.p-feats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.p-feat{border-left:2px solid var(--gold-light);padding:8px 14px;background:rgba(184,134,11,.05);border-radius:0 6px 6px 0}
+.p-feat b{display:block;font-size:.92rem;color:var(--primary);font-weight:500}
 .p-feat span{font-size:.8rem;color:var(--neutral)}
-.p-scents{margin-top:18px;font-size:.82rem;color:var(--neutral)}
-.p-scents b{color:var(--gold);letter-spacing:.05em}
+.p-scents{margin-top:14px;font-size:.85rem;color:var(--neutral);background:var(--bg2);padding:12px 16px;border-radius:8px}
+.p-scents b{color:var(--gold);letter-spacing:.04em}
 
-/* Contact page */
-.contact-page{padding:60px 50px;text-align:center;background:var(--primary);color:#fff}
-.contact-page h2{font-family:'Fraunces',serif;font-size:2rem;color:var(--gold-light);margin-bottom:24px}
-.contact-page p{color:rgba(255,255,255,.8);font-size:.95rem;line-height:2}
-.contact-page a{color:var(--gold-light);text-decoration:none}
+/* Info (last) page */
+.info-page h2{font-family:'Fraunces',serif;font-size:2rem;color:var(--primary);margin-top:18px}
+.info-block{margin-top:20px}
+.info-block .lbl{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.info-block p{font-size:.92rem;line-height:1.9;color:var(--neutral)}
+.info-block a{color:var(--gold);text-decoration:none}
+.info-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px}
 
-@media(max-width:700px){
-  .prod{grid-template-columns:1fr}
-  .prod.alt .p-img{order:0}
-  .p-body{padding:30px 24px}
-  .p-feats{grid-template-columns:1fr}
+@media(max-width:760px){
+  .page{width:100%;min-height:auto;padding:26px 22px}
+  .cover h1{font-size:2.6rem}
+  .p-name{font-size:1.9rem}
+  .p-master{height:230px}
+  .p-thumbs{grid-template-columns:repeat(4,1fr)}
+  .info-cols{grid-template-columns:1fr}
 }
 
-/* PRINT — clean A4 catalog */
 @media print{
+  @page{size:A4 portrait;margin:0}
   body{background:#fff}
   .cat-bar{display:none}
-  .catalog{margin:0;max-width:none;gap:0;padding:0}
-  .page{box-shadow:none;border-radius:0;page-break-after:always;break-after:page}
+  .catalog{gap:0;padding:0}
+  .page{width:210mm;min-height:297mm;box-shadow:none;page-break-after:always;break-after:page}
   .page:last-child{page-break-after:auto}
-  .prod{grid-template-columns:1fr 1fr}
-  .p-img img{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .cover,.contact-page{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
 </head>
@@ -83,10 +88,11 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:var(--bg3);c
 <div class="cat-bar">
   <span class="b">BLOOK</span>
   <div class="cat-bar-actions">
-    <a href="index.html" class="cat-btn ghost">← กลับหน้าหลัก</a>
-    <button class="cat-btn primary" onclick="window.print()">
+    <a href="index.html" class="icon-btn" title="กลับหน้าหลัก" aria-label="กลับหน้าหลัก">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/></svg>
+    </a>
+    <button class="icon-btn primary" title="ดาวน์โหลด / พิมพ์ PDF" aria-label="Download PDF" onclick="window.print()">
       <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v3h12V3z"/></svg>
-      ดาวน์โหลด / พิมพ์ (PDF)
     </button>
   </div>
 </div>
@@ -94,121 +100,150 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:var(--bg3);c
 <div class="catalog">
 
   <!-- COVER -->
-  <div class="page cover">
+  <section class="page cover">
     <p class="eyebrow">Product Catalog · 2025</p>
     <h1>BLOOK <em>LIVING</em></h1>
     <p class="tag">The Class of Calm</p>
+    <img class="cover-img" src="assets/diffuser_250/1.png" alt="BLOOK">
     <p class="meta">Home Fragrance · Pillow · Sofa · Gift Set</p>
-  </div>
+  </section>
 
-  <!-- REED DIFFUSER 250ML -->
-  <div class="page">
-    <div class="prod">
-      <div class="p-img"><img src="assets/diffuser_250/1.png" alt="Reed Diffuser 250ml"></div>
-      <div class="p-body">
-        <p class="p-eyebrow">Reed Diffuser · 250 ML</p>
-        <h2 class="p-name">Luxury Hotel Collection</h2>
-        <p class="p-sub">ขวด Amber สุดเอกลักษณ์</p>
-        <p class="p-desc">ก้านหอมปรับอากาศสไตล์อะโพเทคารีระดับพรีเมียม ได้แรงบันดาลใจจากโรงแรมหรูชั้นนำระดับโลก กลิ่นหอมยาวนาน ไม่ระคายเคือง</p>
-        <div class="p-feats">
-          <div class="p-feat"><b>4–5 เดือน</b><span>กลิ่นหอมยาวนาน</span></div>
-          <div class="p-feat"><b>40–50 ตร.ม.</b><span>ครอบคลุมพื้นที่</span></div>
-          <div class="p-feat"><b>4 กลิ่น</b><span>คัดสรรระดับโรงแรม</span></div>
-          <div class="p-feat"><b>ไม่ระคายเคือง</b><span>สูตรปลอดภัย</span></div>
-        </div>
-        <p class="p-scents"><b>กลิ่น:</b> Marriott · Sheraton · Four Seasons · Shangri-La</p>
+  <!-- 1) REED DIFFUSER 250ML -->
+  <section class="page">
+    <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat">Reed Diffuser · 250 ML</span></div>
+    <p class="p-eyebrow">Home Fragrance</p>
+    <h2 class="p-name">Luxury Hotel Collection</h2>
+    <p class="p-sub">ขวด Amber สุดเอกลักษณ์ · 250 มล.</p>
+    <div class="p-master"><img src="assets/diffuser_250/1.png" alt="Reed Diffuser 250ml"></div>
+    <div class="p-thumbs">
+      <img src="assets/diffuser_250/2.png" alt=""><img src="assets/diffuser_250/3.png" alt=""><img src="assets/diffuser_250/4.png" alt=""><img src="assets/diffuser_250/5.png" alt=""><img src="assets/diffuser_250/6.png" alt="">
+    </div>
+    <p class="p-desc">ก้านหอมปรับอากาศสไตล์อะโพเทคารีระดับพรีเมียม ได้แรงบันดาลใจจากโรงแรมหรูชั้นนำระดับโลก กลิ่นหอมยาวนาน ไม่ระคายเคือง ดีไซน์สง่างามสำหรับพื้นที่ที่ต้องการความสงบอีกระดับ</p>
+    <div class="p-feats">
+      <div class="p-feat"><b>4–5 เดือน</b><span>กลิ่นหอมยาวนาน</span></div>
+      <div class="p-feat"><b>40–50 ตร.ม.</b><span>ครอบคลุมพื้นที่</span></div>
+      <div class="p-feat"><b>4 กลิ่น</b><span>คัดสรรระดับโรงแรม</span></div>
+      <div class="p-feat"><b>ไม่ระคายเคือง</b><span>สูตรปลอดภัย</span></div>
+    </div>
+    <p class="p-scents"><b>กลิ่นให้เลือก:</b> Marriott · Sheraton · Four Seasons · Shangri-La</p>
+    <div class="pg-foot"><span>BLOOK LIVING · The Class of Calm</span><span>01</span></div>
+  </section>
+
+  <!-- 2) REED DIFFUSER 50ML -->
+  <section class="page">
+    <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat">Reed Diffuser · 50 ML</span></div>
+    <p class="p-eyebrow">Home Fragrance · Pocket</p>
+    <h2 class="p-name">Pocket Hotel Collection</h2>
+    <p class="p-sub">4 กลิ่นโรงแรมหรู · พกพาสะดวก</p>
+    <div class="p-master"><img src="assets/diffuser_50/1.png" alt="Reed Diffuser 50ml"></div>
+    <div class="p-thumbs">
+      <img src="assets/diffuser_50/2.png" alt=""><img src="assets/diffuser_50/3.png" alt=""><img src="assets/diffuser_50/4.png" alt=""><img src="assets/diffuser_50/5.png" alt=""><img src="assets/diffuser_50/6.png" alt="">
+    </div>
+    <p class="p-desc">สูตรระดับโรงแรมเดียวกัน ในขวดแมตต์แบล็คขนาดกะทัดรัด เหมาะสำหรับโต๊ะทำงาน ห้องนอน พื้นที่ส่วนตัว และการเดินทาง สร้างสรรค์ความสงบไปได้ทุกที่</p>
+    <div class="p-feats">
+      <div class="p-feat"><b>4–5 สัปดาห์</b><span>กลิ่นหอมยาวนาน</span></div>
+      <div class="p-feat"><b>20–30 ตร.ม.</b><span>ครอบคลุมพื้นที่</span></div>
+      <div class="p-feat"><b>4 กลิ่น</b><span>คัดสรรระดับโรงแรม</span></div>
+      <div class="p-feat"><b>พกพาสะดวก</b><span>เดินทาง / ทดลองใช้</span></div>
+    </div>
+    <p class="p-scents"><b>กลิ่นให้เลือก:</b> Marriott · Sheraton · Four Seasons · Shangri-La</p>
+    <div class="pg-foot"><span>BLOOK LIVING · The Class of Calm</span><span>02</span></div>
+  </section>
+
+  <!-- 3) GIFT SET -->
+  <section class="page">
+    <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat">Gift Set · Premium</span></div>
+    <p class="p-eyebrow">Gift Collection</p>
+    <h2 class="p-name">The Gift Set</h2>
+    <p class="p-sub">เซ็ทของขวัญน้ำหอมปรับอากาศ</p>
+    <div class="p-master"><img src="assets/diffuser_gift/1.png" alt="The Gift Set"></div>
+    <div class="p-thumbs">
+      <img src="assets/diffuser_gift/2.png" alt=""><img src="assets/diffuser_gift/3.png" alt=""><img src="assets/diffuser_gift/4.png" alt=""><img src="assets/diffuser_gift/5.png" alt=""><img src="assets/diffuser_gift/6.png" alt="">
+    </div>
+    <p class="p-desc">2 ขวดขนาด 50 มล. แบบแมตต์แบล็คสุดเท่ เลือกกลิ่นได้ตามใจ นำเสนอในกล่องของขวัญแม่เหล็กสุดหรู พร้อมมอบความสงบเป็นของขวัญที่สมบูรณ์แบบในทุกโอกาส</p>
+    <div class="p-feats">
+      <div class="p-feat"><b>2 ขวด</b><span>50 มล. × 2</span></div>
+      <div class="p-feat"><b>คละกลิ่นได้</b><span>เลือกตามใจชอบ</span></div>
+      <div class="p-feat"><b>กล่องแม่เหล็ก</b><span>แพ็คเกจพรีเมียม</span></div>
+      <div class="p-feat"><b>พร้อมมอบ</b><span>ของขวัญสุดพิเศษ</span></div>
+    </div>
+    <div class="pg-foot"><span>BLOOK LIVING · The Class of Calm</span><span>03</span></div>
+  </section>
+
+  <!-- 4) ARGO PILLOW -->
+  <section class="page">
+    <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat">Pillow · Ergonomic</span></div>
+    <p class="p-eyebrow">Wellness</p>
+    <h2 class="p-name">BLOOK Argo Pillow</h2>
+    <p class="p-sub">หมอนเพื่อสุขภาพ ออกแบบตามหลักสรีรศาสตร์</p>
+    <div class="p-master"><img src="assets/Pillow/1.jpg" alt="BLOOK Argo Pillow"></div>
+    <div class="p-thumbs">
+      <img src="assets/Pillow/2.jpg" alt=""><img src="assets/Pillow/3.jpg" alt=""><img src="assets/Pillow/4.jpg" alt=""><img src="assets/Pillow/5.jpg" alt="">
+    </div>
+    <p class="p-desc">หมอนพรีเมียมที่ออกแบบมาเพื่อรองรับสรีระศีรษะและคออย่างสมบูรณ์แบบ ด้วยวัสดุคุณภาพสูงและดีไซน์ที่ผ่านการคิดมาอย่างพิถีพิถัน มอบการนอนหลับที่ผ่อนคลายในทุกค่ำคืน</p>
+    <div class="p-feats">
+      <div class="p-feat"><b>ผ้าพรีเมียม</b><span>นุ่ม ระบายอากาศดี</span></div>
+      <div class="p-feat"><b>ออกแบบตามสรีระ</b><span>นอนสบายตลอดคืน</span></div>
+      <div class="p-feat"><b>รับประกัน 1 ปี</b><span>โครงสร้างหมอน</span></div>
+      <div class="p-feat"><b>พร้อมกล่อง</b><span>มอบเป็นของขวัญ</span></div>
+    </div>
+    <div class="pg-foot"><span>BLOOK LIVING · The Class of Calm</span><span>04</span></div>
+  </section>
+
+  <!-- 5) TOGO SOFA -->
+  <section class="page">
+    <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat">Sofa · Premium</span></div>
+    <p class="p-eyebrow">Living</p>
+    <h2 class="p-name">TOGO SOFA</h2>
+    <p class="p-sub">มีสีสันให้เลือกหลากหลาย</p>
+    <div class="p-master"><img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg" alt="TOGO Sofa"></div>
+    <div class="p-thumbs">
+      <img src="assets/Sofa/3d-sofa-brown.png" alt=""><img src="assets/Sofa/3d-sofa-orange.png" alt=""><img src="assets/Sofa/3d-sofa-white.png" alt=""><img src="assets/Sofa/3d-sofa-yellow.png" alt=""><img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg" alt="">
+    </div>
+    <p class="p-desc">สัมผัสความสมดุลแห่งสไตล์และความสะดวกสบาย โซฟาพรีเมียมโครงสร้าง Pocket Spring สร้างพื้นที่พักผ่อนในอุดมคติสำหรับช่วงเวลาแห่งความสงบ มีหลากสีให้เลือกตามสไตล์</p>
+    <div class="p-feats">
+      <div class="p-feat"><b>คุณภาพสูง</b><span>ผ้าพรีเมียม / Pocket Spring</span></div>
+      <div class="p-feat"><b>รับประกัน 3 ปี</b><span>โครงสร้าง</span></div>
+      <div class="p-feat"><b>ดีไซน์พรีเมียม</b><span>สไตล์หรูหรา</span></div>
+      <div class="p-feat"><b>หลากสี</b><span>น้ำตาล · ส้ม · ขาว · เหลือง</span></div>
+    </div>
+    <div class="pg-foot"><span>BLOOK LIVING · The Class of Calm</span><span>05</span></div>
+  </section>
+
+  <!-- 6) COMPANY / CONTACT / ABOUT (last page) -->
+  <section class="page info-page">
+    <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat">About · Contact</span></div>
+    <h2>เกี่ยวกับ BLOOK LIVING</h2>
+    <div class="info-block">
+      <p>BLOOK LIVING คือแบรนด์เฟอร์นิเจอร์และของแต่งบ้านที่ออกแบบมาเพื่อสร้าง “พื้นที่แห่งการพักผ่อน” ให้กับทุกช่วงเวลาของชีวิต ภายใต้แนวคิด <em>The Class of Calm</em> เราเชื่อว่าความสบาย ความเรียบง่าย และความหรูอย่างมีรสนิยม สามารถอยู่ร่วมกันได้อย่างลงตัว ผ่านงานออกแบบที่ทันสมัย วัสดุคุณภาพ และรายละเอียดที่ใส่ใจในทุกชิ้นงาน</p>
+    </div>
+    <div class="info-cols">
+      <div class="info-block">
+        <div class="lbl">สำนักงานใหญ่ · Head Office</div>
+        <p>
+          <strong style="color:var(--primary)">บริษัท บลู๊ค ลิฟวิ่ง จำกัด (สำนักงานใหญ่)</strong><br>
+          เลขที่ 3/134 ตำบลบางสมัคร<br>
+          อำเภอบางปะกง จังหวัดฉะเชิงเทรา 24180<br>
+          เลขประจำตัวผู้เสียภาษี: 0245568003791
+        </p>
+      </div>
+      <div class="info-block">
+        <div class="lbl">ติดต่อ · Contact</div>
+        <p>
+          โทร: <a href="tel:+66937364796">093-736-4796</a><br>
+          อีเมล: <a href="mailto:info@blookliving.com">info@blookliving.com</a><br>
+          LINE: @blookliving<br>
+          Instagram: @blook.living<br>
+          เว็บไซต์: <a href="https://blookliving.com">blookliving.com</a>
+        </p>
       </div>
     </div>
-  </div>
-
-  <!-- REED DIFFUSER 50ML -->
-  <div class="page">
-    <div class="prod alt">
-      <div class="p-img"><img src="assets/diffuser_50/1.png" alt="Reed Diffuser 50ml"></div>
-      <div class="p-body">
-        <p class="p-eyebrow">Reed Diffuser · 50 ML</p>
-        <h2 class="p-name">Pocket Hotel Collection</h2>
-        <p class="p-sub">4 กลิ่นโรงแรมหรู พกพาสะดวก</p>
-        <p class="p-desc">สูตรระดับโรงแรมเดียวกัน ในขวดแมตต์แบล็คขนาดกะทัดรัด เหมาะสำหรับโต๊ะทำงาน ห้องนอน และการเดินทาง</p>
-        <div class="p-feats">
-          <div class="p-feat"><b>4–5 สัปดาห์</b><span>กลิ่นหอมยาวนาน</span></div>
-          <div class="p-feat"><b>20–30 ตร.ม.</b><span>ครอบคลุมพื้นที่</span></div>
-          <div class="p-feat"><b>4 กลิ่น</b><span>คัดสรรระดับโรงแรม</span></div>
-          <div class="p-feat"><b>พกพาสะดวก</b><span>เดินทาง / ทดลองใช้</span></div>
-        </div>
-        <p class="p-scents"><b>กลิ่น:</b> Marriott · Sheraton · Four Seasons · Shangri-La</p>
-      </div>
+    <div class="info-block">
+      <div class="lbl">ช่องทางสั่งซื้อ · Where to Buy</div>
+      <p>Shopee · Lazada · TikTok Shop · Facebook · Instagram · Etsy</p>
     </div>
-  </div>
-
-  <!-- GIFT SET -->
-  <div class="page">
-    <div class="prod">
-      <div class="p-img"><img src="assets/diffuser_gift/1.png" alt="The Gift Set"></div>
-      <div class="p-body">
-        <p class="p-eyebrow">Gift Set · Premium</p>
-        <h2 class="p-name">The Gift Set</h2>
-        <p class="p-sub">เซ็ทของขวัญน้ำหอมปรับอากาศ</p>
-        <p class="p-desc">2 ขวดขนาด 50 มล. แบบแมตต์แบล็ค เลือกกลิ่นได้ตามใจ นำเสนอในกล่องของขวัญแม่เหล็กสุดหรู</p>
-        <div class="p-feats">
-          <div class="p-feat"><b>2 ขวด</b><span>50 มล. × 2</span></div>
-          <div class="p-feat"><b>คละกลิ่นได้</b><span>เลือกตามใจชอบ</span></div>
-          <div class="p-feat"><b>กล่องแม่เหล็ก</b><span>แพ็คเกจพรีเมียม</span></div>
-          <div class="p-feat"><b>พร้อมมอบ</b><span>ของขวัญสุดพิเศษ</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ARGO PILLOW -->
-  <div class="page">
-    <div class="prod alt">
-      <div class="p-img"><img src="assets/Pillow/1.jpg" alt="BLOOK Argo Pillow"></div>
-      <div class="p-body">
-        <p class="p-eyebrow">Pillow · Ergonomic</p>
-        <h2 class="p-name">BLOOK Argo Pillow</h2>
-        <p class="p-sub">หมอนเพื่อสุขภาพ ออกแบบตามหลักสรีรศาสตร์</p>
-        <p class="p-desc">หมอนพรีเมียมที่ออกแบบมาเพื่อรองรับสรีระศีรษะและคออย่างสมบูรณ์แบบ ด้วยวัสดุคุณภาพสูงและดีไซน์ที่พิถีพิถัน</p>
-        <div class="p-feats">
-          <div class="p-feat"><b>ผ้าพรีเมียม</b><span>นุ่ม ระบายอากาศดี</span></div>
-          <div class="p-feat"><b>ออกแบบตามสรีระ</b><span>นอนสบายตลอดคืน</span></div>
-          <div class="p-feat"><b>รับประกัน 1 ปี</b><span>โครงสร้างหมอน</span></div>
-          <div class="p-feat"><b>พร้อมกล่อง</b><span>มอบเป็นของขวัญ</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOGO SOFA -->
-  <div class="page">
-    <div class="prod">
-      <div class="p-img"><img src="assets/Sofa/3d-sofa-brown.png" alt="TOGO Sofa"></div>
-      <div class="p-body">
-        <p class="p-eyebrow">Sofa · Premium</p>
-        <h2 class="p-name">TOGO SOFA</h2>
-        <p class="p-sub">มีสีสันให้เลือกหลากหลาย</p>
-        <p class="p-desc">สัมผัสความสมดุลแห่งสไตล์และความสะดวกสบาย โซฟาพรีเมียม สร้างพื้นที่พักผ่อนในอุดมคติสำหรับช่วงเวลาแห่งความสงบ</p>
-        <div class="p-feats">
-          <div class="p-feat"><b>คุณภาพสูง</b><span>ผ้าพรีเมียม / Pocket Spring</span></div>
-          <div class="p-feat"><b>รับประกัน 3 ปี</b><span>โครงสร้าง</span></div>
-          <div class="p-feat"><b>ดีไซน์พรีเมียม</b><span>สไตล์หรูหรา</span></div>
-          <div class="p-feat"><b>หลากสี</b><span>น้ำตาล · ส้ม · ขาว · เหลือง</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTACT -->
-  <div class="page contact-page">
-    <h2 class="serif">มาเชื่อมต่อกัน</h2>
-    <p>
-      โทร: <a href="tel:+66937364796">093-736-4796</a><br>
-      อีเมล: <a href="mailto:info@blookliving.com">info@blookliving.com</a><br>
-      LINE: @blookliving · Instagram: @blook.living<br>
-      <a href="https://blookliving.com">blookliving.com</a>
-    </p>
-    <p style="margin-top:24px;font-size:.72rem;letter-spacing:.25em;color:rgba(255,255,255,.4)">BLOOK LIVING CO., LTD. · THE CLASS OF CALM</p>
-  </div>
+    <div class="pg-foot"><span>BLOOK LIVING CO., LTD. · THE CLASS OF CALM</span><span>06</span></div>
+  </section>
 
 </div>
 </body>
