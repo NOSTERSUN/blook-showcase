@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLOOK — แกลเลอรี | Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Noto+Serif+Thai:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#2D2016;--gold:#A0784A;--gold-light:#C9A96E;--gold-dim:#8B6B3D;--bg:#FFFFFF;--bg2:#FAF8F5;--bg3:#F2EDE6;--neutral:#6B5E50;--dim:#9A8E7F;--border:rgba(160,120,74,.12);--border2:rgba(160,120,74,.30)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:var(--bg);color:var(--primary);line-height:1.6;overflow-x:hidden}
+::selection{background:var(--gold-light);color:#fff}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 60px;height:80px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none}
+.nav-mark{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:2rem;color:var(--gold);font-style:italic;letter-spacing:-.03em;line-height:1}
+.nav-mark span{font-size:.55rem;display:block;font-style:normal;letter-spacing:.35em;color:var(--dim);margin-top:2px;font-family:'Inter','IBM Plex Sans Thai',sans-serif}
+.nav-links{display:flex;align-items:center;gap:40px}
+.nav-links a{text-decoration:none;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:var(--neutral);transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
+.nav-links a:hover{color:var(--primary)}
+.nav-links a:hover::after{width:100%}
+
+.hero-mini{padding:150px 60px 60px;text-align:center;background:linear-gradient(170deg,var(--bg2),var(--bg3));border-bottom:1px solid var(--border)}
+.hero-mini .eyebrow{font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.hero-mini h1{font-family:'Fraunces','Noto Serif Thai',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:400;margin-bottom:14px;color:var(--primary)}
+.hero-mini h1 em{color:var(--gold);font-style:italic}
+.hero-mini p{font-size:1.05rem;color:var(--neutral);max-width:520px;margin:0 auto;font-weight:300}
+
+/* Gallery masonry (cream) */
+.gallery-wrap{padding:60px;background:linear-gradient(180deg,var(--bg3),var(--bg2))}
+.gov-grid{column-count:4;column-gap:16px;max-width:1500px;margin:0 auto}
+.gov-tile{position:relative;break-inside:avoid;margin:0 0 16px;border-radius:12px;overflow:hidden;cursor:zoom-in;border:1px solid var(--border);background:#fff;box-shadow:0 4px 18px rgba(120,90,40,.07);opacity:0;transform:translateY(18px)}
+.gov-tile.in{animation:govIn .6s cubic-bezier(.22,1,.36,1) forwards;animation-delay:var(--d,0s)}
+@keyframes govIn{to{opacity:1;transform:none}}
+.gov-tile:hover{box-shadow:0 14px 36px rgba(120,90,40,.2);border-color:var(--gold)}
+.gov-tile img{width:100%;height:auto;display:block;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.gov-tile:hover img{transform:scale(1.05)}
+.gov-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(45,32,22,.5),transparent 55%);opacity:0;transition:opacity .35s}
+.gov-tile:hover::after{opacity:1}
+.gov-zoom{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.5);transition:all .35s cubic-bezier(.34,1.56,.64,1);z-index:2}
+.gov-tile:hover .gov-zoom{opacity:1;transform:scale(1)}
+.gov-zoom svg{width:38px;height:38px;fill:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
+
+/* Lightbox */
+#lightbox{position:fixed;inset:0;z-index:10000;background:rgba(20,14,8,.95);display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out}
+#lightbox.open{display:flex}
+#lightbox img{max-width:92%;max-height:92%;object-fit:contain;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+#lightbox .lb-close{position:absolute;top:20px;right:26px;color:#fff;font-size:2rem;cursor:pointer;opacity:.7;line-height:1}
+#lightbox .lb-close:hover{opacity:1}
+#lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.8rem;cursor:pointer;transition:all .2s}
+#lightbox .lb-nav:hover{background:var(--gold)}
+#lightbox .lb-prev{left:24px}#lightbox .lb-next{right:24px}
+
+footer{background:var(--primary);border-top:1px solid var(--border);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.foot-brand{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.3rem;color:var(--gold-light);font-style:italic}
+.foot-copy{font-size:.7rem;color:rgba(255,255,255,.35);letter-spacing:.12em}
+
+@media(max-width:1024px){nav{padding:0 36px}.gov-grid{column-count:3}.gallery-wrap{padding:50px 30px}}
+@media(max-width:768px){
+  nav{padding:0 20px;height:60px}.nav-mark{font-size:1.6rem}.nav-links{gap:14px}.nav-links a{font-size:.66rem;letter-spacing:.12em}
+  .hero-mini{padding:100px 20px 44px}
+  .gov-grid{column-count:2}.gallery-wrap{padding:36px 16px}
+  footer{padding:30px 20px;flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">BLOOK<span>THE CLASS OF CALM</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#products" data-th="สินค้า" data-en="Products">สินค้า</a>
+    <a href="gallery.html" data-th="แกลเลอรี" data-en="Gallery" style="color:var(--primary)">แกลเลอรี</a>
+    <a href="about.html" data-th="บทความ" data-en="About">บทความ</a>
+    <a href="index.html#contact" data-th="ติดต่อเรา" data-en="Contact">ติดต่อเรา</a>
+    <a href="catalog.html" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a>
+    <button id="lang-toggle" style="background:none;border:none;color:var(--gold);font-size:.8rem;letter-spacing:.15em;cursor:pointer;font-family:inherit;padding:0;opacity:.7;transition:opacity .3s" title="Toggle Language">EN</button>
+    <a id="admin-btn" href="admin.html" style="text-decoration:none;opacity:.5;transition:opacity .3s;display:inline-flex;align-items:center;justify-content:center" title="BKTAX Admin">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#B8860B" style="display:block"><path d="M12 2L2 12l10 10 10-10z"/></svg>
+    </a>
+  </div>
+</nav>
+
+<section class="hero-mini">
+  <p class="eyebrow" data-th="แกลเลอรี" data-en="Gallery">แกลเลอรี</p>
+  <h1 data-th="ภาพ<em>คอลเลกชัน</em>ทั้งหมด" data-en="The Full <em>Collection</em>">ภาพ<em>คอลเลกชัน</em>ทั้งหมด</h1>
+  <p data-th="รวมภาพผลิตภัณฑ์ BLOOK LIVING ทุกคอลเลกชัน" data-en="Every BLOOK LIVING product, in one place">รวมภาพผลิตภัณฑ์ BLOOK LIVING ทุกคอลเลกชัน</p>
+</section>
+
+<section class="gallery-wrap">
+  <div class="gov-grid" id="gov-grid"></div>
+</section>
+
+<footer>
+  <div class="foot-brand">BLOOK</div>
+  <div class="foot-copy">&copy; 2026 BLOOK — The Class of Calm</div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="if(event.target.id==='lightbox')closeLightbox()">
+  <span class="lb-close" onclick="closeLightbox()">&times;</span>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">&#8249;</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lb-nav lb-next" onclick="lbNav(1)">&#8250;</button>
+</div>
+
+<script>
+// Language toggle (shared across pages via localStorage)
+(function(){
+  var lang=localStorage.getItem('blook-lang')||'th', done=false;
+  function apply(l){ document.querySelectorAll('[data-th][data-en]').forEach(function(el){ var t=l==='th'?el.dataset.th:el.dataset.en; if(t!==undefined) el.innerHTML=t; }); var b=document.getElementById('lang-toggle'); if(b) b.textContent=l==='th'?'EN':'TH'; }
+  function init(){ if(done)return; done=true; var b=document.getElementById('lang-toggle'); apply(lang); if(b) b.addEventListener('click',function(e){e.preventDefault();lang=lang==='th'?'en':'th';localStorage.setItem('blook-lang',lang);apply(lang);}); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+
+// Gallery
+const ALL_GALLERY=[
+  'assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg',
+  'assets/Sofa/3d-sofa-brown.png','assets/Sofa/3d-sofa-orange.png','assets/Sofa/3d-sofa-white.png','assets/Sofa/3d-sofa-yellow.png',
+  'assets/Pillow/1.jpg','assets/Pillow/2.jpg','assets/Pillow/3.jpg','assets/Pillow/4.jpg','assets/Pillow/5.jpg',
+  'assets/diffuser_250/1.png','assets/diffuser_250/2.png','assets/diffuser_250/3.png','assets/diffuser_250/4.png','assets/diffuser_250/5.png','assets/diffuser_250/6.png','assets/diffuser_250/7.png','assets/diffuser_250/8.png',
+  'assets/diffuser_50/1.png','assets/diffuser_50/2.png','assets/diffuser_50/3.png','assets/diffuser_50/4.png','assets/diffuser_50/5.png','assets/diffuser_50/6.png','assets/diffuser_50/7.png',
+  'assets/diffuser_gift/1.png','assets/diffuser_gift/2.png','assets/diffuser_gift/3.png','assets/diffuser_gift/4.png','assets/diffuser_gift/5.png','assets/diffuser_gift/6.png','assets/diffuser_gift/7.png','assets/diffuser_gift/8.png'
+];
+(function(){
+  var g=document.getElementById('gov-grid');
+  g.innerHTML=ALL_GALLERY.map(function(src,i){ return '<figure class="gov-tile" style="--d:'+((i%10)*0.04)+'s" onclick="openLightbox('+i+')"><img src="'+src+'" loading="lazy" alt="BLOOK gallery '+(i+1)+'"><span class="gov-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14zm.5-7v2H8v2H6V9h2V7z"/></svg></span></figure>'; }).join('');
+  // reveal on scroll
+  var tiles=g.querySelectorAll('.gov-tile');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{rootMargin:'0px 0px -8% 0px'});
+    tiles.forEach(function(t){ io.observe(t); });
+  } else { tiles.forEach(function(t){ t.classList.add('in'); }); }
+})();
+
+// Lightbox
+var lbIdx=0;
+function openLightbox(i){ lbIdx=i; document.getElementById('lightbox-img').src=ALL_GALLERY[i]; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
+function lbNav(d){ if(window.event)window.event.stopPropagation(); lbIdx=(lbIdx+d+ALL_GALLERY.length)%ALL_GALLERY.length; document.getElementById('lightbox-img').src=ALL_GALLERY[lbIdx]; }
+document.addEventListener('keydown',function(e){ if(!document.getElementById('lightbox').classList.contains('open'))return; if(e.key==='Escape')closeLightbox(); if(e.key==='ArrowLeft')lbNav(-1); if(e.key==='ArrowRight')lbNav(1); });
+</script>
+<script src="assets/contact-widget.js"></script>
+</body>
+</html>

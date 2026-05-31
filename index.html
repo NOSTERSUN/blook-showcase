@@ -146,21 +146,6 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .gallery-btn:hover{background:var(--gold);color:#fff;border-color:var(--gold);transform:translateY(-2px);box-shadow:0 10px 26px rgba(184,134,11,.22)}
 .gallery-btn svg{width:16px;height:16px}
 /* -- INLINE GALLERY SECTION (cream, landing-page style, masonry) -- */
-.gallery-section{background:linear-gradient(170deg,var(--bg2) 0%,var(--bg3) 100%);padding:80px 60px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.gallery-section .sec-header{padding-bottom:30px}
-.gov-grid{column-count:4;column-gap:16px;max-width:1400px;margin:0 auto}
-.gov-tile{position:relative;break-inside:avoid;margin:0 0 16px;border-radius:12px;overflow:hidden;cursor:zoom-in;border:1px solid var(--border);background:#fff;box-shadow:0 4px 18px rgba(120,90,40,.06);opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1),box-shadow .3s;transition-delay:var(--d,0s)}
-.gov-tile.in{opacity:1;transform:translateY(0)}
-.gov-tile:hover{box-shadow:0 12px 32px rgba(120,90,40,.18);border-color:var(--gold)}
-.gov-tile img{width:100%;height:auto;display:block;transition:transform .6s cubic-bezier(.22,1,.36,1)}
-.gov-tile:hover img{transform:scale(1.05)}
-.gov-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,15,8,.45),transparent 55%);opacity:0;transition:opacity .35s}
-.gov-tile:hover::after{opacity:1}
-.gov-zoom{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.5);transition:all .35s cubic-bezier(.34,1.56,.64,1);z-index:2}
-.gov-tile:hover .gov-zoom{opacity:1;transform:scale(1)}
-.gov-zoom svg{width:38px;height:38px;fill:#fff;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
-@media(max-width:1024px){.gov-grid{column-count:3}.gallery-section{padding:60px 30px}}
-@media(max-width:680px){.gov-grid{column-count:2}.gallery-section{padding:50px 18px}}
 
 /* -- SHARE SHEET -- */
 #share-sheet{position:fixed;inset:0;z-index:10001;background:rgba(10,8,6,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
@@ -358,7 +343,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   </a>
   <div class="nav-links">
     <a href="#products" data-th="สินค้า" data-en="Products">สินค้า</a>
-    <a href="#gallery" data-th="แกลเลอรี" data-en="Gallery">แกลเลอรี</a>
+    <a href="gallery.html" data-th="แกลเลอรี" data-en="Gallery">แกลเลอรี</a>
     <a href="about.html" data-th="บทความ" data-en="About">บทความ</a>
     <a href="#contact" data-th="ติดต่อเรา" data-en="Contact">ติดต่อเรา</a>
     <a href="catalog.html" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a>
@@ -401,7 +386,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     <p class="sec-eyebrow" data-th="คอลเลกชันของเรา" data-en="OUR COLLECTION">คอลเลกชันของเรา</p>
     <h2 class="sec-title" data-th="สร้างสรรค์เพื่อ<em>ความสงบ</em>" data-en="Crafted for <em>Serenity</em>">สร้างสรรค์เพื่อ<em>ความสงบ</em></h2>
     <p class="sec-desc" data-th="5 ผลิตภัณฑ์ระดับพรีเมียม ออกแบบเพื่อยกระดับพื้นที่ของคุณด้วยความสง่างามและความสะดวกสบายเหนือกาลเวลา" data-en="5 premium products designed to elevate your space with timeless elegance and comfort">5 ผลิตภัณฑ์ระดับพรีเมียม ออกแบบเพื่อยกระดับพื้นที่ของคุณด้วยความสง่างามและความสะดวกสบายเหนือกาลเวลา</p>
-    <a href="#gallery" class="gallery-btn">
+    <a href="gallery.html" class="gallery-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       <span data-th="ดูแกลเลอรีทั้งหมด" data-en="View Full Gallery">ดูแกลเลอรีทั้งหมด</span>
     </a>
@@ -600,16 +585,6 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     </div>
 
   </div>
-</section>
-
-<!-- GALLERY (inline section) -->
-<section class="gallery-section" id="gallery">
-  <div class="sec-header">
-    <p class="sec-eyebrow" data-th="แกลเลอรี" data-en="GALLERY">แกลเลอรี</p>
-    <h2 class="sec-title" data-th="ภาพ<em>ผลิตภัณฑ์</em>ทั้งหมด" data-en="The Full <em>Collection</em>">ภาพ<em>ผลิตภัณฑ์</em>ทั้งหมด</h2>
-    <p class="sec-desc" data-th="รวมภาพสินค้าทุกคอลเลกชันของ BLOOK LIVING — แตะเพื่อดูภาพเต็ม" data-en="Every BLOOK LIVING product shot in one place — tap any image to view full size">รวมภาพสินค้าทุกคอลเลกชันของ BLOOK LIVING — แตะเพื่อดูภาพเต็ม</p>
-  </div>
-  <div class="gov-grid" id="gov-grid"></div>
 </section>
 
 <!-- BRAND STORY -->
@@ -952,28 +927,6 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft')lbNav(-1);
   if(e.key==='ArrowRight')lbNav(1);
 });
-
-// ============ FULL PRODUCT GALLERY ============
-const ALL_GALLERY=[
-  'assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg','assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg',
-  'assets/Sofa/3d-sofa-brown.png','assets/Sofa/3d-sofa-orange.png','assets/Sofa/3d-sofa-white.png','assets/Sofa/3d-sofa-yellow.png',
-  'assets/Pillow/1.jpg','assets/Pillow/2.jpg','assets/Pillow/3.jpg','assets/Pillow/4.jpg','assets/Pillow/5.jpg',
-  'assets/diffuser_250/1.png','assets/diffuser_250/2.png','assets/diffuser_250/3.png','assets/diffuser_250/4.png','assets/diffuser_250/5.png','assets/diffuser_250/6.png','assets/diffuser_250/7.png','assets/diffuser_250/8.png',
-  'assets/diffuser_50/1.png','assets/diffuser_50/2.png','assets/diffuser_50/3.png','assets/diffuser_50/4.png','assets/diffuser_50/5.png','assets/diffuser_50/6.png','assets/diffuser_50/7.png',
-  'assets/diffuser_gift/1.png','assets/diffuser_gift/2.png','assets/diffuser_gift/3.png','assets/diffuser_gift/4.png','assets/diffuser_gift/5.png','assets/diffuser_gift/6.png','assets/diffuser_gift/7.png','assets/diffuser_gift/8.png'
-];
-// Build the inline gallery grid + reveal tiles on scroll
-(function(){
-  const g=document.getElementById('gov-grid'); if(!g) return;
-  g.innerHTML=ALL_GALLERY.map((src,i)=>`<figure class="gov-tile" style="--d:${(i%10)*0.04}s" onclick="openLightbox(${i},ALL_GALLERY)"><img src="${src}" loading="lazy" alt="BLOOK gallery ${i+1}"><span class="gov-zoom"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14zm.5-7v2H8v2H6V9h2V7z"/></svg></span></figure>`).join('');
-  const tiles=g.querySelectorAll('.gov-tile');
-  if('IntersectionObserver' in window){
-    const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -5% 0px',threshold:.05});
-    tiles.forEach(t=>io.observe(t));
-  }
-  // Safety: ensure tiles are never left hidden even if observer doesn't fire
-  setTimeout(()=>tiles.forEach(t=>t.classList.add('in')),1500);
-})();
 
 // ============ SHARE SHEET (channel-first) ============
 const SHARE_CHANNELS=[
