@@ -146,19 +146,19 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 /* -- TEAM BUSINESS CARDS -- */
 .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .biz-card-wrap{display:flex;flex-direction:column;gap:10px}
-.biz-card{background:linear-gradient(135deg,#1d1812 0%,#0d0b08 100%);border:1px solid var(--border);border-radius:14px;padding:20px 22px;position:relative;overflow:hidden;color:#fff}
-.biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.2),transparent 70%)}
+.biz-card{background:linear-gradient(150deg,#FFFDF8 0%,#F4EBDA 100%);border:1px solid #E6D6B8;border-radius:14px;padding:20px 22px;position:relative;overflow:hidden;color:#2B2016;box-shadow:0 6px 22px rgba(120,90,40,.12)}
+.biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.18),transparent 70%)}
 .biz-card::after{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(var(--gold),var(--gold2))}
-.biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:var(--gold2);line-height:1}
-.biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:var(--dim);margin-top:4px;font-family:'Inter',sans-serif}
+.biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
+.biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
-.biz-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--gold2);flex-shrink:0}
-.biz-name{font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff;line-height:1.15}
-.biz-name span{font-size:.82rem;color:var(--gold2);font-family:'Inter',sans-serif}
-.biz-role{font-size:.72rem;color:var(--gold2);letter-spacing:.08em;margin-top:3px}
-.biz-contact{margin-top:14px;display:flex;flex-direction:column;gap:5px;font-size:.74rem;color:#cfc8bd}
+.biz-photo{width:66px;height:66px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;box-shadow:0 3px 10px rgba(120,90,40,.2)}
+.biz-name{font-family:'Playfair Display',serif;font-size:1.2rem;color:#2B2016;line-height:1.15}
+.biz-name span{font-size:.82rem;color:#B8860B;font-family:'Inter',sans-serif}
+.biz-role{font-size:.72rem;color:#A0784A;letter-spacing:.08em;margin-top:3px;font-weight:500}
+.biz-contact{margin-top:14px;display:flex;flex-direction:column;gap:5px;font-size:.74rem;color:#5C4E46}
 .biz-contact div{display:flex;align-items:center;gap:8px}
-.biz-contact svg{width:13px;height:13px;fill:var(--gold2);flex-shrink:0}
+.biz-contact svg{width:13px;height:13px;fill:#B8860B;flex-shrink:0}
 .biz-actions{display:flex;gap:8px}
 .biz-actions button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px;font-size:.78rem;border-radius:7px;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--bg3);color:var(--text);transition:all .2s}
 .biz-actions button:hover{border-color:var(--gold);color:var(--gold2)}
@@ -676,9 +676,9 @@ function switchTab(tab){
 
 // ============ TEAM BUSINESS CARDS ============
 const TEAM = [
-  {name:'Mr. Wongsatorn Somtana', nick:'Sun',   role:'Founder & CEO',                  tel:'082-484-0926', email:'info@blookliving.com', line:'@blookliving', photo:'assets/company-profile/4.jpg'},
-  {name:'Ms. Sawarin Porjai',     nick:'Kam',   role:'Co-Founder & Marketing Director', tel:'096-247-8745', email:'info@blookliving.com', line:'@blookliving', photo:'assets/company-profile/4.jpg'},
-  {name:'Mr. Wuttichai Porjai',   nick:'Champ', role:'Co-Founder & R&D',                tel:'096-247-8745', email:'info@blookliving.com', line:'@blookliving', photo:'assets/company-profile/4.jpg'}
+  {name:'Mr. Wongsatorn Somtana', nick:'Sun',   role:'Founder & CEO',                  tel:'082-484-0926', email:'info@blookliving.com', line:'@blookliving', photo:'assets/CEO_PIC/1.jpg'},
+  {name:'Ms. Sawarin Porjai',     nick:'Kam',   role:'Co-Founder & Marketing Director', tel:'096-247-8745', email:'info@blookliving.com', line:'@blookliving', photo:'assets/CEO_PIC/2.jpg'},
+  {name:'Mr. Wuttichai Porjai',   nick:'Champ', role:'Co-Founder & R&D',                tel:'096-247-8745', email:'info@blookliving.com', line:'@blookliving', photo:'assets/CEO_PIC/3.jpg'}
 ];
 const _svgTel='<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>';
 const _svgMail='<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>';
@@ -715,7 +715,7 @@ function renderCards(){
     </div>`).join('');
 }
 async function _cardCanvas(i){
-  return await html2canvas(document.getElementById('bizcard-'+i),{scale:3,backgroundColor:'#0d0b08',logging:false});
+  return await html2canvas(document.getElementById('bizcard-'+i),{scale:3,backgroundColor:'#FFFDF8',logging:false,useCORS:true});
 }
 async function saveCard(i){
   try{
