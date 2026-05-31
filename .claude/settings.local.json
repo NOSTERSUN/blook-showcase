@@ -64,7 +64,13 @@
       "PowerShell($p=\"C:\\\\Users\\\\PC\\\\Desktop\\\\BLOOK DEV\\\\assets\\\\company-profile\"; Write-Host \"=== company-profile files ===\"; Get-ChildItem $p | Sort-Object Name | ForEach-Object { Write-Host \\(\"{0}  {1} KB\" -f $_.Name, [math]::Round\\($_.Length/1KB\\)\\) })",
       "Bash(sed -n '105,108p' about.html)",
       "Bash(sed -n '142,143p' about.html)",
-      "Bash(git commit -m 'Remove unused CEO_PIC PNG originals \\(keep compressed .jpg\\) *)"
+      "Bash(git commit -m 'Remove unused CEO_PIC PNG originals \\(keep compressed .jpg\\) *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | type=%{content_type} | redirect=%{redirect_url}\\\\n\" https://blookliving.com/)",
+      "Bash(curl -s -o /dev/null -w \"www: %{http_code}\\\\n\" https://www.blookliving.com/)",
+      "Bash(curl -s -o /dev/null -w \"http->: %{http_code} %{redirect_url}\\\\n\" http://blookliving.com/)",
+      "Bash(curl -s -o /dev/null -w \"robots.txt: %{http_code}\\\\n\" https://blookliving.com/robots.txt)",
+      "Bash(curl -s -o /dev/null -w \"sitemap.xml: %{http_code}\\\\n\" https://blookliving.com/sitemap.xml)",
+      "Bash(curl -s -A \"Mozilla/5.0\" \"https://www.google.com/search?q=site:blookliving.com\")"
     ]
   }
 }
