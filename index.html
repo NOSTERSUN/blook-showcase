@@ -51,10 +51,11 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .hero-title{font-family:'Fraunces','Noto Serif Thai',serif;font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:400;line-height:1.15;margin-bottom:12px;opacity:0;color:var(--primary)}
 .hero-title em{font-style:italic;color:var(--gold);font-weight:400}
 .hero-desc{font-size:.95rem;line-height:1.8;color:var(--neutral);max-width:580px;margin:0 auto 24px;font-weight:300;opacity:0}
-.hero-social{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 auto 26px;max-width:560px;opacity:0}
-.hero-social a{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:18px;text-decoration:none;color:var(--neutral);font-size:.76rem;font-weight:500;transition:all .3s;background:rgba(255,255,255,.55)}
+.hero-social{display:flex;flex-wrap:nowrap;justify-content:center;gap:7px;margin:0 auto 26px;max-width:100%;opacity:0;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.hero-social::-webkit-scrollbar{display:none}
+.hero-social a{display:flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--border);border-radius:18px;text-decoration:none;color:var(--neutral);font-size:.72rem;font-weight:500;transition:all .3s;background:rgba(255,255,255,.55);white-space:nowrap}
 .hero-social a:hover{border-color:var(--gold);color:var(--gold);background:#fff;transform:translateY(-2px)}
-.hero-social svg{width:15px;height:15px;fill:var(--gold);flex-shrink:0}
+.hero-social svg{width:14px;height:14px;fill:var(--gold);flex-shrink:0}
 .hero-cta{display:inline-flex;align-items:center;gap:14px;background:var(--gold);color:#fff;padding:18px 44px;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;transition:all .4s;font-family:inherit;border:none;cursor:pointer;opacity:0;font-weight:500}
 .hero-cta:hover{background:var(--gold-dim);transform:translateY(-3px);box-shadow:0 12px 40px rgba(160,120,74,.2)}
 .hero-cta svg{width:16px;height:16px;transition:transform .3s}
@@ -164,6 +165,10 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .fab-call{background:#2E7D32}
 .fab-line{background:#06C755}
 .fab-fb{background:#0084FF}
+.fab-share{width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.12);transition:all .3s;align-self:flex-end;margin-right:7px}
+.fab-share:hover{background:var(--gold);transform:scale(1.08)}
+.fab-share svg{width:20px;height:20px;fill:var(--gold);transition:fill .3s}
+.fab-share:hover svg{fill:#fff}
 .fab-toggle{width:60px;height:60px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(184,134,11,.4);transition:all .3s}
 .fab-toggle:hover{background:var(--gold-dim)}
 .fab-toggle svg{width:28px;height:28px;fill:#fff;transition:transform .3s}
@@ -185,7 +190,7 @@ nav.scrolled{height:64px;box-shadow:0 2px 30px rgba(0,0,0,.06)}
 .reviews-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
 .review-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .4s;background:var(--bg)}
 .review-card:hover{border-color:var(--gold-light);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
-.review-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.review-card img{width:100%;aspect-ratio:3/4;object-fit:contain;display:block;background:linear-gradient(160deg,var(--gold-light) 0%,var(--gold) 100%)}
 .review-card-label{padding:10px 12px;font-size:.75rem;color:var(--neutral);display:flex;align-items:center;gap:6px}
 .review-card-label .stars{color:var(--gold);font-size:.85rem;letter-spacing:1px}
 
@@ -319,6 +324,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
     <a href="#products" data-th="สินค้า" data-en="Products">สินค้า</a>
     <a href="about.html" data-th="บทความ" data-en="About">บทความ</a>
     <a href="#contact" data-th="ติดต่อเรา" data-en="Contact">ติดต่อเรา</a>
+    <a href="catalog.html" data-th="แคตตาล็อก" data-en="Catalog">แคตตาล็อก</a>
     <button id="lang-toggle" style="background:none;border:none;color:var(--gold);font-size:.8rem;letter-spacing:.15em;cursor:pointer;font-family:inherit;padding:0;opacity:.7;transition:opacity .3s" title="Toggle Language">EN</button>
     <a id="admin-btn" href="admin.html" style="text-decoration:none;opacity:.5;transition:opacity .3s;display:inline-flex;align-items:center;justify-content:center" title="BKTAX Admin">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="#B8860B" style="display:block"><path d="M12 2L2 12l10 10 10-10z"/></svg>
@@ -579,6 +585,10 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
       <span>Etsy</span>
     </a>
   </div>
+  <a href="catalog.html" class="hero-cta" style="opacity:1;margin-top:36px;display:inline-flex">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    <span data-th="ดูแคตตาล็อกสินค้า" data-en="View Product Catalog">ดูแคตตาล็อกสินค้า</span>
+  </a>
 </section>
 
 <!-- CUSTOMER REVIEWS -->
@@ -703,6 +713,9 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   <button class="fab-toggle" id="fab-toggle" aria-label="ติดต่อเรา" onclick="document.getElementById('contact-fab').classList.toggle('open')">
     <svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
     <svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+  </button>
+  <button class="fab-share" aria-label="แชร์" title="แชร์ / Share" onclick="shareSite()">
+    <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
   </button>
 </div>
 
@@ -878,6 +891,15 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft')lbNav(-1);
   if(e.key==='ArrowRight')lbNav(1);
 });
+
+// Share the website (Web Share API + clipboard fallback)
+async function shareSite(){
+  const data={title:'BLOOK LIVING — The Class of Calm',text:'BLOOK LIVING — เฟอร์นิเจอร์และของแต่งบ้านระดับพรีเมียม',url:'https://blookliving.com'};
+  try{
+    if(navigator.share){ await navigator.share(data); }
+    else { await navigator.clipboard.writeText(data.url); alert('คัดลอกลิงก์แล้ว: '+data.url); }
+  }catch(e){ /* user cancelled */ }
+}
 
 // Collapse the contact FAB to a single button while scrolling
 let _fabScrollT;

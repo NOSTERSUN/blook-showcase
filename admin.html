@@ -143,9 +143,28 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .summary-table td.metric{color:var(--dim);font-weight:400}
 .summary-table tr.neg td:not(.metric){color:#E88A92}
 
+/* -- TEAM BUSINESS CARDS -- */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.biz-card-wrap{display:flex;flex-direction:column;gap:10px}
+.biz-card{aspect-ratio:1.72/1;background:linear-gradient(135deg,#1d1812 0%,#0d0b08 100%);border:1px solid var(--border);border-radius:14px;padding:22px 24px;position:relative;overflow:hidden;color:#fff}
+.biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.2),transparent 70%)}
+.biz-card::after{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(var(--gold),var(--gold2))}
+.biz-logo{font-family:'Playfair Display',serif;font-size:1.45rem;letter-spacing:.18em;color:var(--gold2);line-height:1}
+.biz-logo small{display:block;font-size:.48rem;letter-spacing:.3em;color:var(--dim);margin-top:4px;font-family:'Inter',sans-serif}
+.biz-name{font-family:'Playfair Display',serif;font-size:1.3rem;margin-top:16px;color:#fff;line-height:1.1}
+.biz-role{font-size:.74rem;color:var(--gold2);letter-spacing:.12em;margin-top:4px;text-transform:uppercase}
+.biz-contact{margin-top:14px;display:flex;flex-direction:column;gap:5px;font-size:.74rem;color:#cfc8bd}
+.biz-contact div{display:flex;align-items:center;gap:8px}
+.biz-contact svg{width:13px;height:13px;fill:var(--gold2);flex-shrink:0}
+.biz-actions{display:flex;gap:8px}
+.biz-actions button{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px;font-size:.78rem;border-radius:7px;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--bg3);color:var(--text);transition:all .2s}
+.biz-actions button:hover{border-color:var(--gold);color:var(--gold2)}
+.biz-actions button svg{width:14px;height:14px;fill:currentColor}
+
 @media(max-width:900px){
   .kpi-grid,.ratio-strip{grid-template-columns:repeat(2,1fr)}
   .chart-grid,.stmt-grid{grid-template-columns:1fr}
+  .cards-grid{grid-template-columns:1fr}
 }
 @media(max-width:768px){
   #app.active{flex-direction:column;min-height:auto}
@@ -271,6 +290,10 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <button class="tab-btn" data-tab="bktax" onclick="switchTab('bktax')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         BKTAX · เอกสาร
+      </button>
+      <button class="tab-btn" data-tab="cards" onclick="switchTab('cards')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M14 9h5M14 13h5M5 16h7"/></svg>
+        นามบัตรทีม
       </button>
     </nav>
     <a href="index.html" class="sidebar-home">
@@ -508,6 +531,18 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 
   </div><!-- /tab-bktax -->
 
+  <!-- ============ TAB 4: TEAM BUSINESS CARDS ============ -->
+  <div id="tab-cards" class="tab-panel">
+    <div class="profile-head">
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.3em;color:var(--gold);margin-bottom:4px">TEAM</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--text)">นามบัตรผู้บริหาร · Business Cards</div>
+        <div style="font-size:.78rem;color:var(--dim);margin-top:4px">กด “บันทึกรูป” เพื่อดาวน์โหลดนามบัตรเป็นรูปภาพ · กด “แชร์” เพื่อส่งต่อ</div>
+      </div>
+    </div>
+    <div class="cards-grid" id="cards-grid"></div>
+  </div>
+
   </main><!-- /content -->
 </div>
 
@@ -610,6 +645,70 @@ function switchTab(tab){
   document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
   if(tab==='profile') loadProfileDeck();
   if(tab==='finance') renderFinance();
+  if(tab==='cards') renderCards();
+}
+
+// ============ TEAM BUSINESS CARDS ============
+// NOTE: confirm/adjust names, roles and direct contacts as needed.
+const TEAM = [
+  {name:'Wongsatorn Somtana', role:'Founder & CEO',  tel:'082-484-0926', email:'info@blookliving.com', line:'@blookliving'},
+  {name:'Sawarin Porjai',     role:'Co-Founder',     tel:'096-247-8745', email:'info@blookliving.com', line:'@blookliving'},
+  {name:'BLOOK LIVING',       role:'Co-Founder',     tel:'093-736-4796', email:'info@blookliving.com', line:'@blookliving'}
+];
+const _svgTel='<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>';
+const _svgMail='<svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>';
+const _svgLine='<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg>';
+const _svgWeb='<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.6 15.6 0 00-1.38-3.56A8.03 8.03 0 0118.92 8zM12 4c.83 1.2 1.48 2.53 1.91 4h-3.82c.43-1.47 1.08-2.8 1.91-4zM4.26 14a7.96 7.96 0 010-4h3.38a16.6 16.6 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.6 15.6 0 008.02 8zM12 20c-.83-1.2-1.48-2.53-1.91-4h3.82A13.3 13.3 0 0112 20zm2.34-6H9.66a14.7 14.7 0 010-4h4.68a14.7 14.7 0 010 4zm.26 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.6 16.6 0 000-4h3.38a7.96 7.96 0 010 4h-3.38z"/></svg>';
+const _svgDl='<svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>';
+const _svgShare='<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>';
+
+function renderCards(){
+  const g=document.getElementById('cards-grid');
+  if(g.dataset.done) return; g.dataset.done='1';
+  g.innerHTML = TEAM.map((p,i)=>`
+    <div class="biz-card-wrap">
+      <div class="biz-card" id="bizcard-${i}">
+        <div class="biz-logo">BLOOK<small>THE CLASS OF CALM</small></div>
+        <div class="biz-name">${p.name}</div>
+        <div class="biz-role">${p.role}</div>
+        <div class="biz-contact">
+          <div>${_svgTel}${p.tel}</div>
+          <div>${_svgMail}${p.email}</div>
+          <div>${_svgLine}LINE ${p.line}</div>
+          <div>${_svgWeb}blookliving.com</div>
+        </div>
+      </div>
+      <div class="biz-actions">
+        <button onclick="saveCard(${i})">${_svgDl} บันทึกรูป</button>
+        <button onclick="shareCard(${i})">${_svgShare} แชร์</button>
+      </div>
+    </div>`).join('');
+}
+async function _cardCanvas(i){
+  return await html2canvas(document.getElementById('bizcard-'+i),{scale:3,backgroundColor:'#0d0b08',logging:false});
+}
+async function saveCard(i){
+  try{
+    const canvas=await _cardCanvas(i);
+    const a=document.createElement('a');
+    a.href=canvas.toDataURL('image/png');
+    a.download='BLOOK_card_'+TEAM[i].name.replace(/[^a-zA-Z0-9]+/g,'_')+'.png';
+    a.click();
+  }catch(e){ alert('บันทึกรูปไม่สำเร็จ: '+e.message); }
+}
+async function shareCard(i){
+  try{
+    const canvas=await _cardCanvas(i);
+    canvas.toBlob(async blob=>{
+      const file=new File([blob],'BLOOK_card.png',{type:'image/png'});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title:'BLOOK LIVING', text:`${TEAM[i].name} · ${TEAM[i].role}`});
+      } else {
+        await navigator.clipboard.writeText(`${TEAM[i].name} · ${TEAM[i].role}\nTel: ${TEAM[i].tel}\nLINE ${TEAM[i].line}\nblookliving.com`);
+        alert('อุปกรณ์นี้ไม่รองรับการแชร์รูปโดยตรง — คัดลอกข้อมูลนามบัตรให้แล้ว');
+      }
+    },'image/png');
+  }catch(e){ alert('แชร์ไม่สำเร็จ: '+e.message); }
 }
 
 let profileIdx = 1;
