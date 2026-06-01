@@ -65,10 +65,12 @@
     {k:'wa',l:'WhatsApp',c:'#25D366',s:'<path d="M.06 24l1.68-6.13A11.86 11.86 0 01.16 11.9C.16 5.34 5.5 0 12.06 0a11.82 11.82 0 018.41 3.49 11.82 11.82 0 013.48 8.42c0 6.56-5.34 11.9-11.9 11.9a11.9 11.9 0 01-5.69-1.45L.06 24zM6.6 20.13c1.68.99 3.28 1.59 5.4 1.59 5.45 0 9.89-4.43 9.89-9.88a9.86 9.86 0 00-9.88-9.89c-5.46 0-9.89 4.43-9.89 9.88 0 2.23.65 3.9 1.74 5.65l-.99 3.63 3.73-.98zm11.36-5.55c-.07-.12-.27-.2-.57-.35-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-1.7-.85-2.82-1.52-3.94-3.45-.3-.51.3-.47.85-1.57.09-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49 2.4 1.04 2.4.69 2.83.65.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.42z"/>',u:function(u,t){return 'https://wa.me/?text='+t+'%20'+u;}},
     {k:'mail',l:'Email',c:'#8B6B3D',s:'<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>',u:function(u,t){return 'mailto:?subject='+t+'&body='+u;}}
   ];
-  var ctx={url:'https://blookliving.com',text:'BLOOK LIVING — The Class of Calm'};
-  function openShare(url,text){
-    ctx={url:url||ctx.url,text:text||ctx.text};
+  var ctx={url:'https://blookliving.com',text:'BLOOK LIVING — The Class of Calm',image:'https://blookliving.com/assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg'};
+  var IGGLYPH='<path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85s.01-3.58.07-4.85C2.38 3.93 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.41-10.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/>';
+  function openShare(url,text,image){
+    ctx={url:url||ctx.url,text:text||ctx.text,image:image||ctx.image};
     var g=document.getElementById('bk-share-grid'),h='';
+    h+='<button class="it" data-k="igstory"><span class="ic" style="background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf)"><svg viewBox="0 0 24 24">'+IGGLYPH+'</svg></span>IG Story</button>';
     CH.forEach(function(c){ h+='<button class="it" data-k="'+c.k+'"><span class="ic" style="background:'+c.c+'"><svg viewBox="0 0 24 24">'+c.s+'</svg></span>'+c.l+'</button>'; });
     h+='<button class="it" data-k="copy"><span class="ic" style="background:#5C4E46"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></span>คัดลอกลิงก์</button>';
     g.innerHTML=h;
@@ -79,13 +81,27 @@
   function shareVia(k){
     var u=encodeURIComponent(ctx.url), t=encodeURIComponent(ctx.text);
     if(k==='copy'){ navigator.clipboard&&navigator.clipboard.writeText(ctx.url); alert('คัดลอกลิงก์แล้ว'); closeShare(); return; }
+    if(k==='igstory'){ closeShare(); bkIgStory(ctx.image, ctx.text); return; }
     var ch=CH.find(function(c){return c.k===k;});
     if(ch.copy){ navigator.clipboard&&navigator.clipboard.writeText(ctx.url); alert('คัดลอกลิงก์แล้ว — เปิด '+ch.l+' แล้ววางเพื่อแชร์'); closeShare(); return; }
     window.open(ch.u(u,t),'_blank','noopener'); closeShare();
   }
-  function shareSite(){
-    if(navigator.share){ navigator.share({title:'BLOOK LIVING',text:ctx.text,url:ctx.url}).catch(function(){}); return; }
-    openShare(ctx.url,ctx.text);
+  // แชร์รูปไป Instagram Story: ใช้ Web Share (ไฟล์) บนมือถือ → เลือก Instagram → Add to Story
+  function bkIgStory(imgUrl, text){
+    imgUrl = imgUrl || ctx.image;
+    if(navigator.share && navigator.canShare){
+      fetch(imgUrl).then(function(r){ return r.blob(); }).then(function(blob){
+        var file = new File([blob], 'blook-living.jpg', { type: blob.type || 'image/jpeg' });
+        if(navigator.canShare({ files:[file] })) return navigator.share({ files:[file], text: text || ctx.text });
+        throw 0;
+      }).catch(function(){ bkIgStoryFallback(imgUrl); });
+    } else { bkIgStoryFallback(imgUrl); }
   }
+  function bkIgStoryFallback(imgUrl){
+    try{ var a=document.createElement('a'); a.href=imgUrl; a.download='blook-living.jpg'; document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
+    alert('บันทึกรูปแล้ว 📷  เปิดแอป Instagram → Story แล้วเลือกรูปนี้เพื่อแชร์ได้เลย');
+    setTimeout(function(){ window.open('https://www.instagram.com/','_blank','noopener'); }, 300);
+  }
+  function shareSite(){ openShare(ctx.url,ctx.text,ctx.image); }
   window.bkOpenShare=openShare;
 })();

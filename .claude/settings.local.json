@@ -75,7 +75,12 @@
       "WebSearch",
       "Bash(git check-ignore *)",
       "WebFetch(domain:html.duckduckgo.com)",
-      "WebFetch(domain:www.bing.com)"
+      "WebFetch(domain:www.bing.com)",
+      "Bash(curl -s https://blookliving.com/journal.html)",
+      "Bash(curl -s https://blookliving.com/articles/togo-sofa.html)",
+      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" add -A)",
+      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"gallery: dedicated assets/gallery folder + 'Your Lifestyle' hero; share button supports IG Story \\(file share\\) + lightbox share\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")",
+      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" push origin main)"
     ]
   }
 }
