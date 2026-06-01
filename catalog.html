@@ -85,16 +85,17 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
 .art-contact p{font-size:.82rem;line-height:1.8;color:var(--neutral)}
 .art-contact a{color:var(--gold);text-decoration:none}
 
+/* มือถือ: ใช้ layout ย่อ — แต่ "ยกเว้น" ตอนสร้าง PDF (body.exporting) เพื่อให้ไฟล์ออกมาเป็น A4 เหมือนบนคอมพิวเตอร์ */
 @media(max-width:760px){
-  .catalog{padding:12px 8px 40px;gap:12px}
-  .page{width:100%;min-height:auto;padding:24px 18px}
-  .cover{min-height:70vh}
-  .cover h1{font-size:2.5rem}
-  .p-top{grid-template-columns:1fr;height:auto}
-  .p-master{height:240px}
-  .p-name{font-size:1.7rem}
-  .gl-grid{grid-template-columns:repeat(3,1fr)}
-  .art-cols,.art-contact{grid-template-columns:1fr}
+  body:not(.exporting) .catalog{padding:12px 8px 40px;gap:12px}
+  body:not(.exporting) .page{width:100%;min-height:auto;padding:24px 18px}
+  body:not(.exporting) .cover{min-height:70vh}
+  body:not(.exporting) .cover h1{font-size:2.5rem}
+  body:not(.exporting) .p-top{grid-template-columns:1fr;height:auto}
+  body:not(.exporting) .p-master{height:240px}
+  body:not(.exporting) .p-name{font-size:1.7rem}
+  body:not(.exporting) .gl-grid{grid-template-columns:repeat(3,1fr)}
+  body:not(.exporting) .art-cols,body:not(.exporting) .art-contact{grid-template-columns:1fr}
 }
 
 @media print{
@@ -321,19 +322,22 @@ async function downloadCatalog(){
   btn.disabled=true; btn.style.opacity='.6';
   btn.innerHTML='<svg viewBox="0 0 24 24" style="animation:spin 1s linear infinite"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z" opacity=".3"/><path d="M12 2a10 10 0 0110 10h-2a8 8 0 00-8-8z"/></svg>';
   if(!document.getElementById('spin-kf')){const s=document.createElement('style');s.id='spin-kf';s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';document.head.appendChild(s);}
+  // ล็อก desktop A4 layout ระหว่างสร้าง PDF (มือถือจะได้ไฟล์เหมือนคอมพิวเตอร์ ไม่เพี้ยน/ไม่ยืด)
+  document.body.classList.add('exporting');
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   try{
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     const pages = document.querySelectorAll('.page');
     for(let i=0;i<pages.length;i++){
-      const canvas = await html2canvas(pages[i],{scale:2,useCORS:true,backgroundColor:'#ffffff',windowWidth:1200,windowHeight:1700});
+      const canvas = await html2canvas(pages[i],{scale:2,useCORS:true,backgroundColor:'#ffffff',windowWidth:1200,windowHeight:1700,onclone:(d)=>{d.body.classList.add('exporting');}});
       const img = canvas.toDataURL('image/jpeg',0.92);
       if(i>0) pdf.addPage();
       pdf.addImage(img,'JPEG',0,0,210,297);
     }
     pdf.save('BLOOK_LIVING_Catalog_2025.pdf');
   }catch(e){ alert('ดาวน์โหลดไม่สำเร็จ: '+e.message); }
-  btn.disabled=false; btn.style.opacity=''; btn.innerHTML=orig;
+  finally{ document.body.classList.remove('exporting'); btn.disabled=false; btn.style.opacity=''; btn.innerHTML=orig; }
 }
 </script>
 </body>

@@ -210,6 +210,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 
 /* -- PANELS -- */
 .panel{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:16px}
+.tax-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .panel-title{font-size:.82rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;font-weight:600;padding-bottom:10px;border-bottom:1px solid var(--border)}
 
 .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:12px}
@@ -271,8 +272,12 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 @media(max-width:768px){
   #app{padding:12px}
   .form-row{grid-template-columns:1fr}
+  .tax-grid{grid-template-columns:1fr}
   .totals-grid{grid-template-columns:1fr}
-  .items-table{font-size:.8rem}
+  .panel{padding:16px}
+  .items-table{font-size:.85rem}
+  /* ฟอนต์ช่องกรอก >=16px กัน iOS ซูมอัตโนมัติตอนแตะ — กรอกง่ายขึ้นบนมือถือ */
+  .form-group input,.form-group select,.form-group textarea,.items-table input{font-size:16px}
   .action-bar{flex-direction:column}
   .action-bar .btn{width:100%}
 }
@@ -465,7 +470,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
   </div>
 
   <!-- TAX -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+  <div class="tax-grid">
     <div class="panel">
       <div class="panel-title">กรณีขายสินค้า (Goods) - VAT</div>
       <div class="form-row">
@@ -536,6 +541,17 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     </div>
     <div class="btn-row">
       <button class="btn btn-reset" onclick="applyDefaultNote()">Default Note</button>
+    </div>
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="panel">
+    <div class="panel-title">ลายเซ็น (Signature)</div>
+    <div style="font-size:.78rem;color:var(--dim);margin-bottom:10px">เซ็นด้วยนิ้ว / เมาส์ / ปากกา (รองรับมือถือ · คอมพิวเตอร์ · iPad) แล้วลายเซ็นจะถูกนำไปใส่ในช่อง “ผู้ขาย” ของเอกสารอัตโนมัติ</div>
+    <canvas id="sig-pad" width="760" height="200" style="width:100%;height:auto;background:#fff;border:1px dashed var(--gold);border-radius:6px;touch-action:none;cursor:crosshair;display:block"></canvas>
+    <div class="btn-row" style="margin-top:10px;align-items:center;gap:14px">
+      <button type="button" class="btn btn-reset" onclick="sigClear()">ล้างลายเซ็น</button>
+      <span id="sig-status" style="font-size:.8rem;color:var(--dim)">ยังไม่มีลายเซ็น</span>
     </div>
   </div>
 
@@ -1402,6 +1418,7 @@ async function savePDF(){
     const FRAME='assets/Document/frame.png', BKLOGO='assets/Document/BKlogo1.png';
     const KASILOGO='assets/Document/KASI_logo.png', KASIQR='assets/Document/KASI_QR.jpg';
     const isPayDoc = (docType==='QUOTATION' || docType==='BILLING');
+    const sigImg = window.bkSignature || '';  // ลายเซ็นจากแผ่นเซ็น (ถ้ามี) → ใส่ช่องผู้ขาย
 
     // Build product rows
     let itemRows = '';
@@ -1527,13 +1544,13 @@ async function savePDF(){
         <div style="display:flex;gap:60px;margin-top:50px;padding-top:24px">
           <div style="flex:1;text-align:center">
             <div style="font-size:10px;letter-spacing:.25em;color:${titleColor};font-weight:600;margin-bottom:14px">${escapeHtml(sigTitles[0])}</div>
-            <div style="height:60px;border:1px dashed #C9A96E;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9A8E7F">ตราประทับ (ถ้ามี)</div>
+            <div style="height:60px;border:1px dashed #C9A96E;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9A8E7F;overflow:hidden">${sigImg ? `<img src="${sigImg}" style="max-height:56px;max-width:94%;object-fit:contain">` : 'เซ็น หรือตราประทับ (ถ้ามี)'}</div>
             <div style="border-bottom:1px solid #1A0F08;margin-top:20px;padding-bottom:2px;font-size:11px">(${escapeHtml(sellerName||'.................................')})</div>
             <div style="font-size:10px;color:#8B7D74;margin-top:6px">วันที่ ____/________/______</div>
           </div>
           <div style="flex:1;text-align:center">
             <div style="font-size:10px;letter-spacing:.25em;color:${titleColor};font-weight:600;margin-bottom:14px">${escapeHtml(sigTitles[1])}</div>
-            <div style="height:60px;border:1px dashed #C9A96E;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9A8E7F">ตราประทับ (ถ้ามี)</div>
+            <div style="height:60px;border:1px dashed #C9A96E;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9A8E7F">เซ็น หรือตราประทับ (ถ้ามี)</div>
             <div style="border-bottom:1px solid #1A0F08;margin-top:20px;padding-bottom:2px;font-size:11px">(${escapeHtml(custName||'.................................')})</div>
             <div style="font-size:10px;color:#8B7D74;margin-top:6px">วันที่ ____/________/______</div>
           </div>
@@ -1607,6 +1624,47 @@ function escapeHtml(text){
   return String(text).replace(/[&<>"']/g, c => ({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[c]));
+}
+
+/* ===== Signature Pad — รองรับ นิ้ว / เมาส์ / ปากกา (มือถือ · คอม · iPad) ===== */
+window.bkSignature = null;
+(function(){
+  var cv = document.getElementById('sig-pad');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+  ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#1A0F08';
+  var drawing = false, last = null, dirty = false;
+  function pos(e){
+    var r = cv.getBoundingClientRect();
+    return { x:(e.clientX - r.left) * (cv.width / r.width), y:(e.clientY - r.top) * (cv.height / r.height) };
+  }
+  function start(e){ e.preventDefault(); drawing = true; last = pos(e); try{ cv.setPointerCapture(e.pointerId); }catch(_){} }
+  function move(e){
+    if(!drawing) return; e.preventDefault();
+    var p = pos(e);
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+    last = p; dirty = true;
+  }
+  function end(){
+    if(!drawing) return; drawing = false;
+    if(dirty){
+      window.bkSignature = cv.toDataURL('image/png');
+      var s = document.getElementById('sig-status');
+      if(s){ s.textContent = '✓ มีลายเซ็นแล้ว (จะใส่ในเอกสารตอนกด Save PDF)'; s.style.color = 'var(--gold)'; }
+    }
+  }
+  cv.addEventListener('pointerdown', start);
+  cv.addEventListener('pointermove', move);
+  cv.addEventListener('pointerup', end);
+  cv.addEventListener('pointercancel', end);
+  cv.addEventListener('pointerleave', end);
+})();
+function sigClear(){
+  var cv = document.getElementById('sig-pad'); if(!cv) return;
+  cv.getContext('2d').clearRect(0, 0, cv.width, cv.height);
+  window.bkSignature = null;
+  var s = document.getElementById('sig-status');
+  if(s){ s.textContent = 'ยังไม่มีลายเซ็น'; s.style.color = 'var(--dim)'; }
 }
 </script>
 </body>
