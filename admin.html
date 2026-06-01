@@ -546,8 +546,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 
   <!-- SIGNATURE -->
   <div class="panel">
-    <div class="panel-title">ลายเซ็น (Signature)</div>
-    <div style="font-size:.78rem;color:var(--dim);margin-bottom:10px">เซ็นด้วยนิ้ว / เมาส์ / ปากกา (รองรับมือถือ · คอมพิวเตอร์ · iPad) แล้วลายเซ็นจะถูกนำไปใส่ในช่อง “ผู้ขาย” ของเอกสารอัตโนมัติ</div>
+    <div class="panel-title">ลายเซ็นลูกค้า (Customer Signature)</div>
+    <div style="font-size:.78rem;color:var(--dim);margin-bottom:10px">ให้ลูกค้าเซ็นด้วยนิ้ว / เมาส์ / ปากกา (มือถือ · คอม · iPad) → ใส่ในช่อง “ลูกค้า” ของเอกสาร · ส่วนลายเซ็น “ผู้ขาย” ระบบดึงอัตโนมัติตามผู้ขายที่เลือกด้านบน</div>
     <canvas id="sig-pad" width="760" height="200" style="width:100%;height:auto;background:#fff;border:1px dashed var(--gold);border-radius:6px;touch-action:none;cursor:crosshair;display:block"></canvas>
     <div class="btn-row" style="margin-top:10px;align-items:center;gap:14px">
       <button type="button" class="btn btn-reset" onclick="sigClear()">ล้างลายเซ็น</button>
@@ -648,6 +648,11 @@ const SIG_TITLES = {
   BILLING:["ผู้วางบิล","ผู้รับวางบิล"],
   RECEIPT:["ผู้รับเงิน","ผู้จ่ายเงิน"],
   TAX_RECEIPT:["ผู้รับเงิน","ผู้จ่ายเงิน"]
+};
+// ลายเซ็นผู้ขาย (ฝั่งบริษัท) อัตโนมัติ — จับคู่กับชื่อผู้ขายใน dropdown (ไฟล์โปร่งใสในโฟลเดอร์ Signature)
+const SELLER_SIG = {
+  "Sawarin Porjai":"Signature/sig-sawarin.png",
+  "Wongsatorn Somtana":"Signature/sig-wongsatorn.png"
 };
 
 const NOTE_TEMPLATES = {
@@ -1418,7 +1423,8 @@ async function savePDF(){
     const FRAME='assets/Document/frame.png', BKLOGO='assets/Document/BKlogo1.png';
     const KASILOGO='assets/Document/KASI_logo.png', KASIQR='assets/Document/KASI_QR.jpg';
     const isPayDoc = (docType==='QUOTATION' || docType==='BILLING');
-    const sigImg = window.bkSignature || '';  // ลายเซ็นจากแผ่นเซ็น (ถ้ามี) → ใส่ช่องผู้ขาย
+    const sellerSig = SELLER_SIG[sellerName] || '';  // ผู้ขาย: อัตโนมัติจากโฟลเดอร์ Signature ตามผู้ขายที่เลือก
+    const custSig = window.bkSignature || '';        // ลูกค้า: จากแผ่นเซ็นดิจิทัล
 
     // Build product rows
     let itemRows = '';
@@ -1544,13 +1550,13 @@ async function savePDF(){
         <div style="display:flex;gap:60px;margin-top:50px;padding-top:24px">
           <div style="flex:1;text-align:center">
             <div style="font-size:10px;letter-spacing:.25em;color:${titleColor};font-weight:600;margin-bottom:14px">${escapeHtml(sigTitles[0])}</div>
-            <div style="height:60px;border:1px dashed #C9A96E;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9A8E7F;overflow:hidden">${sigImg ? `<img src="${sigImg}" style="max-height:56px;max-width:94%;object-fit:contain">` : 'เซ็น หรือตราประทับ (ถ้ามี)'}</div>
+            <div style="height:60px;border:1px dashed #C9A96E;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9A8E7F;overflow:hidden">${sellerSig ? `<img src="${sellerSig}" style="max-height:56px;max-width:94%;object-fit:contain">` : 'เซ็น หรือตราประทับ (ถ้ามี)'}</div>
             <div style="border-bottom:1px solid #1A0F08;margin-top:20px;padding-bottom:2px;font-size:11px">(${escapeHtml(sellerName||'.................................')})</div>
             <div style="font-size:10px;color:#8B7D74;margin-top:6px">วันที่ ____/________/______</div>
           </div>
           <div style="flex:1;text-align:center">
             <div style="font-size:10px;letter-spacing:.25em;color:${titleColor};font-weight:600;margin-bottom:14px">${escapeHtml(sigTitles[1])}</div>
-            <div style="height:60px;border:1px dashed #C9A96E;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9A8E7F">เซ็น หรือตราประทับ (ถ้ามี)</div>
+            <div style="height:60px;border:1px dashed #C9A96E;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#9A8E7F;overflow:hidden">${custSig ? `<img src="${custSig}" style="max-height:56px;max-width:94%;object-fit:contain">` : 'เซ็น หรือตราประทับ (ถ้ามี)'}</div>
             <div style="border-bottom:1px solid #1A0F08;margin-top:20px;padding-bottom:2px;font-size:11px">(${escapeHtml(custName||'.................................')})</div>
             <div style="font-size:10px;color:#8B7D74;margin-top:6px">วันที่ ____/________/______</div>
           </div>

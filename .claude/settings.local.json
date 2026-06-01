@@ -84,7 +84,8 @@
       "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"BKSEO: publish 5 remaining articles + shared article.css; journal cards now live + brand story section below cards; add 11 lifestyle photos to gallery; sitemap +5\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")",
       "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"gallery: sync ALL_GALLERY with curated files \\(drop removed product images; lifestyle photos first\\)\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")",
       "PowerShell($ErrorActionPreference='SilentlyContinue'; $n=\\(Get-Command node\\).Source; if\\($n\\){ Write-Output \"node: $n\" } else { Write-Output \"NO_NODE\"; $p=\\(Get-Command python\\).Source; Write-Output \"python: $p\" })",
-      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"mobile: lock A4 layout for catalog PDF on phones; responsive BKTAX form \\(tax 1-col + 16px inputs\\); add signature pad \\(mouse/touch/pen\\) -> seller box; relabel to 'sign or stamp'\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")"
+      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"mobile: lock A4 layout for catalog PDF on phones; responsive BKTAX form \\(tax 1-col + 16px inputs\\); add signature pad \\(mouse/touch/pen\\) -> seller box; relabel to 'sign or stamp'\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")",
+      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"catalog: add lifestyle gallery page + TH/EN toggle \\(2 books\\); swap FB BLOOK/Pillow links \\(both sets\\); single-line hero on gallery\\(mobile\\)/journal\\(h1 mobile,subtitle desktop\\); BKTAX signatures: seller auto from Signature assets + customer digital pad\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")"
     ]
   }
 }

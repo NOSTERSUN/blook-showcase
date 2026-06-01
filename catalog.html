@@ -84,6 +84,13 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
 .art-contact .lbl{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
 .art-contact p{font-size:.82rem;line-height:1.8;color:var(--neutral)}
 .art-contact a{color:var(--gold);text-decoration:none}
+/* Catalog gallery page */
+.cat-gal-head{text-align:center;margin:4px 0 14px}
+.cat-gal-head .p-eyebrow{justify-content:center;display:block}
+.cat-gal-head .p-name{margin:6px 0 6px}
+.cat-gal-head .p-sub{color:var(--neutral)}
+.cat-gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.cat-gal-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;display:block;background:var(--bg3)}
 
 /* มือถือ: ใช้ layout ย่อ — แต่ "ยกเว้น" ตอนสร้าง PDF (body.exporting) เพื่อให้ไฟล์ออกมาเป็น A4 เหมือนบนคอมพิวเตอร์ */
 @media(max-width:760px){
@@ -114,6 +121,7 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
 <div class="cat-bar">
   <span class="b">BLOOK</span>
   <div class="cat-bar-actions">
+    <button id="lang-toggle" title="ภาษา / Language" aria-label="Language" style="background:none;border:1px solid var(--border2,rgba(184,134,11,.4));color:var(--gold);font-family:inherit;font-size:.76rem;letter-spacing:.14em;padding:9px 15px;border-radius:8px;cursor:pointer">EN</button>
     <a href="index.html" class="icon-btn" title="กลับหน้าหลัก" aria-label="กลับหน้าหลัก">
       <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/></svg>
     </a>
@@ -127,11 +135,11 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
 
   <!-- COVER -->
   <section class="page cover">
-    <p class="eyebrow">Product Catalog · 2025</p>
+    <p class="eyebrow" data-th="แคตตาล็อกสินค้า · 2025" data-en="Product Catalog · 2025">Product Catalog · 2025</p>
     <h1>BLOOK <em>LIVING</em></h1>
     <p class="tag">The Class of Calm</p>
     <img class="cover-img" src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg" alt="BLOOK LIVING">
-    <p class="meta">Home Fragrance · Pillow · Sofa · Gift Set</p>
+    <p class="meta" data-th="น้ำหอม · หมอน · โซฟา · เซ็ทของขวัญ" data-en="Home Fragrance · Pillow · Sofa · Gift Set">Home Fragrance · Pillow · Sofa · Gift Set</p>
   </section>
 
   <!-- 1) REED DIFFUSER 250ML -->
@@ -142,19 +150,19 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
       <div class="p-info">
         <p class="p-eyebrow">Home Fragrance</p>
         <h2 class="p-name">Luxury Hotel Collection</h2>
-        <p class="p-sub">ขวด Amber สุดเอกลักษณ์ · 250 มล.</p>
-        <p class="p-desc">ก้านหอมปรับอากาศสไตล์อะโพเทคารีระดับพรีเมียม ได้แรงบันดาลใจจากโรงแรมหรูชั้นนำระดับโลก กลิ่นหอมยาวนาน ไม่ระคายเคือง</p>
+        <p class="p-sub" data-th="ขวด Amber สุดเอกลักษณ์ · 250 มล." data-en="Signature Amber Bottle · 250 ml">ขวด Amber สุดเอกลักษณ์ · 250 มล.</p>
+        <p class="p-desc" data-th="ก้านหอมปรับอากาศสไตล์อะโพเทคารีระดับพรีเมียม ได้แรงบันดาลใจจากโรงแรมหรูชั้นนำระดับโลก กลิ่นหอมยาวนาน ไม่ระคายเคือง" data-en="A premium apothecary-style reed diffuser inspired by the world's finest luxury hotels — long-lasting and gentle.">ก้านหอมปรับอากาศสไตล์อะโพเทคารีระดับพรีเมียม ได้แรงบันดาลใจจากโรงแรมหรูชั้นนำระดับโลก กลิ่นหอมยาวนาน ไม่ระคายเคือง</p>
         <div class="p-feats">
-          <div class="p-feat"><b>4–5 เดือน</b><span>กลิ่นหอมยาวนาน</span></div>
-          <div class="p-feat"><b>40–50 ตร.ม.</b><span>ครอบคลุมพื้นที่</span></div>
-          <div class="p-feat"><b>4 กลิ่น</b><span>ระดับโรงแรม</span></div>
-          <div class="p-feat"><b>ไม่ระคายเคือง</b><span>สูตรปลอดภัย</span></div>
+          <div class="p-feat"><b data-th="4–5 เดือน" data-en="4–5 months">4–5 เดือน</b><span data-th="กลิ่นหอมยาวนาน" data-en="Long-lasting scent">กลิ่นหอมยาวนาน</span></div>
+          <div class="p-feat"><b data-th="40–50 ตร.ม." data-en="40–50 sq.m.">40–50 ตร.ม.</b><span data-th="ครอบคลุมพื้นที่" data-en="Coverage area">ครอบคลุมพื้นที่</span></div>
+          <div class="p-feat"><b data-th="4 กลิ่น" data-en="4 scents">4 กลิ่น</b><span data-th="ระดับโรงแรม" data-en="Hotel-grade">ระดับโรงแรม</span></div>
+          <div class="p-feat"><b data-th="ไม่ระคายเคือง" data-en="Non-irritating">ไม่ระคายเคือง</b><span data-th="สูตรปลอดภัย" data-en="Safe formula">สูตรปลอดภัย</span></div>
         </div>
-        <p class="p-scents"><b>กลิ่น:</b> Marriott · Sheraton · Four Seasons · Shangri-La</p>
+        <p class="p-scents"><b data-th="กลิ่น:" data-en="Scents:">กลิ่น:</b> Marriott · Sheraton · Four Seasons · Shangri-La</p>
       </div>
     </div>
     <div class="p-gallery">
-      <div class="gl-label">Gallery · ภาพสินค้า</div>
+      <div class="gl-label" data-th="Gallery · ภาพสินค้า" data-en="Gallery · Product Photos">Gallery · ภาพสินค้า</div>
       <div class="gl-grid">
         <img src="assets/diffuser_250/2.png" alt=""><img src="assets/diffuser_250/3.png" alt=""><img src="assets/diffuser_250/4.png" alt=""><img src="assets/diffuser_250/5.png" alt="">
         <img src="assets/diffuser_250/6.png" alt=""><img src="assets/diffuser_250/7.png" alt=""><img src="assets/diffuser_250/8.png" alt=""><img src="assets/diffuser_250/1.png" alt="">
@@ -171,19 +179,19 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
       <div class="p-info">
         <p class="p-eyebrow">Home Fragrance · Pocket</p>
         <h2 class="p-name">Pocket Hotel Collection</h2>
-        <p class="p-sub">4 กลิ่นโรงแรมหรู · พกพาสะดวก</p>
-        <p class="p-desc">สูตรระดับโรงแรมเดียวกัน ในขวดแมตต์แบล็คขนาดกะทัดรัด เหมาะสำหรับโต๊ะทำงาน ห้องนอน และการเดินทาง สร้างความสงบได้ทุกที่</p>
+        <p class="p-sub" data-th="4 กลิ่นโรงแรมหรู · พกพาสะดวก" data-en="4 luxury hotel scents · Portable">4 กลิ่นโรงแรมหรู · พกพาสะดวก</p>
+        <p class="p-desc" data-th="สูตรระดับโรงแรมเดียวกัน ในขวดแมตต์แบล็คขนาดกะทัดรัด เหมาะสำหรับโต๊ะทำงาน ห้องนอน และการเดินทาง สร้างความสงบได้ทุกที่" data-en="The same hotel-grade formula in a compact matte-black bottle — perfect for your desk, bedroom, or travels. Calm, anywhere.">สูตรระดับโรงแรมเดียวกัน ในขวดแมตต์แบล็คขนาดกะทัดรัด เหมาะสำหรับโต๊ะทำงาน ห้องนอน และการเดินทาง สร้างความสงบได้ทุกที่</p>
         <div class="p-feats">
-          <div class="p-feat"><b>4–5 สัปดาห์</b><span>กลิ่นหอมยาวนาน</span></div>
-          <div class="p-feat"><b>20–30 ตร.ม.</b><span>ครอบคลุมพื้นที่</span></div>
-          <div class="p-feat"><b>4 กลิ่น</b><span>ระดับโรงแรม</span></div>
-          <div class="p-feat"><b>พกพาสะดวก</b><span>เดินทาง/ทดลอง</span></div>
+          <div class="p-feat"><b data-th="4–5 สัปดาห์" data-en="4–5 weeks">4–5 สัปดาห์</b><span data-th="กลิ่นหอมยาวนาน" data-en="Long-lasting scent">กลิ่นหอมยาวนาน</span></div>
+          <div class="p-feat"><b data-th="20–30 ตร.ม." data-en="20–30 sq.m.">20–30 ตร.ม.</b><span data-th="ครอบคลุมพื้นที่" data-en="Coverage area">ครอบคลุมพื้นที่</span></div>
+          <div class="p-feat"><b data-th="4 กลิ่น" data-en="4 scents">4 กลิ่น</b><span data-th="ระดับโรงแรม" data-en="Hotel-grade">ระดับโรงแรม</span></div>
+          <div class="p-feat"><b data-th="พกพาสะดวก" data-en="Portable">พกพาสะดวก</b><span data-th="เดินทาง/ทดลอง" data-en="Travel / Trial">เดินทาง/ทดลอง</span></div>
         </div>
-        <p class="p-scents"><b>กลิ่น:</b> Marriott · Sheraton · Four Seasons · Shangri-La</p>
+        <p class="p-scents"><b data-th="กลิ่น:" data-en="Scents:">กลิ่น:</b> Marriott · Sheraton · Four Seasons · Shangri-La</p>
       </div>
     </div>
     <div class="p-gallery">
-      <div class="gl-label">Gallery · ภาพสินค้า</div>
+      <div class="gl-label" data-th="Gallery · ภาพสินค้า" data-en="Gallery · Product Photos">Gallery · ภาพสินค้า</div>
       <div class="gl-grid">
         <img src="assets/diffuser_50/2.png" alt=""><img src="assets/diffuser_50/3.png" alt=""><img src="assets/diffuser_50/4.png" alt=""><img src="assets/diffuser_50/5.png" alt="">
         <img src="assets/diffuser_50/6.png" alt=""><img src="assets/diffuser_50/7.png" alt=""><img src="assets/diffuser_50/1.png" alt="">
@@ -200,18 +208,18 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
       <div class="p-info">
         <p class="p-eyebrow">Gift Collection</p>
         <h2 class="p-name">The Gift Set</h2>
-        <p class="p-sub">เซ็ทของขวัญน้ำหอมปรับอากาศ</p>
-        <p class="p-desc">2 ขวดขนาด 50 มล. แบบแมตต์แบล็ค เลือกกลิ่นได้ตามใจ นำเสนอในกล่องของขวัญแม่เหล็กสุดหรู พร้อมมอบความสงบเป็นของขวัญ</p>
+        <p class="p-sub" data-th="เซ็ทของขวัญน้ำหอมปรับอากาศ" data-en="Home Fragrance Gift Set">เซ็ทของขวัญน้ำหอมปรับอากาศ</p>
+        <p class="p-desc" data-th="2 ขวดขนาด 50 มล. แบบแมตต์แบล็ค เลือกกลิ่นได้ตามใจ นำเสนอในกล่องของขวัญแม่เหล็กสุดหรู พร้อมมอบความสงบเป็นของขวัญ" data-en="Two 50 ml matte-black bottles with scents of your choice, presented in a luxe magnetic gift box. Give the gift of calm.">2 ขวดขนาด 50 มล. แบบแมตต์แบล็ค เลือกกลิ่นได้ตามใจ นำเสนอในกล่องของขวัญแม่เหล็กสุดหรู พร้อมมอบความสงบเป็นของขวัญ</p>
         <div class="p-feats">
-          <div class="p-feat"><b>2 ขวด</b><span>50 มล. × 2</span></div>
-          <div class="p-feat"><b>คละกลิ่นได้</b><span>เลือกตามใจ</span></div>
-          <div class="p-feat"><b>กล่องแม่เหล็ก</b><span>แพ็คเกจพรีเมียม</span></div>
-          <div class="p-feat"><b>พร้อมมอบ</b><span>ของขวัญพิเศษ</span></div>
+          <div class="p-feat"><b data-th="2 ขวด" data-en="2 bottles">2 ขวด</b><span data-th="50 มล. × 2" data-en="50 ml × 2">50 มล. × 2</span></div>
+          <div class="p-feat"><b data-th="คละกลิ่นได้" data-en="Mix scents">คละกลิ่นได้</b><span data-th="เลือกตามใจ" data-en="Your choice">เลือกตามใจ</span></div>
+          <div class="p-feat"><b data-th="กล่องแม่เหล็ก" data-en="Magnetic box">กล่องแม่เหล็ก</b><span data-th="แพ็คเกจพรีเมียม" data-en="Premium packaging">แพ็คเกจพรีเมียม</span></div>
+          <div class="p-feat"><b data-th="พร้อมมอบ" data-en="Ready to gift">พร้อมมอบ</b><span data-th="ของขวัญพิเศษ" data-en="A special gift">ของขวัญพิเศษ</span></div>
         </div>
       </div>
     </div>
     <div class="p-gallery">
-      <div class="gl-label">Gallery · ภาพสินค้า</div>
+      <div class="gl-label" data-th="Gallery · ภาพสินค้า" data-en="Gallery · Product Photos">Gallery · ภาพสินค้า</div>
       <div class="gl-grid">
         <img src="assets/diffuser_gift/2.png" alt=""><img src="assets/diffuser_gift/3.png" alt=""><img src="assets/diffuser_gift/4.png" alt=""><img src="assets/diffuser_gift/5.png" alt="">
         <img src="assets/diffuser_gift/6.png" alt=""><img src="assets/diffuser_gift/7.png" alt=""><img src="assets/diffuser_gift/8.png" alt=""><img src="assets/diffuser_gift/1.png" alt="">
@@ -228,18 +236,18 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
       <div class="p-info">
         <p class="p-eyebrow">Wellness</p>
         <h2 class="p-name">BLOOK Argo Pillow</h2>
-        <p class="p-sub">หมอนเพื่อสุขภาพ ตามหลักสรีรศาสตร์</p>
-        <p class="p-desc">หมอนพรีเมียมที่ออกแบบมาเพื่อรองรับสรีระศีรษะและคออย่างสมบูรณ์แบบ ด้วยวัสดุคุณภาพสูง มอบการนอนหลับที่ผ่อนคลายในทุกค่ำคืน</p>
+        <p class="p-sub" data-th="หมอนเพื่อสุขภาพ ตามหลักสรีรศาสตร์" data-en="Ergonomic Health Pillow">หมอนเพื่อสุขภาพ ตามหลักสรีรศาสตร์</p>
+        <p class="p-desc" data-th="หมอนพรีเมียมที่ออกแบบมาเพื่อรองรับสรีระศีรษะและคออย่างสมบูรณ์แบบ ด้วยวัสดุคุณภาพสูง มอบการนอนหลับที่ผ่อนคลายในทุกค่ำคืน" data-en="A premium pillow engineered to perfectly support your head and neck with high-quality materials — for relaxed sleep every night.">หมอนพรีเมียมที่ออกแบบมาเพื่อรองรับสรีระศีรษะและคออย่างสมบูรณ์แบบ ด้วยวัสดุคุณภาพสูง มอบการนอนหลับที่ผ่อนคลายในทุกค่ำคืน</p>
         <div class="p-feats">
-          <div class="p-feat"><b>ผ้าพรีเมียม</b><span>นุ่ม ระบายอากาศ</span></div>
-          <div class="p-feat"><b>ตามสรีระ</b><span>นอนสบายทั้งคืน</span></div>
-          <div class="p-feat"><b>รับประกัน 1 ปี</b><span>โครงสร้างหมอน</span></div>
-          <div class="p-feat"><b>พร้อมกล่อง</b><span>มอบเป็นของขวัญ</span></div>
+          <div class="p-feat"><b data-th="ผ้าพรีเมียม" data-en="Premium fabric">ผ้าพรีเมียม</b><span data-th="นุ่ม ระบายอากาศ" data-en="Soft & breathable">นุ่ม ระบายอากาศ</span></div>
+          <div class="p-feat"><b data-th="ตามสรีระ" data-en="Ergonomic">ตามสรีระ</b><span data-th="นอนสบายทั้งคืน" data-en="All-night comfort">นอนสบายทั้งคืน</span></div>
+          <div class="p-feat"><b data-th="รับประกัน 1 ปี" data-en="1-year warranty">รับประกัน 1 ปี</b><span data-th="โครงสร้างหมอน" data-en="Pillow structure">โครงสร้างหมอน</span></div>
+          <div class="p-feat"><b data-th="พร้อมกล่อง" data-en="Gift box included">พร้อมกล่อง</b><span data-th="มอบเป็นของขวัญ" data-en="Great as a gift">มอบเป็นของขวัญ</span></div>
         </div>
       </div>
     </div>
     <div class="p-gallery">
-      <div class="gl-label">Gallery · ภาพสินค้า</div>
+      <div class="gl-label" data-th="Gallery · ภาพสินค้า" data-en="Gallery · Product Photos">Gallery · ภาพสินค้า</div>
       <div class="gl-grid">
         <img src="assets/Pillow/2.jpg" alt=""><img src="assets/Pillow/3.jpg" alt=""><img src="assets/Pillow/4.jpg" alt=""><img src="assets/Pillow/5.jpg" alt="">
       </div>
@@ -255,18 +263,18 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
       <div class="p-info">
         <p class="p-eyebrow">Living</p>
         <h2 class="p-name">TOGO SOFA</h2>
-        <p class="p-sub">มีสีสันให้เลือกหลากหลาย</p>
-        <p class="p-desc">สัมผัสความสมดุลแห่งสไตล์และความสะดวกสบาย โซฟาพรีเมียมโครงสร้าง Pocket Spring สร้างพื้นที่พักผ่อนในอุดมคติ มีหลากสีให้เลือก</p>
+        <p class="p-sub" data-th="มีสีสันให้เลือกหลากหลาย" data-en="Available in multiple colors">มีสีสันให้เลือกหลากหลาย</p>
+        <p class="p-desc" data-th="สัมผัสความสมดุลแห่งสไตล์และความสะดวกสบาย โซฟาพรีเมียมโครงสร้าง Pocket Spring สร้างพื้นที่พักผ่อนในอุดมคติ มีหลากสีให้เลือก" data-en="Experience the balance of style and comfort. A premium Pocket Spring sofa that creates the ideal space to relax — in a range of colors.">สัมผัสความสมดุลแห่งสไตล์และความสะดวกสบาย โซฟาพรีเมียมโครงสร้าง Pocket Spring สร้างพื้นที่พักผ่อนในอุดมคติ มีหลากสีให้เลือก</p>
         <div class="p-feats">
-          <div class="p-feat"><b>คุณภาพสูง</b><span>Pocket Spring</span></div>
-          <div class="p-feat"><b>รับประกัน 3 ปี</b><span>โครงสร้าง</span></div>
-          <div class="p-feat"><b>ดีไซน์พรีเมียม</b><span>สไตล์หรูหรา</span></div>
-          <div class="p-feat"><b>หลากสี</b><span>น้ำตาล·ส้ม·ขาว·เหลือง</span></div>
+          <div class="p-feat"><b data-th="คุณภาพสูง" data-en="High quality">คุณภาพสูง</b><span>Pocket Spring</span></div>
+          <div class="p-feat"><b data-th="รับประกัน 3 ปี" data-en="3-year warranty">รับประกัน 3 ปี</b><span data-th="โครงสร้าง" data-en="Structure">โครงสร้าง</span></div>
+          <div class="p-feat"><b data-th="ดีไซน์พรีเมียม" data-en="Premium design">ดีไซน์พรีเมียม</b><span data-th="สไตล์หรูหรา" data-en="Luxury style">สไตล์หรูหรา</span></div>
+          <div class="p-feat"><b data-th="หลากสี" data-en="Many colors">หลากสี</b><span data-th="น้ำตาล·ส้ม·ขาว·เหลือง" data-en="Brown·Orange·White·Yellow">น้ำตาล·ส้ม·ขาว·เหลือง</span></div>
         </div>
       </div>
     </div>
     <div class="p-gallery">
-      <div class="gl-label">Gallery · ภาพสินค้า</div>
+      <div class="gl-label" data-th="Gallery · ภาพสินค้า" data-en="Gallery · Product Photos">Gallery · ภาพสินค้า</div>
       <div class="gl-grid">
         <img src="assets/Sofa/3d-sofa-brown.png" alt=""><img src="assets/Sofa/3d-sofa-orange.png" alt=""><img src="assets/Sofa/3d-sofa-white.png" alt=""><img src="assets/Sofa/3d-sofa-yellow.png" alt="">
         <img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-2.jpg" alt=""><img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-3.jpg" alt=""><img src="assets/Sofa/SOFA_OVERVIEW/sofa-overview-4.jpg" alt="">
@@ -313,9 +321,34 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
     <div class="pg-foot"><span>BLOOK LIVING CO., LTD. · THE CLASS OF CALM</span><span>06</span></div>
   </section>
 
+  <!-- 7) GALLERY · LIFESTYLE -->
+  <section class="page">
+    <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat" data-th="แกลเลอรี · ไลฟ์สไตล์" data-en="Gallery · Lifestyle">แกลเลอรี · ไลฟ์สไตล์</span></div>
+    <div class="cat-gal-head">
+      <p class="p-eyebrow" data-th="แกลเลอรี" data-en="Gallery">แกลเลอรี</p>
+      <h2 class="p-name" data-th="ไลฟ์สไตล์ของคุณ" data-en="Your Lifestyle">ไลฟ์สไตล์ของคุณ</h2>
+      <p class="p-sub" data-th="รวมภาพผลิตภัณฑ์ BLOOK LIVING ทุกคอลเลกชันในชีวิตคุณ" data-en="Every BLOOK LIVING collection, in your everyday life">รวมภาพผลิตภัณฑ์ BLOOK LIVING ทุกคอลเลกชันในชีวิตคุณ</p>
+    </div>
+    <div class="cat-gal-grid">
+      <img src="assets/gallery/lifestyle-01.jpg" alt="BLOOK LIVING ไลฟ์สไตล์"><img src="assets/gallery/lifestyle-02.png" alt=""><img src="assets/gallery/lifestyle-03.jpg" alt="">
+      <img src="assets/gallery/lifestyle-04.jpg" alt=""><img src="assets/gallery/lifestyle-05.jpg" alt=""><img src="assets/gallery/lifestyle-06.jpg" alt="">
+      <img src="assets/gallery/lifestyle-07.jpg" alt=""><img src="assets/gallery/lifestyle-08.jpg" alt=""><img src="assets/gallery/lifestyle-09.png" alt="">
+      <img src="assets/gallery/lifestyle-10.png" alt=""><img src="assets/gallery/lifestyle-11.png" alt=""><img src="assets/gallery/sofa-01.jpg" alt="">
+    </div>
+    <div class="pg-foot"><span>BLOOK LIVING · THE CLASS OF CALM · blookliving.com</span><span>07</span></div>
+  </section>
+
 </div>
 <script src="assets/contact-widget.js"></script>
 <script>
+// สลับภาษา TH/EN (ใช้ร่วม localStorage กับทั้งเว็บ) — "catalog 2 เล่ม" ในไฟล์เดียว
+(function(){
+  var lang=localStorage.getItem('blook-lang')||'th', done=false;
+  function apply(l){ document.querySelectorAll('[data-th][data-en]').forEach(function(el){ var t=l==='th'?el.dataset.th:el.dataset.en; if(t!==undefined) el.innerHTML=t; }); var b=document.getElementById('lang-toggle'); if(b) b.textContent=l==='th'?'EN':'TH'; }
+  function init(){ if(done)return; done=true; var b=document.getElementById('lang-toggle'); apply(lang); if(b) b.addEventListener('click',function(e){e.preventDefault();lang=lang==='th'?'en':'th';localStorage.setItem('blook-lang',lang);apply(lang);}); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+
 async function downloadCatalog(){
   const btn=document.getElementById('dl-btn');
   const orig=btn.innerHTML;
@@ -335,7 +368,8 @@ async function downloadCatalog(){
       if(i>0) pdf.addPage();
       pdf.addImage(img,'JPEG',0,0,210,297);
     }
-    pdf.save('BLOOK_LIVING_Catalog_2025.pdf');
+    var lang=(localStorage.getItem('blook-lang')||'th').toUpperCase();
+    pdf.save('BLOOK_LIVING_Catalog_2025_'+lang+'.pdf');
   }catch(e){ alert('ดาวน์โหลดไม่สำเร็จ: '+e.message); }
   finally{ document.body.classList.remove('exporting'); btn.disabled=false; btn.style.opacity=''; btn.innerHTML=orig; }
 }

@@ -56,6 +56,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 60px;height:80px;
 .hero-mini h1{font-family:'Fraunces','Noto Serif Thai',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:400;margin-bottom:16px;color:var(--primary)}
 .hero-mini h1 em{color:var(--gold);font-style:italic}
 .hero-mini p{font-size:1.05rem;color:var(--neutral);max-width:560px;margin:0 auto;font-weight:300}
+/* #5: คำโปรยแสดง 1 บรรทัดบนคอมพิวเตอร์ (>=1120px ครอบคลุมจอคอม/แล็ปท็อปทั่วไป); จอเล็กกว่านั้นตัดบรรทัดปกติ */
+@media(min-width:1120px){.hero-mini p{white-space:nowrap;max-width:none;font-size:.82rem;letter-spacing:0}}
 
 .journal{padding:90px 60px;max-width:1200px;margin:0 auto}
 .journal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
@@ -111,6 +113,7 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
   #lang-toggle{font-size:.92rem!important;letter-spacing:.1em!important;padding:14px 2px!important;text-align:left;width:100%;opacity:1}
   #admin-btn{padding:12px 2px;width:100%}
   .hero-mini{padding:100px 20px 50px}
+  .hero-mini h1{font-size:clamp(1.4rem,6.4vw,2.2rem);white-space:nowrap}
   .journal{padding:50px 20px}
   .journal-grid{grid-template-columns:1fr;gap:26px}
   .back-link{padding:20px 20px 50px}
