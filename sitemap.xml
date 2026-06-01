@@ -21,6 +21,31 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://blookliving.com/articles/pillow-health.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://blookliving.com/articles/hotel-scent.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://blookliving.com/articles/reed-diffuser.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://blookliving.com/articles/calm-living-room.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://blookliving.com/articles/premium-gift.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://blookliving.com/catalog.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

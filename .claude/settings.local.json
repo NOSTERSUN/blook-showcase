@@ -80,7 +80,8 @@
       "Bash(curl -s https://blookliving.com/articles/togo-sofa.html)",
       "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" add -A)",
       "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"gallery: dedicated assets/gallery folder + 'Your Lifestyle' hero; share button supports IG Story \\(file share\\) + lightbox share\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")",
-      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" push origin main)"
+      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" push origin main)",
+      "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"BKSEO: publish 5 remaining articles + shared article.css; journal cards now live + brand story section below cards; add 11 lifestyle photos to gallery; sitemap +5\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")"
     ]
   }
 }

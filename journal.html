@@ -78,6 +78,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 60px;height:80px;
 .back-link a:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
 .back-link a svg{width:16px;height:16px}
 
+/* บทความเก่า: เรื่องราวแบรนด์ 2 คอลัมน์ ไทย/อังกฤษ */
+.story-sec{background:var(--bg2);border-top:1px solid var(--border)}
+.story{max-width:1100px;margin:0 auto;padding:80px 60px}
+.story-head{text-align:center;margin-bottom:46px}
+.story-head .eyebrow{font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.story-head h2{font-family:'Fraunces','Noto Serif Thai',serif;font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:400;color:var(--primary)}
+.story-head h2 em{color:var(--gold);font-style:italic}
+.story-columns{display:grid;grid-template-columns:1fr 1fr;gap:70px}
+.story-col h3{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.3rem;color:var(--gold);margin-bottom:24px;letter-spacing:.15em;text-transform:uppercase;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.story-col p{font-size:.95rem;line-height:2.1;color:var(--neutral);font-weight:300;margin-bottom:18px}
+.story-col p:last-child{margin-bottom:0}
+@media(max-width:1024px){.story{padding:64px 36px}}
+@media(max-width:768px){.story{padding:50px 20px}.story-columns{grid-template-columns:1fr;gap:40px}}
+
 footer{background:var(--primary);border-top:1px solid var(--border);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
 .foot-brand{font-family:'Cormorant Garamond','Noto Serif Thai',serif;font-size:1.3rem;color:var(--gold-light);font-style:italic}
 .foot-copy{font-size:.7rem;color:rgba(255,255,255,.35);letter-spacing:.12em}
@@ -143,61 +157,80 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
       </div>
     </a>
 
-    <div class="jcard jcard-disabled">
-      <span class="jcard-soon" data-th="เร็วๆ นี้" data-en="Soon">เร็วๆ นี้</span>
+    <a class="jcard" href="articles/pillow-health.html">
       <div class="jcard-img"><img src="assets/Pillow/1.jpg" alt="หมอนเพื่อสุขภาพ BLOOK LIVING" loading="lazy"></div>
       <div class="jcard-body">
         <span class="jcard-tag" data-th="หมอน" data-en="Pillow">หมอน</span>
         <h2 data-th="วิธีเลือกหมอนเพื่อสุขภาพ ให้เหมาะกับท่านอน" data-en="How to Choose a Health Pillow for Your Sleep Position">วิธีเลือกหมอนเพื่อสุขภาพ ให้เหมาะกับท่านอน</h2>
         <p data-th="นอนตะแคง นอนหงาย นอนคว่ำ ควรใช้หมอนแบบไหน ไขข้อสงสัยเรื่องหมอนเพื่อสุขภาพ" data-en="Side, back, or stomach sleeper? A guide to picking the right health pillow.">นอนตะแคง นอนหงาย นอนคว่ำ ควรใช้หมอนแบบไหน ไขข้อสงสัยเรื่องหมอนเพื่อสุขภาพ</p>
-        <span class="jcard-more" data-th="เร็วๆ นี้" data-en="Coming soon">เร็วๆ นี้</span>
+        <span class="jcard-more" data-th="อ่านต่อ →" data-en="Read more →">อ่านต่อ →</span>
       </div>
-    </div>
+    </a>
 
-    <div class="jcard jcard-disabled">
-      <span class="jcard-soon" data-th="เร็วๆ นี้" data-en="Soon">เร็วๆ นี้</span>
+    <a class="jcard" href="articles/hotel-scent.html">
       <div class="jcard-img"><img src="assets/diffuser_250/1.png" alt="น้ำหอมปรับอากาศกลิ่นโรงแรม BLOOK LIVING" loading="lazy"></div>
       <div class="jcard-body">
         <span class="jcard-tag" data-th="น้ำหอม" data-en="Fragrance">น้ำหอม</span>
         <h2 data-th="น้ำหอมปรับอากาศกลิ่นโรงแรม 5 ดาว เลือกกลิ่นไหนดี" data-en="Hotel-Inspired Home Scents: Which One Is for You?">น้ำหอมปรับอากาศกลิ่นโรงแรม 5 ดาว เลือกกลิ่นไหนดี</h2>
         <p data-th="อยากให้บ้านหอมเหมือนล็อบบี้โรงแรมหรู เลือกกลิ่นและโทนแบบไหนถึงจะใช่" data-en="Want your home to smell like a luxury hotel lobby? How to choose the right scent.">อยากให้บ้านหอมเหมือนล็อบบี้โรงแรมหรู เลือกกลิ่นและโทนแบบไหนถึงจะใช่</p>
-        <span class="jcard-more" data-th="เร็วๆ นี้" data-en="Coming soon">เร็วๆ นี้</span>
+        <span class="jcard-more" data-th="อ่านต่อ →" data-en="Read more →">อ่านต่อ →</span>
       </div>
-    </div>
+    </a>
 
-    <div class="jcard jcard-disabled">
-      <span class="jcard-soon" data-th="เร็วๆ นี้" data-en="Soon">เร็วๆ นี้</span>
+    <a class="jcard" href="articles/reed-diffuser.html">
       <div class="jcard-img"><img src="assets/diffuser_50/1.png" alt="reed diffuser ก้านหอม BLOOK LIVING" loading="lazy"></div>
       <div class="jcard-body">
         <span class="jcard-tag" data-th="ก้านหอม" data-en="Diffuser">ก้านหอม</span>
         <h2 data-th="Reed Diffuser ใช้ยังไง อยู่ได้นานแค่ไหน" data-en="Reed Diffusers: How to Use Them and How Long They Last">Reed Diffuser ใช้ยังไง อยู่ได้นานแค่ไหน</h2>
         <p data-th="วิธีใช้ก้านหอมให้กระจายกลิ่นทั่วห้อง พร้อมเคล็ดลับยืดอายุการใช้งาน" data-en="How to use reed diffusers for even scent throw, plus tips to make them last.">วิธีใช้ก้านหอมให้กระจายกลิ่นทั่วห้อง พร้อมเคล็ดลับยืดอายุการใช้งาน</p>
-        <span class="jcard-more" data-th="เร็วๆ นี้" data-en="Coming soon">เร็วๆ นี้</span>
+        <span class="jcard-more" data-th="อ่านต่อ →" data-en="Read more →">อ่านต่อ →</span>
       </div>
-    </div>
+    </a>
 
-    <div class="jcard jcard-disabled">
-      <span class="jcard-soon" data-th="เร็วๆ นี้" data-en="Soon">เร็วๆ นี้</span>
+    <a class="jcard" href="articles/calm-living-room.html">
       <div class="jcard-img"><img src="assets/Brand/mood-1.png" alt="จัดห้องนั่งเล่นสไตล์ The Class of Calm" loading="lazy"></div>
       <div class="jcard-body">
         <span class="jcard-tag" data-th="แต่งบ้าน" data-en="Living">แต่งบ้าน</span>
         <h2 data-th="จัดห้องนั่งเล่นสไตล์ The Class of Calm" data-en="Designing a Living Room in The Class of Calm">จัดห้องนั่งเล่นสไตล์ The Class of Calm</h2>
         <p data-th="สร้างมุมพักผ่อนที่อบอุ่น เรียบง่าย และผ่อนคลาย ด้วยหลักการจัดวางแบบ BLOOK" data-en="Create a warm, simple, relaxing retreat with BLOOK's styling principles.">สร้างมุมพักผ่อนที่อบอุ่น เรียบง่าย และผ่อนคลาย ด้วยหลักการจัดวางแบบ BLOOK</p>
-        <span class="jcard-more" data-th="เร็วๆ นี้" data-en="Coming soon">เร็วๆ นี้</span>
+        <span class="jcard-more" data-th="อ่านต่อ →" data-en="Read more →">อ่านต่อ →</span>
       </div>
-    </div>
+    </a>
 
-    <div class="jcard jcard-disabled">
-      <span class="jcard-soon" data-th="เร็วๆ นี้" data-en="Soon">เร็วๆ นี้</span>
+    <a class="jcard" href="articles/premium-gift.html">
       <div class="jcard-img"><img src="assets/diffuser_gift/1.png" alt="เซ็ทของขวัญพรีเมียม BLOOK LIVING" loading="lazy"></div>
       <div class="jcard-body">
         <span class="jcard-tag" data-th="ของขวัญ" data-en="Gift">ของขวัญ</span>
         <h2 data-th="เลือกของขวัญพรีเมียมให้คนสำคัญ" data-en="Choosing a Premium Gift for Someone Special">เลือกของขวัญพรีเมียมให้คนสำคัญ</h2>
         <p data-th="ไอเดียของขวัญที่ทั้งหรูและมีความหมาย เหมาะกับทุกโอกาสพิเศษ" data-en="Gift ideas that feel luxurious and meaningful for every special occasion.">ไอเดียของขวัญที่ทั้งหรูและมีความหมาย เหมาะกับทุกโอกาสพิเศษ</p>
-        <span class="jcard-more" data-th="เร็วๆ นี้" data-en="Coming soon">เร็วๆ นี้</span>
+        <span class="jcard-more" data-th="อ่านต่อ →" data-en="Read more →">อ่านต่อ →</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- บทความเก่า: เรื่องราวแบรนด์ (2 คอลัมน์ ไทย/อังกฤษ) — แสดงล่างหลังการ์ด SEO -->
+<section class="story-sec">
+  <div class="story">
+    <div class="story-head">
+      <p class="eyebrow">Our Story</p>
+      <h2 data-th="เรื่องราวของ <em>BLOOK LIVING</em>" data-en="The <em>BLOOK LIVING</em> Story">เรื่องราวของ <em>BLOOK LIVING</em></h2>
+    </div>
+    <div class="story-columns">
+      <div class="story-col">
+        <h3>ภาษาไทย</h3>
+        <p>BLOOK LIVING คือแบรนด์เฟอร์นิเจอร์และของแต่งบ้านที่ออกแบบมาเพื่อสร้าง "พื้นที่แห่งการพักผ่อน" ให้กับทุกช่วงเวลาของชีวิต เราเชื่อว่าความสบาย ความเรียบง่าย และความหรูอย่างมีรสนิยม สามารถอยู่ร่วมกันได้อย่างลงตัว ผ่านงานออกแบบที่ทันสมัย วัสดุคุณภาพ และรายละเอียดที่ใส่ใจในทุกชิ้นงาน</p>
+        <p>ผลิตภัณฑ์หลักของเรา เช่น Bean Bag Sofa, หมอน และ Home Fragrance ถูกพัฒนาภายใต้แนวคิด "The Class of Calm" เพื่อมอบความรู้สึกอบอุ่น ผ่อนคลาย และสะท้อนตัวตนของผู้ใช้งาน ไม่ว่าจะเป็นมุมพักผ่อนในบ้าน คอนโด หรือพื้นที่สร้างแรงบันดาลใจในทุกวัน</p>
+        <p>BLOOK LIVING ไม่ได้ขายเพียงสินค้า แต่เรากำลังออกแบบประสบการณ์ของการใช้ชีวิตที่สบายขึ้น เรียบง่ายขึ้น และมีความหมายมากขึ้นในทุกวัน</p>
+      </div>
+      <div class="story-col">
+        <h3>English</h3>
+        <p>BLOOK LIVING is a modern furniture and lifestyle brand created to bring comfort, elegance, and calm into everyday living. We believe that a relaxing space can improve both mood and quality of life, which is why every product is thoughtfully designed with simplicity, functionality, and premium aesthetics in mind.</p>
+        <p>Our signature products, including bean bag sofas, pillows, and home fragrances, are inspired by the concept "The Class of Calm." Each piece is made to create a warm and peaceful atmosphere while reflecting a modern luxury lifestyle.</p>
+        <p>At BLOOK LIVING, we do more than create furniture — we create experiences that help people feel relaxed, comfortable, and truly at home every day.</p>
       </div>
     </div>
-
   </div>
 </section>
 
