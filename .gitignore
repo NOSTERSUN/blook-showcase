@@ -7,6 +7,7 @@ Products.zip
 node_modules/
 .env
 memory/
+BKSEO/
 
 # OS
 .DS_Store

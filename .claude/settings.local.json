@@ -70,7 +70,12 @@
       "Bash(curl -s -o /dev/null -w \"http->: %{http_code} %{redirect_url}\\\\n\" http://blookliving.com/)",
       "Bash(curl -s -o /dev/null -w \"robots.txt: %{http_code}\\\\n\" https://blookliving.com/robots.txt)",
       "Bash(curl -s -o /dev/null -w \"sitemap.xml: %{http_code}\\\\n\" https://blookliving.com/sitemap.xml)",
-      "Bash(curl -s -A \"Mozilla/5.0\" \"https://www.google.com/search?q=site:blookliving.com\")"
+      "Bash(curl -s -A \"Mozilla/5.0\" \"https://www.google.com/search?q=site:blookliving.com\")",
+      "Bash(git commit -m 'Add Google Search Console verification file *)",
+      "WebSearch",
+      "Bash(git check-ignore *)",
+      "WebFetch(domain:html.duckduckgo.com)",
+      "WebFetch(domain:www.bing.com)"
     ]
   }
 }
