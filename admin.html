@@ -153,7 +153,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .biz-card>*{position:relative;z-index:1}
 .biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.18),transparent 70%);z-index:0}
 .biz-card::after{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(var(--gold),var(--gold2));z-index:2}
-.biz-bk{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:5.4rem;line-height:1;color:rgba(184,134,11,.16);z-index:0;pointer-events:none;user-select:none;letter-spacing:.02em}
+.biz-bk{position:absolute;right:14px;top:50%;transform:translateY(-50%) scaleX(.66) scaleY(1.64) skewX(-13deg);transform-origin:right center;font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:5.9rem;line-height:1;color:rgba(184,134,11,.17);z-index:0;pointer-events:none;user-select:none;letter-spacing:-.01em}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
@@ -211,6 +211,9 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 /* -- PANELS -- */
 .panel{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:16px}
 .tax-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tax-grid>*{min-width:0}/* กัน select/ข้อความยาวดันคอลัมน์จนล้นจอมือถือ */
+.form-group{min-width:0}
+.form-group select,.form-group input,.form-group textarea{max-width:100%}
 .panel-title{font-size:.82rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;font-weight:600;padding-bottom:10px;border-bottom:1px solid var(--border)}
 
 .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:12px}
@@ -390,7 +393,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
   <div id="tab-bktax" class="tab-panel">
 
   <!-- COMPANY + DOCUMENT -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+  <div class="tax-grid">
     <div class="panel">
       <div class="panel-title">BLOOK Living Co., Ltd.</div>
       <div style="font-size:.85rem;line-height:1.8;color:var(--dim)">
@@ -544,14 +547,25 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     </div>
   </div>
 
-  <!-- SIGNATURE -->
-  <div class="panel">
-    <div class="panel-title">ลายเซ็นลูกค้า (Customer Signature)</div>
-    <div style="font-size:.78rem;color:var(--dim);margin-bottom:10px">ให้ลูกค้าเซ็นด้วยนิ้ว / เมาส์ / ปากกา (มือถือ · คอม · iPad) → ใส่ในช่อง “ลูกค้า” ของเอกสาร · ส่วนลายเซ็น “ผู้ขาย” ระบบดึงอัตโนมัติตามผู้ขายที่เลือกด้านบน</div>
-    <canvas id="sig-pad" width="760" height="200" style="width:100%;height:auto;background:#fff;border:1px dashed var(--gold);border-radius:6px;touch-action:none;cursor:crosshair;display:block"></canvas>
-    <div class="btn-row" style="margin-top:10px;align-items:center;gap:14px">
-      <button type="button" class="btn btn-reset" onclick="sigClear()">ล้างลายเซ็น</button>
-      <span id="sig-status" style="font-size:.8rem;color:var(--dim)">ยังไม่มีลายเซ็น</span>
+  <!-- SIGNATURES — แยกผู้ขาย / ลูกค้า ชัดเจน 2 ช่อง -->
+  <div class="tax-grid">
+    <div class="panel">
+      <div class="panel-title">ลายเซ็นผู้ขาย (Seller)</div>
+      <div id="sig-seller-note" style="font-size:.78rem;color:var(--dim);margin-bottom:10px">เลือกผู้ขายด้านบน · ผู้มีสิทธิ (BK1M) ใช้ลายเซ็นอัตโนมัติ ส่วนสิทธิอื่นเซ็นเองด้านล่าง</div>
+      <canvas id="sig-pad-seller" width="760" height="180" style="width:100%;height:auto;background:#fff;border:1px dashed var(--gold);border-radius:6px;touch-action:none;cursor:crosshair;display:block"></canvas>
+      <div class="btn-row" style="margin-top:8px;align-items:center;gap:12px">
+        <button type="button" class="btn btn-reset" onclick="sigClear('seller')">ล้าง</button>
+        <span id="sig-status-seller" style="font-size:.78rem;color:var(--dim)">—</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">ลายเซ็นลูกค้า (Customer)</div>
+      <div style="font-size:.78rem;color:var(--dim);margin-bottom:10px">ให้ลูกค้าเซ็นด้วยนิ้ว / เมาส์ / ปากกา (มือถือ · คอม · iPad) → ใส่ในช่อง “ลูกค้า” ของเอกสาร</div>
+      <canvas id="sig-pad-customer" width="760" height="180" style="width:100%;height:auto;background:#fff;border:1px dashed var(--gold);border-radius:6px;touch-action:none;cursor:crosshair;display:block"></canvas>
+      <div class="btn-row" style="margin-top:8px;align-items:center;gap:12px">
+        <button type="button" class="btn btn-reset" onclick="sigClear('customer')">ล้าง</button>
+        <span id="sig-status-customer" style="font-size:.78rem;color:var(--dim)">ยังไม่มีลายเซ็น</span>
+      </div>
     </div>
   </div>
 
@@ -570,6 +584,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
   <div class="action-bar">
     <button class="btn btn-primary" onclick="newForm()">New</button>
     <button class="btn btn-danger" onclick="savePDF()">Save PDF</button>
+    <button class="btn btn-primary" onclick="shareDoc()">แชร์เอกสาร (รหัส)</button>
   </div>
 
   </div><!-- /tab-bktax -->
@@ -665,10 +680,13 @@ const NOTE_TEMPLATES = {
 // ============ LOGIN ============
 function checkLogin(){
   const pwd = document.getElementById('pwd-input').value.trim();
-  if(pwd === 'BK1M'){
+  const TIERS = { 'BK1M':'staff', 'BKA':'bka', 'BKC':'bkc' };
+  if(TIERS[pwd]){
+    window.bkTier = TIERS[pwd];   // staff=ใช้ลายเซ็นอัตโนมัติทั้งหมด · bka=ใช้ที่เหลือ(ไม่รวม sawarin/wongsatorn) · bkc=ไม่ใช้อัตโนมัติ
     document.getElementById('login-gate').classList.add('hidden');
     document.getElementById('app').classList.add('active');
     initApp();
+    if(typeof updateSellerSigUI === 'function') updateSellerSigUI();
   } else {
     document.getElementById('pwd-err').textContent = '❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่';
     document.getElementById('pwd-input').value = '';
@@ -1081,9 +1099,31 @@ function renderSummary(){
       </tbody>
     </table>
     </div>
+    <div class="chart-card" style="margin-top:18px">
+      <div class="chart-title">มูลค่าหุ้นตามบัญชี · Book Value per Share (จากทุนจดจัดตั้ง → ปีปิดงบล่าสุด)</div>
+      <canvas id="chart-stock"></canvas>
+    </div>
     <p style="font-size:.72rem;color:var(--dim);margin-top:12px;text-align:center;letter-spacing:.03em">
-      * เปรียบเทียบ 5 ปีบัญชี · ปีที่ปิดงบแล้วไฮไลต์สีทอง · “—” = ยังไม่มีข้อมูล (รอปิดงบ) · ( ) = ค่าติดลบ
+      * เปรียบเทียบ 5 ปีบัญชี · ปีที่ปิดงบแล้วไฮไลต์สีทอง · “—” = ยังไม่มีข้อมูล (รอปิดงบ) · ( ) = ค่าติดลบ · มูลค่าหุ้นตามบัญชี = ส่วนของผู้ถือหุ้น ÷ จำนวนหุ้น
     </p>`;
+
+  // กราฟมูลค่าหุ้นตามบัญชี: ทุนจดจัดตั้ง (มูลค่าพาร์) → สิ้นปีที่ปิดงบแต่ละปี
+  Chart.defaults.color = DIM;
+  Chart.defaults.font.family = "'Inter','Noto Sans Thai',sans-serif";
+  var firstY = years.find(function(y){ return FIN_YEARS[y]; });
+  var sLabels = ['ทุนจดจัดตั้ง'], sData = [null];
+  if(firstY){ var f = FIN_YEARS[firstY]; sData = [ +(f.capital / f.shares).toFixed(2) ]; }
+  years.forEach(function(y){ var d = FIN_YEARS[y]; if(d){ sLabels.push('สิ้นปี '+y); sData.push(+(d.equity / d.shares).toFixed(2)); } });
+  var stockCv = document.getElementById('chart-stock');
+  if(stockCv && sData.filter(function(v){return v!=null;}).length){
+    _charts.push(new Chart(stockCv, {
+      type:'line',
+      data:{ labels:sLabels, datasets:[{ label:'มูลค่าหุ้นตามบัญชี (บาท/หุ้น)', data:sData, borderColor:GOLD, backgroundColor:'rgba(201,162,77,.12)', fill:true, tension:.3, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:GOLD, borderWidth:2, spanGaps:true }] },
+      options:{ maintainAspectRatio:true, aspectRatio:2.6,
+        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:function(c){ return '฿'+Number(c.parsed.y).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' / หุ้น'; }}} },
+        scales:{ y:{ grid:{color:GRID}, ticks:{callback:function(v){ return '฿'+v; }} }, x:{ grid:{display:false} } } }
+    }));
+  }
 }
 // Toggle between summary table and per-year dashboard
 function toggleSummary(){
@@ -1135,6 +1175,7 @@ function initApp(){
   addRow();
   applyDefaultNote();
   recalc();
+  if(typeof updateSellerSigUI === 'function') updateSellerSigUI();
   loadProfileDeck(); // default tab = Company Profile
 }
 
@@ -1160,6 +1201,7 @@ function onSellerChange(){
   const sel = document.getElementById('seller');
   const opt = sel.options[sel.selectedIndex];
   document.getElementById('seller-tel').value = opt.dataset.tel || '';
+  if(typeof updateSellerSigUI === 'function') updateSellerSigUI();
 }
 
 function applyDefaultNote(){
@@ -1370,6 +1412,8 @@ function newForm(){
   document.getElementById('doc-date').value = new Date().toISOString().split('T')[0];
   document.getElementById('seller').value = '';
   document.getElementById('seller-tel').value = '';
+  if(typeof sigClear === 'function'){ sigClear('seller'); sigClear('customer'); }
+  if(typeof updateSellerSigUI === 'function') updateSellerSigUI();
   document.getElementById('job-name').value = '';
   document.getElementById('cust-name').value = '';
   document.getElementById('cust-addr').value = '';
@@ -1385,7 +1429,7 @@ function newForm(){
 }
 
 // ============ PDF GENERATION (HTML-to-PDF via html2canvas) ============
-async function savePDF(){
+async function buildDocPdf(){
   try{
     const custName = document.getElementById('cust-name').value.trim();
     const custAddr = document.getElementById('cust-addr').value.trim();
@@ -1423,8 +1467,9 @@ async function savePDF(){
     const FRAME='assets/Document/frame.png', BKLOGO='assets/Document/BKlogo1.png';
     const KASILOGO='assets/Document/KASI_logo.png', KASIQR='assets/Document/KASI_QR.jpg';
     const isPayDoc = (docType==='QUOTATION' || docType==='BILLING');
-    const sellerSig = SELLER_SIG[sellerName] || '';  // ผู้ขาย: อัตโนมัติจากโฟลเดอร์ Signature ตามผู้ขายที่เลือก
-    const custSig = window.bkSignature || '';        // ลูกค้า: จากแผ่นเซ็นดิจิทัล
+    const sellerAuto = canUseAutoSig(sellerName) ? (SELLER_SIG[sellerName] || '') : '';
+    const sellerSig = sellerAuto || window.bkSellerSig || '';  // ผู้ขาย: อัตโนมัติ(ถ้ามีสิทธิ) ไม่งั้นใช้ที่เซ็นเอง
+    const custSig = window.bkCustomerSig || '';                // ลูกค้า: จากแผ่นเซ็นดิจิทัล
 
     // Build product rows
     let itemRows = '';
@@ -1599,15 +1644,17 @@ async function savePDF(){
 
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
-    if(imgH <= pdfH){
-      pdf.addImage(imgData, 'JPEG', 0, 0, imgW, imgH);
+    const TOL = 6; // mm — เผื่อเศษปัดเศษ กันไม่ให้เกิดหน้าเปล่าเพิ่มอีก 1 หน้า
+    if(imgH <= pdfH + TOL){
+      // พอดี 1 หน้า — clamp ความสูงไม่ให้เกิน A4
+      pdf.addImage(imgData, 'JPEG', 0, 0, imgW, Math.min(imgH, pdfH));
     } else {
-      // Multi-page
+      // เนื้อหายาวเกิน 1 หน้าจริงๆ จึงแบ่งหลายหน้า
       let position = 0;
       let heightLeft = imgH;
       pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
       heightLeft -= pdfH;
-      while(heightLeft > 0){
+      while(heightLeft > TOL){
         position -= pdfH;
         pdf.addPage();
         pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
@@ -1616,12 +1663,37 @@ async function savePDF(){
     }
 
     const fileName = `BLOOK_${docNo}.pdf`;
-    pdf.save(fileName);
-    alert('✅ บันทึกสำเร็จ!\n\nไฟล์: ' + fileName);
+    return { pdf, fileName };
   } catch(err){
     console.error('PDF Error:', err);
     alert('❌ เกิดข้อผิดพลาด:\n' + err.message);
+    return null;
   }
+}
+
+// บันทึกเป็นไฟล์
+async function savePDF(){
+  const r = await buildDocPdf(); if(!r) return;
+  r.pdf.save(r.fileName);
+  alert('✅ บันทึกสำเร็จ!\n\nไฟล์: ' + r.fileName);
+}
+
+// แชร์เอกสาร — ต้องกรอกรหัส BK2M ก่อน (เหมือนการดาวน์โหลด)
+async function shareDoc(){
+  const code = prompt('🔒 กรอกรหัสเพื่อแชร์เอกสาร (Share code):');
+  if(code === null) return;
+  if(code.trim() !== 'BK2M'){ alert('❌ รหัสแชร์ไม่ถูกต้อง'); return; }
+  const r = await buildDocPdf(); if(!r) return;
+  try{
+    const blob = r.pdf.output('blob');
+    const file = new File([blob], r.fileName, { type:'application/pdf' });
+    if(navigator.canShare && navigator.canShare({ files:[file] })){
+      await navigator.share({ files:[file], title:r.fileName, text:'เอกสารจาก BLOOK LIVING' });
+    } else {
+      r.pdf.save(r.fileName);
+      alert('อุปกรณ์นี้แชร์ไฟล์โดยตรงไม่ได้ — บันทึกไฟล์ให้แล้ว แนบส่งเองได้เลย');
+    }
+  } catch(e){ if(e.name !== 'AbortError') alert('แชร์ไม่สำเร็จ: ' + e.message); }
 }
 
 // HTML escape helper
@@ -1632,45 +1704,52 @@ function escapeHtml(text){
   }[c]));
 }
 
-/* ===== Signature Pad — รองรับ นิ้ว / เมาส์ / ปากกา (มือถือ · คอม · iPad) ===== */
-window.bkSignature = null;
-(function(){
-  var cv = document.getElementById('sig-pad');
+/* ===== Signature Pads — แยกผู้ขาย/ลูกค้า · รองรับ นิ้ว/เมาส์/ปากกา (มือถือ·คอม·iPad) ===== */
+window.bkSellerSig = null;
+window.bkCustomerSig = null;
+function bkSetupPad(canvasId, statusId, onDone){
+  var cv = document.getElementById(canvasId);
   if(!cv) return;
   var ctx = cv.getContext('2d');
   ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#1A0F08';
   var drawing = false, last = null, dirty = false;
-  function pos(e){
-    var r = cv.getBoundingClientRect();
-    return { x:(e.clientX - r.left) * (cv.width / r.width), y:(e.clientY - r.top) * (cv.height / r.height) };
-  }
+  function pos(e){ var r = cv.getBoundingClientRect(); return { x:(e.clientX - r.left) * (cv.width / r.width), y:(e.clientY - r.top) * (cv.height / r.height) }; }
   function start(e){ e.preventDefault(); drawing = true; last = pos(e); try{ cv.setPointerCapture(e.pointerId); }catch(_){} }
-  function move(e){
-    if(!drawing) return; e.preventDefault();
-    var p = pos(e);
-    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
-    last = p; dirty = true;
-  }
-  function end(){
-    if(!drawing) return; drawing = false;
-    if(dirty){
-      window.bkSignature = cv.toDataURL('image/png');
-      var s = document.getElementById('sig-status');
-      if(s){ s.textContent = '✓ มีลายเซ็นแล้ว (จะใส่ในเอกสารตอนกด Save PDF)'; s.style.color = 'var(--gold)'; }
-    }
-  }
-  cv.addEventListener('pointerdown', start);
-  cv.addEventListener('pointermove', move);
-  cv.addEventListener('pointerup', end);
-  cv.addEventListener('pointercancel', end);
-  cv.addEventListener('pointerleave', end);
-})();
-function sigClear(){
-  var cv = document.getElementById('sig-pad'); if(!cv) return;
+  function move(e){ if(!drawing) return; e.preventDefault(); var p = pos(e); ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p; dirty = true; }
+  function end(){ if(!drawing) return; drawing = false; if(dirty){ onDone(cv.toDataURL('image/png')); var s = document.getElementById(statusId); if(s){ s.textContent = '✓ มีลายเซ็นแล้ว'; s.style.color = 'var(--gold)'; } } }
+  cv.addEventListener('pointerdown', start); cv.addEventListener('pointermove', move);
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end); cv.addEventListener('pointerleave', end);
+}
+bkSetupPad('sig-pad-seller', 'sig-status-seller', function(d){ window.bkSellerSig = d; });
+bkSetupPad('sig-pad-customer', 'sig-status-customer', function(d){ window.bkCustomerSig = d; });
+function sigClear(which){
+  var map = { seller:['sig-pad-seller','sig-status-seller'], customer:['sig-pad-customer','sig-status-customer'] };
+  var m = map[which] || map.customer;
+  var cv = document.getElementById(m[0]); if(!cv) return;
   cv.getContext('2d').clearRect(0, 0, cv.width, cv.height);
-  window.bkSignature = null;
-  var s = document.getElementById('sig-status');
-  if(s){ s.textContent = 'ยังไม่มีลายเซ็น'; s.style.color = 'var(--dim)'; }
+  if(which === 'seller') window.bkSellerSig = null; else window.bkCustomerSig = null;
+  var s = document.getElementById(m[1]); if(s){ s.textContent = 'ยังไม่มีลายเซ็น'; s.style.color = 'var(--dim)'; }
+}
+// สิทธิใช้ลายเซ็นอัตโนมัติ ตาม tier ที่ล็อกอิน (BK1M=ทั้งหมด · BKA=ที่เหลือ · BKC=ไม่ได้)
+var SIG_RESTRICTED = ['Sawarin Porjai','Wongsatorn Somtana']; // BKA ใช้ของสองคนนี้ไม่ได้
+function canUseAutoSig(name){
+  if(!name || !(name in SELLER_SIG)) return false;
+  var t = window.bkTier;
+  if(t === 'staff') return true;
+  if(t === 'bka') return SIG_RESTRICTED.indexOf(name) < 0;
+  return false; // bkc หรือไม่ทราบสิทธิ
+}
+function updateSellerSigUI(){
+  var sel = document.getElementById('seller'); if(!sel) return;
+  var name = sel.value;
+  var note = document.getElementById('sig-seller-note'); if(!note) return;
+  if(name && canUseAutoSig(name)){
+    note.innerHTML = '✓ ใช้ลายเซ็นอัตโนมัติของ <b style="color:var(--gold)">'+name+'</b> (สิทธิ '+String(window.bkTier||'').toUpperCase()+') — หรือเซ็นทับด้านล่างได้';
+  } else if(name){
+    note.innerHTML = '✏️ สิทธิปัจจุบันใช้ลายเซ็นอัตโนมัติของ "'+name+'" ไม่ได้ — กรุณาเซ็นเองด้านล่าง';
+  } else {
+    note.textContent = 'เลือกผู้ขายด้านบน · ผู้มีสิทธิ (BK1M) ใช้ลายเซ็นอัตโนมัติ ส่วนสิทธิอื่นเซ็นเองด้านล่าง';
+  }
 }
 </script>
 </body>
