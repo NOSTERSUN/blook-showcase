@@ -23,11 +23,12 @@
   .contact-fab .fab-share:hover{background:${GOLD};transform:scale(1.08)}
   .contact-fab .fab-share svg{width:20px;height:20px;fill:${GOLD};transition:fill .3s}
   .contact-fab .fab-share:hover svg{fill:#fff}
-  .contact-fab .fab-order-row{display:flex;align-items:center;gap:8px;align-self:flex-end}
-  .contact-fab .fab-order-tag{background:${GOLD};color:#fff;font-size:.74rem;font-weight:600;padding:7px 13px;border-radius:9px;box-shadow:0 4px 14px rgba(184,134,11,.35);white-space:nowrap;letter-spacing:.04em}
-  .contact-fab .fab-order{width:52px;height:52px;border-radius:50%;background:${GOLD};border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(184,134,11,.5);transition:all .3s;flex-shrink:0}
-  .contact-fab .fab-order:hover{background:${GOLDD};transform:scale(1.08)}
-  .contact-fab .fab-order svg{width:26px;height:26px;fill:#fff}
+  .contact-fab .fab-row{display:flex;align-items:center;gap:8px;justify-content:flex-end;background:rgba(255,255,255,.97);padding:8px 10px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.16)}
+  .contact-fab .fab-row-label{font-size:.7rem;font-weight:700;color:#5C4E46;margin-right:2px;white-space:nowrap;letter-spacing:.05em}
+  .contact-fab .fab-row #bk-order-mini{display:flex;gap:8px}
+  .contact-fab .fab-mini{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;border:none;text-decoration:none;transition:transform .2s;padding:0}
+  .contact-fab .fab-mini:hover{transform:scale(1.12)}
+  .contact-fab .fab-mini svg{width:21px;height:21px;fill:#fff}
   #bk-share{position:fixed;inset:0;z-index:10001;background:rgba(10,8,6,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
   #bk-share.open{display:flex}
   #bk-share .sp{background:#fff;width:100%;max-width:460px;border-radius:18px 18px 0 0;padding:22px 24px 30px;animation:bkUp .3s cubic-bezier(.34,1.3,.64,1)}
@@ -43,17 +44,20 @@
 
   var fab=document.createElement('div'); fab.className='contact-fab'; fab.id='bk-fab';
   fab.innerHTML=`
-    <div class="fab-order-row">
-      <span class="fab-order-tag">สั่งซื้อ</span>
-      <button class="fab-order" aria-label="สั่งซื้อสินค้า" title="สั่งซื้อ"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
-    </div>
     <div class="fab-actions">
-      <a class="fab-item" href="tel:+66937364796"><span class="fab-tag">Call</span><span class="fab-icon fab-call"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span></a>
-      <a class="fab-item" href="https://line.me/R/ti/p/@blookliving" target="_blank" rel="noopener"><span class="fab-tag">Line</span><span class="fab-icon fab-line"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg></span></a>
-      <a class="fab-item" href="https://m.me/61587451205315" target="_blank" rel="noopener"><span class="fab-tag">Facebook</span><span class="fab-icon fab-fb"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.13 2 11.23c0 2.9 1.36 5.49 3.5 7.19V22l3.2-1.76c.85.24 1.76.36 2.7.36 5.52 0 10-4.13 10-9.23S17.52 2 12 2zm1.01 12.43l-2.55-2.72-4.97 2.72 5.47-5.81 2.61 2.72 4.91-2.72-5.47 5.81z"/></svg></span></a>
+      <div class="fab-row">
+        <span class="fab-row-label">สั่งซื้อ</span>
+        <span id="bk-order-mini"></span>
+      </div>
+      <div class="fab-row">
+        <span class="fab-row-label">ติดต่อ</span>
+        <a class="fab-mini" style="background:#2E7D32" href="tel:+66937364796" title="โทร" aria-label="โทร"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></a>
+        <a class="fab-mini" style="background:#06C755" href="https://line.me/R/ti/p/@blookliving" target="_blank" rel="noopener" title="LINE" aria-label="LINE"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg></a>
+        <a class="fab-mini" style="background:#0084FF" href="https://m.me/61587451205315" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.13 2 11.23c0 2.9 1.36 5.49 3.5 7.19V22l3.2-1.76c.85.24 1.76.36 2.7.36 5.52 0 10-4.13 10-9.23S17.52 2 12 2zm1.01 12.43l-2.55-2.72-4.97 2.72 5.47-5.81 2.61 2.72 4.91-2.72-5.47 5.81z"/></svg></a>
+        <button class="fab-mini" style="background:${GOLD}" id="bk-fab-sharebtn" title="แชร์" aria-label="แชร์"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></button>
+      </div>
     </div>
-    <button class="fab-toggle" aria-label="ติดต่อเรา"><svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg><svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
-    <button class="fab-share" aria-label="แชร์" title="แชร์"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></button>`;
+    <button class="fab-toggle" aria-label="เมนู"><svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg><svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
   document.body.appendChild(fab);
 
   var sheet=document.createElement('div'); sheet.id='bk-share';
@@ -61,11 +65,14 @@
   document.body.appendChild(sheet);
 
   var toggle=fab.querySelector('.fab-toggle');
-  toggle.addEventListener('click',function(){ fab.classList.toggle('open'); });
-  fab.querySelector('.fab-share').addEventListener('click',shareSite);
-  fab.querySelector('.fab-order').addEventListener('click',openOrder);
+  toggle.addEventListener('click',function(e){ e.stopPropagation(); fab.classList.toggle('open'); });
+  var _sb=fab.querySelector('#bk-fab-sharebtn'); if(_sb) _sb.addEventListener('click',shareSite);
+  // กดปุ่มย่อยใดๆ → ปิด FAB
+  fab.querySelector('.fab-actions').addEventListener('click',function(e){ if(e.target.closest('.fab-mini')) fab.classList.remove('open'); });
   sheet.querySelector('.close').addEventListener('click',closeShare);
   sheet.addEventListener('click',function(e){ if(e.target.id==='bk-share') closeShare(); });
+  // คลิกที่อื่น / เลื่อนจอ → ซ่อนปุ่มย่อยกลับ
+  document.addEventListener('click',function(e){ if(fab.classList.contains('open') && !fab.contains(e.target)) fab.classList.remove('open'); });
   window.addEventListener('scroll',function(){ if(fab.classList.contains('open')) fab.classList.remove('open'); },{passive:true});
 
   var CH=[
@@ -131,6 +138,9 @@
     g.innerHTML=h;
     sheet.classList.add('open');
   }
+  // เติมปุ่มย่อย "สั่งซื้อ" (TikTok/Shopee/Lazada/Etsy) ลงในแถวสั่งซื้อของ FAB
+  var _om=document.getElementById('bk-order-mini');
+  if(_om) _om.innerHTML=ORDER.map(function(o){ return '<a class="fab-mini" style="background:'+o.c+'" href="'+o.u+'" target="_blank" rel="noopener" title="'+o.l+'" aria-label="'+o.l+'"><svg viewBox="0 0 24 24">'+o.s+'</svg></a>'; }).join('');
   window.bkOpenOrder=openOrder;
   window.bkOpenShare=openShare;
 })();

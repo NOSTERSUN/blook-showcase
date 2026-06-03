@@ -89,8 +89,11 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
 .cat-gal-head .p-eyebrow{justify-content:center;display:block}
 .cat-gal-head .p-name{margin:6px 0 6px}
 .cat-gal-head .p-sub{color:var(--neutral)}
-.cat-gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.cat-gal-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;display:block;background:var(--bg3)}
+.cat-gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:90px;grid-auto-flow:dense;gap:7px;margin-top:10px}
+.cat-gal-grid img{width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;background:var(--bg3)}
+.cat-gal-grid .cg-big{grid-column:span 2;grid-row:span 2}
+.cat-gal-grid .cg-wide{grid-column:span 2}
+.cat-gal-grid .cg-tall{grid-row:span 2}
 
 /* มือถือ: ใช้ layout ย่อ — แต่ "ยกเว้น" ตอนสร้าง PDF (body.exporting) เพื่อให้ไฟล์ออกมาเป็น A4 เหมือนบนคอมพิวเตอร์ */
 @media(max-width:760px){
@@ -323,7 +326,7 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
     <div class="pg-foot"><span>BLOOK LIVING CO., LTD. · THE CLASS OF CALM</span><span>06</span></div>
   </section>
 
-  <!-- 7) GALLERY · LIFESTYLE -->
+  <!-- 7) GALLERY · LIFESTYLE (1/2) -->
   <section class="page">
     <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat" data-th="แกลเลอรี · ไลฟ์สไตล์" data-en="Gallery · Lifestyle">แกลเลอรี · ไลฟ์สไตล์</span></div>
     <div class="cat-gal-head">
@@ -332,12 +335,45 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
       <p class="p-sub" data-th="รวมภาพผลิตภัณฑ์ BLOOK LIVING ทุกคอลเลกชันในชีวิตคุณ" data-en="Every BLOOK LIVING collection, in your everyday life">รวมภาพผลิตภัณฑ์ BLOOK LIVING ทุกคอลเลกชันในชีวิตคุณ</p>
     </div>
     <div class="cat-gal-grid">
-      <img src="assets/gallery/lifestyle-01.jpg" alt="BLOOK LIVING ไลฟ์สไตล์"><img src="assets/gallery/lifestyle-02.png" alt=""><img src="assets/gallery/lifestyle-03.jpg" alt="">
-      <img src="assets/gallery/lifestyle-04.jpg" alt=""><img src="assets/gallery/lifestyle-05.jpg" alt=""><img src="assets/gallery/lifestyle-06.jpg" alt="">
-      <img src="assets/gallery/lifestyle-07.jpg" alt=""><img src="assets/gallery/lifestyle-08.jpg" alt=""><img src="assets/gallery/lifestyle-09.png" alt="">
-      <img src="assets/gallery/lifestyle-10.png" alt=""><img src="assets/gallery/lifestyle-11.png" alt=""><img src="assets/gallery/sofa-01.jpg" alt="">
+      <img class="cg-big" src="assets/gallery/lifestyle-01.jpg" alt="BLOOK LIVING ไลฟ์สไตล์">
+      <img src="assets/gallery/lifestyle-02.png" alt="">
+      <img src="assets/gallery/lifestyle-03.jpg" alt="">
+      <img class="cg-tall" src="assets/gallery/lifestyle-04.jpg" alt="">
+      <img class="cg-wide" src="assets/gallery/lifestyle-05.jpg" alt="">
+      <img src="assets/gallery/lifestyle-06.jpg" alt="">
+      <img src="assets/gallery/lifestyle-07.jpg" alt="">
+      <img class="cg-wide" src="assets/gallery/lifestyle-08.jpg" alt="">
+      <img class="cg-tall" src="assets/gallery/lifestyle-09.png" alt="">
+      <img src="assets/gallery/lifestyle-10.png" alt="">
+      <img src="assets/gallery/lifestyle-11.png" alt="">
+      <img src="assets/gallery/lifestyle-12.jpg" alt="">
     </div>
     <div class="pg-foot"><span>BLOOK LIVING · THE CLASS OF CALM · blookliving.com</span><span>07</span></div>
+  </section>
+
+  <!-- 8) GALLERY · LIFESTYLE (2/2) -->
+  <section class="page">
+    <div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat" data-th="แกลเลอรี · ไลฟ์สไตล์" data-en="Gallery · Lifestyle">แกลเลอรี · ไลฟ์สไตล์</span></div>
+    <div class="cat-gal-head">
+      <p class="p-eyebrow" data-th="แกลเลอรี (ต่อ)" data-en="Gallery (cont.)">แกลเลอรี (ต่อ)</p>
+      <h2 class="p-name" data-th="โมเมนต์ในชีวิตคุณ" data-en="Moments in Your Life">โมเมนต์ในชีวิตคุณ</h2>
+      <p class="p-sub" data-th="บรรยากาศจริงจากผลิตภัณฑ์ BLOOK LIVING" data-en="Real-life moments with BLOOK LIVING">บรรยากาศจริงจากผลิตภัณฑ์ BLOOK LIVING</p>
+    </div>
+    <div class="cat-gal-grid">
+      <img class="cg-wide" src="assets/gallery/lifestyle-13.jpg" alt="">
+      <img src="assets/gallery/lifestyle-14.jpg" alt="">
+      <img src="assets/gallery/lifestyle-15.jpg" alt="">
+      <img class="cg-big" src="assets/gallery/lifestyle-16.jpg" alt="">
+      <img src="assets/gallery/lifestyle-17.jpg" alt="">
+      <img class="cg-tall" src="assets/gallery/lifestyle-18.jpg" alt="">
+      <img src="assets/gallery/lifestyle-19.jpg" alt="">
+      <img src="assets/gallery/lifestyle-20.jpg" alt="">
+      <img class="cg-wide" src="assets/gallery/lifestyle-22.jpg" alt="">
+      <img src="assets/gallery/lifestyle-24.jpg" alt="">
+      <img class="cg-tall" src="assets/gallery/lifestyle-25.jpg" alt="">
+      <img src="assets/gallery/lifestyle-26.jpg" alt="">
+    </div>
+    <div class="pg-foot"><span>BLOOK LIVING · THE CLASS OF CALM · blookliving.com</span><span>08</span></div>
   </section>
 
 </div>
