@@ -154,10 +154,22 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.18),transparent 70%);z-index:0}
 .biz-card::after{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(var(--gold),var(--gold2));z-index:2}
 .biz-bk{position:absolute;right:14px;top:50%;transform:translateY(-50%) scaleX(.66) scaleY(1.64) skewX(-13deg);transform-origin:right center;font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:5.9rem;line-height:1;color:rgba(184,134,11,.17);z-index:0;pointer-events:none;user-select:none;letter-spacing:-.01em}
+/* Tracking / SEO tab */
+.track-links{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.track-card{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-decoration:none;color:var(--text);transition:all .25s}
+.track-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+.track-card .track-ic{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.track-card .track-ic svg{width:24px;height:24px;fill:#fff}
+.track-card b{display:block;font-size:.98rem}
+.track-card span{display:block;font-size:.74rem;color:var(--dim);margin-top:2px}
+.track-guide{width:100%;border-collapse:collapse;font-size:.86rem}
+.track-guide td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--neutral)}
+.track-guide td:first-child{color:var(--text);font-weight:500;width:44%}
+@media(max-width:768px){.track-links{grid-template-columns:1fr}}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
-.biz-photo{flex:0 0 66px;width:66px;height:66px;aspect-ratio:1/1;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(120,90,40,.2)}
+.biz-photo{flex:0 0 66px;width:66px;height:66px;aspect-ratio:1/1;border-radius:50%;background-size:cover;background-position:center 20%;background-repeat:no-repeat;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(120,90,40,.2)}
 .biz-name{font-family:'Playfair Display',serif;font-size:1.2rem;color:#2B2016;line-height:1.15}
 .biz-name span{font-size:.82rem;color:#B8860B;font-family:'Inter',sans-serif}
 .biz-role{font-size:.72rem;color:#A0784A;letter-spacing:.08em;margin-top:3px;font-weight:500}
@@ -326,6 +338,10 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <button class="tab-btn" data-tab="cards" onclick="switchTab('cards')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M14 9h5M14 13h5M5 16h7"/></svg>
         นามบัตรทีม
+      </button>
+      <button class="tab-btn" data-tab="track" onclick="switchTab('track')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg>
+        สถิติ / SEO
       </button>
     </nav>
     <a href="index.html" class="sidebar-home">
@@ -601,6 +617,48 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     <div class="cards-grid" id="cards-grid"></div>
   </div>
 
+  <!-- ============ TAB 5: TRACKING / SEO ============ -->
+  <div id="tab-track" class="tab-panel">
+    <div class="profile-head">
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.3em;color:var(--gold);margin-bottom:4px">ANALYTICS · SEO</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--text)">สถิติเว็บไซต์ &amp; SEO</div>
+        <div style="font-size:.78rem;color:var(--dim);margin-top:4px">ผู้เข้าชม · คีย์เวิร์ดที่ค้น · เพศ / อายุ / ที่อยู่ — ข้อมูลจริงจาก Google Analytics + Search Console</div>
+      </div>
+    </div>
+
+    <div class="panel" style="border-left:3px solid var(--gold)">
+      <div class="panel-title">สถานะการเก็บข้อมูล (Google Analytics · GA4)</div>
+      <div id="ga-status" style="font-size:.9rem;color:var(--text)">กำลังตรวจสอบ…</div>
+      <div style="font-size:.8rem;color:var(--dim);margin-top:8px;line-height:1.8">
+        🔧 วิธีเปิดใช้งาน: เปิดไฟล์ <b style="color:var(--gold)">assets/analytics.js</b> → แก้บรรทัด <code style="color:var(--gold2,#C9A24D)">GA_ID = 'G-XXXXXXXXXX'</code> เป็น Measurement ID จริงจาก Google Analytics → push ขึ้น GitHub<br>เท่านี้ทุกหน้าสาธารณะจะเริ่มเก็บข้อมูลอัตโนมัติ (ยกเว้นหน้า Admin) · ยังไม่มี GA? สมัครฟรีที่ analytics.google.com แล้วสร้าง Property แบบ "Web"
+      </div>
+    </div>
+
+    <div class="track-links">
+      <a class="track-card" href="https://analytics.google.com/" target="_blank" rel="noopener">
+        <div class="track-ic" style="background:#E37400"><svg viewBox="0 0 24 24"><path d="M5 21V10h3v11H5zm5.5 0V3h3v18h-3zM16 21v-7h3v7h-3z"/></svg></div>
+        <div><b>Google Analytics</b><span>ผู้เข้าชม · เพศ · อายุ · ที่อยู่ · หน้าที่นิยม</span></div>
+      </a>
+      <a class="track-card" href="https://search.google.com/search-console" target="_blank" rel="noopener">
+        <div class="track-ic" style="background:#4285F4"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z"/></svg></div>
+        <div><b>Search Console</b><span>คีย์เวิร์ดที่ค้นเจอ · จำนวนครั้ง · คลิก · อันดับ</span></div>
+      </a>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">ดูข้อมูลแต่ละอย่างได้ที่ไหน</div>
+      <table class="track-guide">
+        <tr><td>จำนวนการเยี่ยมชมเว็บ</td><td>Google Analytics → Reports → Realtime / Engagement</td></tr>
+        <tr><td>คีย์เวิร์ดที่ค้น + จำนวนครั้ง (ความถี่)</td><td>Search Console → Performance → Queries</td></tr>
+        <tr><td>เพศ / อายุ ของผู้เข้าชม</td><td>Google Analytics → Reports → User → Demographics</td></tr>
+        <tr><td>ที่อยู่ (ประเทศ / เมือง)</td><td>Google Analytics → Reports → User → Geo</td></tr>
+        <tr><td>หน้าที่คนเข้าเยอะสุด</td><td>Google Analytics → Reports → Engagement → Pages</td></tr>
+      </table>
+    </div>
+    <p style="font-size:.72rem;color:var(--dim);text-align:center;margin-top:6px">ℹ️ เว็บแบบ static แสดงตัวเลขสดในหน้านี้เองไม่ได้ จึงลิงก์ไปดูที่แดชบอร์ด Google โดยตรง — ข้อมูลจริง อัปเดตอัตโนมัติ ฟรี</p>
+  </div>
+
   </main><!-- /content -->
 </div>
 
@@ -722,6 +780,15 @@ function switchTab(tab){
   if(tab==='profile') loadProfileDeck();
   if(tab==='finance') renderFinance();
   if(tab==='cards') renderCards();
+  if(tab==='track' && typeof checkGaStatus==='function') checkGaStatus();
+}
+function checkGaStatus(){
+  var el=document.getElementById('ga-status'); if(!el) return;
+  fetch('assets/analytics.js',{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
+    var m=t.match(/GA_ID\s*=\s*'([^']*)'/); var id=m?m[1]:'';
+    if(id && id.indexOf('G-')===0 && id!=='G-XXXXXXXXXX'){ el.innerHTML='✅ ติดตั้งแล้ว — กำลังเก็บข้อมูลทุกหน้า (ID: <b style="color:var(--gold)">'+id+'</b>)'; }
+    else { el.innerHTML='⏳ ยังไม่ได้ใส่ Measurement ID — เว็บยังไม่เริ่มเก็บข้อมูล (ทำตามวิธีด้านล่าง)'; }
+  }).catch(function(){ el.textContent='เปิด assets/analytics.js แล้วใส่ Measurement ID เพื่อเริ่มเก็บข้อมูล'; });
 }
 
 // ============ TEAM BUSINESS CARDS ============
@@ -746,7 +813,7 @@ function renderCards(){
         <span class="biz-bk">BK</span>
         <div class="biz-logo">BLOOK<small>THE CLASS OF CALM</small></div>
         <div class="biz-person">
-          <img class="biz-photo" src="${p.photo}" alt="${p.name}" crossorigin="anonymous">
+          <div class="biz-photo" style="background-image:url('${p.photo}')" role="img" aria-label="${p.name}"></div>
           <div>
             <div class="biz-name">${p.name} <span>(${p.nick})</span></div>
             <div class="biz-role">${p.role}</div>

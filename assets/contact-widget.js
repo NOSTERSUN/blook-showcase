@@ -2,6 +2,8 @@
    <script src="assets/contact-widget.js"></script>  (path may be ../assets/... if nested) */
 (function(){
   var GOLD='#B8860B', GOLDD='#8B6914';
+  // Google Analytics (GA4) — โหลด analytics.js (Measurement ID อยู่ในไฟล์เดียว) ครอบคลุมทุกหน้าที่ฝังวิดเจ็ตนี้
+  try{ var _cs=document.currentScript, _base=(_cs&&_cs.src)?_cs.src.replace(/contact-widget\.js.*$/,''):'assets/'; var _ga=document.createElement('script'); _ga.src=_base+'analytics.js'; document.head.appendChild(_ga); }catch(e){}
   var css = `
   .contact-fab{position:fixed;right:26px;bottom:26px;z-index:9000;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:'Inter','IBM Plex Sans Thai',sans-serif}
   .contact-fab .fab-actions{display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
@@ -21,6 +23,11 @@
   .contact-fab .fab-share:hover{background:${GOLD};transform:scale(1.08)}
   .contact-fab .fab-share svg{width:20px;height:20px;fill:${GOLD};transition:fill .3s}
   .contact-fab .fab-share:hover svg{fill:#fff}
+  .contact-fab .fab-order-row{display:flex;align-items:center;gap:8px;align-self:flex-end}
+  .contact-fab .fab-order-tag{background:${GOLD};color:#fff;font-size:.74rem;font-weight:600;padding:7px 13px;border-radius:9px;box-shadow:0 4px 14px rgba(184,134,11,.35);white-space:nowrap;letter-spacing:.04em}
+  .contact-fab .fab-order{width:52px;height:52px;border-radius:50%;background:${GOLD};border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(184,134,11,.5);transition:all .3s;flex-shrink:0}
+  .contact-fab .fab-order:hover{background:${GOLDD};transform:scale(1.08)}
+  .contact-fab .fab-order svg{width:26px;height:26px;fill:#fff}
   #bk-share{position:fixed;inset:0;z-index:10001;background:rgba(10,8,6,.6);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
   #bk-share.open{display:flex}
   #bk-share .sp{background:#fff;width:100%;max-width:460px;border-radius:18px 18px 0 0;padding:22px 24px 30px;animation:bkUp .3s cubic-bezier(.34,1.3,.64,1)}
@@ -36,6 +43,10 @@
 
   var fab=document.createElement('div'); fab.className='contact-fab'; fab.id='bk-fab';
   fab.innerHTML=`
+    <div class="fab-order-row">
+      <span class="fab-order-tag">สั่งซื้อ</span>
+      <button class="fab-order" aria-label="สั่งซื้อสินค้า" title="สั่งซื้อ"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></button>
+    </div>
     <div class="fab-actions">
       <a class="fab-item" href="tel:+66937364796"><span class="fab-tag">Call</span><span class="fab-icon fab-call"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span></a>
       <a class="fab-item" href="https://line.me/R/ti/p/@blookliving" target="_blank" rel="noopener"><span class="fab-tag">Line</span><span class="fab-icon fab-line"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg></span></a>
@@ -46,12 +57,13 @@
   document.body.appendChild(fab);
 
   var sheet=document.createElement('div'); sheet.id='bk-share';
-  sheet.innerHTML=`<div class="sp"><h4>แชร์ BLOOK LIVING</h4><p class="sub">เลือกช่องทางที่ต้องการ</p><div class="grid" id="bk-share-grid"></div><button class="close">ปิด</button></div>`;
+  sheet.innerHTML=`<div class="sp"><h4 id="bk-sheet-title">แชร์ BLOOK LIVING</h4><p class="sub" id="bk-sheet-sub">เลือกช่องทางที่ต้องการ</p><div class="grid" id="bk-share-grid"></div><button class="close">ปิด</button></div>`;
   document.body.appendChild(sheet);
 
   var toggle=fab.querySelector('.fab-toggle');
   toggle.addEventListener('click',function(){ fab.classList.toggle('open'); });
   fab.querySelector('.fab-share').addEventListener('click',shareSite);
+  fab.querySelector('.fab-order').addEventListener('click',openOrder);
   sheet.querySelector('.close').addEventListener('click',closeShare);
   sheet.addEventListener('click',function(e){ if(e.target.id==='bk-share') closeShare(); });
   window.addEventListener('scroll',function(){ if(fab.classList.contains('open')) fab.classList.remove('open'); },{passive:true});
@@ -69,6 +81,8 @@
   var IGGLYPH='<path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85s.01-3.58.07-4.85C2.38 3.93 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.41-10.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/>';
   function openShare(url,text,image){
     ctx={url:url||ctx.url,text:text||ctx.text,image:image||ctx.image};
+    var _t=document.getElementById('bk-sheet-title'); if(_t)_t.textContent='แชร์ BLOOK LIVING';
+    var _s=document.getElementById('bk-sheet-sub'); if(_s)_s.textContent='เลือกช่องทางที่ต้องการ';
     var g=document.getElementById('bk-share-grid'),h='';
     h+='<button class="it" data-k="igstory"><span class="ic" style="background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf)"><svg viewBox="0 0 24 24">'+IGGLYPH+'</svg></span>IG Story</button>';
     CH.forEach(function(c){ h+='<button class="it" data-k="'+c.k+'"><span class="ic" style="background:'+c.c+'"><svg viewBox="0 0 24 24">'+c.s+'</svg></span>'+c.l+'</button>'; });
@@ -103,5 +117,20 @@
     setTimeout(function(){ window.open('https://www.instagram.com/','_blank','noopener'); }, 300);
   }
   function shareSite(){ openShare(ctx.url,ctx.text,ctx.image); }
+  var ORDER=[
+    {l:'TikTok Shop',c:'#010101',u:'https://www.tiktok.com/@blookliving',s:'<path d="M12.53.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>'},
+    {l:'Shopee',c:'#EE4D2D',u:'https://shopee.co.th/blookliving',s:'<path d="M12 1.5c-2.3 0-4.15 1.94-4.15 4.32 0 .13 0 .25.02.38H4.4a1.6 1.6 0 00-1.6 1.5l-.7 12.2A2.1 2.1 0 004.2 22.2h15.6a2.1 2.1 0 002.1-2.3l-.7-12.2a1.6 1.6 0 00-1.6-1.5h-3.47c.02-.13.02-.25.02-.38C16.15 3.44 14.3 1.5 12 1.5zm0 1.7c1.36 0 2.45 1.18 2.45 2.62 0 .13-.01.25-.03.38H9.58a3.1 3.1 0 01-.03-.38C9.55 4.38 10.64 3.2 12 3.2zm-.02 6.5c1.5 0 2.72.5 2.72 2.02 0 1.18-1 1.78-2.12 2.18-.86.3-1.3.53-1.3.98 0 .4.36.62.96.62.62 0 1.14-.2 1.6-.46l.5 1.34c-.5.3-1.26.56-2.16.56-1.54 0-2.74-.66-2.74-2.04 0-1.2 1-1.82 2.06-2.2.9-.32 1.36-.52 1.36-1 0-.4-.4-.58-.92-.58-.66 0-1.22.24-1.66.5l-.52-1.32c.54-.32 1.32-.6 2.22-.6z"/>'},
+    {l:'Lazada',c:'#1A1A8C',u:'https://s.lazada.co.th/s.Z6Iput?c=b',s:'<path d="M12 3.1a.7.7 0 01.36.1l3.5 2.02 3.83 2.2c.2.12.31.33.31.56v6.55c0 .55-.29 1.05-.76 1.32l-6.86 3.96a.92.92 0 01-.92 0L4.56 15.85a1.53 1.53 0 01-.76-1.32V7.98c0-.23.12-.44.31-.56l3.83-2.2 3.5-2.02a.7.7 0 01.36-.1zm-5.3 5.93v5.07l4.6 2.66v-5.08L6.7 9.03zm10.6 0l-4.6 2.65v5.08l4.6-2.66V9.03zM12 4.86L8.1 7.11 12 9.36l3.9-2.25L12 4.86z"/>'},
+    {l:'Etsy',c:'#F1641E',u:'https://www.etsy.com/people/8x3r7fi1d3zvgn4g',s:'<path d="M9.16 4.2v6.06s2.05.02 3.14-.06c.86-.13 1.02-.22 1.2-1.32h.62v3.96h-.62c-.18-1.1-.34-1.18-1.2-1.31-1.09-.09-3.14-.07-3.14-.07v4.88c0 .96.16 1.18 1.27 1.18h2.93c1.78 0 2.45-.34 3.4-2.27h.63c-.24 1.06-.7 3.07-.93 3.55 0 0-3.5-.08-5.16-.08H6.84l-2.6.08v-.6c1.74-.18 1.9-.3 1.9-1.55V6.7c0-1.25-.16-1.37-1.9-1.5v-.6l2.6.07h5.83c1.65 0 3.04-.07 3.04-.07s.04 1.27.13 3.15h-.6c-.43-1.86-.86-2.43-2.65-2.43H9.16z"/>'}
+  ];
+  function openOrder(){
+    var ti=document.getElementById('bk-sheet-title'); if(ti)ti.textContent='สั่งซื้อสินค้า BLOOK';
+    var su=document.getElementById('bk-sheet-sub'); if(su)su.textContent='เลือกช่องทางสั่งซื้อ';
+    var g=document.getElementById('bk-share-grid'),h='';
+    ORDER.forEach(function(o){ h+='<a class="it" href="'+o.u+'" target="_blank" rel="noopener" style="text-decoration:none"><span class="ic" style="background:'+o.c+'"><svg viewBox="0 0 24 24">'+o.s+'</svg></span>'+o.l+'</a>'; });
+    g.innerHTML=h;
+    sheet.classList.add('open');
+  }
+  window.bkOpenOrder=openOrder;
   window.bkOpenShare=openShare;
 })();
