@@ -1121,7 +1121,8 @@ function renderSummary(){
       data:{ labels:sLabels, datasets:[{ label:'มูลค่าหุ้นตามบัญชี (บาท/หุ้น)', data:sData, borderColor:GOLD, backgroundColor:'rgba(201,162,77,.12)', fill:true, tension:.3, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:GOLD, borderWidth:2, spanGaps:true }] },
       options:{ maintainAspectRatio:true, aspectRatio:2.6,
         plugins:{ legend:{display:false}, tooltip:{callbacks:{label:function(c){ return '฿'+Number(c.parsed.y).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' / หุ้น'; }}} },
-        scales:{ y:{ grid:{color:GRID}, ticks:{callback:function(v){ return '฿'+v; }} }, x:{ grid:{display:false} } } }
+        scales:{ y:{ grid:{color:GRID}, ticks:{callback:function(v){ return '฿'+v; }} }, x:{ grid:{display:false} } } },
+      plugins:[{ id:'stockLabels', afterDatasetsDraw:function(chart){ var ctx=chart.ctx, meta=chart.getDatasetMeta(0); ctx.save(); ctx.font='700 12px Inter,"Noto Sans Thai",sans-serif'; ctx.fillStyle=GOLD; ctx.textAlign='center'; meta.data.forEach(function(pt,i){ var v=chart.data.datasets[0].data[i]; if(v==null) return; ctx.fillText('฿'+Number(v).toLocaleString('en-US',{maximumFractionDigits:2}), pt.x, pt.y-12); }); ctx.restore(); } }]
     }));
   }
 }
