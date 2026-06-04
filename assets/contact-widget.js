@@ -23,6 +23,10 @@
   .contact-fab .fab-share:hover{background:${GOLD};transform:scale(1.08)}
   .contact-fab .fab-share svg{width:20px;height:20px;fill:${GOLD};transition:fill .3s}
   .contact-fab .fab-share:hover svg{fill:#fff}
+  .fab-back{position:fixed;left:22px;bottom:26px;z-index:9000;display:inline-flex;align-items:center;gap:7px;background:#fff;color:#1A0F08;border:1px solid rgba(184,134,11,.4);border-radius:30px;padding:11px 18px 11px 14px;box-shadow:0 6px 18px rgba(0,0,0,.16);text-decoration:none;font-family:'Inter','IBM Plex Sans Thai',sans-serif;font-size:.82rem;font-weight:600;transition:all .25s}
+  .fab-back:hover{background:${GOLD};color:#fff;border-color:${GOLD}}
+  .fab-back svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
+  @media(max-width:600px){.fab-back{padding:12px;font-size:0;gap:0}.fab-back svg{width:20px;height:20px}}
   .contact-fab .fab-row{display:flex;align-items:center;gap:8px;justify-content:flex-end;background:rgba(255,255,255,.97);padding:8px 10px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.16)}
   .contact-fab .fab-row-label{font-size:.7rem;font-weight:700;color:#5C4E46;margin-right:2px;white-space:nowrap;letter-spacing:.05em}
   .contact-fab .fab-row #bk-order-mini{display:flex;gap:8px}
@@ -39,7 +43,10 @@
   #bk-share .it{display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:none;cursor:pointer;font-family:inherit;font-size:.72rem;color:#5C4E46}
   #bk-share .ic{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
   #bk-share .ic svg{width:26px;height:26px;fill:#fff}
-  #bk-share .close{margin-top:20px;width:100%;padding:13px;border:1px solid rgba(184,134,11,.2);background:#FAF8F5;border-radius:10px;font-family:inherit;font-size:.85rem;color:#5C4E46;cursor:pointer}`;
+  #bk-share .close{margin-top:20px;width:100%;padding:13px;border:1px solid rgba(184,134,11,.2);background:#FAF8F5;border-radius:10px;font-family:inherit;font-size:.85rem;color:#5C4E46;cursor:pointer}
+  .lang-m{display:none;align-items:center;gap:5px;background:none;border:1px solid rgba(160,120,74,.45);color:#A0784A;font-family:inherit;font-size:.72rem;font-weight:600;letter-spacing:.06em;padding:6px 11px;border-radius:20px;cursor:pointer}
+  .lang-m svg{fill:currentColor}
+  @media(max-width:768px){ nav .lang-m{display:inline-flex;margin-left:auto;margin-right:10px} }`;
   var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
 
   var fab=document.createElement('div'); fab.className='contact-fab'; fab.id='bk-fab';
@@ -52,13 +59,30 @@
       <div class="fab-row">
         <span class="fab-row-label">ติดต่อ</span>
         <a class="fab-mini" style="background:#2E7D32" href="tel:+66937364796" title="โทร" aria-label="โทร"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></a>
-        <a class="fab-mini" style="background:#06C755" href="https://line.me/R/ti/p/@blookliving" target="_blank" rel="noopener" title="LINE" aria-label="LINE"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.64 2 10.14c0 4.03 3.57 7.4 8.4 8.52.33.07.77.22.88.5.1.26.07.66.03.92l-.14.87c-.04.26-.2 1.01.88.55s5.87-3.46 8.01-5.93C21.94 13.38 22 11.74 22 10.14 22 5.64 17.52 2 12 2z"/></svg></a>
+        <a class="fab-mini" style="background:#06C755" href="https://line.me/R/ti/p/@blookliving" target="_blank" rel="noopener" title="LINE" aria-label="LINE"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.63V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
         <a class="fab-mini" style="background:#0084FF" href="https://m.me/61587451205315" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.13 2 11.23c0 2.9 1.36 5.49 3.5 7.19V22l3.2-1.76c.85.24 1.76.36 2.7.36 5.52 0 10-4.13 10-9.23S17.52 2 12 2zm1.01 12.43l-2.55-2.72-4.97 2.72 5.47-5.81 2.61 2.72 4.91-2.72-5.47 5.81z"/></svg></a>
-        <button class="fab-mini" style="background:${GOLD}" id="bk-fab-sharebtn" title="แชร์" aria-label="แชร์"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></button>
       </div>
     </div>
-    <button class="fab-toggle" aria-label="เมนู"><svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg><svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
+    <button class="fab-share" id="bk-fab-sharebtn" aria-label="แชร์" title="แชร์"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></button>
+    <button class="fab-toggle" aria-label="แชท และ สั่งซื้อ" title="แชท & สั่งซื้อ"><svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M2 5a2 2 0 012-2h9a2 2 0 012 2v4a2 2 0 01-2 2H7l-4 3V5z"/><path d="M14.6 9.4h7.4l-.9 8.1a1.7 1.7 0 01-1.7 1.5h-1.5a1.7 1.7 0 01-1.7-1.5l-.9-8.1z"/></svg><svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
   document.body.appendChild(fab);
+
+  // ปุ่ม "กลับหน้าหลัก" (ล่างซ้าย) — แสดงทุกหน้าที่ฝังวิดเจ็ต (ไม่รวมหน้า main)
+  var back=document.createElement('a'); back.className='fab-back';
+  back.href=(_base||'assets/').replace(/assets\/?$/,'')+'index.html';
+  back.innerHTML='<svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/></svg><span>กลับหน้าหลัก</span>';
+  document.body.appendChild(back);
+
+  // #7: ปุ่มเปลี่ยนภาษา TH/EN ในแถบ header (มือถือ) — proxy ไปยัง #lang-toggle เดิมในเมนู
+  try{
+    var navToggle=document.getElementById('nav-toggle'), langT=document.getElementById('lang-toggle');
+    if(navToggle && langT && navToggle.parentNode){
+      var lm=document.createElement('button'); lm.type='button'; lm.className='lang-m'; lm.setAttribute('aria-label','เปลี่ยนภาษา');
+      lm.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.7 15.7 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4c.83 1.2 1.48 2.53 1.91 4h-3.82c.43-1.47 1.08-2.8 1.91-4zM4.26 14a7.96 7.96 0 010-4h3.38a16.6 16.6 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.7 15.7 0 008.02 8zM12 20c-.83-1.2-1.48-2.53-1.91-4h3.82A13.6 13.6 0 0112 20zm2.34-6H9.66a14.7 14.7 0 010-4h4.68a14.7 14.7 0 010 4zm.27 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.6 16.6 0 000-4h3.38a7.96 7.96 0 010 4h-3.38z"/></svg><span>TH/EN</span>';
+      lm.addEventListener('click', function(){ langT.click(); });
+      navToggle.parentNode.insertBefore(lm, navToggle);
+    }
+  }catch(e){}
 
   var sheet=document.createElement('div'); sheet.id='bk-share';
   sheet.innerHTML=`<div class="sp"><h4 id="bk-sheet-title">แชร์ BLOOK LIVING</h4><p class="sub" id="bk-sheet-sub">เลือกช่องทางที่ต้องการ</p><div class="grid" id="bk-share-grid"></div><button class="close">ปิด</button></div>`;

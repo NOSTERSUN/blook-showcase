@@ -44,6 +44,11 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .sidebar.nav-open .sidebar-toggle span:nth-child(2){opacity:0}
 .sidebar.nav-open .sidebar-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .sidebar-home{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:8px;color:var(--dim);font-size:.82rem;text-decoration:none;letter-spacing:.06em;transition:all .25s;border:1px solid var(--border);margin-top:auto}
+.admin-back{position:fixed;left:18px;bottom:18px;z-index:8000;display:none;align-items:center;gap:7px;background:var(--bg2);color:var(--gold);border:1px solid var(--border);border-radius:30px;padding:10px 16px 10px 13px;box-shadow:0 8px 22px rgba(0,0,0,.35);text-decoration:none;font-size:.82rem;font-weight:600;transition:all .25s}
+.admin-back:hover{background:var(--gold);color:#111;border-color:var(--gold)}
+.admin-back svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
+#app.active .admin-back{display:inline-flex}
+@media(max-width:600px){.admin-back{padding:11px;font-size:0;gap:0}.admin-back svg{width:20px;height:20px}}
 .sidebar-home:hover{color:var(--gold2);border-color:var(--gold);background:rgba(201,162,77,.06)}
 .sidebar-home svg{width:16px;height:16px}
 
@@ -75,6 +80,9 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 /* When the stage is in browser fullscreen */
 .profile-stage:fullscreen{height:100vh;border-radius:0;padding:0;background:#000}
 .profile-stage:fullscreen #profile-slide{max-height:100vh;max-width:100vw}
+/* เต็มจอแบบ CSS (สำรองสำหรับมือถือ/iOS ที่ไม่รองรับ Fullscreen API) */
+.profile-stage.css-full{position:fixed;inset:0;z-index:9999;height:100vh;width:100vw;border-radius:0;background:#000}
+.profile-stage.css-full #profile-slide{max-height:100vh;max-width:100vw}
 
 /* -- FINANCE DASHBOARD -- */
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
@@ -174,7 +182,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
-.biz-photo{flex:0 0 66px;width:66px;height:66px;aspect-ratio:1/1;border-radius:50%;background-size:cover;background-position:center 20%;background-repeat:no-repeat;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(120,90,40,.2)}
+.biz-photo{flex:0 0 66px;width:66px;height:66px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);box-shadow:0 3px 10px rgba(120,90,40,.2)}
 .biz-name{font-family:'Playfair Display',serif;font-size:1.2rem;color:#2B2016;line-height:1.15}
 .biz-name span{font-size:.82rem;color:#B8860B;font-family:'Inter',sans-serif}
 .biz-role{font-size:.72rem;color:#A0784A;letter-spacing:.08em;margin-top:3px;font-weight:500}
@@ -669,6 +677,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
   </div>
 
   </main><!-- /content -->
+  <a class="admin-back" href="index.html" title="กลับหน้าหลัก"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/></svg><span>กลับหน้าหลัก</span></a>
 </div>
 
 <!-- SHARE SHEET -->
@@ -823,7 +832,7 @@ function renderCards(){
         <span class="biz-bk">BK</span>
         <div class="biz-logo">BLOOK<small>THE CLASS OF CALM</small></div>
         <div class="biz-person">
-          <div class="biz-photo" style="background-image:url('${p.photo}')" role="img" aria-label="${p.name}"></div>
+          <img class="biz-photo" src="${p.photo.replace(/(\d+)\.jpg$/,'sq-$1.jpg')}" alt="${p.name}" crossorigin="anonymous">
           <div>
             <div class="biz-name">${p.name} <span>(${p.nick})</span></div>
             <div class="biz-role">${p.role}</div>
@@ -914,11 +923,15 @@ function profileNav(dir){
 // Full-screen presentation of the profile slide stage
 function toggleProfileFS(){
   const el = document.getElementById('profile-stage');
-  if(!document.fullscreenElement){
-    (el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen).call(el);
-  } else {
-    (document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen).call(document);
+  // ออกจากโหมดเต็มจอแบบ CSS (มือถือ)
+  if(el.classList.contains('css-full')){ el.classList.remove('css-full'); document.body.style.overflow=''; return; }
+  if(document.fullscreenElement){
+    var exit=document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen; if(exit) exit.call(document); return;
   }
+  var req=el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen;
+  if(req){ try{ req.call(el); return; }catch(e){} }
+  // ไม่รองรับ Fullscreen API (เช่น iOS Safari) → ใช้ CSS เต็มจอแทน
+  el.classList.add('css-full'); document.body.style.overflow='hidden';
 }
 // Keyboard arrows when Company Profile tab is active (or in fullscreen)
 document.addEventListener('keydown', e=>{
