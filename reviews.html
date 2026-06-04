@@ -113,11 +113,8 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
       <div><h2>TikTok</h2><div class="rv-sub" data-th="รีวิว &amp; คลิปจริงจากลูกค้า" data-en="Real customer clips &amp; reviews">รีวิว &amp; คลิปจริงจากลูกค้า</div></div>
       <a class="rv-link" style="background:#010101" href="https://www.tiktok.com/@blookliving" target="_blank" rel="noopener" data-th="ดูบน TikTok →" data-en="View on TikTok →">ดูบน TikTok →</a>
     </div>
-    <div class="rv-grid">
-      <figure class="rv-tile" onclick="openLb(this)"><img src="Customer%20Review/Pillow/S__5570568_0.jpg" alt="รีวิวหมอน BLOOK LIVING" loading="lazy"></figure>
-      <figure class="rv-tile" onclick="openLb(this)"><img src="Customer%20Review/Pillow/S__5570569_0.jpg" alt="รีวิวหมอน BLOOK LIVING" loading="lazy"></figure>
-      <figure class="rv-tile" onclick="openLb(this)"><img src="Customer%20Review/Pillow/S__5570570_0.jpg" alt="รีวิวหมอน BLOOK LIVING" loading="lazy"></figure>
-    </div>
+    <!-- เพิ่มรีวิว TikTok: วางรูปใน assets/reviews/tiktok/ แล้วเติมชื่อไฟล์ใน data-files (คั่นด้วยเครื่องหมาย ,) -->
+    <div class="rv-grid" data-folder="assets/reviews/tiktok" data-files="tiktok-1.jpg, tiktok-2.jpg, tiktok-3.jpg" data-alt="รีวิวจากลูกค้า BLOOK LIVING บน TikTok"></div>
   </section>
 
   <!-- Shopee -->
@@ -127,10 +124,8 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
       <div><h2>Shopee</h2><div class="rv-sub" data-th="รีวิว 5 ดาว จากผู้ซื้อจริง" data-en="5-star reviews from verified buyers">รีวิว 5 ดาว จากผู้ซื้อจริง</div></div>
       <a class="rv-link" style="background:#EE4D2D" href="https://shopee.co.th/blookliving" target="_blank" rel="noopener" data-th="ดูบน Shopee →" data-en="View on Shopee →">ดูบน Shopee →</a>
     </div>
-    <div class="rv-grid">
-      <figure class="rv-tile" onclick="openLb(this)"><img src="Customer%20Review/Reed%20Diffuser/S__5570567_0.jpg" alt="รีวิวน้ำหอมปรับอากาศ BLOOK LIVING" loading="lazy"></figure>
-      <figure class="rv-tile" onclick="openLb(this)"><img src="Customer%20Review/Reed%20Diffuser/S__5570571_0.jpg" alt="รีวิวก้านหอม BLOOK LIVING" loading="lazy"></figure>
-    </div>
+    <!-- เพิ่มรีวิว Shopee: วางรูปใน assets/reviews/shopee/ แล้วเติมชื่อไฟล์ใน data-files -->
+    <div class="rv-grid" data-folder="assets/reviews/shopee" data-files="shopee-1.jpg, shopee-2.jpg" data-alt="รีวิวจากลูกค้า BLOOK LIVING บน Shopee"></div>
   </section>
 
   <!-- Facebook -->
@@ -140,9 +135,8 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
       <div><h2>Facebook</h2><div class="rv-sub" data-th="ความประทับใจจากลูกค้า" data-en="Customer impressions">ความประทับใจจากลูกค้า</div></div>
       <a class="rv-link" style="background:#1877F2" href="https://www.facebook.com/profile.php?id=61578744795967" target="_blank" rel="noopener" data-th="ดูบน Facebook →" data-en="View on Facebook →">ดูบน Facebook →</a>
     </div>
-    <div class="rv-grid">
-      <figure class="rv-tile" onclick="openLb(this)"><img src="Customer%20Review/Sofa/S__5570572_0.jpg" alt="รีวิวโซฟา TOGO BLOOK LIVING" loading="lazy"></figure>
-    </div>
+    <!-- เพิ่มรีวิว Facebook: วางรูปใน assets/reviews/facebook/ แล้วเติมชื่อไฟล์ใน data-files -->
+    <div class="rv-grid" data-folder="assets/reviews/facebook" data-files="facebook-1.jpg" data-alt="รีวิวจากลูกค้า BLOOK LIVING บน Facebook"></div>
   </section>
 
 </div>
@@ -158,8 +152,18 @@ footer{background:var(--primary);border-top:1px solid var(--border);padding:40px
 <script>
 (function(){
   var lang=localStorage.getItem('blook-lang')||'th', done=false;
+  // สร้างรูปรีวิวจาก data-files ของแต่ละแพลตฟอร์ม (เพิ่มรีวิว = วางไฟล์ในโฟลเดอร์ + เติมชื่อไฟล์ใน data-files)
+  function renderReviews(){
+    document.querySelectorAll('.rv-grid[data-files]').forEach(function(g){
+      var folder=(g.getAttribute('data-folder')||'').replace(/\/+$/,'');
+      var alt=g.getAttribute('data-alt')||'รีวิว BLOOK LIVING';
+      var files=(g.getAttribute('data-files')||'').split(',').map(function(s){return s.trim();}).filter(Boolean);
+      if(!files.length){ g.innerHTML='<div class="rv-empty" data-th="เร็ว ๆ นี้ — รีวิวจากแพลตฟอร์มนี้" data-en="Coming soon — reviews from this platform">เร็ว ๆ นี้ — รีวิวจากแพลตฟอร์มนี้</div>'; return; }
+      g.innerHTML=files.map(function(f){ return '<figure class="rv-tile" onclick="openLb(this)"><img src="'+folder+'/'+encodeURIComponent(f)+'" alt="'+alt+'" loading="lazy"></figure>'; }).join('');
+    });
+  }
   function apply(l){ document.querySelectorAll('[data-th][data-en]').forEach(function(el){ var t=l==='th'?el.dataset.th:el.dataset.en; if(t!==undefined) el.innerHTML=t; }); var b=document.getElementById('lang-toggle'); if(b) b.textContent=l==='th'?'EN':'TH'; }
-  function init(){ if(done)return; done=true; var b=document.getElementById('lang-toggle'); apply(lang); if(b) b.addEventListener('click',function(e){e.preventDefault();lang=lang==='th'?'en':'th';localStorage.setItem('blook-lang',lang);apply(lang);}); }
+  function init(){ if(done)return; done=true; renderReviews(); var b=document.getElementById('lang-toggle'); apply(lang); if(b) b.addEventListener('click',function(e){e.preventDefault();lang=lang==='th'?'en':'th';localStorage.setItem('blook-lang',lang);apply(lang);}); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 function openLb(fig){ var img=fig.querySelector('img'); document.getElementById('lightbox-img').src=img.src; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }

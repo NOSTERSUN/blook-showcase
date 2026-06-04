@@ -4,6 +4,8 @@
   var GOLD='#B8860B', GOLDD='#8B6914';
   // Google Analytics (GA4) — โหลด analytics.js (Measurement ID อยู่ในไฟล์เดียว) ครอบคลุมทุกหน้าที่ฝังวิดเจ็ตนี้
   try{ var _cs=document.currentScript, _base=(_cs&&_cs.src)?_cs.src.replace(/contact-widget\.js.*$/,''):'assets/'; var _ga=document.createElement('script'); _ga.src=_base+'analytics.js'; document.head.appendChild(_ga); }catch(e){}
+  // โหลดตัวสร้างรูป IG Story แบรนด์ BLOOK (window.bkIgStory)
+  try{ var _ss=document.createElement('script'); _ss.src=(_base||'assets/')+'share-story.js'; document.head.appendChild(_ss); }catch(e){}
   var css = `
   .contact-fab{position:fixed;right:26px;bottom:26px;z-index:9000;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:'Inter','IBM Plex Sans Thai',sans-serif}
   .contact-fab .fab-actions{display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
@@ -23,10 +25,6 @@
   .contact-fab .fab-share:hover{background:${GOLD};transform:scale(1.08)}
   .contact-fab .fab-share svg{width:20px;height:20px;fill:${GOLD};transition:fill .3s}
   .contact-fab .fab-share:hover svg{fill:#fff}
-  .fab-back{position:fixed;left:22px;bottom:26px;z-index:9000;display:inline-flex;align-items:center;gap:7px;background:#fff;color:#1A0F08;border:1px solid rgba(184,134,11,.4);border-radius:30px;padding:11px 18px 11px 14px;box-shadow:0 6px 18px rgba(0,0,0,.16);text-decoration:none;font-family:'Inter','IBM Plex Sans Thai',sans-serif;font-size:.82rem;font-weight:600;transition:all .25s}
-  .fab-back:hover{background:${GOLD};color:#fff;border-color:${GOLD}}
-  .fab-back svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
-  @media(max-width:600px){.fab-back{padding:12px;font-size:0;gap:0}.fab-back svg{width:20px;height:20px}}
   .contact-fab .fab-row{display:flex;align-items:center;gap:8px;justify-content:flex-end;background:rgba(255,255,255,.97);padding:8px 10px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.16)}
   .contact-fab .fab-row-label{font-size:.7rem;font-weight:700;color:#5C4E46;margin-right:2px;white-space:nowrap;letter-spacing:.05em}
   .contact-fab .fab-row #bk-order-mini{display:flex;gap:8px}
@@ -67,12 +65,6 @@
     <button class="fab-toggle" aria-label="แชท และ สั่งซื้อ" title="แชท & สั่งซื้อ"><svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M2 5a2 2 0 012-2h9a2 2 0 012 2v4a2 2 0 01-2 2H7l-4 3V5z"/><path d="M14.6 9.4h7.4l-.9 8.1a1.7 1.7 0 01-1.7 1.5h-1.5a1.7 1.7 0 01-1.7-1.5l-.9-8.1z"/></svg><svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
   document.body.appendChild(fab);
 
-  // ปุ่ม "กลับหน้าหลัก" (ล่างซ้าย) — แสดงทุกหน้าที่ฝังวิดเจ็ต (ไม่รวมหน้า main)
-  var back=document.createElement('a'); back.className='fab-back';
-  back.href=(_base||'assets/').replace(/assets\/?$/,'')+'index.html';
-  back.innerHTML='<svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20z"/></svg><span>กลับหน้าหลัก</span>';
-  document.body.appendChild(back);
-
   // #7: ปุ่มเปลี่ยนภาษา TH/EN ในแถบ header (มือถือ) — proxy ไปยัง #lang-toggle เดิมในเมนู
   try{
     var navToggle=document.getElementById('nav-toggle'), langT=document.getElementById('lang-toggle');
@@ -108,7 +100,7 @@
     {k:'wa',l:'WhatsApp',c:'#25D366',s:'<path d="M.06 24l1.68-6.13A11.86 11.86 0 01.16 11.9C.16 5.34 5.5 0 12.06 0a11.82 11.82 0 018.41 3.49 11.82 11.82 0 013.48 8.42c0 6.56-5.34 11.9-11.9 11.9a11.9 11.9 0 01-5.69-1.45L.06 24zM6.6 20.13c1.68.99 3.28 1.59 5.4 1.59 5.45 0 9.89-4.43 9.89-9.88a9.86 9.86 0 00-9.88-9.89c-5.46 0-9.89 4.43-9.89 9.88 0 2.23.65 3.9 1.74 5.65l-.99 3.63 3.73-.98zm11.36-5.55c-.07-.12-.27-.2-.57-.35-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-1.7-.85-2.82-1.52-3.94-3.45-.3-.51.3-.47.85-1.57.09-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49 2.4 1.04 2.4.69 2.83.65.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.42z"/>',u:function(u,t){return 'https://wa.me/?text='+t+'%20'+u;}},
     {k:'mail',l:'Email',c:'#8B6B3D',s:'<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>',u:function(u,t){return 'mailto:?subject='+t+'&body='+u;}}
   ];
-  var ctx={url:'https://blookliving.com',text:'BLOOK LIVING — The Class of Calm',image:'https://blookliving.com/assets/Sofa/SOFA_OVERVIEW/sofa-overview-1.jpg'};
+  var ctx={url:'https://blookliving.com',text:'BLOOK LIVING — The Class of Calm',image:'https://blookliving.com/assets/catalog/sofa-overview-1.jpg'};
   var IGGLYPH='<path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85s.01-3.58.07-4.85C2.38 3.93 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.41-10.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/>';
   function openShare(url,text,image){
     ctx={url:url||ctx.url,text:text||ctx.text,image:image||ctx.image};
@@ -126,28 +118,19 @@
   function shareVia(k){
     var u=encodeURIComponent(ctx.url), t=encodeURIComponent(ctx.text);
     if(k==='copy'){ navigator.clipboard&&navigator.clipboard.writeText(ctx.url); alert('คัดลอกลิงก์แล้ว'); closeShare(); return; }
-    if(k==='igstory'){ closeShare(); bkIgStory(ctx.image, ctx.text); return; }
+    if(k==='igstory'){ closeShare(); if(window.bkIgStory){ window.bkIgStory(ctx.image, ctx.text, ctx.url); } else { alert('กำลังเตรียมรูป Story… ลองอีกครั้งนะคะ'); } return; }
     var ch=CH.find(function(c){return c.k===k;});
     if(ch.copy){ navigator.clipboard&&navigator.clipboard.writeText(ctx.url); alert('คัดลอกลิงก์แล้ว — เปิด '+ch.l+' แล้ววางเพื่อแชร์'); closeShare(); return; }
     window.open(ch.u(u,t),'_blank','noopener'); closeShare();
   }
-  // แชร์รูปไป Instagram Story: ใช้ Web Share (ไฟล์) บนมือถือ → เลือก Instagram → Add to Story
-  function bkIgStory(imgUrl, text){
-    imgUrl = imgUrl || ctx.image;
-    if(navigator.share && navigator.canShare){
-      fetch(imgUrl).then(function(r){ return r.blob(); }).then(function(blob){
-        var file = new File([blob], 'blook-living.jpg', { type: blob.type || 'image/jpeg' });
-        if(navigator.canShare({ files:[file] })) return navigator.share({ files:[file], text: text || ctx.text });
-        throw 0;
-      }).catch(function(){ bkIgStoryFallback(imgUrl); });
-    } else { bkIgStoryFallback(imgUrl); }
+  // #4 อ่านข้อมูล "หน้าปัจจุบัน" เพื่อให้แชร์หน้านั้น ๆ (ไม่ใช่หน้าแรกเสมอ)
+  function currentCtx(){
+    var cu=(document.querySelector('link[rel="canonical"]')||{}).href||location.href;
+    var ot=document.querySelector('meta[property="og:title"]'); var tt=(ot&&ot.content)||document.title||ctx.text;
+    var oi=document.querySelector('meta[property="og:image"]'); var im=(oi&&oi.content)||ctx.image;
+    return {url:cu,text:tt,image:im};
   }
-  function bkIgStoryFallback(imgUrl){
-    try{ var a=document.createElement('a'); a.href=imgUrl; a.download='blook-living.jpg'; document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
-    alert('บันทึกรูปแล้ว 📷  เปิดแอป Instagram → Story แล้วเลือกรูปนี้เพื่อแชร์ได้เลย');
-    setTimeout(function(){ window.open('https://www.instagram.com/','_blank','noopener'); }, 300);
-  }
-  function shareSite(){ openShare(ctx.url,ctx.text,ctx.image); }
+  function shareSite(){ var c=currentCtx(); ctx=c; openShare(c.url,c.text,c.image); }
   var ORDER=[
     {l:'TikTok Shop',c:'#010101',u:'https://www.tiktok.com/@blookliving',s:'<path d="M12.53.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>'},
     {l:'Shopee',c:'#EE4D2D',u:'https://shopee.co.th/blookliving',s:'<path d="M12 1.5c-2.3 0-4.15 1.94-4.15 4.32 0 .13 0 .25.02.38H4.4a1.6 1.6 0 00-1.6 1.5l-.7 12.2A2.1 2.1 0 004.2 22.2h15.6a2.1 2.1 0 002.1-2.3l-.7-12.2a1.6 1.6 0 00-1.6-1.5h-3.47c.02-.13.02-.25.02-.38C16.15 3.44 14.3 1.5 12 1.5zm0 1.7c1.36 0 2.45 1.18 2.45 2.62 0 .13-.01.25-.03.38H9.58a3.1 3.1 0 01-.03-.38C9.55 4.38 10.64 3.2 12 3.2zm-.02 6.5c1.5 0 2.72.5 2.72 2.02 0 1.18-1 1.78-2.12 2.18-.86.3-1.3.53-1.3.98 0 .4.36.62.96.62.62 0 1.14-.2 1.6-.46l.5 1.34c-.5.3-1.26.56-2.16.56-1.54 0-2.74-.66-2.74-2.04 0-1.2 1-1.82 2.06-2.2.9-.32 1.36-.52 1.36-1 0-.4-.4-.58-.92-.58-.66 0-1.22.24-1.66.5l-.52-1.32c.54-.32 1.32-.6 2.22-.6z"/>'},
