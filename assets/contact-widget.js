@@ -6,7 +6,7 @@
   try{ var _cs=document.currentScript, _base=(_cs&&_cs.src)?_cs.src.replace(/contact-widget\.js.*$/,''):'assets/'; var _ga=document.createElement('script'); _ga.src=_base+'analytics.js'; document.head.appendChild(_ga); }catch(e){}
   // โหลดตัวสร้างรูป IG Story แบรนด์ BLOOK (window.bkIgStory)
   // เปลี่ยน v= ทุกครั้งที่อัปเดต share-story.js เพื่อบังคับให้เบราว์เซอร์โหลดเวอร์ชันใหม่
-  try{ var _ss=document.createElement('script'); _ss.src=(_base||'assets/')+'share-story.js?v=20260605-3'; document.head.appendChild(_ss); }catch(e){}
+  try{ var _ss=document.createElement('script'); _ss.src=(_base||'assets/')+'share-story.js?v=20260605-4'; document.head.appendChild(_ss); }catch(e){}
   var css = `
   .contact-fab{position:fixed;right:26px;bottom:26px;z-index:9000;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:'Inter','IBM Plex Sans Thai',sans-serif}
   .contact-fab .fab-actions{display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}

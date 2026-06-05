@@ -94,45 +94,32 @@
   }
   function openStory(){ storyEl.classList.add('open'); document.body.style.overflow='hidden'; }
   function closeStory(){ storyEl.classList.remove('open'); document.body.style.overflow=''; }
+  // IG Story: native file share → ผู้ใช้เลือก Instagram → Add to Story (วิธีที่ใช้ได้จริงบนเว็บมือถือ)
   function shareFile(){
     if(_file && navigator.share && navigator.canShare && navigator.canShare({files:[_file]})){
-      navigator.share({files:[_file], text:document.title+' · '+prettyUrl(_url)}).then(closeStory).catch(function(err){ if(err&&err.name==='AbortError')return; saveFile(); });
+      navigator.share({files:[_file]}).then(closeStory).catch(function(err){ if(err&&err.name==='AbortError')return; saveFile(); });
     } else { saveFile(); }
   }
-  // แชร์ไป Facebook Story: ลำดับการตก fallback
-  //  1) native file share — มือถือเลือก Facebook → Story ได้ตรง ๆ
-  //  2) deep-link เปิดแอป Facebook + ดาวน์โหลดรูป (ให้ผู้ใช้สร้าง Story จากรูปนั้น)
-  //  3) เปิดเว็บ Facebook + ดาวน์โหลดรูป
+  // Facebook Story: เฟซบุ๊กไม่มีช่องทางให้โพสต์ลง Story โดยตรงจากเว็บ
+  //   วิธีที่ได้ผล = บันทึกรูปลงคลังภาพ แล้วเปิดแอป Facebook → สร้างสตอรี่ → เลือกรูปนั้น
+  //   มือถือ: เปิดชีตแชร์ (มีปุ่ม "บันทึกรูป"/Save Image ลงคลังภาพ) ก่อน
   function shareFB(){
-    if(_file && navigator.share && navigator.canShare){
-      try{
-        if(navigator.canShare({files:[_file]})){
-          navigator.share({files:[_file], title:'BLOOK LIVING', text:document.title+' · '+prettyUrl(_url)})
-            .then(closeStory)
-            .catch(function(err){ if(err&&err.name==='AbortError')return; fbFallback(); });
-          return;
-        }
-      }catch(e){}
+    if(_file && navigator.share && navigator.canShare && navigator.canShare({files:[_file]})){
+      navigator.share({files:[_file]})
+        .then(function(){ setTimeout(fbTip,400); })
+        .catch(function(err){ if(err&&err.name==='AbortError')return; fbManual(); });
+      return;
     }
-    fbFallback();
+    fbManual();
   }
-  function fbFallback(){
-    // ดาวน์โหลดรูปก่อน
-    if(_blob){
-      try{ var u=URL.createObjectURL(_blob); var a=document.createElement('a'); a.href=u; a.download='blook-story.jpg'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},9000); }catch(e){}
-    }
-    var ua=navigator.userAgent||'', isIOS=/iPhone|iPad|iPod/i.test(ua), isAndroid=/Android/i.test(ua);
-    alert('บันทึกรูปแล้ว 📥\nเปิดแอป Facebook → สร้าง Story → เลือกรูป "blook-story.jpg" ที่เพิ่งบันทึก');
-    setTimeout(function(){
-      var win;
-      if(isIOS){ win=window.open('fb://story/?source=composer','_blank'); }
-      else if(isAndroid){ win=window.open('fb://story_composer','_blank'); }
-      // ถ้า deep-link ใช้ไม่ได้ภายใน 800ms ให้เปิดเว็บ Facebook แทน
-      setTimeout(function(){ try{ window.open('https://www.facebook.com/','_blank','noopener'); }catch(e){} }, 800);
-    },300);
+  function fbTip(){ alert('ลง Facebook Story:\nเปิดแอป Facebook → แตะ “สตอรี่ของคุณ” (+) → เลือกรูปที่เพิ่งบันทึก'); }
+  function fbManual(){
+    if(!_blob){ alert('กำลังเตรียมรูป… รออีกสักครู่แล้วลองใหม่นะคะ'); return; }
+    saveFile();
+    setTimeout(function(){ alert('บันทึกรูปแล้ว 📥\n\nวิธีลง Facebook Story:\n1) เปิดแอป Facebook\n2) แตะ “สตอรี่ของคุณ” (เครื่องหมาย +)\n3) เลือกรูป blook-story.jpg ที่เพิ่งบันทึก'); }, 500);
   }
   function saveFile(){
-    if(!_blob) return; var u=URL.createObjectURL(_blob);
+    if(!_blob){ alert('กำลังเตรียมรูป… รออีกสักครู่แล้วลองใหม่นะคะ'); return; } var u=URL.createObjectURL(_blob);
     try{ var a=document.createElement('a'); a.href=u; a.download='blook-story.jpg'; document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
     setTimeout(function(){ try{ window.open(u,'_blank'); }catch(e){} setTimeout(function(){URL.revokeObjectURL(u);},9000); },150);
   }
