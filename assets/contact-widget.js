@@ -62,7 +62,7 @@
       </div>
     </div>
     <button class="fab-share" id="bk-fab-sharebtn" aria-label="แชร์" title="แชร์"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></button>
-    <button class="fab-toggle" aria-label="แชท และ สั่งซื้อ" title="แชท & สั่งซื้อ"><svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M2 5a2 2 0 012-2h9a2 2 0 012 2v4a2 2 0 01-2 2H7l-4 3V5z"/><path d="M14.6 9.4h7.4l-.9 8.1a1.7 1.7 0 01-1.7 1.5h-1.5a1.7 1.7 0 01-1.7-1.5l-.9-8.1z"/></svg><svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
+    <button class="fab-toggle" aria-label="แชท และ สั่งซื้อ" title="แชท & สั่งซื้อ"><svg class="fab-open-ic" viewBox="0 0 24 24"><path d="M2.8 2.2h6.8A1.6 1.6 0 0111.2 3.8v3.2A1.6 1.6 0 019.6 8.6H5.9L3.1 10.7V8.6H2.8A1.6 1.6 0 011.2 7V3.8A1.6 1.6 0 012.8 2.2z"/><g transform="translate(9.6 10) scale(0.56)"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></g></svg><svg class="fab-close-ic" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
   document.body.appendChild(fab);
 
   // #7: ปุ่มเปลี่ยนภาษา TH/EN ในแถบ header (มือถือ) — proxy ไปยัง #lang-toggle เดิมในเมนู
@@ -70,8 +70,12 @@
     var navToggle=document.getElementById('nav-toggle'), langT=document.getElementById('lang-toggle');
     if(navToggle && langT && navToggle.parentNode){
       var lm=document.createElement('button'); lm.type='button'; lm.className='lang-m'; lm.setAttribute('aria-label','เปลี่ยนภาษา');
-      lm.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.7 15.7 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4c.83 1.2 1.48 2.53 1.91 4h-3.82c.43-1.47 1.08-2.8 1.91-4zM4.26 14a7.96 7.96 0 010-4h3.38a16.6 16.6 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.7 15.7 0 008.02 8zM12 20c-.83-1.2-1.48-2.53-1.91-4h3.82A13.6 13.6 0 0112 20zm2.34-6H9.66a14.7 14.7 0 010-4h4.68a14.7 14.7 0 010 4zm.27 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.6 16.6 0 000-4h3.38a7.96 7.96 0 010 4h-3.38z"/></svg><span>TH/EN</span>';
-      lm.addEventListener('click', function(){ langT.click(); });
+      lm.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.7 15.7 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4c.83 1.2 1.48 2.53 1.91 4h-3.82c.43-1.47 1.08-2.8 1.91-4zM4.26 14a7.96 7.96 0 010-4h3.38a16.6 16.6 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.7 15.7 0 008.02 8zM12 20c-.83-1.2-1.48-2.53-1.91-4h3.82A13.6 13.6 0 0112 20zm2.34-6H9.66a14.7 14.7 0 010-4h4.68a14.7 14.7 0 010 4zm.27 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.6 16.6 0 000-4h3.38a7.96 7.96 0 010 4h-3.38z"/></svg><span class="lm-txt">EN</span>';
+      var _lmTxt=lm.querySelector('.lm-txt');
+      function _syncLm(){ if(_lmTxt && langT) _lmTxt.textContent=(langT.textContent||'EN').trim(); }
+      _syncLm();
+      lm.addEventListener('click', function(){ langT.click(); setTimeout(_syncLm,0); });
+      try{ new MutationObserver(_syncLm).observe(langT,{childList:true,characterData:true,subtree:true}); }catch(e){}
       navToggle.parentNode.insertBefore(lm, navToggle);
     }
   }catch(e){}
