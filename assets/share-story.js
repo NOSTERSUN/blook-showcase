@@ -31,18 +31,11 @@
     x.save(); x.shadowColor='rgba(70,48,18,.34)'; x.shadowBlur=42; x.shadowOffsetY=20; x.fillStyle='#fff'; rr(x,cx,cy,cw,ch,rad); x.fill(); x.restore();
     x.save(); rr(x,cx,cy,cw,ch,rad); x.clip(); if(img){ cover(x,img,cx,cy,cw,ch); } else { x.fillStyle='#E7DAC4'; x.fillRect(cx,cy,cw,ch); } x.restore();
     x.strokeStyle=GOLD; x.lineWidth=2.5; rr(x,cx+1,cy+1,cw-2,ch-2,rad); x.stroke();
-    // title (Thai) — plain fillText, NO letter-spacing
-    x.fillStyle=BLACK; x.font='600 50px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif';
-    wrapBottom(x,text||'BLOOK LIVING',W/2,cy+ch+118,cw-30,64,2);
-    // CTA label (Thai, plain) + URL chip (gold, Latin)
-    x.fillStyle='#6B5A45'; x.font='500 30px "IBM Plex Sans Thai",sans-serif'; x.fillText('แตะลิงก์เพื่อช้อปได้เลย', W/2, 1582);
-    var label=prettyUrl(url); x.font='700 38px Inter, Arial, sans-serif';
-    var tw=x.measureText(label).width, pw=Math.min(W-200,Math.max(420,tw+96)), ph=104, px=(W-pw)/2, py=1612;
-    var pg=x.createLinearGradient(px,0,px+pw,0); pg.addColorStop(0,'#D8BC86'); pg.addColorStop(1,'#A0784A');
-    x.save(); x.shadowColor='rgba(120,90,40,.32)'; x.shadowBlur=22; x.shadowOffsetY=8; x.fillStyle=pg; rr(x,px,py,pw,ph,ph/2); x.fill(); x.restore();
-    x.fillStyle=BLACK; x.fillText(label, W/2, py+66);
-    // handle
-    x.fillStyle='#7A6A52'; x.font='600 28px Inter, Arial, sans-serif'; x.fillText('@blookliving', W/2, 1812);
+    // title (Thai) — plain fillText, NO letter-spacing (smaller, single line preferred)
+    x.fillStyle=BLACK; x.font='500 34px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif';
+    wrapBottom(x,text||'BLOOK LIVING',W/2,cy+ch+108,cw-30,46,2);
+    // handle (gold) — domain instead of @handle
+    x.fillStyle=GOLD; x.font='600 44px Inter, Arial, sans-serif'; x.fillText('blookliving.com', W/2, 1700);
     return c;
   }
 
@@ -82,7 +75,8 @@
     storyEl.innerHTML='<div class="bkst-card"><button class="bkst-x" aria-label="ปิด">&times;</button>'
       +'<div class="bkst-prev"><img id="bkst-img" alt="ตัวอย่างรูป Story"></div>'
       +'<div class="bkst-btns">'
-        +'<button id="bkst-share" class="bkst-b primary"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>แชร์รูป</button>'
+        +'<button id="bkst-share" class="bkst-b primary"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>แชร์ลง IG Story</button>'
+        +'<button id="bkst-fb" class="bkst-b primary"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>แชร์ลง Facebook Story</button>'
         +'<button id="bkst-save" class="bkst-b"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>บันทึกรูป</button>'
       +'</div></div>';
     document.body.appendChild(storyEl);
@@ -91,6 +85,7 @@
     storyEl.addEventListener('click',function(e){ if(e.target===storyEl) closeStory(); });
     storyImg.addEventListener('click',function(){ try{ window.open(_url||pageUrl(),'_blank'); }catch(e){} });
     storyEl.querySelector('#bkst-share').addEventListener('click',shareFile);
+    storyEl.querySelector('#bkst-fb').addEventListener('click',shareFB);
     storyEl.querySelector('#bkst-save').addEventListener('click',saveFile);
   }
   function openStory(){ storyEl.classList.add('open'); document.body.style.overflow='hidden'; }
@@ -99,6 +94,18 @@
     if(_file && navigator.share && navigator.canShare && navigator.canShare({files:[_file]})){
       navigator.share({files:[_file], text:document.title+' · '+prettyUrl(_url)}).then(closeStory).catch(function(err){ if(err&&err.name==='AbortError')return; saveFile(); });
     } else { saveFile(); }
+  }
+  // แชร์ไป Facebook Story: ใช้ native share (ผู้ใช้เลือก Facebook → Story) บนมือถือ;
+  // เดสก์ท็อปบันทึกรูป + เปิด facebook.com/stories/create เพื่ออัปโหลดเอง
+  function shareFB(){
+    var ua=navigator.userAgent||'', isMobile=/Android|iPhone|iPad|iPod/i.test(ua);
+    if(isMobile && _file && navigator.share && navigator.canShare && navigator.canShare({files:[_file]})){
+      navigator.share({files:[_file], text:document.title+' · '+prettyUrl(_url)}).then(closeStory).catch(function(err){ if(err&&err.name==='AbortError')return; fbFallback(); });
+    } else { fbFallback(); }
+  }
+  function fbFallback(){
+    if(_blob){ var u=URL.createObjectURL(_blob); try{ var a=document.createElement('a'); a.href=u; a.download='blook-story.jpg'; document.body.appendChild(a); a.click(); a.remove(); }catch(e){} setTimeout(function(){URL.revokeObjectURL(u);},9000); }
+    setTimeout(function(){ window.open('https://www.facebook.com/stories/create/','_blank','noopener'); },200);
   }
   function saveFile(){
     if(!_blob) return; var u=URL.createObjectURL(_blob);
