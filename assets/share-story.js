@@ -1,60 +1,101 @@
-/* BLOOK — universal image lightbox + branded Instagram-Story share.
-   - Click ANY content image  → popup (image is clickable → website) with a "แชร์ลง IG Story" button UNDER the image.
-   - That button → branded 1080x1920 Story image (cream bg, THIN gold border + soft shadow, Thai rendered correctly)
-     shown with only two actions: "แชร์รูป" (native file share) and "บันทึกรูป" (download).
-   The shareable file is prepared up-front so navigator.share() runs inside the button's user-gesture. */
+/* BLOOK — universal image lightbox + branded Story share (10 templates).
+   - Click any content image → popup (image clickable → website) + "แชร์รูป" button.
+   - "แชร์รูป" → branded 1080x1920 Story image. 10 varied templates (cream / black-gold /
+     full-bleed / circle / split / polaroid …). Cycle with "เปลี่ยนดีไซน์".
+   - Branding-only (logo + photo + domain), no sales copy.
+   - File prepared up-front so navigator.share() runs in the button's user-gesture. */
 (function(){
-  var GOLD='#A0784A', GOLDL='#C9A96E', BLACK='#1A0F08';
+  var W=1080, H=1920;
+  var GOLD='#A0784A', GOLD2='#C9A96E', GOLDLT='#D2AE71', DARK='#15110D', INK='#1A0F08';
+
+  // base path of THIS script (so the logo loads correctly from / and /articles/)
+  var _selfBase='assets/';
+  try{ var _cs0=document.currentScript; if(_cs0&&_cs0.src) _selfBase=_cs0.src.replace(/share-story\.js.*$/,''); }catch(e){}
+  var LOGO=new Image(), LOGO_OK=false; LOGO.crossOrigin='anonymous';
+  LOGO.onload=function(){ LOGO_OK=true; }; LOGO.src=_selfBase+'blook-logo.png';
 
   function sameOrigin(src){ try{ var u=new URL(src, location.href); return (u.origin===location.origin)? u.href : u.pathname.replace(/^\//,''); }catch(e){ return src; } }
   function prettyUrl(u){ try{ return (u||'https://blookliving.com').replace(/^https?:\/\//,'').replace(/\/+$/,''); }catch(e){ return 'blookliving.com'; } }
+  function rootDomain(u){ try{ return new URL(u, location.href).hostname.replace(/^www\./,'')||'blookliving.com'; }catch(e){ return 'blookliving.com'; } }
   function pageUrl(){ var c=document.querySelector('link[rel="canonical"]'); return (c&&c.href)||location.href.split('#')[0]; }
   function rr(x,X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
-  function cover(x,img,X,Y,w,h){ var ir=img.width/img.height, tr=w/h, sw,sh,sx,sy; if(ir>tr){ sh=img.height; sw=sh*tr; sx=(img.width-sw)/2; sy=0; } else { sw=img.width; sh=sw/tr; sx=0; sy=(img.height-sh)/2; } x.drawImage(img,sx,sy,sw,sh,X,Y,w,h); }
-  // letter-spacing helper — LATIN ONLY (never use on Thai: it breaks combining vowels/tone marks)
+  function cover(x,img,X,Y,w,h){ if(!img){ x.fillStyle='#DAD0C0'; x.fillRect(X,Y,w,h); return; } var ir=img.width/img.height, tr=w/h, sw,sh,sx,sy; if(ir>tr){ sh=img.height; sw=sh*tr; sx=(img.width-sw)/2; sy=0; } else { sw=img.width; sh=sw/tr; sx=0; sy=(img.height-sh)/2; } x.drawImage(img,sx,sy,sw,sh,X,Y,w,h); }
+  function cardImg(x,img,X,Y,w,h,r,o){ o=o||{}; if(o.shadow){ x.save(); x.shadowColor=o.shadow; x.shadowBlur=o.blur||40; x.shadowOffsetY=o.oy||18; x.fillStyle='#fff'; rr(x,X,Y,w,h,r); x.fill(); x.restore(); } x.save(); rr(x,X,Y,w,h,r); x.clip(); cover(x,img,X,Y,w,h); x.restore(); if(o.border){ x.strokeStyle=o.border; x.lineWidth=o.bw||2.5; rr(x,X+1,Y+1,w-2,h-2,r); x.stroke(); } }
+  function circleImg(x,img,cx,cy,r,ring){ x.save(); x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.closePath(); x.clip(); cover(x,img,cx-r,cy-r,2*r,2*r); x.restore(); if(ring){ x.strokeStyle=ring; x.lineWidth=4; x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.stroke(); } }
   function spacedLatin(x,str,cx,y,sp){ var w=[],tot=0,i; for(i=0;i<str.length;i++){ var ww=x.measureText(str[i]).width; w.push(ww); tot+=ww+sp; } tot-=sp; var sx=cx-tot/2, a=x.textAlign; x.textAlign='left'; for(i=0;i<str.length;i++){ x.fillText(str[i],sx,y); sx+=w[i]+sp; } x.textAlign=a; }
   function measureSpaced(x,str,sp){ var t=0,i; for(i=0;i<str.length;i++){ t+=x.measureText(str[i]).width+sp; } return t-sp; }
-  function wrapBottom(x,text,cx,bottomY,maxW,lh,maxLines){ var words=(text||'').split(/\s+/), line='', lines=[], i; for(i=0;i<words.length;i++){ var t=line?line+' '+words[i]:words[i]; if(x.measureText(t).width>maxW && line){ lines.push(line); line=words[i]; } else line=t; } if(line) lines.push(line); if(maxLines && lines.length>maxLines){ lines=lines.slice(0,maxLines); lines[maxLines-1]=lines[maxLines-1]+'…'; } var startY=bottomY-(lines.length-1)*lh; for(i=0;i<lines.length;i++){ x.fillText(lines[i],cx,startY+i*lh); } }
 
-  function build(img,text,url){
-    var W=1080,H=1920, c=document.createElement('canvas'); c.width=W; c.height=H; var x=c.getContext('2d');
-    // cream background
-    var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FAF5EC'); g.addColorStop(1,'#EEE3D2');
-    x.fillStyle=g; x.fillRect(0,0,W,H);
-    // very subtle hairline frame (modern)
-    x.strokeStyle='rgba(160,120,74,.28)'; x.lineWidth=1.5; rr(x,46,46,W-92,H-92,22); x.stroke();
-    // wordmark (gold) + subtitle (black) — subtitle is Latin so letter-spacing is safe
-    x.textAlign='center';
-    // BLOOK wordmark — upright Fraunces 600 (a font weight the pages actually load) with a vertical gold gradient + wide tracking
-    var _wm=x.createLinearGradient(0,120,0,236); _wm.addColorStop(0,'#D2AE71'); _wm.addColorStop(.5,'#B58E52'); _wm.addColorStop(1,'#946C34');
-    x.fillStyle=_wm; x.font='600 118px Fraunces,"Cormorant Garamond",Georgia,serif';
-    spacedLatin(x,'BLOOK',W/2,224,20);
-    // tagline flanked by thin gold rules (editorial luxury look)
-    x.fillStyle='#8B6B3D'; x.font='500 27px Inter,Arial,sans-serif';
-    var _tag='THE CLASS OF CALM', _tw=measureSpaced(x,_tag,11);
-    spacedLatin(x,_tag,W/2,292,11);
-    x.strokeStyle='rgba(160,120,74,.5)'; x.lineWidth=1.5;
-    var _ly=283, _gap=_tw/2+28, _len=58;
-    x.beginPath(); x.moveTo(W/2-_gap-_len,_ly); x.lineTo(W/2-_gap,_ly); x.stroke();
-    x.beginPath(); x.moveTo(W/2+_gap,_ly); x.lineTo(W/2+_gap+_len,_ly); x.stroke();
-    // product card — soft shadow + THIN gold border
-    var cx=130,cy=350,cw=820,ch=1000,rad=28;
-    x.save(); x.shadowColor='rgba(70,48,18,.34)'; x.shadowBlur=42; x.shadowOffsetY=20; x.fillStyle='#fff'; rr(x,cx,cy,cw,ch,rad); x.fill(); x.restore();
-    x.save(); rr(x,cx,cy,cw,ch,rad); x.clip(); if(img){ cover(x,img,cx,cy,cw,ch); } else { x.fillStyle='#E7DAC4'; x.fillRect(cx,cy,cw,ch); } x.restore();
-    x.strokeStyle=GOLD; x.lineWidth=2.5; rr(x,cx+1,cy+1,cw-2,ch-2,rad); x.stroke();
-    // title (Thai, plain) — strip the brand tagline so it doesn't crowd the page title
-    var t=(text||'BLOOK LIVING').replace(/\s*[—\-–|]\s*The Class of Calm.*$/i,'').replace(/\s*\|\s*BLOOK LIVING\s*$/i,'').trim() || 'BLOOK LIVING';
-    x.fillStyle=BLACK; x.font='500 38px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif';
-    wrapBottom(x,t,W/2,cy+ch+96,cw-30,50,2);
-    // brand tagline (gold italic) — sits below the title, same vibe as the wordmark
-    x.fillStyle=GOLD; x.font='italic 500 28px Fraunces, Georgia, serif';
-    x.fillText('— The Class of Calm —', W/2, cy+ch+170);
-    // domain (gold) — anchor at the bottom
-    x.fillStyle=GOLD; x.font='600 42px Inter, Arial, sans-serif'; x.fillText('blookliving.com', W/2, 1740);
-    return c;
+  // draw the BLOOK logo (square lockup). tint=null → original gold PNG; else recolour via source-in.
+  function drawLogo(x,tint,cx,cy,w){
+    if(!LOGO_OK||!LOGO.naturalWidth) return false;
+    if(!tint){ x.drawImage(LOGO,cx-w/2,cy-w/2,w,w); return true; }
+    var s=Math.max(2,Math.round(w)), oc=document.createElement('canvas'); oc.width=oc.height=s; var o=oc.getContext('2d');
+    o.drawImage(LOGO,0,0,s,s); o.globalCompositeOperation='source-in'; o.fillStyle=tint; o.fillRect(0,0,s,s);
+    x.drawImage(oc,cx-w/2,cy-w/2,w,w); return true;
   }
+  // text fallback wordmark if the logo image isn't ready yet
+  function wordmark(x,cx,topY,light){
+    x.textAlign='center';
+    var wm=x.createLinearGradient(0,topY,0,topY+110); wm.addColorStop(0, light?'#E7C98C':'#D2AE71'); wm.addColorStop(1, light?'#C9A96E':'#946C34');
+    x.fillStyle=wm; x.font='600 104px Fraunces,"Cormorant Garamond",Georgia,serif'; spacedLatin(x,'BLOOK',cx,topY+86,18);
+    x.fillStyle=light?'#E9DCC6':'#8B6B3D'; x.font='500 25px Inter,Arial,sans-serif';
+    var tg='THE CLASS OF CALM', tw=measureSpaced(x,tg,10); spacedLatin(x,tg,cx,topY+140,10);
+    x.strokeStyle=light?'rgba(230,210,170,.6)':'rgba(160,120,74,.5)'; x.lineWidth=1.5; var ly=topY+132,gap=tw/2+24,ln=50;
+    x.beginPath();x.moveTo(cx-gap-ln,ly);x.lineTo(cx-gap,ly);x.stroke();
+    x.beginPath();x.moveTo(cx+gap,ly);x.lineTo(cx+gap+ln,ly);x.stroke();
+  }
+  function brand(x,tint,cx,cy,w,light){ if(drawLogo(x,tint,cx,cy,w)) return; wordmark(x,cx,cy-w*0.30,light); }
+  function dom(x,url,cx,y,color,size){ x.save(); x.textAlign='center'; x.fillStyle=color; x.font='600 '+size+'px Inter,Arial,sans-serif'; x.fillText(rootDomain(url),cx,y); x.restore(); }
+  function vgrad(x,y0,c0,y1,c1){ var g=x.createLinearGradient(0,y0,0,y1); g.addColorStop(0,c0); g.addColorStop(1,c1); return g; }
 
-  // ---------- shared styles ----------
+  // ---------------- 10 TEMPLATES ----------------
+  var TEMPLATES=[
+    // 0 — Cream Card (classic)
+    function(x,img,t,u){ x.fillStyle=vgrad(x,0,'#FAF5EC',H,'#EFE4D2'); x.fillRect(0,0,W,H);
+      brand(x,null,W/2,300,470); cardImg(x,img,130,560,820,1010,28,{shadow:'rgba(70,48,18,.34)',blur:42,oy:20,border:GOLD,bw:2.5}); dom(x,u,W/2,1710,GOLD,46); },
+    // 1 — Full-bleed light top/bottom
+    function(x,img,t,u){ cover(x,img,0,0,W,H);
+      x.fillStyle=vgrad(x,0,'rgba(250,245,236,.96)',520,'rgba(250,245,236,0)'); x.fillRect(0,0,W,520);
+      x.fillStyle=vgrad(x,1440,'rgba(15,11,7,0)',H,'rgba(15,11,7,.82)'); x.fillRect(0,1440,W,H-1440);
+      brand(x,null,W/2,250,430); dom(x,u,W/2,1850,'#fff',42); },
+    // 2 — Black & Gold card
+    function(x,img,t,u){ x.fillStyle='#15110D'; x.fillRect(0,0,W,H);
+      var rg=x.createRadialGradient(W/2,300,40,W/2,300,760); rg.addColorStop(0,'rgba(201,169,110,.22)'); rg.addColorStop(1,'rgba(201,169,110,0)'); x.fillStyle=rg; x.fillRect(0,0,W,900);
+      brand(x,GOLD2,W/2,300,460,true); cardImg(x,img,130,580,820,990,26,{shadow:'rgba(0,0,0,.5)',blur:50,oy:18,border:'rgba(201,169,110,.55)',bw:2}); dom(x,u,W/2,1720,GOLD2,46); },
+    // 3 — Full dark overlay + centred logo
+    function(x,img,t,u){ cover(x,img,0,0,W,H); x.fillStyle='rgba(16,11,7,.5)'; x.fillRect(0,0,W,H);
+      x.fillStyle=vgrad(x,1400,'rgba(16,11,7,0)',H,'rgba(16,11,7,.7)'); x.fillRect(0,1400,W,H-1400);
+      brand(x,'#FFFFFF',W/2,930,640,true); dom(x,u,W/2,1840,'#fff',42); },
+    // 4 — Split editorial (image top / cream bottom)
+    function(x,img,t,u){ cover(x,img,0,0,W,1175);
+      x.fillStyle=vgrad(x,1175,'#F7F0E3',H,'#ECE0CD'); x.fillRect(0,1175,W,H-1175);
+      x.strokeStyle=GOLD; x.lineWidth=3; x.beginPath(); x.moveTo(0,1177); x.lineTo(W,1177); x.stroke();
+      brand(x,null,W/2,1460,400); dom(x,u,W/2,1740,GOLD,44); },
+    // 5 — Polaroid print on gold
+    function(x,img,t,u){ x.fillStyle=vgrad(x,0,'#CBB089',H,'#A8895C'); x.fillRect(0,0,W,H);
+      var pX=150,pY=320,pW=780,pH=1060,b=30; x.save(); x.shadowColor='rgba(60,40,15,.42)'; x.shadowBlur=46; x.shadowOffsetY=22; x.fillStyle='#fff'; rr(x,pX,pY,pW,pH,10); x.fill(); x.restore();
+      cardImg(x,img,pX+b,pY+b,pW-2*b,pH-2*b-66,4,{}); brand(x,'#FFFFFF',W/2,1600,360,true); dom(x,u,W/2,1830,'#FBF4E6',42); },
+    // 6 — Minimal white
+    function(x,img,t,u){ x.fillStyle='#FCFAF6'; x.fillRect(0,0,W,H);
+      brand(x,null,W/2,270,360); cardImg(x,img,175,520,730,950,18,{shadow:'rgba(120,90,40,.16)',blur:38,oy:14}); dom(x,u,W/2,1640,GOLD,40); },
+    // 7 — Circle image on cream
+    function(x,img,t,u){ x.fillStyle=vgrad(x,0,'#F8F1E4',H,'#EFE3CF'); x.fillRect(0,0,W,H);
+      brand(x,null,W/2,300,440); circleImg(x,img,W/2,1100,388,GOLD); dom(x,u,W/2,1700,GOLD,46); },
+    // 8 — Gold frame full-bleed
+    function(x,img,t,u){ cover(x,img,0,0,W,H);
+      x.fillStyle=vgrad(x,0,'rgba(0,0,0,.4)',460,'rgba(0,0,0,0)'); x.fillRect(0,0,W,460);
+      x.fillStyle=vgrad(x,1480,'rgba(0,0,0,0)',H,'rgba(0,0,0,.55)'); x.fillRect(0,1480,W,H-1480);
+      x.strokeStyle='rgba(201,169,110,.9)'; x.lineWidth=3; rr(x,56,56,W-112,H-112,18); x.stroke();
+      brand(x,'#FFFFFF',W/2,250,420,true); dom(x,u,W/2,1838,'#fff',42); },
+    // 9 — Magazine bottom band
+    function(x,img,t,u){ cover(x,img,0,0,W,1500); x.fillStyle='#15110D'; x.fillRect(0,1500,W,H-1500);
+      x.strokeStyle=GOLD2; x.lineWidth=3; x.beginPath(); x.moveTo(0,1502); x.lineTo(W,1502); x.stroke();
+      brand(x,GOLD2,W/2,1700,330,true); dom(x,u,W/2,1858,GOLD2,40); }
+  ];
+  function build(img,text,url,idx){ var c=document.createElement('canvas'); c.width=W; c.height=H; var x=c.getContext('2d'); (TEMPLATES[idx]||TEMPLATES[0])(x,img,text,url); return c; }
+  window.bkBuildStoryCanvas=function(img,text,url,idx){ return build(img,text,url,idx||0); };
+
+  // ---------------- shared styles ----------------
   var stylesDone=false;
   function injectStyles(){
     if(stylesDone) return; stylesDone=true;
@@ -73,24 +114,27 @@
      +'#bk-img-lb .bilb-nav:hover{background:#A0784A}#bk-img-lb .bilb-prev{left:14px}#bk-img-lb .bilb-next{right:14px}'
      +'#bk-story{background:rgba(20,14,8,.74);backdrop-filter:blur(5px)}'
      +'#bk-story .bkst-card{background:#F7F1E7;border:1px solid rgba(160,120,74,.4);border-radius:20px;max-width:400px;width:100%;max-height:94vh;overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.5);position:relative;padding-bottom:18px}'
-     +'#bk-story .bkst-prev{padding:18px 18px 12px;text-align:center}'
-     +'#bk-story .bkst-prev img{max-height:60vh;width:auto;max-width:100%;border-radius:12px;box-shadow:0 10px 26px rgba(120,90,40,.3);cursor:pointer}'
+     +'#bk-story .bkst-prev{padding:18px 18px 10px;text-align:center;min-height:120px}'
+     +'#bk-story .bkst-prev img{max-height:58vh;width:auto;max-width:100%;border-radius:12px;box-shadow:0 10px 26px rgba(120,90,40,.3);cursor:pointer}'
      +'#bk-story .bkst-btns{display:flex;flex-direction:column;gap:10px;padding:0 22px}'
+     +'#bk-story .bkst-change{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:12px;border:1px dashed rgba(160,120,74,.65);background:transparent;color:#8B6B3D;font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer}'
+     +'#bk-story .bkst-change svg{width:18px;height:18px;fill:currentColor}'
      +'#bk-story .bkst-b{display:flex;align-items:center;justify-content:center;gap:9px;padding:14px;border-radius:12px;border:1px solid rgba(160,120,74,.4);background:#fff;color:#3A2C1C;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer}'
      +'#bk-story .bkst-b.primary{background:linear-gradient(90deg,#C9A96E,#A0784A);color:#1A0F08;border-color:transparent}'
      +'#bk-story .bkst-b svg{width:19px;height:19px;fill:currentColor}';
     var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
   }
 
-  // ---------- IG Story modal (stage 2): preview + 2 buttons only ----------
-  var storyEl, storyImg, _file=null, _blob=null, _url='';
+  // ---------------- Story modal ----------------
+  var storyEl, storyImg, _file=null, _blob=null, _url='', _text='', _img=null, _tpl=0;
   function buildStoryUI(){
     if(storyEl) return; injectStyles();
     storyEl=document.createElement('div'); storyEl.id='bk-story';
     storyEl.innerHTML='<div class="bkst-card"><button class="bkst-x" aria-label="ปิด">&times;</button>'
       +'<div class="bkst-prev"><img id="bkst-img" alt="ตัวอย่างรูป Story"></div>'
       +'<div class="bkst-btns">'
-        +'<button id="bkst-share" class="bkst-b primary"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>แชร์ลง IG Story</button>'
+        +'<button id="bkst-change" class="bkst-change"><svg viewBox="0 0 24 24"><path d="M12 6V3L8 7l4 4V8a5 5 0 11-5 5H5a7 7 0 107-7z"/></svg>เปลี่ยนดีไซน์ <span id="bkst-count"></span></button>'
+        +'<button id="bkst-share" class="bkst-b primary"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>แชร์รูป</button>'
         +'<button id="bkst-fb" class="bkst-b primary"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.24 2.69.24v2.97h-1.52c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>แชร์ลง Facebook Story</button>'
         +'<button id="bkst-save" class="bkst-b"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>บันทึกรูป</button>'
       +'</div></div>';
@@ -99,26 +143,28 @@
     storyEl.querySelector('.bkst-x').addEventListener('click',closeStory);
     storyEl.addEventListener('click',function(e){ if(e.target===storyEl) closeStory(); });
     storyImg.addEventListener('click',function(){ try{ window.open(_url||pageUrl(),'_blank'); }catch(e){} });
+    storyEl.querySelector('#bkst-change').addEventListener('click',function(){ _tpl=(_tpl+1)%TEMPLATES.length; renderTpl(); });
     storyEl.querySelector('#bkst-share').addEventListener('click',shareFile);
     storyEl.querySelector('#bkst-fb').addEventListener('click',shareFB);
     storyEl.querySelector('#bkst-save').addEventListener('click',saveFile);
   }
+  function renderTpl(){
+    var canvas=build(_img,_text,_url,_tpl);
+    try{ storyImg.src=canvas.toDataURL('image/jpeg',0.9); }catch(e){}
+    _blob=null; _file=null;
+    canvas.toBlob(function(b){ _blob=b; try{ _file=new File([b],'blook-story.jpg',{type:'image/jpeg'}); }catch(e){ _file=null; } },'image/jpeg',0.92);
+    var cnt=document.getElementById('bkst-count'); if(cnt) cnt.textContent='('+(_tpl+1)+'/'+TEMPLATES.length+')';
+  }
   function openStory(){ storyEl.classList.add('open'); document.body.style.overflow='hidden'; }
   function closeStory(){ storyEl.classList.remove('open'); document.body.style.overflow=''; }
-  // IG Story: native file share → ผู้ใช้เลือก Instagram → Add to Story (วิธีที่ใช้ได้จริงบนเว็บมือถือ)
   function shareFile(){
     if(_file && navigator.share && navigator.canShare && navigator.canShare({files:[_file]})){
       navigator.share({files:[_file]}).then(closeStory).catch(function(err){ if(err&&err.name==='AbortError')return; saveFile(); });
     } else { saveFile(); }
   }
-  // Facebook Story: เฟซบุ๊กไม่มีช่องทางให้โพสต์ลง Story โดยตรงจากเว็บ
-  //   วิธีที่ได้ผล = บันทึกรูปลงคลังภาพ แล้วเปิดแอป Facebook → สร้างสตอรี่ → เลือกรูปนั้น
-  //   มือถือ: เปิดชีตแชร์ (มีปุ่ม "บันทึกรูป"/Save Image ลงคลังภาพ) ก่อน
   function shareFB(){
     if(_file && navigator.share && navigator.canShare && navigator.canShare({files:[_file]})){
-      navigator.share({files:[_file]})
-        .then(function(){ setTimeout(fbTip,400); })
-        .catch(function(err){ if(err&&err.name==='AbortError')return; fbManual(); });
+      navigator.share({files:[_file]}).then(function(){ setTimeout(fbTip,400); }).catch(function(err){ if(err&&err.name==='AbortError')return; fbManual(); });
       return;
     }
     fbManual();
@@ -134,25 +180,25 @@
     try{ var a=document.createElement('a'); a.href=u; a.download='blook-story.jpg'; document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
     setTimeout(function(){ try{ window.open(u,'_blank'); }catch(e){} setTimeout(function(){URL.revokeObjectURL(u);},9000); },150);
   }
+  function waitLogo(cb){ if(LOGO_OK) return cb(); var n=0,t=setInterval(function(){ if(LOGO_OK||++n>15){ clearInterval(t); cb(); } },120); }
   window.bkIgStory=function(imgUrl,text,url){
     buildStoryUI();
-    _url=url||pageUrl(); _file=null; _blob=null;
+    _url=url||pageUrl(); _text=text||''; _file=null; _blob=null; _img=null;
+    _tpl=Math.floor(Math.random()*TEMPLATES.length);
+    if(storyImg) storyImg.removeAttribute('src');
+    openStory();
     var src=sameOrigin(imgUrl||'assets/catalog/sofa-overview-1.jpg');
     var ready=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
-    ready.then(function(){
-      var img=new Image(); img.crossOrigin='anonymous'; var built=false;
-      function go(im){ if(built)return; built=true; var canvas=build(im,text,_url);
-        try{ storyImg.src=canvas.toDataURL('image/jpeg',0.9); }catch(e){}
-        canvas.toBlob(function(b){ _blob=b; try{ _file=new File([b],'blook-story.jpg',{type:'image/jpeg'}); }catch(e){ _file=null; } },'image/jpeg',0.92);
-        openStory();
-      }
-      img.onload=function(){ go(img); }; img.onerror=function(){ go(null); }; img.src=src;
-      setTimeout(function(){ if(!built) go(null); },4500);
-    });
+    ready.then(function(){ waitLogo(function(){
+      var img=new Image(); img.crossOrigin='anonymous'; var done=false;
+      img.onload=function(){ if(done)return; done=true; _img=img; renderTpl(); };
+      img.onerror=function(){ if(done)return; done=true; _img=null; renderTpl(); };
+      img.src=src;
+      setTimeout(function(){ if(!done){ done=true; _img=null; renderTpl(); } },4500);
+    }); });
   };
-  window.bkBuildStoryCanvas=build;
 
-  // ---------- image lightbox (stage 1): image clickable→web + share-below ----------
+  // ---------------- image lightbox ----------------
   var lbEl, lbImg, _list=[], _idx=0;
   function buildLbUI(){
     if(lbEl) return; injectStyles();
@@ -181,12 +227,12 @@
   function closeLb(){ lbEl.classList.remove('open'); document.body.style.overflow=''; }
   window.bkLightbox=function(src,alt,list,idx){ buildLbUI(); _list=(list&&list.length)?list:[src]; _idx=(typeof idx==='number'&&idx>=0)?idx:0; showLb(); lbEl.classList.add('open'); document.body.style.overflow='hidden'; };
 
-  // ---------- auto-attach: make every content image shareable ----------
+  // ---------------- auto-attach: every content image is shareable ----------------
   function srcOf(im){ return im.currentSrc||im.getAttribute('src')||im.src; }
   function qualifies(im){
     if(!im||im.tagName!=='IMG') return false;
     if(im.closest('a,nav,footer,header,.contact-fab,#bk-story,#bk-img-lb,.lang-m,.nav-logo,.catalog,.page,[data-no-lb],.no-lb')) return false;
-    var w=im.clientWidth||0, nw=im.naturalWidth||0; if(w<56 && nw<240) return false; // skip tiny icons only
+    var w=im.clientWidth||im.naturalWidth||0; if(w<80) return false;
     return !!srcOf(im);
   }
   document.addEventListener('click',function(e){

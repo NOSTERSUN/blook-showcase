@@ -93,7 +93,9 @@
       "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"admin: collapse mobile tab bar into hamburger menu \\(like main page\\) - toggle shows vertical tab dropdown + auto-closes on tab select\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")",
       "Bash(git -C \"C:/Users/PC/Desktop/BLOOK DEV\" commit -m \"FAB: merge Order+Contact into one button that expands to 2 rows \\(order/contact\\); closes on outside-click & scroll \\(index + contact-widget\\); admin: hamburger menu overlays content \\(absolute\\) instead of pushing it down; gallery: varied-size mosaic grid \\(big/wide/tall\\); catalog: mosaic gallery + split into 2 gallery pages \\(9 pages total\\)\" -m \"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>\")",
       "Bash(curl -s \"https://blookliving.com/assets/share-story.js?nuke=$\\(date +%s\\)\")",
-      "Bash(curl -sI \"https://blookliving.com/assets/share-story.js\")"
+      "Bash(curl -sI \"https://blookliving.com/assets/share-story.js\")",
+      "Bash(cd \"C:/Users/PC/Desktop/BLOOK DEV/assets/LOGO\")",
+      "Bash(python -c 'from PIL import Image; import sys; im=Image.open\\(r'\\\\''__TRACKED_VAR__'\\\\''\\); print\\(r'\\\\''__TRACKED_VAR__'\\\\'', im.size, im.mode\\)')"
     ]
   }
 }
