@@ -31,11 +31,15 @@
     x.save(); x.shadowColor='rgba(70,48,18,.34)'; x.shadowBlur=42; x.shadowOffsetY=20; x.fillStyle='#fff'; rr(x,cx,cy,cw,ch,rad); x.fill(); x.restore();
     x.save(); rr(x,cx,cy,cw,ch,rad); x.clip(); if(img){ cover(x,img,cx,cy,cw,ch); } else { x.fillStyle='#E7DAC4'; x.fillRect(cx,cy,cw,ch); } x.restore();
     x.strokeStyle=GOLD; x.lineWidth=2.5; rr(x,cx+1,cy+1,cw-2,ch-2,rad); x.stroke();
-    // title (Thai) — plain fillText, NO letter-spacing (smaller, single line preferred)
-    x.fillStyle=BLACK; x.font='500 34px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif';
-    wrapBottom(x,text||'BLOOK LIVING',W/2,cy+ch+108,cw-30,46,2);
-    // handle (gold) — domain instead of @handle
-    x.fillStyle=GOLD; x.font='600 44px Inter, Arial, sans-serif'; x.fillText('blookliving.com', W/2, 1700);
+    // title (Thai, plain) — strip the brand tagline so it doesn't crowd the page title
+    var t=(text||'BLOOK LIVING').replace(/\s*[—\-–|]\s*The Class of Calm.*$/i,'').replace(/\s*\|\s*BLOOK LIVING\s*$/i,'').trim() || 'BLOOK LIVING';
+    x.fillStyle=BLACK; x.font='500 38px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif';
+    wrapBottom(x,t,W/2,cy+ch+96,cw-30,50,2);
+    // brand tagline (gold italic) — sits below the title, same vibe as the wordmark
+    x.fillStyle=GOLD; x.font='italic 500 28px Fraunces, Georgia, serif';
+    x.fillText('— The Class of Calm —', W/2, cy+ch+170);
+    // domain (gold) — anchor at the bottom
+    x.fillStyle=GOLD; x.font='600 42px Inter, Arial, sans-serif'; x.fillText('blookliving.com', W/2, 1740);
     return c;
   }
 
@@ -95,17 +99,37 @@
       navigator.share({files:[_file], text:document.title+' · '+prettyUrl(_url)}).then(closeStory).catch(function(err){ if(err&&err.name==='AbortError')return; saveFile(); });
     } else { saveFile(); }
   }
-  // แชร์ไป Facebook Story: ใช้ native share (ผู้ใช้เลือก Facebook → Story) บนมือถือ;
-  // เดสก์ท็อปบันทึกรูป + เปิด facebook.com/stories/create เพื่ออัปโหลดเอง
+  // แชร์ไป Facebook Story: ลำดับการตก fallback
+  //  1) native file share — มือถือเลือก Facebook → Story ได้ตรง ๆ
+  //  2) deep-link เปิดแอป Facebook + ดาวน์โหลดรูป (ให้ผู้ใช้สร้าง Story จากรูปนั้น)
+  //  3) เปิดเว็บ Facebook + ดาวน์โหลดรูป
   function shareFB(){
-    var ua=navigator.userAgent||'', isMobile=/Android|iPhone|iPad|iPod/i.test(ua);
-    if(isMobile && _file && navigator.share && navigator.canShare && navigator.canShare({files:[_file]})){
-      navigator.share({files:[_file], text:document.title+' · '+prettyUrl(_url)}).then(closeStory).catch(function(err){ if(err&&err.name==='AbortError')return; fbFallback(); });
-    } else { fbFallback(); }
+    if(_file && navigator.share && navigator.canShare){
+      try{
+        if(navigator.canShare({files:[_file]})){
+          navigator.share({files:[_file], title:'BLOOK LIVING', text:document.title+' · '+prettyUrl(_url)})
+            .then(closeStory)
+            .catch(function(err){ if(err&&err.name==='AbortError')return; fbFallback(); });
+          return;
+        }
+      }catch(e){}
+    }
+    fbFallback();
   }
   function fbFallback(){
-    if(_blob){ var u=URL.createObjectURL(_blob); try{ var a=document.createElement('a'); a.href=u; a.download='blook-story.jpg'; document.body.appendChild(a); a.click(); a.remove(); }catch(e){} setTimeout(function(){URL.revokeObjectURL(u);},9000); }
-    setTimeout(function(){ window.open('https://www.facebook.com/stories/create/','_blank','noopener'); },200);
+    // ดาวน์โหลดรูปก่อน
+    if(_blob){
+      try{ var u=URL.createObjectURL(_blob); var a=document.createElement('a'); a.href=u; a.download='blook-story.jpg'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},9000); }catch(e){}
+    }
+    var ua=navigator.userAgent||'', isIOS=/iPhone|iPad|iPod/i.test(ua), isAndroid=/Android/i.test(ua);
+    alert('บันทึกรูปแล้ว 📥\nเปิดแอป Facebook → สร้าง Story → เลือกรูป "blook-story.jpg" ที่เพิ่งบันทึก');
+    setTimeout(function(){
+      var win;
+      if(isIOS){ win=window.open('fb://story/?source=composer','_blank'); }
+      else if(isAndroid){ win=window.open('fb://story_composer','_blank'); }
+      // ถ้า deep-link ใช้ไม่ได้ภายใน 800ms ให้เปิดเว็บ Facebook แทน
+      setTimeout(function(){ try{ window.open('https://www.facebook.com/','_blank','noopener'); }catch(e){} }, 800);
+    },300);
   }
   function saveFile(){
     if(!_blob) return; var u=URL.createObjectURL(_blob);
@@ -142,7 +166,7 @@
         +'<img id="bk-lb-img" alt="">'
         +'<button class="bilb-nav bilb-next" aria-label="ถัดไป">&#8250;</button>'
       +'</div>'
-      +'<button class="bilb-share"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg><span>แชร์ลง IG Story</span></button>'
+      +'<button class="bilb-share"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg><span>แชร์รูป</span></button>'
       +'</div>';
     document.body.appendChild(lbEl);
     lbImg=lbEl.querySelector('#bk-lb-img');
