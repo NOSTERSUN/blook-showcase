@@ -13,6 +13,7 @@
   function cover(x,img,X,Y,w,h){ var ir=img.width/img.height, tr=w/h, sw,sh,sx,sy; if(ir>tr){ sh=img.height; sw=sh*tr; sx=(img.width-sw)/2; sy=0; } else { sw=img.width; sh=sw/tr; sx=0; sy=(img.height-sh)/2; } x.drawImage(img,sx,sy,sw,sh,X,Y,w,h); }
   // letter-spacing helper — LATIN ONLY (never use on Thai: it breaks combining vowels/tone marks)
   function spacedLatin(x,str,cx,y,sp){ var w=[],tot=0,i; for(i=0;i<str.length;i++){ var ww=x.measureText(str[i]).width; w.push(ww); tot+=ww+sp; } tot-=sp; var sx=cx-tot/2, a=x.textAlign; x.textAlign='left'; for(i=0;i<str.length;i++){ x.fillText(str[i],sx,y); sx+=w[i]+sp; } x.textAlign=a; }
+  function measureSpaced(x,str,sp){ var t=0,i; for(i=0;i<str.length;i++){ t+=x.measureText(str[i]).width+sp; } return t-sp; }
   function wrapBottom(x,text,cx,bottomY,maxW,lh,maxLines){ var words=(text||'').split(/\s+/), line='', lines=[], i; for(i=0;i<words.length;i++){ var t=line?line+' '+words[i]:words[i]; if(x.measureText(t).width>maxW && line){ lines.push(line); line=words[i]; } else line=t; } if(line) lines.push(line); if(maxLines && lines.length>maxLines){ lines=lines.slice(0,maxLines); lines[maxLines-1]=lines[maxLines-1]+'…'; } var startY=bottomY-(lines.length-1)*lh; for(i=0;i<lines.length;i++){ x.fillText(lines[i],cx,startY+i*lh); } }
 
   function build(img,text,url){
@@ -24,8 +25,18 @@
     x.strokeStyle='rgba(160,120,74,.28)'; x.lineWidth=1.5; rr(x,46,46,W-92,H-92,22); x.stroke();
     // wordmark (gold) + subtitle (black) — subtitle is Latin so letter-spacing is safe
     x.textAlign='center';
-    x.fillStyle=GOLD; x.font='italic 600 128px Fraunces, Georgia, serif'; x.fillText('BLOOK',W/2,232);
-    x.fillStyle=BLACK; x.font='600 29px Inter, Arial, sans-serif'; spacedLatin(x,'THE CLASS OF CALM',W/2,286,10);
+    // BLOOK wordmark — upright Fraunces 600 (a font weight the pages actually load) with a vertical gold gradient + wide tracking
+    var _wm=x.createLinearGradient(0,120,0,236); _wm.addColorStop(0,'#D2AE71'); _wm.addColorStop(.5,'#B58E52'); _wm.addColorStop(1,'#946C34');
+    x.fillStyle=_wm; x.font='600 118px Fraunces,"Cormorant Garamond",Georgia,serif';
+    spacedLatin(x,'BLOOK',W/2,224,20);
+    // tagline flanked by thin gold rules (editorial luxury look)
+    x.fillStyle='#8B6B3D'; x.font='500 27px Inter,Arial,sans-serif';
+    var _tag='THE CLASS OF CALM', _tw=measureSpaced(x,_tag,11);
+    spacedLatin(x,_tag,W/2,292,11);
+    x.strokeStyle='rgba(160,120,74,.5)'; x.lineWidth=1.5;
+    var _ly=283, _gap=_tw/2+28, _len=58;
+    x.beginPath(); x.moveTo(W/2-_gap-_len,_ly); x.lineTo(W/2-_gap,_ly); x.stroke();
+    x.beginPath(); x.moveTo(W/2+_gap,_ly); x.lineTo(W/2+_gap+_len,_ly); x.stroke();
     // product card — soft shadow + THIN gold border
     var cx=130,cy=350,cw=820,ch=1000,rad=28;
     x.save(); x.shadowColor='rgba(70,48,18,.34)'; x.shadowBlur=42; x.shadowOffsetY=20; x.fillStyle='#fff'; rr(x,cx,cy,cw,ch,rad); x.fill(); x.restore();
