@@ -47,6 +47,11 @@
   function brand(x,tint,cx,cy,w,light){ if(drawLogo(x,tint,cx,cy,w)) return; wordmark(x,cx,cy-w*0.30,light); }
   function dom(x,url,cx,y,color,size){ x.save(); x.textAlign='center'; x.fillStyle=color; x.font='600 '+size+'px Inter,Arial,sans-serif'; x.fillText(rootDomain(url),cx,y); x.restore(); }
   function vgrad(x,y0,c0,y1,c1){ var g=x.createLinearGradient(0,y0,0,y1); g.addColorStop(0,c0); g.addColorStop(1,c1); return g; }
+  // typography helpers (style prefix must be valid CSS-font order e.g. 'italic 500 ')
+  function serif(x,str,cx,y,px,color,style){ x.save(); x.textAlign='center'; x.fillStyle=color; x.font=(style||'600 ')+px+'px Fraunces,"Cormorant Garamond",Georgia,serif'; x.fillText(str,cx,y); x.restore(); }
+  function sansSp(x,str,cx,y,px,color,sp,wt){ x.save(); x.textAlign='center'; x.fillStyle=color; x.font=(wt||'600 ')+px+'px Inter,Arial,sans-serif'; spacedLatin(x,str,cx,y,sp); x.restore(); }
+  function wrapSerif(x,text,cx,topY,maxW,lh,color,px,style){ x.save(); x.textAlign='center'; x.fillStyle=color; x.font=(style||'600 ')+px+'px Fraunces,"Cormorant Garamond",Georgia,serif'; var ws=(text||'').split(' '),ln='',ls=[],i; for(i=0;i<ws.length;i++){ var tt=ln?ln+' '+ws[i]:ws[i]; if(x.measureText(tt).width>maxW&&ln){ ls.push(ln); ln=ws[i]; } else ln=tt; } if(ln)ls.push(ln); for(i=0;i<ls.length;i++) x.fillText(ls[i],cx,topY+i*lh); x.restore(); return ls.length; }
+  function shade(x,a){ x.fillStyle='rgba(12,8,5,'+a+')'; x.fillRect(0,0,W,H); }
 
   // ---------------- 10 TEMPLATES ----------------
   var TEMPLATES=[
@@ -90,7 +95,57 @@
     // 9 — Magazine bottom band
     function(x,img,t,u){ cover(x,img,0,0,W,1500); x.fillStyle='#15110D'; x.fillRect(0,1500,W,H-1500);
       x.strokeStyle=GOLD2; x.lineWidth=3; x.beginPath(); x.moveTo(0,1502); x.lineTo(W,1502); x.stroke();
-      brand(x,GOLD2,W/2,1700,330,true); dom(x,u,W/2,1858,GOLD2,40); }
+      brand(x,GOLD2,W/2,1700,330,true); dom(x,u,W/2,1858,GOLD2,40); },
+    // 10 — Full photo · big serif tagline (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); shade(x,.42); x.fillStyle=vgrad(x,1250,'rgba(12,8,5,0)',H,'rgba(12,8,5,.72)'); x.fillRect(0,1250,W,H-1250);
+      wrapSerif(x,'The Class of Calm',W/2,900,820,116,'#fff',112,'italic 500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1840,30,'rgba(255,255,255,.88)',9,'600 '); },
+    // 11 — Cream · giant 'Calm.' + photo (no logo)
+    function(x,img,t,u){ x.fillStyle=vgrad(x,0,'#FAF5EC',H,'#ECE0CC'); x.fillRect(0,0,W,H);
+      serif(x,'Calm.',W/2,380,220,GOLD,'italic 500 '); cardImg(x,img,160,480,760,1080,24,{shadow:'rgba(70,48,18,.26)',blur:40,oy:16}); sansSp(x,'BLOOKLIVING.COM',W/2,1700,28,'#8B6B3D',8,'600 '); },
+    // 12 — Full photo · bottom-left script (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); x.fillStyle=vgrad(x,1120,'rgba(10,7,4,0)',H,'rgba(10,7,4,.82)'); x.fillRect(0,1120,W,H-1120);
+      x.save(); x.textAlign='left'; x.fillStyle='#fff'; x.font='italic 500 110px Fraunces,Georgia,serif'; x.fillText('calm living.',88,1690); x.fillStyle='rgba(255,255,255,.85)'; x.font='600 28px Inter,Arial,sans-serif'; x.fillText('blookliving.com',92,1772); x.restore(); },
+    // 13 — Black · gold serif tagline + framed photo
+    function(x,img,t,u){ x.fillStyle='#15110D'; x.fillRect(0,0,W,H); cardImg(x,img,95,620,W-190,920,18,{border:'rgba(201,169,110,.5)',bw:2,shadow:'rgba(0,0,0,.5)',blur:40});
+      serif(x,'The Class of Calm',W/2,430,78,GOLD2,'italic 500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1710,30,GOLD2,9,'600 '); },
+    // 14 — Full photo · bordered label box (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); shade(x,.34); var bx=150,by=700,bw=W-300,bh=520; x.strokeStyle='rgba(255,255,255,.9)'; x.lineWidth=2; rr(x,bx,by,bw,bh,3); x.stroke();
+      sansSp(x,'BLOOK LIVING',W/2,by+170,16,'#fff',12,'600 '); serif(x,'The Class of Calm',W/2,by+300,56,'rgba(255,255,255,.95)','italic 400 '); sansSp(x,'BLOOKLIVING.COM',W/2,by+430,22,'rgba(255,255,255,.82)',6,'500 '); },
+    // 15 — Split · photo top, cream caption (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,1080); x.fillStyle='#F6EFE2'; x.fillRect(0,1080,W,H-1080); x.strokeStyle=GOLD; x.lineWidth=2; x.beginPath(); x.moveTo(0,1082); x.lineTo(W,1082); x.stroke();
+      serif(x,'Calm Lifestyle',W/2,1340,94,GOLD,'italic 500 '); sansSp(x,'A SANCTUARY OF SERENITY',W/2,1430,24,'#9A8466',6,'500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1720,26,'#8B6B3D',7,'600 '); },
+    // 16 — Cream · circle photo + 'Slow Living' (no logo)
+    function(x,img,t,u){ x.fillStyle=vgrad(x,0,'#F8F1E4',H,'#EEE2CE'); x.fillRect(0,0,W,H); circleImg(x,img,W/2,820,360,GOLD); serif(x,'Slow Living',W/2,1380,118,GOLD,'italic 500 '); sansSp(x,'THE CLASS OF CALM',W/2,1480,24,'#9A8466',8,'500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1720,26,'#8B6B3D',7,'600 '); },
+    // 17 — Full photo · top label + bottom serif (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); x.fillStyle=vgrad(x,0,'rgba(8,6,4,.5)',360,'rgba(8,6,4,0)'); x.fillRect(0,0,W,360); x.fillStyle=vgrad(x,1250,'rgba(8,6,4,0)',H,'rgba(8,6,4,.78)'); x.fillRect(0,1250,W,H-1250);
+      sansSp(x,'BLOOKLIVING.COM',W/2,150,30,'rgba(255,255,255,.92)',9,'600 '); wrapSerif(x,'Serenity at Home',W/2,1640,860,108,'#fff',104,'italic 500 '); },
+    // 18 — Gold bg · dark serif + photo card
+    function(x,img,t,u){ x.fillStyle=vgrad(x,0,'#CDB287',H,'#A98A5C'); x.fillRect(0,0,W,H); serif(x,'A Sanctuary',W/2,330,104,'#2C2016','italic 500 '); serif(x,'of Calm',W/2,445,104,'#2C2016','italic 500 '); cardImg(x,img,150,570,780,990,20,{shadow:'rgba(60,40,15,.4)',blur:42,oy:18,border:'rgba(255,255,255,.6)',bw:3}); sansSp(x,'BLOOKLIVING.COM',W/2,1720,28,'#3A2C1C',8,'600 '); },
+    // 19 — Full photo · vertical side text (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); shade(x,.3); x.save(); x.translate(118,H/2); x.rotate(-Math.PI/2); x.textAlign='center'; x.fillStyle='rgba(255,255,255,.95)'; x.font='italic 500 80px Fraunces,Georgia,serif'; x.fillText('The Class of Calm',0,0); x.restore(); x.save(); x.textAlign='right'; x.fillStyle='rgba(255,255,255,.9)'; x.font='600 28px Inter,Arial,sans-serif'; x.fillText('blookliving.com',W-90,H-88); x.restore(); },
+    // 20 — Minimal cream · big 'blook' + circle photo (no logo)
+    function(x,img,t,u){ x.fillStyle='#FCFAF6'; x.fillRect(0,0,W,H); circleImg(x,img,W/2,560,288,GOLD); serif(x,'blook',W/2,1190,250,GOLD,'italic 500 '); sansSp(x,'L I V I N G',W/2,1295,40,'#9A8466',16,'500 '); sansSp(x,'THE CLASS OF CALM',W/2,1480,24,'#A89370',8,'500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1740,24,'#8B6B3D',7,'600 '); },
+    // 21 — Full photo · 'Where Calm Lives' (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); shade(x,.46); wrapSerif(x,'Where Calm Lives',W/2,930,760,116,'#fff',108,'italic 500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1110,28,'rgba(255,255,255,.85)',9,'600 '); },
+    // 22 — Magazine masthead (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); x.fillStyle=vgrad(x,0,'rgba(8,6,4,.46)',420,'rgba(8,6,4,0)'); x.fillRect(0,0,W,420); x.fillStyle=vgrad(x,1500,'rgba(8,6,4,0)',H,'rgba(8,6,4,.7)'); x.fillRect(0,1500,W,H-1500);
+      serif(x,'BLOOK',W/2,250,150,'#fff','600 '); sansSp(x,'CALM LIVING · ISSUE N°1',W/2,322,24,'rgba(255,255,255,.9)',7,'500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1840,28,'rgba(255,255,255,.88)',9,'600 '); },
+    // 23 — Cream card + 'Calm Lifestyle'
+    function(x,img,t,u){ x.fillStyle=vgrad(x,0,'#FAF5EC',H,'#EEE2CE'); x.fillRect(0,0,W,H); cardImg(x,img,130,300,820,1010,26,{shadow:'rgba(70,48,18,.3)',blur:42,oy:18,border:GOLD,bw:2}); serif(x,'Calm Lifestyle',W/2,1500,96,GOLD,'italic 500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1740,26,'#8B6B3D',7,'600 '); },
+    // 24 — Full photo · quote (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); shade(x,.5); serif(x,'“Calm is the',W/2,880,94,'#fff','italic 400 '); serif(x,'new luxury.”',W/2,995,94,'#fff','italic 400 '); sansSp(x,'BLOOK LIVING · BLOOKLIVING.COM',W/2,1180,23,'rgba(255,255,255,.82)',5,'500 '); },
+    // 25 — Black & gold · domain as hero (no logo)
+    function(x,img,t,u){ x.fillStyle='#15110D'; x.fillRect(0,0,W,H); cardImg(x,img,150,360,780,820,18,{border:'rgba(201,169,110,.5)',bw:2,shadow:'rgba(0,0,0,.5)',blur:40}); serif(x,'blookliving',W/2,1440,116,GOLD2,'italic 500 '); sansSp(x,'. C O M',W/2,1530,30,GOLD2,18,'500 '); sansSp(x,'THE CLASS OF CALM',W/2,1710,24,'rgba(201,169,110,.8)',8,'500 '); },
+    // 26 — Photo top · cream 'Live Calm.' (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,1180); x.fillStyle='#F6EFE2'; x.fillRect(0,1180,W,H-1180); serif(x,'Live Calm.',W/2,1440,126,GOLD,'italic 500 '); sansSp(x,'BLOOKLIVING.COM',W/2,1670,28,'#8B6B3D',8,'600 '); },
+    // 27 — Full photo · gold frame + corners (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); shade(x,.22); x.strokeStyle='rgba(201,169,110,.9)'; x.lineWidth=2.5; rr(x,60,60,W-120,H-120,10); x.stroke();
+      sansSp(x,'EST · BLOOK',W/2,172,18,'rgba(255,255,255,.92)',10,'600 '); serif(x,'The Class of Calm',W/2,1758,66,'#fff','italic 400 '); sansSp(x,'BLOOKLIVING.COM',W/2,1842,22,'rgba(255,255,255,.85)',6,'500 '); },
+    // 28 — Cream · Thai tagline
+    function(x,img,t,u){ x.fillStyle=vgrad(x,0,'#FAF5EC',H,'#EDE1CD'); x.fillRect(0,0,W,H); cardImg(x,img,160,300,760,1000,22,{shadow:'rgba(70,48,18,.26)',blur:40,oy:16});
+      x.save(); x.textAlign='center'; x.fillStyle=GOLD; x.font='600 68px "IBM Plex Sans Thai","Noto Sans Thai",serif'; x.fillText('ความสงบอย่างมีรสนิยม',W/2,1475); x.restore(); sansSp(x,'BLOOKLIVING.COM',W/2,1700,26,'#8B6B3D',7,'600 '); },
+    // 29 — Full photo · ultra-minimal domain (no logo)
+    function(x,img,t,u){ cover(x,img,0,0,W,H); x.fillStyle=vgrad(x,1450,'rgba(8,6,4,0)',H,'rgba(8,6,4,.66)'); x.fillRect(0,1450,W,H-1450); sansSp(x,'BLOOKLIVING.COM',W/2,1800,34,'#fff',12,'500 '); }
   ];
   function build(img,text,url,idx){ var c=document.createElement('canvas'); c.width=W; c.height=H; var x=c.getContext('2d'); (TEMPLATES[idx]||TEMPLATES[0])(x,img,text,url); return c; }
   window.bkBuildStoryCanvas=function(img,text,url,idx){ return build(img,text,url,idx||0); };
