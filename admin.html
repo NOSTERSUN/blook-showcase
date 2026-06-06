@@ -174,6 +174,12 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .track-guide td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--neutral)}
 .track-guide td:first-child{color:var(--text);font-weight:500;width:44%}
 @media(max-width:768px){.track-links{grid-template-columns:1fr}}
+.ls-embed{position:relative;width:100%;aspect-ratio:600/450;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#0c0a0b}
+.ls-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ls-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px}
+.ls-full{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--gold);text-decoration:none;border:1px solid var(--border);border-radius:20px;padding:7px 14px;transition:all .25s}
+.ls-full:hover{background:var(--gold);color:#111;border-color:var(--gold)}
+@media(max-width:600px){.ls-embed{aspect-ratio:auto;height:540px}}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
@@ -644,6 +650,17 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <div id="ga-status" style="font-size:.9rem;color:var(--text)">กำลังตรวจสอบ…</div>
       <div style="font-size:.8rem;color:var(--dim);margin-top:8px;line-height:1.8">
         🔧 วิธีเปิดใช้งาน: เปิดไฟล์ <b style="color:var(--gold)">assets/analytics.js</b> → แก้บรรทัด <code style="color:var(--gold2,#C9A24D)">GA_ID = 'G-XXXXXXXXXX'</code> เป็น Measurement ID จริงจาก Google Analytics → push ขึ้น GitHub<br>เท่านี้ทุกหน้าสาธารณะจะเริ่มเก็บข้อมูลอัตโนมัติ (ยกเว้นหน้า Admin) · ยังไม่มี GA? สมัครฟรีที่ analytics.google.com แล้วสร้าง Property แบบ "Web"
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">📊 แดชบอร์ดสด (Looker Studio · GA4 + Search Console)</div>
+      <div class="ls-embed">
+        <iframe src="https://datastudio.google.com/embed/reporting/78b4de7c-fc39-4eff-8dfb-68443480fcbd/page/tZU0F" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" loading="lazy"></iframe>
+      </div>
+      <div class="ls-bar">
+        <span style="font-size:.72rem;color:var(--dim)">ℹ️ ข้อมูลจริงจาก GA4 — เพิ่งเปิดใช้ ตัวเลขจะทยอยขึ้นใน 24–48 ชม. · คำค้นจาก Search Console ~48 ชม. หลังลิงก์</span>
+        <a class="ls-full" href="https://datastudio.google.com/reporting/78b4de7c-fc39-4eff-8dfb-68443480fcbd" target="_blank" rel="noopener">เปิดเต็มจอ ↗</a>
       </div>
     </div>
 
