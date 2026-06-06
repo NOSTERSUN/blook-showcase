@@ -174,12 +174,15 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .track-guide td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--neutral)}
 .track-guide td:first-child{color:var(--text);font-weight:500;width:44%}
 @media(max-width:768px){.track-links{grid-template-columns:1fr}}
-.ls-embed{position:relative;width:100%;aspect-ratio:600/450;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#0c0a0b}
+.ls-embed{position:relative;width:100%;aspect-ratio:8/3;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#0c0a0b}
 .ls-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .ls-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px}
 .ls-full{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--gold);text-decoration:none;border:1px solid var(--border);border-radius:20px;padding:7px 14px;transition:all .25s}
 .ls-full:hover{background:var(--gold);color:#111;border-color:var(--gold)}
-@media(max-width:600px){.ls-embed{aspect-ratio:auto;height:540px}}
+.track-go{color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color .2s}
+.track-go:hover{color:var(--gold2,#C9A24D);text-decoration:underline}
+.track-go svg{width:13px;height:13px;fill:currentColor;flex-shrink:0;opacity:.8}
+@media(max-width:600px){.ls-embed{aspect-ratio:2/1}}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
@@ -678,11 +681,11 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     <div class="panel">
       <div class="panel-title">ดูข้อมูลแต่ละอย่างได้ที่ไหน</div>
       <table class="track-guide">
-        <tr><td>จำนวนการเยี่ยมชมเว็บ</td><td>Google Analytics → Reports → Realtime / Engagement</td></tr>
-        <tr><td>คีย์เวิร์ดที่ค้น + จำนวนครั้ง (ความถี่)</td><td>Search Console → Performance → Queries</td></tr>
-        <tr><td>เพศ / อายุ ของผู้เข้าชม</td><td>Google Analytics → Reports → User → Demographics</td></tr>
-        <tr><td>ที่อยู่ (ประเทศ / เมือง)</td><td>Google Analytics → Reports → User → Geo</td></tr>
-        <tr><td>หน้าที่คนเข้าเยอะสุด</td><td>Google Analytics → Reports → Engagement → Pages</td></tr>
+        <tr><td>จำนวนการเยี่ยมชมเว็บ</td><td><a class="track-go" href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics → Realtime / Engagement<svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7z"/></svg></a></td></tr>
+        <tr><td>คีย์เวิร์ดที่ค้น + จำนวนครั้ง (ความถี่)</td><td><a class="track-go" href="https://search.google.com/search-console/performance/search-analytics?resource_id=https://blookliving.com/" target="_blank" rel="noopener">Search Console → Performance → Queries<svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7z"/></svg></a></td></tr>
+        <tr><td>เพศ / อายุ ของผู้เข้าชม</td><td><a class="track-go" href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics → User → Demographics<svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7z"/></svg></a></td></tr>
+        <tr><td>ที่อยู่ (ประเทศ / เมือง)</td><td><a class="track-go" href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics → User → Geo<svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7z"/></svg></a></td></tr>
+        <tr><td>หน้าที่คนเข้าเยอะสุด</td><td><a class="track-go" href="https://analytics.google.com/" target="_blank" rel="noopener">Google Analytics → Engagement → Pages<svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7z"/></svg></a></td></tr>
       </table>
     </div>
     <p style="font-size:.72rem;color:var(--dim);text-align:center;margin-top:6px">ℹ️ เว็บแบบ static แสดงตัวเลขสดในหน้านี้เองไม่ได้ จึงลิงก์ไปดูที่แดชบอร์ด Google โดยตรง — ข้อมูลจริง อัปเดตอัตโนมัติ ฟรี</p>
