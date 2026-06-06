@@ -183,6 +183,42 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .track-go:hover{color:var(--gold2,#C9A24D);text-decoration:underline}
 .track-go svg{width:13px;height:13px;fill:currentColor;flex-shrink:0;opacity:.8}
 @media(max-width:600px){.ls-embed{aspect-ratio:2/1}}
+/* Seller Assistant */
+.sa-step{font-size:.7rem;letter-spacing:.12em;color:var(--gold);font-weight:700;margin-bottom:2px}
+.sa-drop{border:2px dashed var(--border2,rgba(184,134,11,.4));border-radius:12px;padding:26px;text-align:center;color:var(--dim);cursor:pointer;transition:all .2s;background:var(--bg2)}
+.sa-drop.over{border-color:var(--gold);background:rgba(184,134,11,.08);color:var(--text)}
+.sa-drop svg{width:32px;height:32px;fill:var(--gold);margin-bottom:6px}
+.sa-thumbs{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.sa-thumb{position:relative;width:84px;height:84px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.sa-thumb img{width:100%;height:100%;object-fit:cover}
+.sa-thumb>button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:none;background:rgba(0,0,0,.62);color:#fff;cursor:pointer;font-size:.85rem;line-height:1;padding:0}
+.sa-thumb .idx{position:absolute;bottom:2px;left:3px;font-size:.58rem;color:#fff;background:rgba(0,0,0,.55);padding:1px 6px;border-radius:6px}
+.sa-opts{display:flex;flex-wrap:wrap;gap:8px}
+.sa-chip{padding:9px 15px;border-radius:22px;border:1px solid var(--border);background:var(--bg2);color:var(--neutral);cursor:pointer;font-family:inherit;font-size:.85rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.sa-chip:hover{border-color:var(--gold)}
+.sa-chip.on{background:var(--gold);color:#111;border-color:var(--gold);font-weight:600}
+.sa-chip .now{font-size:.58rem;background:#E4572E;color:#fff;padding:1px 6px;border-radius:8px;font-weight:700}
+.sa-sub{font-size:.74rem;color:var(--dim);margin:12px 0 8px}
+.sa-disc input{width:70px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:.9rem}
+.sa-ai summary{cursor:pointer;color:var(--gold);font-size:.86rem;font-weight:600;list-style:none}
+.sa-ai .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.sa-ai input{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:inherit;font-size:.82rem;flex:1;min-width:160px}
+.sa-ai button{padding:9px 16px;border-radius:8px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;font-family:inherit;font-weight:600}
+.sa-go{width:100%;margin:18px 0;padding:16px;border:none;border-radius:12px;background:linear-gradient(90deg,var(--gold),#8B6914);color:#fff;font-family:inherit;font-size:1.02rem;font-weight:700;cursor:pointer;transition:filter .2s}
+.sa-go:hover{filter:brightness(1.08)}
+.sa-pipeline{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.sa-dept{flex:1;min-width:150px;border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--bg2);font-size:.86rem;color:var(--neutral);transition:all .3s;opacity:.55}
+.sa-dept.work{border-color:var(--gold);color:var(--text);opacity:1}
+.sa-dept.done{border-color:#2E7D32;opacity:1}
+.sa-dept span{display:block;font-size:.7rem;color:var(--dim);margin-top:3px}
+.sa-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.sa-imgs{display:flex;flex-direction:column;gap:10px;max-height:560px;overflow:auto}
+.sa-imgs img{width:100%;border-radius:10px;border:1px solid var(--border)}
+.sa-cap textarea{width:100%;min-height:260px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--text);font-family:inherit;font-size:.9rem;line-height:1.7;resize:vertical}
+.sa-cap-bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sa-cap-bar button{padding:10px 15px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600}
+.sa-cap-bar button:hover{border-color:var(--gold);color:var(--gold)}
+@media(max-width:768px){.sa-result-grid{grid-template-columns:1fr}}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
@@ -363,6 +399,10 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <button class="tab-btn" data-tab="track" onclick="switchTab('track')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 3 5-6"/></svg>
         สถิติ / SEO
+      </button>
+      <button class="tab-btn" data-tab="seller" onclick="switchTab('seller')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l15-5v13L3 14z"/><path d="M11.5 17.5a3 3 0 01-5.6-1.5"/><path d="M18 8a3 3 0 010 6"/></svg>
+        ผู้ช่วยการขาย
       </button>
       <a href="index.html" class="sidebar-home">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10"/></svg>
@@ -691,6 +731,83 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     <p style="font-size:.72rem;color:var(--dim);text-align:center;margin-top:6px">ℹ️ เว็บแบบ static แสดงตัวเลขสดในหน้านี้เองไม่ได้ จึงลิงก์ไปดูที่แดชบอร์ด Google โดยตรง — ข้อมูลจริง อัปเดตอัตโนมัติ ฟรี</p>
   </div>
 
+  <!-- ============ TAB 6: SELLER ASSISTANT ============ -->
+  <div id="tab-seller" class="tab-panel">
+    <div class="profile-head">
+      <div>
+        <div style="font-size:.72rem;letter-spacing:.3em;color:var(--gold);margin-bottom:4px">SELLER ASSISTANT</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--text)">ผู้ช่วยการขาย · ทำโพสต์การตลาด</div>
+        <div style="font-size:.78rem;color:var(--dim);margin-top:4px">ลากรูป → เลือกแพลตฟอร์ม/วัตถุประสงค์/เทศกาล → 3 ฝ่ายช่วยกันออก "รูป + แคปชัน" พร้อมโพสต์</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="sa-step">ขั้นที่ 0</div>
+      <div class="panel-title">รูปภาพ (1–7 รูป)</div>
+      <div id="sa-drop" class="sa-drop">
+        <svg viewBox="0 0 24 24"><path d="M19 13v6H5v-6H3v6a2 2 0 002 2h14a2 2 0 002-2v-6h-2zM11 4.83V15h2V4.83l3.59 3.58L18 7l-6-6-6 6 1.41 1.41L11 4.83z"/></svg>
+        <div>ลากรูปมาวาง หรือ <b style="color:var(--gold)">คลิกเลือกไฟล์</b> (สูงสุด 7 รูป)</div>
+        <input type="file" id="sa-file" accept="image/*" multiple style="display:none">
+      </div>
+      <div id="sa-thumbs" class="sa-thumbs"></div>
+    </div>
+
+    <div class="panel">
+      <div class="sa-step">ขั้นที่ 1</div>
+      <div class="panel-title">แพลตฟอร์มที่จะโพสต์</div>
+      <div class="sa-opts" id="sa-platform"></div>
+      <div class="sa-sub">รูปแบบรูป (สัดส่วน — ครอปอัตโนมัติ)</div>
+      <div class="sa-opts" id="sa-aspect"></div>
+    </div>
+
+    <div class="panel">
+      <div class="sa-step">ขั้นที่ 2</div>
+      <div class="panel-title">วัตถุประสงค์</div>
+      <div class="sa-opts" id="sa-purpose"></div>
+      <div class="sa-disc" id="sa-discount-wrap" style="display:none;margin-top:12px;font-size:.85rem;color:var(--neutral)">ส่วนลด: <input type="number" id="sa-discount" value="30" min="1" max="90"> %</div>
+    </div>
+
+    <div class="panel">
+      <div class="sa-step">ขั้นที่ 3</div>
+      <div class="panel-title">เทศกาล / แคมเปญ</div>
+      <div class="sa-opts" id="sa-festival"></div>
+    </div>
+
+    <details class="panel sa-ai">
+      <summary>⚙️ AI (ออปชัน) — ใส่ Claude API key เพื่อให้ AI เขียนแคปชันสด</summary>
+      <div class="row">
+        <input type="password" id="sa-aikey" placeholder="sk-ant-... (วางคีย์ของคุณ)">
+        <input type="text" id="sa-aimodel" value="claude-3-5-haiku-latest" style="flex:0 0 200px" title="ชื่อโมเดล">
+        <button type="button" onclick="bkSaveKey()">บันทึก</button>
+        <span id="sa-aistatus" style="font-size:.76rem;color:var(--dim)"></span>
+      </div>
+      <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔒 คีย์เก็บใน <b>เครื่องนี้เท่านั้น</b> (localStorage) ไม่ขึ้น GitHub · ไม่ใส่ก็ใช้ "เทมเพลตอัจฉริยะ" ได้ปกติ · มีคีย์เมื่อไหร่ ฝ่ายการตลาดจะใช้ AI เขียนสดแทน</p>
+    </details>
+
+    <button class="sa-go" type="button" onclick="bkGenerate()">✨ ให้ 3 ฝ่ายช่วยกันสร้างโพสต์</button>
+
+    <div id="sa-pipeline" class="sa-pipeline" style="display:none">
+      <div class="sa-dept" data-d="graphic">🎨 ฝ่ายกราฟิก<span>รอ</span></div>
+      <div class="sa-dept" data-d="marketing">✍️ ฝ่ายการตลาด<span>รอ</span></div>
+      <div class="sa-dept" data-d="director">🧭 ครีเอทีฟไดเรกเตอร์<span>รอ</span></div>
+    </div>
+
+    <div id="sa-result" class="panel" style="display:none">
+      <div class="panel-title">✅ โพสต์พร้อมใช้</div>
+      <div class="sa-result-grid">
+        <div class="sa-imgs" id="sa-out-imgs"></div>
+        <div class="sa-cap">
+          <textarea id="sa-out-cap" spellcheck="false"></textarea>
+          <div class="sa-cap-bar">
+            <button type="button" onclick="bkCopyCap()">📋 คัดลอกแคปชัน</button>
+            <button type="button" onclick="bkDownloadAll()">⬇️ ดาวน์โหลดรูปทั้งหมด</button>
+            <button type="button" onclick="bkGenerate()">🔄 สุ่มใหม่</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   </main><!-- /content -->
 </div>
 
@@ -814,7 +931,194 @@ function switchTab(tab){
   if(tab==='finance') renderFinance();
   if(tab==='cards') renderCards();
   if(tab==='track' && typeof checkGaStatus==='function') checkGaStatus();
+  if(tab==='seller' && typeof bkSellerInit==='function') bkSellerInit();
 }
+
+/* ============ SELLER ASSISTANT ============ */
+var SA_PLATFORMS=[
+  {k:'facebook',l:'Facebook',aspect:'1:1',tags:['#BLOOKLIVING','#เฟอร์นิเจอร์แต่งบ้าน']},
+  {k:'instagram',l:'Instagram',aspect:'4:5',tags:['#blookliving','#interiordesign','#homedecor']},
+  {k:'lemon8',l:'Lemon8',aspect:'3:4',tags:['#Lemon8แต่งบ้าน','#รีวิวของแต่งบ้าน']}
+];
+var SA_ASPECTS=[
+  {k:'1:1',l:'สี่เหลี่ยม 1:1',w:1080,h:1080},
+  {k:'4:5',l:'แนวตั้ง 4:5',w:1080,h:1350},
+  {k:'3:4',l:'แนวตั้ง 3:4',w:1080,h:1440},
+  {k:'9:16',l:'สตอรี่ 9:16',w:1080,h:1920},
+  {k:'1.91:1',l:'แนวนอน 1.91:1',w:1200,h:628}
+];
+var SA_PURPOSES=[
+  {k:'brand',l:'แบรนด์ดิ้ง (The Class of Calm)'},
+  {k:'sale',l:'ขาย (ลดราคา)'}
+];
+var SA_FESTIVALS=[
+  {k:'none',l:'ไม่มี'},
+  {k:'6.6',l:'6.6',badge:'6.6',emoji:'🔥',accent:'#E4572E',m:6,d:6,th:'🔥 ดีลเด็ดรับ 6.6 มาแล้ว!',en:'6.6 Mega Sale',tag:'#6_6Sale'},
+  {k:'7.7',l:'7.7',badge:'7.7',emoji:'🔥',accent:'#E4572E',m:7,d:7,th:'🔥 7.7 ลดจัดเต็ม!',en:'7.7 Sale',tag:'#7_7Sale'},
+  {k:'8.8',l:'8.8',badge:'8.8',emoji:'🔥',accent:'#E4572E',m:8,d:8,th:'🔥 8.8 ดีลแรงรับกลางปี!',en:'8.8 Sale',tag:'#8_8Sale'},
+  {k:'9.9',l:'9.9',badge:'9.9',emoji:'🛍️',accent:'#C0392B',m:9,d:9,th:'🛍️ 9.9 ช้อปคุ้มรับสิ้นปี!',en:'9.9 Sale',tag:'#9_9Sale'},
+  {k:'10.10',l:'10.10',badge:'10.10',emoji:'🛍️',accent:'#C0392B',m:10,d:10,th:'🛍️ 10.10 ดีลใหญ่!',en:'10.10 Sale',tag:'#10_10Sale'},
+  {k:'11.11',l:'11.11',badge:'11.11',emoji:'🛒',accent:'#B8001F',m:11,d:11,th:'🛒 11.11 เซลใหญ่แห่งปี!',en:'11.11 Mega Sale',tag:'#11_11Sale'},
+  {k:'12.12',l:'12.12',badge:'12.12',emoji:'🎉',accent:'#B8860B',m:12,d:12,th:'🎉 12.12 ส่งท้ายปีลดสูงสุด!',en:'12.12 Year-End Sale',tag:'#12_12Sale'},
+  {k:'newyear',l:'ปีใหม่',badge:'NEW YEAR',emoji:'🎊',accent:'#A0784A',m:1,d:1,th:'🎊 ต้อนรับปีใหม่ด้วยบ้านที่สงบ',en:'Happy New Year',tag:'#HappyNewYear'},
+  {k:'valentine',l:'วาเลนไทน์',badge:'VALENTINE',emoji:'💛',accent:'#C2185B',m:2,d:14,th:'💛 ของขวัญแทนใจ วันวาเลนไทน์',en:"Valentine's Gift",tag:'#Valentine'},
+  {k:'cny',l:'ตรุษจีน',badge:'ตรุษจีน',emoji:'🧧',accent:'#C0392B',m:2,d:1,th:'🧧 รับตรุษจีน เสริมบ้านมงคล',en:'Chinese New Year',tag:'#ตรุษจีน'},
+  {k:'songkran',l:'สงกรานต์',badge:'SONGKRAN',emoji:'💦',accent:'#1E88A8',m:4,d:13,th:'💦 สงกรานต์นี้ พักผ่อนสบายที่บ้าน',en:'Songkran Festival',tag:'#สงกรานต์'},
+  {k:'mothers',l:'วันแม่',badge:'วันแม่',emoji:'🤍',accent:'#1565C0',m:8,d:12,th:'🤍 ของขวัญวันแม่ จากใจ',en:"Mother's Day",tag:'#วันแม่'},
+  {k:'fathers',l:'วันพ่อ',badge:'วันพ่อ',emoji:'💛',accent:'#B8860B',m:12,d:5,th:'💛 ของขวัญวันพ่อ สุดพิเศษ',en:"Father's Day",tag:'#วันพ่อ'},
+  {k:'christmas',l:'คริสต์มาส',badge:'CHRISTMAS',emoji:'🎄',accent:'#2E7D32',m:12,d:25,th:'🎄 เติมความอบอุ่นรับคริสต์มาส',en:'Merry Christmas',tag:'#Christmas'},
+  {k:'blackfriday',l:'Black Friday',badge:'BLACK FRIDAY',emoji:'🖤',accent:'#111111',m:11,d:28,th:'🖤 Black Friday ลดทั้งร้าน!',en:'Black Friday',tag:'#BlackFriday'}
+];
+var saState={images:[],platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none'};
+var saReady=false, saLastUrls=[];
+var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
+
+function saNearestFestival(){ var n=new Date(),md=(n.getMonth()+1)*100+n.getDate(),best=null,bd=9999; SA_FESTIVALS.forEach(function(f){ if(!f.m)return; var fmd=f.m*100+f.d, dist=(fmd>=md)?fmd-md:fmd+1200-md; if(dist<bd){bd=dist;best=f;} }); return best; }
+function bkSellerInit(){
+  if(saReady) return; saReady=true;
+  var near=saNearestFestival(); if(near) saState.festival=near.k;
+  saChips('sa-platform',SA_PLATFORMS,'platform',function(o){ saState.platform=o.k; saState.aspect=o.aspect; saSyncAspect(); });
+  saChips('sa-aspect',SA_ASPECTS,'aspect',function(o){ saState.aspect=o.k; });
+  saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; });
+  saChips('sa-festival',SA_FESTIVALS,'festival',function(o){ saState.festival=o.k; }, near?near.k:null);
+  var dz=document.getElementById('sa-drop'), fi=document.getElementById('sa-file');
+  dz.addEventListener('click',function(){fi.click();});
+  fi.addEventListener('change',function(){ saAddFiles(fi.files); fi.value=''; });
+  ['dragenter','dragover'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.add('over');});});
+  ['dragleave','drop'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.remove('over');});});
+  dz.addEventListener('drop',function(ev){ if(ev.dataTransfer&&ev.dataTransfer.files) saAddFiles(ev.dataTransfer.files); });
+  var k=localStorage.getItem('bk-claude-key'); if(k){ document.getElementById('sa-aikey').value=k; document.getElementById('sa-aistatus').textContent='✅ มีคีย์ (AI พร้อม)'; }
+  var m=localStorage.getItem('bk-claude-model'); if(m) document.getElementById('sa-aimodel').value=m;
+}
+function saChips(id,arr,key,onPick,nearKey){
+  var c=document.getElementById(id); if(!c)return;
+  c.innerHTML=arr.map(function(o){ var on=(saState[key]===o.k)?' on':''; var now=(nearKey&&o.k===nearKey)?'<span class="now">🔔 ตอนนี้</span>':''; return '<button type="button" class="sa-chip'+on+'" data-k="'+o.k+'">'+(o.l||o.k)+now+'</button>'; }).join('');
+  [].forEach.call(c.querySelectorAll('.sa-chip'),function(b){ b.addEventListener('click',function(){ var o; for(var i=0;i<arr.length;i++){if(arr[i].k===b.getAttribute('data-k')){o=arr[i];break;}} [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){z.classList.remove('on');}); b.classList.add('on'); onPick(o); }); });
+}
+function saSyncAspect(){ var c=document.getElementById('sa-aspect'); if(!c)return; [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){ z.classList.toggle('on', z.getAttribute('data-k')===saState.aspect); }); }
+function saAddFiles(files){ [].forEach.call(files,function(f){ if(saState.images.length>=7)return; if(!/^image\//.test(f.type))return; var r=new FileReader(); r.onload=function(){ saState.images.push(r.result); saThumbs(); }; r.readAsDataURL(f); }); }
+function saThumbs(){ var c=document.getElementById('sa-thumbs'); c.innerHTML=saState.images.map(function(src,i){ return '<div class="sa-thumb"><img src="'+src+'"><span class="idx">'+(i+1)+'</span><button type="button" data-i="'+i+'">&times;</button></div>'; }).join(''); [].forEach.call(c.querySelectorAll('button'),function(b){ b.addEventListener('click',function(){ saState.images.splice(+b.getAttribute('data-i'),1); saThumbs(); }); }); }
+
+function saCover(x,img,X,Y,w,h){ var ir=img.width/img.height,tr=w/h,sw,sh,sx,sy; if(ir>tr){sh=img.height;sw=sh*tr;sx=(img.width-sw)/2;sy=0;}else{sw=img.width;sh=sw/tr;sx=0;sy=(img.height-sh)/2;} x.drawImage(img,sx,sy,sw,sh,X,Y,w,h); }
+function saRR(x,X,Y,w,h,r){ x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath(); }
+function saTintLogo(x,cx,cy,w,color){ if(!SA_LOGO_OK)return false; var s=Math.max(2,Math.round(w)),oc=document.createElement('canvas');oc.width=oc.height=s;var o=oc.getContext('2d');o.drawImage(SA_LOGO,0,0,s,s);o.globalCompositeOperation='source-in';o.fillStyle=color;o.fillRect(0,0,s,s);x.drawImage(oc,cx-w/2,cy-w/2,w,w);return true; }
+function buildPost(img,o){
+  var asp=null; for(var i=0;i<SA_ASPECTS.length;i++){if(SA_ASPECTS[i].k===o.aspect){asp=SA_ASPECTS[i];break;}} if(!asp)asp=SA_ASPECTS[0];
+  var W=asp.w,H=asp.h,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
+  saCover(x,img,0,0,W,H);
+  var tg=x.createLinearGradient(0,0,0,H*0.22);tg.addColorStop(0,'rgba(10,7,4,.45)');tg.addColorStop(1,'rgba(10,7,4,0)');x.fillStyle=tg;x.fillRect(0,0,W,H*0.22);
+  var bg=x.createLinearGradient(0,H*0.5,0,H);bg.addColorStop(0,'rgba(10,7,4,0)');bg.addColorStop(1,'rgba(10,7,4,.82)');x.fillStyle=bg;x.fillRect(0,H*0.5,W,H*0.5);
+  var pad=Math.round(W*0.055);
+  saTintLogo(x,pad+W*0.075,pad+W*0.075,W*0.15,'#ffffff');
+  var fes=null; for(var j=0;j<SA_FESTIVALS.length;j++){if(SA_FESTIVALS[j].k===o.festival){fes=SA_FESTIVALS[j];break;}}
+  if(fes&&fes.k!=='none'){
+    var label=(fes.emoji?fes.emoji+' ':'')+(fes.badge||fes.l);
+    x.font='700 '+Math.round(W*0.04)+'px Inter,Arial,sans-serif';x.textAlign='left';
+    var tw=x.measureText(label).width,bh=Math.round(W*0.082),bw=tw+Math.round(W*0.06),bx=W-pad-bw,by=pad;
+    x.fillStyle=fes.accent||'#A0784A';saRR(x,bx,by,bw,bh,bh/2);x.fill();
+    x.fillStyle='#fff';x.textBaseline='middle';x.fillText(label,bx+Math.round(W*0.03),by+bh/2);x.textBaseline='alphabetic';
+  }
+  x.textAlign='left';
+  if(o.purpose==='sale'){
+    var d=o.discount||30;
+    x.fillStyle='#fff';x.font='600 '+Math.round(W*0.045)+'px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif';
+    x.fillText('ลดสูงสุด',pad,H-pad-Math.round(W*0.115));
+    x.fillStyle='#FFCF3A';x.font='800 '+Math.round(W*0.135)+'px Inter,Arial,sans-serif';
+    x.fillText('-'+d+'%',pad,H-pad-Math.round(W*0.012));
+  } else {
+    x.fillStyle='rgba(255,255,255,.96)';x.font='italic 500 '+Math.round(W*0.058)+'px Georgia,"Times New Roman",serif';
+    x.fillText('The Class of Calm',pad,H-pad-Math.round(W*0.05));
+  }
+  x.textAlign='right';x.fillStyle='rgba(255,255,255,.92)';x.font='600 '+Math.round(W*0.032)+'px Inter,Arial,sans-serif';
+  x.fillText('blookliving.com',W-pad,H-pad);
+  return c;
+}
+function saPick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function composeCaption(o){
+  var fes=null,plat=null,i;
+  for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===o.festival){fes=SA_FESTIVALS[i];break;}}
+  for(i=0;i<SA_PLATFORMS.length;i++){if(SA_PLATFORMS[i].k===o.platform){plat=SA_PLATFORMS[i];break;}}
+  var L=[];
+  if(fes&&fes.k!=='none') L.push(fes.th);
+  if(o.purpose==='sale'){
+    L.push(saPick([
+      'ลดสูงสุด '+(o.discount||30)+'% เฉพาะช่วงนี้ — เปลี่ยนบ้านให้สงบในงบที่คุ้มกว่าเดิม',
+      'รับส่วนลด '+(o.discount||30)+'% กับคอลเลกชัน BLOOK LIVING ของดีมีจำนวนจำกัด',
+      'ดีลพิเศษ ลด '+(o.discount||30)+'% เติมความสงบให้ทุกมุมของบ้านคุณ ✨'
+    ]));
+    L.push(saPick(['📩 ทักแชทสั่งเลย หรือกดลิงก์ช้อปในโพสต์','สั่งเลยก่อนของหมด — ส่งตรงถึงบ้าน','ดูสินค้าทั้งหมดที่ blookliving.com']));
+  } else {
+    L.push(saPick([
+      'BLOOK LIVING — พื้นที่พักใจในบ้านคุณ ใช้ชีวิตช้าลงอย่างมีรสนิยม',
+      'ความสงบที่สัมผัสได้ในทุกมุมของบ้าน · The Class of Calm',
+      'ออกแบบบ้านให้เป็นที่พักใจ เรียบง่าย อบอุ่น และสงบในแบบของคุณ'
+    ]));
+    L.push(saPick(['ให้บ้านเป็นที่ที่คุณอยากกลับไปทุกวัน 🤍','เยี่ยมชมคอลเลกชันที่ blookliving.com']));
+  }
+  var th=L.join('\n');
+  var en=(o.purpose==='sale')
+    ? 'Up to '+(o.discount||30)+'% OFF — bring calm home for less. Shop now at blookliving.com'
+    : 'BLOOK LIVING — The Class of Calm. Slow living, beautifully designed. blookliving.com';
+  if(fes&&fes.k!=='none'&&fes.en) en=fes.en+' · '+en;
+  var tags=['#BLOOKLIVING','#TheClassOfCalm','#แต่งบ้าน','#ของแต่งบ้าน','#โซฟาTOGO','#หมอนเพื่อสุขภาพ','#น้ำหอมปรับอากาศ'];
+  if(o.purpose==='sale') tags=tags.concat(['#ลดราคา','#โปรโมชั่น']);
+  if(fes&&fes.tag) tags.push(fes.tag);
+  if(plat&&plat.tags) tags=tags.concat(plat.tags);
+  var uniq=[]; tags.forEach(function(t){ if(uniq.indexOf(t)<0)uniq.push(t); });
+  return th+'\n\n'+en+'\n\n'+uniq.join(' ');
+}
+function saAiCaption(){
+  var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve(null);
+  var model=localStorage.getItem('bk-claude-model')||'claude-3-5-haiku-latest';
+  var fes=null,plat=null,i;
+  for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===saState.festival){fes=SA_FESTIVALS[i];break;}}
+  for(i=0;i<SA_PLATFORMS.length;i++){if(SA_PLATFORMS[i].k===saState.platform){plat=SA_PLATFORMS[i];break;}}
+  var p='คุณคือทีมการตลาดแบรนด์ BLOOK LIVING (เฟอร์นิเจอร์ & ไลฟ์สไตล์ คอนเซ็ปต์ "The Class of Calm" · สินค้า: โซฟา TOGO, หมอนเพื่อสุขภาพ Argo, น้ำหอมปรับอากาศ/ก้านหอมกลิ่นโรงแรม, เซ็ทของขวัญ · เว็บ blookliving.com)\n'
+    +'เขียนแคปชันโพสต์ '+(plat?plat.l:'')+' '
+    +(saState.purpose==='sale'?('แนวขาย ลดราคา '+(saState.discount||30)+'%'):'แนวสร้างแบรนด์ เน้นอารมณ์ความสงบ ไม่ขายตรง')
+    +((fes&&fes.k!=='none')?(' ธีมเทศกาล '+(fes.l||'')):'')+'\n'
+    +'รูปแบบผลลัพธ์: ภาษาไทยก่อน (2-4 บรรทัด) แล้วตามด้วยภาษาอังกฤษสั้น ๆ 1 บรรทัด แล้วแฮชแท็ก 6-10 อัน · โทนหรูแต่อบอุ่น กระชับ พร้อมโพสต์ · ตอบเฉพาะแคปชัน ไม่ต้องมีคำอธิบายอื่น';
+  return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:700,messages:[{role:'user',content:p}]})})
+    .then(function(r){ if(!r.ok) throw new Error('api '+r.status); return r.json(); })
+    .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; });
+}
+function saSetDept(d,cls,msg){ var el=document.querySelector('.sa-dept[data-d="'+d+'"]'); if(!el)return; el.classList.remove('work','done'); if(cls)el.classList.add(cls); var s=el.querySelector('span'); if(s)s.textContent=msg||''; }
+function bkGenerate(){
+  if(!saState.images.length){ alert('กรุณาเพิ่มรูปอย่างน้อย 1 รูปก่อนครับ'); return; }
+  var pipe=document.getElementById('sa-pipeline'); pipe.style.display='flex';
+  document.getElementById('sa-result').style.display='none';
+  saSetDept('graphic','work','กำลังออกแบบรูป...'); saSetDept('marketing',null,'รอ'); saSetDept('director',null,'รอ');
+  setTimeout(function(){
+    var out=[],done=0,n=saState.images.length;
+    saState.images.forEach(function(src,idx){
+      var im=new Image(); im.onload=function(){ try{ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); }catch(e){ out[idx]=src; } if(++done===n) afterGraphic(out); };
+      im.onerror=function(){ out[idx]=src; if(++done===n) afterGraphic(out); };
+      im.src=src;
+    });
+  },350);
+  function afterGraphic(out){
+    saSetDept('graphic','done',out.length+' รูปเสร็จ');
+    saSetDept('marketing','work','กำลังเขียนแคปชัน...');
+    var useAI=!!localStorage.getItem('bk-claude-key');
+    var capP = useAI ? saAiCaption().catch(function(){return null;}) : Promise.resolve(null);
+    capP.then(function(aiTxt){
+      var cap=aiTxt||composeCaption(saState);
+      saSetDept('marketing','done', useAI&&aiTxt?'แคปชัน AI เสร็จ':'แคปชันเสร็จ');
+      saSetDept('director','work','กำลังตรวจ + ประกอบ...');
+      setTimeout(function(){ saSetDept('director','done','พร้อมโพสต์ ✓'); saShowResult(out,cap); },450);
+    });
+  }
+}
+function saShowResult(urls,cap){
+  saLastUrls=urls;
+  var res=document.getElementById('sa-result'); res.style.display='block';
+  document.getElementById('sa-out-imgs').innerHTML=urls.map(function(u,i){return '<img src="'+u+'" alt="โพสต์ '+(i+1)+'">';}).join('');
+  document.getElementById('sa-out-cap').value=cap;
+  res.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function bkCopyCap(){ var t=document.getElementById('sa-out-cap'); t.select(); try{ navigator.clipboard.writeText(t.value); }catch(e){ try{document.execCommand('copy');}catch(e2){} } alert('คัดลอกแคปชันแล้ว ✓'); }
+function bkDownloadAll(){ (saLastUrls||[]).forEach(function(u,i){ setTimeout(function(){ var a=document.createElement('a'); a.href=u; a.download='blook-post-'+(i+1)+'.jpg'; document.body.appendChild(a); a.click(); a.remove(); }, i*250); }); }
+function bkSaveKey(){ var k=document.getElementById('sa-aikey').value.trim(), m=document.getElementById('sa-aimodel').value.trim(); if(k) localStorage.setItem('bk-claude-key',k); else localStorage.removeItem('bk-claude-key'); if(m) localStorage.setItem('bk-claude-model',m); document.getElementById('sa-aistatus').textContent=k?'✅ บันทึกคีย์แล้ว (AI พร้อม)':'ลบคีย์แล้ว (ใช้เทมเพลต)'; }
 function checkGaStatus(){
   var el=document.getElementById('ga-status'); if(!el) return;
   fetch('assets/analytics.js',{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
