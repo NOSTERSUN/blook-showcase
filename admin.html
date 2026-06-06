@@ -691,6 +691,10 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     <div class="panel" style="border-left:3px solid var(--gold)">
       <div class="panel-title">สถานะการเก็บข้อมูล (Google Analytics · GA4)</div>
       <div id="ga-status" style="font-size:.9rem;color:var(--text)">กำลังตรวจสอบ…</div>
+      <div id="ga-owner-row" style="margin-top:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="font-size:.82rem;color:var(--text)">🛡️ <b>โหมดเจ้าของ</b> <span id="ga-owner-state" style="color:var(--gold);font-weight:600"></span><br><span style="font-size:.72rem;color:var(--dim)">เครื่องนี้จะ<b>ไม่ถูกนับ</b>ใน GA4 — สถิติจะเหลือแต่ลูกค้าจริง</span></div>
+        <button type="button" id="ga-owner-btn" onclick="bkToggleOwner()" style="padding:8px 16px;border-radius:8px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;font-family:inherit;font-weight:600;font-size:.82rem">เปลี่ยน</button>
+      </div>
       <div style="font-size:.8rem;color:var(--dim);margin-top:8px;line-height:1.8">
         🔧 วิธีเปิดใช้งาน: เปิดไฟล์ <b style="color:var(--gold)">assets/analytics.js</b> → แก้บรรทัด <code style="color:var(--gold2,#C9A24D)">GA_ID = 'G-XXXXXXXXXX'</code> เป็น Measurement ID จริงจาก Google Analytics → push ขึ้น GitHub<br>เท่านี้ทุกหน้าสาธารณะจะเริ่มเก็บข้อมูลอัตโนมัติ (ยกเว้นหน้า Admin) · ยังไม่มี GA? สมัครฟรีที่ analytics.google.com แล้วสร้าง Property แบบ "Web"
       </div>
@@ -890,6 +894,8 @@ function checkLogin(){
   const TIERS = { 'BK1M':'staff', 'BKA':'bka', 'BKC':'bkc' };
   if(TIERS[pwd]){
     window.bkTier = TIERS[pwd];   // staff=ใช้ลายเซ็นอัตโนมัติทั้งหมด · bka=ใช้ที่เหลือ(ไม่รวม sawarin/wongsatorn) · bkc=ไม่ใช้อัตโนมัติ
+    // เครื่องนี้คือ "เจ้าของ/พนักงาน" → กรองออกจาก GA4 ตั้งแต่นี้เป็นต้นไป (ทุกหน้า ทุกอุปกรณ์ที่ login)
+    try{ localStorage.setItem('bk-owner','yes'); localStorage.setItem('bk-owner-since', new Date().toISOString().slice(0,10)); }catch(e){}
     document.getElementById('login-gate').classList.add('hidden');
     document.getElementById('app').classList.add('active');
     initApp();
@@ -1126,6 +1132,19 @@ function checkGaStatus(){
     if(id && id.indexOf('G-')===0 && id!=='G-XXXXXXXXXX'){ el.innerHTML='✅ ติดตั้งแล้ว — กำลังเก็บข้อมูลทุกหน้า (ID: <b style="color:var(--gold)">'+id+'</b>)'; }
     else { el.innerHTML='⏳ ยังไม่ได้ใส่ Measurement ID — เว็บยังไม่เริ่มเก็บข้อมูล (ทำตามวิธีด้านล่าง)'; }
   }).catch(function(){ el.textContent='เปิด assets/analytics.js แล้วใส่ Measurement ID เพื่อเริ่มเก็บข้อมูล'; });
+  bkRefreshOwnerUI();
+}
+function bkRefreshOwnerUI(){
+  var s=document.getElementById('ga-owner-state'), b=document.getElementById('ga-owner-btn'); if(!s||!b) return;
+  var on=false; try{ on=(localStorage.getItem('bk-owner')==='yes'); }catch(e){}
+  if(on){ s.textContent='เปิดอยู่ ✓ (ไม่ถูกนับ)'; s.style.color='#7fcf7f'; b.textContent='ปิดโหมดเจ้าของ'; }
+  else { s.textContent='ปิดอยู่ (เครื่องนี้จะถูกนับเหมือนลูกค้า)'; s.style.color='var(--gold)'; b.textContent='เปิดโหมดเจ้าของ'; }
+}
+function bkToggleOwner(){
+  var on=false; try{ on=(localStorage.getItem('bk-owner')==='yes'); }catch(e){}
+  try{ if(on){ localStorage.removeItem('bk-owner'); localStorage.removeItem('bk-owner-since'); } else { localStorage.setItem('bk-owner','yes'); localStorage.setItem('bk-owner-since', new Date().toISOString().slice(0,10)); } }catch(e){}
+  bkRefreshOwnerUI();
+  alert(on ? 'ปิดโหมดเจ้าของแล้ว — เครื่องนี้จะถูกนับใน GA4 ตามปกติ (รีโหลดหน้าเว็บอื่นเพื่อให้มีผล)' : '✅ เปิดโหมดเจ้าของแล้ว — เครื่องนี้จะไม่ถูกนับใน GA4 (รีโหลดหน้าอื่นเพื่อให้มีผลทันที)');
 }
 
 // ============ TEAM BUSINESS CARDS ============

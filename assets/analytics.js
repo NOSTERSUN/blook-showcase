@@ -11,6 +11,10 @@
 
   if(!GA_ID || GA_ID.indexOf('G-') !== 0 || GA_ID === 'G-XXXXXXXXXX') return; // ยังไม่ตั้งค่า → ไม่โหลด
 
+  // กรอง "เจ้าของ/พนักงาน" ออกจากสถิติ — เครื่องที่เคย login admin จะถูก mark localStorage 'bk-owner'='yes'
+  // เปิด/ปิดได้ในแท็บ "สถิติ/SEO" ของ admin
+  try{ if(localStorage.getItem('bk-owner')==='yes') return; }catch(e){}
+
   var s = document.createElement('script');
   s.async = true;
   s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
