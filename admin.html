@@ -188,11 +188,16 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .sa-drop{border:2px dashed var(--border2,rgba(184,134,11,.4));border-radius:12px;padding:26px;text-align:center;color:var(--dim);cursor:pointer;transition:all .2s;background:var(--bg2)}
 .sa-drop.over{border-color:var(--gold);background:rgba(184,134,11,.08);color:var(--text)}
 .sa-drop svg{width:32px;height:32px;fill:var(--gold);margin-bottom:6px}
-.sa-thumbs{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.sa-thumb{position:relative;width:84px;height:84px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
-.sa-thumb img{width:100%;height:100%;object-fit:cover}
-.sa-thumb>button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:none;background:rgba(0,0,0,.62);color:#fff;cursor:pointer;font-size:.85rem;line-height:1;padding:0}
-.sa-thumb .idx{position:absolute;bottom:2px;left:3px;font-size:.58rem;color:#fff;background:rgba(0,0,0,.55);padding:1px 6px;border-radius:6px}
+.sa-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;margin-top:14px}
+.sa-thumb{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:#0d0a08;cursor:grab;transition:transform .2s,box-shadow .2s;touch-action:none;user-select:none}
+.sa-thumb:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.35);border-color:var(--gold)}
+.sa-thumb.dragging{opacity:.55;transform:scale(.95);cursor:grabbing}
+.sa-thumb.drop-target{box-shadow:0 0 0 2px var(--gold) inset}
+.sa-thumb img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.sa-thumb>button{position:absolute;top:5px;right:5px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(0,0,0,.72);color:#fff;cursor:pointer;font-size:.92rem;line-height:1;padding:0;z-index:2}
+.sa-thumb>button:hover{background:#E4572E}
+.sa-thumb .idx{position:absolute;top:5px;left:5px;font-size:.62rem;font-weight:700;color:#1a0f08;background:var(--gold);padding:2px 7px;border-radius:6px;min-width:18px;text-align:center}
+.sa-thumb .grip{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);font-size:.58rem;color:rgba(255,255,255,.7);background:rgba(0,0,0,.45);padding:2px 8px;border-radius:8px;letter-spacing:.05em}
 .sa-opts{display:flex;flex-wrap:wrap;gap:8px}
 .sa-chip{padding:9px 15px;border-radius:22px;border:1px solid var(--border);background:var(--bg2);color:var(--neutral);cursor:pointer;font-family:inherit;font-size:.85rem;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
 .sa-chip:hover{border-color:var(--gold)}
@@ -219,6 +224,29 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .sa-cap-bar button{padding:10px 15px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600}
 .sa-cap-bar button:hover{border-color:var(--gold);color:var(--gold)}
 @media(max-width:768px){.sa-result-grid{grid-template-columns:1fr}}
+.sa-fest-month{margin:14px 0 4px;font-size:.68rem;letter-spacing:.22em;color:var(--gold);font-weight:700;text-transform:uppercase}
+.sa-fest-soon{margin-top:8px;padding:10px 14px;background:rgba(184,134,11,.08);border:1px solid rgba(184,134,11,.4);border-radius:10px;font-size:.82rem;color:var(--text)}
+.sa-fest-soon b{color:var(--gold)}
+.sa-platform-preview{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:24px;background:var(--bg2);color:var(--neutral);cursor:pointer;font-family:inherit;font-size:.84rem;border:1px solid var(--border);transition:all .2s}
+.sa-platform-preview.on{background:var(--gold);color:#111;border-color:var(--gold);font-weight:600}
+.sa-mockup{background:var(--bg2);border-radius:14px;border:1px solid var(--border);padding:14px;max-width:420px;margin:0 auto}
+.sa-mockup-head{display:flex;align-items:center;gap:10px;padding:0 4px 10px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.sa-mockup-head .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A0784A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.86rem}
+.sa-mockup-head .name{font-size:.82rem;font-weight:600;color:var(--text)}
+.sa-mockup-head .name span{display:block;font-size:.66rem;color:var(--dim);font-weight:400}
+.sa-mockup-frame{position:relative;background:#000;border-radius:8px;overflow:hidden}
+.sa-mockup-scroll{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.sa-mockup-scroll::-webkit-scrollbar{height:6px}
+.sa-mockup-scroll::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+.sa-mockup-slide{flex:0 0 100%;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;background:#000}
+.sa-mockup-slide img{width:100%;height:auto;display:block;object-fit:contain;max-height:580px}
+.sa-mockup-pager{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.sa-mockup-pager span{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .2s}
+.sa-mockup-pager span.on{background:var(--gold);width:18px;border-radius:6px}
+.sa-mockup-bar{padding:10px 4px 4px;display:flex;gap:14px;color:var(--neutral);font-size:.78rem}
+.sa-mockup-bar svg{width:18px;height:18px;fill:currentColor}
+.sa-mockup-cap{padding:6px 4px;font-size:.76rem;color:var(--text);line-height:1.5;max-height:90px;overflow:auto}
+.sa-mockup-cap b{font-weight:700}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
@@ -747,10 +775,10 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 
     <div class="panel">
       <div class="sa-step">ขั้นที่ 0</div>
-      <div class="panel-title">รูปภาพ (1–7 รูป)</div>
+      <div class="panel-title">รูปภาพ (1–12 รูป) <span id="sa-count" style="font-size:.78rem;color:var(--dim);font-weight:400;margin-left:8px">0 / 12</span></div>
       <div id="sa-drop" class="sa-drop">
         <svg viewBox="0 0 24 24"><path d="M19 13v6H5v-6H3v6a2 2 0 002 2h14a2 2 0 002-2v-6h-2zM11 4.83V15h2V4.83l3.59 3.58L18 7l-6-6-6 6 1.41 1.41L11 4.83z"/></svg>
-        <div>ลากรูปมาวาง หรือ <b style="color:var(--gold)">คลิกเลือกไฟล์</b> (สูงสุด 7 รูป)</div>
+        <div>ลากรูปมาวาง หรือ <b style="color:var(--gold)">คลิกเลือกไฟล์</b> (สูงสุด 12 รูป · จะแสดงเป็นการ์ดที่ <b style="color:var(--gold)">ลากจัดเรียงลำดับ</b>ได้)</div>
         <input type="file" id="sa-file" accept="image/*" multiple style="display:none">
       </div>
       <div id="sa-thumbs" class="sa-thumbs"></div>
@@ -774,7 +802,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     <div class="panel">
       <div class="sa-step">ขั้นที่ 3</div>
       <div class="panel-title">เทศกาล / แคมเปญ</div>
-      <div class="sa-opts" id="sa-festival"></div>
+      <div id="sa-fest-soon" class="sa-fest-soon" style="display:none"></div>
+      <div id="sa-festival"></div>
     </div>
 
     <details class="panel sa-ai">
@@ -797,9 +826,12 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     </div>
 
     <div id="sa-result" class="panel" style="display:none">
-      <div class="panel-title">✅ โพสต์พร้อมใช้</div>
+      <div class="panel-title">✅ โพสต์พร้อมใช้ <span style="font-size:.74rem;color:var(--dim);font-weight:400;margin-left:6px">— ดูตัวอย่างเหมือนบนแอปจริง</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="sa-preview-tabs"></div>
       <div class="sa-result-grid">
-        <div class="sa-imgs" id="sa-out-imgs"></div>
+        <div>
+          <div id="sa-mockup-host"></div>
+        </div>
         <div class="sa-cap">
           <textarea id="sa-out-cap" spellcheck="false"></textarea>
           <div class="sa-cap-bar">
@@ -940,70 +972,149 @@ function switchTab(tab){
   if(tab==='seller' && typeof bkSellerInit==='function') bkSellerInit();
 }
 
-/* ============ SELLER ASSISTANT ============ */
+/* ============ SELLER ASSISTANT ============
+   เปลี่ยน mode/เทศกาล/แคปชันได้ที่ "sale assis/config.json" (โหลดตอน init; fallback ใช้ค่าด้านล่าง) */
+var SA_CFG=null;
 var SA_PLATFORMS=[
   {k:'facebook',l:'Facebook',aspect:'1:1',tags:['#BLOOKLIVING','#เฟอร์นิเจอร์แต่งบ้าน']},
   {k:'instagram',l:'Instagram',aspect:'4:5',tags:['#blookliving','#interiordesign','#homedecor']},
-  {k:'lemon8',l:'Lemon8',aspect:'3:4',tags:['#Lemon8แต่งบ้าน','#รีวิวของแต่งบ้าน']}
+  {k:'lemon8',l:'Lemon8',aspect:'3:4',tags:['#Lemon8แต่งบ้าน','#รีวิวของแต่งบ้าน']},
+  {k:'tiktok',l:'TikTok (image post)',aspect:'9:16',tags:['#TikTokShopTH','#แต่งบ้าน']},
+  {k:'x',l:'X (Twitter)',aspect:'16:9',tags:['#BLOOK','#interior']}
 ];
 var SA_ASPECTS=[
   {k:'1:1',l:'สี่เหลี่ยม 1:1',w:1080,h:1080},
   {k:'4:5',l:'แนวตั้ง 4:5',w:1080,h:1350},
   {k:'3:4',l:'แนวตั้ง 3:4',w:1080,h:1440},
-  {k:'9:16',l:'สตอรี่ 9:16',w:1080,h:1920},
-  {k:'1.91:1',l:'แนวนอน 1.91:1',w:1200,h:628}
+  {k:'9:16',l:'สตอรี่/TikTok 9:16',w:1080,h:1920},
+  {k:'1.91:1',l:'แนวนอน 1.91:1',w:1200,h:628},
+  {k:'16:9',l:'แนวนอน 16:9',w:1600,h:900}
 ];
 var SA_PURPOSES=[
-  {k:'brand',l:'แบรนด์ดิ้ง (The Class of Calm)'},
-  {k:'sale',l:'ขาย (ลดราคา)'}
+  {k:'brand',l:'Branding (ไม่ขายตรง · เน้นภาพลักษณ์)'},
+  {k:'sale',l:'เน้นขาย (เน้นแรงจูงใจซื้อ)'}
 ];
 var SA_FESTIVALS=[
-  {k:'none',l:'ไม่มี'},
+  {k:'none',l:'ไม่มี',m:0,d:0},
+  {k:'newyear',l:'ปีใหม่',badge:'NEW YEAR',emoji:'🎊',accent:'#A0784A',m:1,d:1,th:'🎊 ต้อนรับปีใหม่ด้วยบ้านที่สงบ',en:'Happy New Year',tag:'#HappyNewYear'},
+  {k:'1.1',l:'1.1',badge:'1.1',emoji:'🛍️',accent:'#C0392B',m:1,d:1,th:'🛍️ 1.1 เปิดปีใหม่ด้วยดีลคุ้ม',en:'1.1 Sale',tag:'#1_1Sale'},
+  {k:'cny',l:'ตรุษจีน',badge:'ตรุษจีน',emoji:'🧧',accent:'#C0392B',m:2,d:1,th:'🧧 รับตรุษจีน เสริมบ้านมงคล',en:'Chinese New Year',tag:'#ตรุษจีน'},
+  {k:'2.2',l:'2.2',badge:'2.2',emoji:'🛍️',accent:'#C0392B',m:2,d:2,th:'🛍️ 2.2 ดีลเด็ดต้อนรับเดือนแห่งความรัก',en:'2.2 Sale',tag:'#2_2Sale'},
+  {k:'valentine',l:'วาเลนไทน์',badge:'VALENTINE',emoji:'💛',accent:'#C2185B',m:2,d:14,th:'💛 ของขวัญแทนใจ วันวาเลนไทน์',en:"Valentine's Gift",tag:'#Valentine'},
+  {k:'3.3',l:'3.3',badge:'3.3',emoji:'🛍️',accent:'#C0392B',m:3,d:3,th:'🛍️ 3.3 รับฤดูใหม่ด้วยดีลใหม่',en:'3.3 Sale',tag:'#3_3Sale'},
+  {k:'4.4',l:'4.4',badge:'4.4',emoji:'🛍️',accent:'#C0392B',m:4,d:4,th:'🛍️ 4.4 ดีลแรงรับซัมเมอร์',en:'4.4 Sale',tag:'#4_4Sale'},
+  {k:'songkran',l:'สงกรานต์',badge:'SONGKRAN',emoji:'💦',accent:'#1E88A8',m:4,d:13,th:'💦 สงกรานต์นี้ พักผ่อนสบายที่บ้าน',en:'Songkran Festival',tag:'#สงกรานต์'},
+  {k:'5.5',l:'5.5',badge:'5.5',emoji:'🛍️',accent:'#C0392B',m:5,d:5,th:'🛍️ 5.5 กลางเดือน ดีลกลางปี',en:'5.5 Sale',tag:'#5_5Sale'},
   {k:'6.6',l:'6.6',badge:'6.6',emoji:'🔥',accent:'#E4572E',m:6,d:6,th:'🔥 ดีลเด็ดรับ 6.6 มาแล้ว!',en:'6.6 Mega Sale',tag:'#6_6Sale'},
   {k:'7.7',l:'7.7',badge:'7.7',emoji:'🔥',accent:'#E4572E',m:7,d:7,th:'🔥 7.7 ลดจัดเต็ม!',en:'7.7 Sale',tag:'#7_7Sale'},
   {k:'8.8',l:'8.8',badge:'8.8',emoji:'🔥',accent:'#E4572E',m:8,d:8,th:'🔥 8.8 ดีลแรงรับกลางปี!',en:'8.8 Sale',tag:'#8_8Sale'},
+  {k:'mothers',l:'วันแม่',badge:'วันแม่',emoji:'🤍',accent:'#1565C0',m:8,d:12,th:'🤍 ของขวัญวันแม่ จากใจ',en:"Mother's Day",tag:'#วันแม่'},
   {k:'9.9',l:'9.9',badge:'9.9',emoji:'🛍️',accent:'#C0392B',m:9,d:9,th:'🛍️ 9.9 ช้อปคุ้มรับสิ้นปี!',en:'9.9 Sale',tag:'#9_9Sale'},
   {k:'10.10',l:'10.10',badge:'10.10',emoji:'🛍️',accent:'#C0392B',m:10,d:10,th:'🛍️ 10.10 ดีลใหญ่!',en:'10.10 Sale',tag:'#10_10Sale'},
   {k:'11.11',l:'11.11',badge:'11.11',emoji:'🛒',accent:'#B8001F',m:11,d:11,th:'🛒 11.11 เซลใหญ่แห่งปี!',en:'11.11 Mega Sale',tag:'#11_11Sale'},
-  {k:'12.12',l:'12.12',badge:'12.12',emoji:'🎉',accent:'#B8860B',m:12,d:12,th:'🎉 12.12 ส่งท้ายปีลดสูงสุด!',en:'12.12 Year-End Sale',tag:'#12_12Sale'},
-  {k:'newyear',l:'ปีใหม่',badge:'NEW YEAR',emoji:'🎊',accent:'#A0784A',m:1,d:1,th:'🎊 ต้อนรับปีใหม่ด้วยบ้านที่สงบ',en:'Happy New Year',tag:'#HappyNewYear'},
-  {k:'valentine',l:'วาเลนไทน์',badge:'VALENTINE',emoji:'💛',accent:'#C2185B',m:2,d:14,th:'💛 ของขวัญแทนใจ วันวาเลนไทน์',en:"Valentine's Gift",tag:'#Valentine'},
-  {k:'cny',l:'ตรุษจีน',badge:'ตรุษจีน',emoji:'🧧',accent:'#C0392B',m:2,d:1,th:'🧧 รับตรุษจีน เสริมบ้านมงคล',en:'Chinese New Year',tag:'#ตรุษจีน'},
-  {k:'songkran',l:'สงกรานต์',badge:'SONGKRAN',emoji:'💦',accent:'#1E88A8',m:4,d:13,th:'💦 สงกรานต์นี้ พักผ่อนสบายที่บ้าน',en:'Songkran Festival',tag:'#สงกรานต์'},
-  {k:'mothers',l:'วันแม่',badge:'วันแม่',emoji:'🤍',accent:'#1565C0',m:8,d:12,th:'🤍 ของขวัญวันแม่ จากใจ',en:"Mother's Day",tag:'#วันแม่'},
+  {k:'loykrathong',l:'ลอยกระทง',badge:'ลอยกระทง',emoji:'🪷',accent:'#7B4F9A',m:11,d:15,th:'🪷 ลอยกระทง คืนแห่งความสงบ',en:'Loy Krathong',tag:'#ลอยกระทง'},
+  {k:'blackfriday',l:'Black Friday',badge:'BLACK FRIDAY',emoji:'🖤',accent:'#111111',m:11,d:28,th:'🖤 Black Friday ลดทั้งร้าน!',en:'Black Friday',tag:'#BlackFriday'},
   {k:'fathers',l:'วันพ่อ',badge:'วันพ่อ',emoji:'💛',accent:'#B8860B',m:12,d:5,th:'💛 ของขวัญวันพ่อ สุดพิเศษ',en:"Father's Day",tag:'#วันพ่อ'},
-  {k:'christmas',l:'คริสต์มาส',badge:'CHRISTMAS',emoji:'🎄',accent:'#2E7D32',m:12,d:25,th:'🎄 เติมความอบอุ่นรับคริสต์มาส',en:'Merry Christmas',tag:'#Christmas'},
-  {k:'blackfriday',l:'Black Friday',badge:'BLACK FRIDAY',emoji:'🖤',accent:'#111111',m:11,d:28,th:'🖤 Black Friday ลดทั้งร้าน!',en:'Black Friday',tag:'#BlackFriday'}
+  {k:'12.12',l:'12.12',badge:'12.12',emoji:'🎉',accent:'#B8860B',m:12,d:12,th:'🎉 12.12 ส่งท้ายปีลดสูงสุด!',en:'12.12 Year-End Sale',tag:'#12_12Sale'},
+  {k:'christmas',l:'คริสต์มาส',badge:'CHRISTMAS',emoji:'🎄',accent:'#2E7D32',m:12,d:25,th:'🎄 เติมความอบอุ่นรับคริสต์มาส',en:'Merry Christmas',tag:'#Christmas'}
 ];
-var saState={images:[],platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none'};
+var SA_MAX_IMAGES=12, SA_MONTHS=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+var saState={images:[],platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',previewPlatform:'instagram'};
 var saReady=false, saLastUrls=[];
 var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
 
+/* โหลด config จาก sale assis/config.json (ถ้ามี — override ค่า inline ด้านบน) */
+function saLoadConfig(cb){
+  fetch('sale%20assis/config.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+    if(j){
+      SA_CFG=j;
+      if(j.platforms&&j.platforms.length) SA_PLATFORMS=j.platforms.map(function(p){return {k:p.key,l:p.label,aspect:p.aspect,tags:p.tags||[]};});
+      if(j.aspects&&j.aspects.length) SA_ASPECTS=j.aspects.map(function(a){return {k:a.key,l:a.label,w:a.w,h:a.h};});
+      if(j.purposes&&j.purposes.length) SA_PURPOSES=j.purposes.map(function(p){return {k:p.key,l:p.label};});
+      if(j.festivals&&j.festivals.length) SA_FESTIVALS=j.festivals.map(function(f){return {k:f.key,l:f.label,badge:f.badge,emoji:f.emoji,accent:f.accent,m:(f.m!=null?f.m:f.month),d:(f.d!=null?f.d:f.day),th:f.th,en:f.en,tag:f.tag};});
+    }
+    cb();
+  }).catch(function(){ cb(); });
+}
+
 function saNearestFestival(){ var n=new Date(),md=(n.getMonth()+1)*100+n.getDate(),best=null,bd=9999; SA_FESTIVALS.forEach(function(f){ if(!f.m)return; var fmd=f.m*100+f.d, dist=(fmd>=md)?fmd-md:fmd+1200-md; if(dist<bd){bd=dist;best=f;} }); return best; }
+function saDaysTo(f){ if(!f||!f.m) return null; var n=new Date(),y=n.getFullYear(),t=new Date(y,f.m-1,f.d); if(t<n.setHours(0,0,0,0)) t=new Date(y+1,f.m-1,f.d); return Math.ceil((t-(new Date()).setHours(0,0,0,0))/86400000); }
 function bkSellerInit(){
   if(saReady) return; saReady=true;
-  var near=saNearestFestival(); if(near) saState.festival=near.k;
-  saChips('sa-platform',SA_PLATFORMS,'platform',function(o){ saState.platform=o.k; saState.aspect=o.aspect; saSyncAspect(); });
-  saChips('sa-aspect',SA_ASPECTS,'aspect',function(o){ saState.aspect=o.k; });
-  saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; });
-  saChips('sa-festival',SA_FESTIVALS,'festival',function(o){ saState.festival=o.k; }, near?near.k:null);
-  var dz=document.getElementById('sa-drop'), fi=document.getElementById('sa-file');
-  dz.addEventListener('click',function(){fi.click();});
-  fi.addEventListener('change',function(){ saAddFiles(fi.files); fi.value=''; });
-  ['dragenter','dragover'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.add('over');});});
-  ['dragleave','drop'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.remove('over');});});
-  dz.addEventListener('drop',function(ev){ if(ev.dataTransfer&&ev.dataTransfer.files) saAddFiles(ev.dataTransfer.files); });
-  var k=localStorage.getItem('bk-claude-key'); if(k){ document.getElementById('sa-aikey').value=k; document.getElementById('sa-aistatus').textContent='✅ มีคีย์ (AI พร้อม)'; }
-  var m=localStorage.getItem('bk-claude-model'); if(m) document.getElementById('sa-aimodel').value=m;
+  saLoadConfig(function(){
+    var near=saNearestFestival(); if(near) saState.festival=near.k; saState.previewPlatform=saState.platform;
+    saChips('sa-platform',SA_PLATFORMS,'platform',function(o){ saState.platform=o.k; saState.aspect=o.aspect; saState.previewPlatform=o.k; saSyncAspect(); });
+    saChips('sa-aspect',SA_ASPECTS,'aspect',function(o){ saState.aspect=o.k; });
+    saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; });
+    saRenderFestivals(near?near.k:null);
+    if(near){ var d=saDaysTo(near); var soon=document.getElementById('sa-fest-soon'); if(soon){ soon.style.display='block'; soon.innerHTML='🔔 <b>เทศกาลถัดไป:</b> '+(near.emoji||'')+' '+(near.l||near.k)+' · อีก <b>'+(d===0?'วันนี้!':d+' วัน')+'</b> ('+near.m+'/'+near.d+')'; } }
+    var dz=document.getElementById('sa-drop'), fi=document.getElementById('sa-file');
+    dz.addEventListener('click',function(){fi.click();});
+    fi.addEventListener('change',function(){ saAddFiles(fi.files); fi.value=''; });
+    ['dragenter','dragover'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.add('over');});});
+    ['dragleave','drop'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.remove('over');});});
+    dz.addEventListener('drop',function(ev){ if(ev.dataTransfer&&ev.dataTransfer.files) saAddFiles(ev.dataTransfer.files); });
+    var k=localStorage.getItem('bk-claude-key'); if(k){ document.getElementById('sa-aikey').value=k; document.getElementById('sa-aistatus').textContent='✅ มีคีย์ (AI พร้อม)'; }
+    var m=localStorage.getItem('bk-claude-model'); if(m) document.getElementById('sa-aimodel').value=m;
+    saThumbs();
+  });
 }
 function saChips(id,arr,key,onPick,nearKey){
   var c=document.getElementById(id); if(!c)return;
   c.innerHTML=arr.map(function(o){ var on=(saState[key]===o.k)?' on':''; var now=(nearKey&&o.k===nearKey)?'<span class="now">🔔 ตอนนี้</span>':''; return '<button type="button" class="sa-chip'+on+'" data-k="'+o.k+'">'+(o.l||o.k)+now+'</button>'; }).join('');
+  c.className='sa-opts';
   [].forEach.call(c.querySelectorAll('.sa-chip'),function(b){ b.addEventListener('click',function(){ var o; for(var i=0;i<arr.length;i++){if(arr[i].k===b.getAttribute('data-k')){o=arr[i];break;}} [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){z.classList.remove('on');}); b.classList.add('on'); onPick(o); }); });
 }
+/* เทศกาล: จัดกลุ่มตามเดือน + เรียงไทม์ไลน์ + ไฮไลต์เทศกาลที่ใกล้สุด */
+function saRenderFestivals(nearKey){
+  var c=document.getElementById('sa-festival'); if(!c)return;
+  var none=SA_FESTIVALS.filter(function(f){return !f.m;});
+  var rest=SA_FESTIVALS.filter(function(f){return f.m;}).sort(function(a,b){return (a.m-b.m)||(a.d-b.d);});
+  var html='<div class="sa-opts" style="margin-bottom:6px">'+none.map(function(o){var on=saState.festival===o.k?' on':''; return '<button type="button" class="sa-chip'+on+'" data-k="'+o.k+'">'+o.l+'</button>';}).join('')+'</div>';
+  var lastMonth=-1;
+  rest.forEach(function(o){
+    if(o.m!==lastMonth){ html+='<div class="sa-fest-month">'+SA_MONTHS[o.m]+'</div><div class="sa-opts">'; lastMonth=o.m; } else if(!html.endsWith('<div class="sa-opts">')) {}
+    var on=saState.festival===o.k?' on':''; var now=(nearKey===o.k)?'<span class="now">🔔 ตอนนี้</span>':'';
+    html+='<button type="button" class="sa-chip'+on+'" data-k="'+o.k+'">'+(o.emoji?o.emoji+' ':'')+(o.l||o.k)+now+'</button>';
+  });
+  html+='</div>';
+  c.innerHTML=html; c.className='';
+  [].forEach.call(c.querySelectorAll('.sa-chip'),function(b){ b.addEventListener('click',function(){
+    saState.festival=b.getAttribute('data-k');
+    [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){z.classList.remove('on');});
+    b.classList.add('on');
+  }); });
+}
 function saSyncAspect(){ var c=document.getElementById('sa-aspect'); if(!c)return; [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){ z.classList.toggle('on', z.getAttribute('data-k')===saState.aspect); }); }
-function saAddFiles(files){ [].forEach.call(files,function(f){ if(saState.images.length>=7)return; if(!/^image\//.test(f.type))return; var r=new FileReader(); r.onload=function(){ saState.images.push(r.result); saThumbs(); }; r.readAsDataURL(f); }); }
-function saThumbs(){ var c=document.getElementById('sa-thumbs'); c.innerHTML=saState.images.map(function(src,i){ return '<div class="sa-thumb"><img src="'+src+'"><span class="idx">'+(i+1)+'</span><button type="button" data-i="'+i+'">&times;</button></div>'; }).join(''); [].forEach.call(c.querySelectorAll('button'),function(b){ b.addEventListener('click',function(){ saState.images.splice(+b.getAttribute('data-i'),1); saThumbs(); }); }); }
+function saAddFiles(files){ [].forEach.call(files,function(f){ if(saState.images.length>=SA_MAX_IMAGES)return; if(!/^image\//.test(f.type))return; var r=new FileReader(); r.onload=function(){ saState.images.push(r.result); saThumbs(); }; r.readAsDataURL(f); }); }
+function saThumbs(){
+  var c=document.getElementById('sa-thumbs'); if(!c)return;
+  var cnt=document.getElementById('sa-count'); if(cnt) cnt.textContent=saState.images.length+' / '+SA_MAX_IMAGES;
+  c.innerHTML=saState.images.map(function(src,i){ return '<div class="sa-thumb" draggable="true" data-i="'+i+'"><img src="'+src+'" alt=""><span class="idx">'+(i+1)+'</span><button type="button" data-del="'+i+'" title="ลบ">&times;</button><span class="grip">ลาก ↔</span></div>'; }).join('');
+  [].forEach.call(c.querySelectorAll('button[data-del]'),function(b){ b.addEventListener('click',function(e){ e.stopPropagation(); saState.images.splice(+b.getAttribute('data-del'),1); saThumbs(); }); });
+  saWireSort(c);
+}
+/* HTML5 drag + touch sort (จัดเรียงลำดับ 1-12 รูป) */
+function saWireSort(c){
+  var dragIdx=null, dropIdx=null;
+  function clearMarks(){ [].forEach.call(c.querySelectorAll('.sa-thumb'),function(t){t.classList.remove('drop-target','dragging');}); }
+  [].forEach.call(c.querySelectorAll('.sa-thumb'),function(t){
+    t.addEventListener('dragstart',function(e){ dragIdx=+t.getAttribute('data-i'); t.classList.add('dragging'); try{e.dataTransfer.setData('text/plain',String(dragIdx)); e.dataTransfer.effectAllowed='move';}catch(_){} });
+    t.addEventListener('dragend',function(){ clearMarks(); dragIdx=null; dropIdx=null; });
+    t.addEventListener('dragover',function(e){ e.preventDefault(); var ti=+t.getAttribute('data-i'); if(ti===dragIdx)return; clearMarks(); t.classList.add('drop-target'); dropIdx=ti; });
+    t.addEventListener('drop',function(e){ e.preventDefault(); if(dragIdx===null||dropIdx===null||dragIdx===dropIdx) return; var arr=saState.images, item=arr.splice(dragIdx,1)[0]; arr.splice(dropIdx,0,item); saThumbs(); });
+    // touch
+    var sx,sy,longPress=null,touchDragging=false,placeholder=null;
+    t.addEventListener('touchstart',function(e){ var p=e.touches[0]; sx=p.clientX; sy=p.clientY;
+      longPress=setTimeout(function(){ touchDragging=true; dragIdx=+t.getAttribute('data-i'); t.classList.add('dragging'); },220);
+    },{passive:true});
+    t.addEventListener('touchmove',function(e){ if(!touchDragging){ if(longPress&&(Math.abs(e.touches[0].clientX-sx)>10||Math.abs(e.touches[0].clientY-sy)>10)){ clearTimeout(longPress); longPress=null; } return; }
+      e.preventDefault(); var p=e.touches[0], el=document.elementFromPoint(p.clientX,p.clientY); var over=el&&el.closest?el.closest('.sa-thumb'):null;
+      clearMarks(); t.classList.add('dragging'); if(over){ over.classList.add('drop-target'); dropIdx=+over.getAttribute('data-i'); }
+    },{passive:false});
+    t.addEventListener('touchend',function(){ if(longPress){clearTimeout(longPress);longPress=null;} if(touchDragging&&dragIdx!==null&&dropIdx!==null&&dragIdx!==dropIdx){ var arr=saState.images, item=arr.splice(dragIdx,1)[0]; arr.splice(dropIdx,0,item); saThumbs(); } touchDragging=false; clearMarks(); dragIdx=null; dropIdx=null; });
+  });
+}
 
 function saCover(x,img,X,Y,w,h){ var ir=img.width/img.height,tr=w/h,sw,sh,sx,sy; if(ir>tr){sh=img.height;sw=sh*tr;sx=(img.width-sw)/2;sy=0;}else{sw=img.width;sh=sw/tr;sx=0;sy=(img.height-sh)/2;} x.drawImage(img,sx,sy,sw,sh,X,Y,w,h); }
 function saRR(x,X,Y,w,h,r){ x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath(); }
@@ -1079,11 +1190,23 @@ function saAiCaption(){
   var fes=null,plat=null,i;
   for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===saState.festival){fes=SA_FESTIVALS[i];break;}}
   for(i=0;i<SA_PLATFORMS.length;i++){if(SA_PLATFORMS[i].k===saState.platform){plat=SA_PLATFORMS[i];break;}}
-  var p='คุณคือทีมการตลาดแบรนด์ BLOOK LIVING (เฟอร์นิเจอร์ & ไลฟ์สไตล์ คอนเซ็ปต์ "The Class of Calm" · สินค้า: โซฟา TOGO, หมอนเพื่อสุขภาพ Argo, น้ำหอมปรับอากาศ/ก้านหอมกลิ่นโรงแรม, เซ็ทของขวัญ · เว็บ blookliving.com)\n'
-    +'เขียนแคปชันโพสต์ '+(plat?plat.l:'')+' '
-    +(saState.purpose==='sale'?('แนวขาย ลดราคา '+(saState.discount||30)+'%'):'แนวสร้างแบรนด์ เน้นอารมณ์ความสงบ ไม่ขายตรง')
-    +((fes&&fes.k!=='none')?(' ธีมเทศกาล '+(fes.l||'')):'')+'\n'
-    +'รูปแบบผลลัพธ์: ภาษาไทยก่อน (2-4 บรรทัด) แล้วตามด้วยภาษาอังกฤษสั้น ๆ 1 บรรทัด แล้วแฮชแท็ก 6-10 อัน · โทนหรูแต่อบอุ่น กระชับ พร้อมโพสต์ · ตอบเฉพาะแคปชัน ไม่ต้องมีคำอธิบายอื่น';
+  /* 3-dept skills (จาก sale assis/config.json ถ้ามี · ถ้าไม่มี ใช้ค่าเริ่มต้น) */
+  var dep=(SA_CFG&&SA_CFG.departments)||{
+    graphic:{role:'Senior Graphic Designer แบรนด์ BLOOK LIVING (The Class of Calm)',guides_brand:'โทนสงบ มินิมอล โลโก้บาง ไม่มีป้ายราคา',guides_sale:'มี badge ลดราคา ตัดสีเด่น ดึงดูดสายตา'},
+    marketing:{role:'Senior Marketing Copywriter (ไทย+อังกฤษ) BLOOK LIVING',guides_brand:'emotional storytelling ความสงบ ไม่ขายตรง',guides_sale:'CTA ชัด ระบุส่วนลด ความเร่งด่วน'},
+    director:{role:'Creative Director คุม tone-of-voice',responsibility:'ตรวจคีย์เวิร์ดแบรนด์ครบ จัดลำดับรูปให้เล่าเรื่องดี'}
+  };
+  var isSale=saState.purpose==='sale';
+  var p='คุณคือทีมการตลาด BLOOK LIVING (เฟอร์นิเจอร์ & ไลฟ์สไตล์ "The Class of Calm" · โซฟา TOGO / หมอนเพื่อสุขภาพ Argo / น้ำหอมปรับอากาศ–ก้านหอมกลิ่นโรงแรม / เซ็ทของขวัญ · blookliving.com)\n\n'
+    +'─ ฝ่ายกราฟิก: '+dep.graphic.role+' — '+(isSale?dep.graphic.guides_sale:dep.graphic.guides_brand)+'\n'
+    +'─ ฝ่ายการตลาด: '+dep.marketing.role+' — '+(isSale?dep.marketing.guides_sale:dep.marketing.guides_brand)+'\n'
+    +'─ ครีเอทีฟไดเรกเตอร์: '+dep.director.role+' — '+(dep.director.responsibility||'')+'\n\n'
+    +'งานวันนี้: เขียนแคปชันสำหรับโพสต์ '+(plat?plat.l:'')+' '
+    +(isSale?('โหมด "เน้นขาย" ส่วนลด '+(saState.discount||30)+'%'):'โหมด "Branding" — ไม่ขายตรง เน้นภาพลักษณ์/อารมณ์ความสงบ')
+    +((fes&&fes.k!=='none')?(' · ธีมเทศกาล: '+(fes.l||'')+(fes.th?' ("'+fes.th+'")':'')):'')+'\n'
+    +'รูปแบบผลลัพธ์ (พร้อมโพสต์ ไม่ต้องอธิบาย):\n'
+    +'1) ภาษาไทย 2-4 บรรทัด · 2) ภาษาอังกฤษ 1 บรรทัด · 3) แฮชแท็ก 6-10 อันบรรทัดสุดท้าย\n'
+    +'โทน: หรูแต่อบอุ่น สอดคล้องโหมดที่เลือก';
   return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:700,messages:[{role:'user',content:p}]})})
     .then(function(r){ if(!r.ok) throw new Error('api '+r.status); return r.json(); })
     .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; });
@@ -1118,9 +1241,36 @@ function bkGenerate(){
 function saShowResult(urls,cap){
   saLastUrls=urls;
   var res=document.getElementById('sa-result'); res.style.display='block';
-  document.getElementById('sa-out-imgs').innerHTML=urls.map(function(u,i){return '<img src="'+u+'" alt="โพสต์ '+(i+1)+'">';}).join('');
+  // platform preview tabs
+  var tabs=document.getElementById('sa-preview-tabs');
+  tabs.innerHTML=SA_PLATFORMS.map(function(p){ var on=(saState.previewPlatform===p.k)?' on':''; return '<button type="button" class="sa-platform-preview'+on+'" data-pp="'+p.k+'">'+p.l+'</button>'; }).join('');
+  [].forEach.call(tabs.querySelectorAll('button'),function(b){ b.addEventListener('click',function(){ saState.previewPlatform=b.getAttribute('data-pp'); [].forEach.call(tabs.querySelectorAll('button'),function(z){z.classList.remove('on');}); b.classList.add('on'); saRenderMockup(urls,cap); }); });
   document.getElementById('sa-out-cap').value=cap;
+  saRenderMockup(urls,cap);
   res.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function saRenderMockup(urls,cap){
+  var host=document.getElementById('sa-mockup-host'); if(!host) return;
+  var pk=saState.previewPlatform, plat=null;
+  for(var i=0;i<SA_PLATFORMS.length;i++){if(SA_PLATFORMS[i].k===pk){plat=SA_PLATFORMS[i];break;}}
+  if(!plat) plat=SA_PLATFORMS[0];
+  var capShort=(cap||'').split('\n').slice(0,3).join(' ');
+  var html='<div class="sa-mockup">'
+    +'<div class="sa-mockup-head"><div class="av">BK</div><div class="name">blookliving<span>'+plat.l+'</span></div></div>'
+    +'<div class="sa-mockup-frame"><div class="sa-mockup-scroll" id="sa-mscr">'
+      +urls.map(function(u){return '<div class="sa-mockup-slide"><img src="'+u+'" alt=""></div>';}).join('')
+    +'</div></div>'
+    +(urls.length>1?'<div class="sa-mockup-pager" id="sa-mpag">'+urls.map(function(_,j){return '<span class="'+(j===0?'on':'')+'"></span>';}).join('')+'</div>':'')
+    +'<div class="sa-mockup-bar">'
+      +'<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'
+      +'<svg viewBox="0 0 24 24"><path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/></svg>'
+      +'<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>'
+    +'</div>'
+    +'<div class="sa-mockup-cap"><b>blookliving</b> '+capShort.replace(/</g,'&lt;')+'</div>'
+  +'</div>';
+  host.innerHTML=html;
+  var scr=document.getElementById('sa-mscr'), pag=document.getElementById('sa-mpag');
+  if(scr && pag){ scr.addEventListener('scroll',function(){ var idx=Math.round(scr.scrollLeft/scr.clientWidth); [].forEach.call(pag.querySelectorAll('span'),function(s,i){s.classList.toggle('on',i===idx);}); }); }
 }
 function bkCopyCap(){ var t=document.getElementById('sa-out-cap'); t.select(); try{ navigator.clipboard.writeText(t.value); }catch(e){ try{document.execCommand('copy');}catch(e2){} } alert('คัดลอกแคปชันแล้ว ✓'); }
 function bkDownloadAll(){ (saLastUrls||[]).forEach(function(u,i){ setTimeout(function(){ var a=document.createElement('a'); a.href=u; a.download='blook-post-'+(i+1)+'.jpg'; document.body.appendChild(a); a.click(); a.remove(); }, i*250); }); }

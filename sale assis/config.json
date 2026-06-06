@@ -1,0 +1,89 @@
+{
+  "_about": "Single source of truth for the Seller Assistant tab. Edit this file (or the .csv) and the admin tab loads it automatically. No code changes needed.",
+  "platforms": [
+    {"key":"facebook","label":"Facebook","aspect":"1:1","tags":["#BLOOKLIVING","#เฟอร์นิเจอร์แต่งบ้าน"]},
+    {"key":"instagram","label":"Instagram","aspect":"4:5","tags":["#blookliving","#interiordesign","#homedecor"]},
+    {"key":"lemon8","label":"Lemon8","aspect":"3:4","tags":["#Lemon8แต่งบ้าน","#รีวิวของแต่งบ้าน"]},
+    {"key":"tiktok","label":"TikTok (image post)","aspect":"9:16","tags":["#TikTokShopTH","#แต่งบ้าน","#bloolliving"]},
+    {"key":"x","label":"X (Twitter)","aspect":"16:9","tags":["#BLOOK","#interior"]}
+  ],
+  "aspects": [
+    {"key":"1:1","label":"สี่เหลี่ยม 1:1","w":1080,"h":1080},
+    {"key":"4:5","label":"แนวตั้ง 4:5","w":1080,"h":1350},
+    {"key":"3:4","label":"แนวตั้ง 3:4","w":1080,"h":1440},
+    {"key":"9:16","label":"สตอรี่/TikTok 9:16","w":1080,"h":1920},
+    {"key":"1.91:1","label":"แนวนอน 1.91:1","w":1200,"h":628},
+    {"key":"16:9","label":"แนวนอน 16:9","w":1600,"h":900}
+  ],
+  "purposes": [
+    {"key":"brand","label":"Branding (เน้นภาพลักษณ์ ไม่ขายตรง)","mood":"calm, refined, slow living"},
+    {"key":"sale","label":"เน้นขาย (เน้นแรงจูงใจซื้อ)","mood":"urgent, persuasive, promotional"}
+  ],
+  "festivals": [
+    {"key":"none","label":"ไม่มี","m":0,"d":0},
+    {"key":"newyear","label":"ปีใหม่","badge":"NEW YEAR","emoji":"🎊","accent":"#A0784A","m":1,"d":1,"th":"🎊 ต้อนรับปีใหม่ด้วยบ้านที่สงบ","en":"Happy New Year","tag":"#HappyNewYear"},
+    {"key":"1.1","label":"1.1","badge":"1.1","emoji":"🛍️","accent":"#C0392B","m":1,"d":1,"th":"🛍️ 1.1 เปิดปีใหม่ด้วยดีลคุ้ม","en":"1.1 Sale","tag":"#1_1Sale"},
+    {"key":"cny","label":"ตรุษจีน","badge":"ตรุษจีน","emoji":"🧧","accent":"#C0392B","m":2,"d":1,"th":"🧧 รับตรุษจีน เสริมบ้านมงคล","en":"Chinese New Year","tag":"#ตรุษจีน"},
+    {"key":"2.2","label":"2.2","badge":"2.2","emoji":"🛍️","accent":"#C0392B","m":2,"d":2,"th":"🛍️ 2.2 ดีลเด็ดต้อนรับเดือนแห่งความรัก","en":"2.2 Sale","tag":"#2_2Sale"},
+    {"key":"valentine","label":"วาเลนไทน์","badge":"VALENTINE","emoji":"💛","accent":"#C2185B","m":2,"d":14,"th":"💛 ของขวัญแทนใจ วันวาเลนไทน์","en":"Valentine's Gift","tag":"#Valentine"},
+    {"key":"3.3","label":"3.3","badge":"3.3","emoji":"🛍️","accent":"#C0392B","m":3,"d":3,"th":"🛍️ 3.3 รับฤดูใหม่ด้วยดีลใหม่","en":"3.3 Sale","tag":"#3_3Sale"},
+    {"key":"4.4","label":"4.4","badge":"4.4","emoji":"🛍️","accent":"#C0392B","m":4,"d":4,"th":"🛍️ 4.4 ดีลแรงรับซัมเมอร์","en":"4.4 Sale","tag":"#4_4Sale"},
+    {"key":"songkran","label":"สงกรานต์","badge":"SONGKRAN","emoji":"💦","accent":"#1E88A8","m":4,"d":13,"th":"💦 สงกรานต์นี้ พักผ่อนสบายที่บ้าน","en":"Songkran Festival","tag":"#สงกรานต์"},
+    {"key":"5.5","label":"5.5","badge":"5.5","emoji":"🛍️","accent":"#C0392B","m":5,"d":5,"th":"🛍️ 5.5 กลางเดือน ดีลกลางปี","en":"5.5 Sale","tag":"#5_5Sale"},
+    {"key":"6.6","label":"6.6","badge":"6.6","emoji":"🔥","accent":"#E4572E","m":6,"d":6,"th":"🔥 ดีลเด็ดรับ 6.6 มาแล้ว!","en":"6.6 Mega Sale","tag":"#6_6Sale"},
+    {"key":"7.7","label":"7.7","badge":"7.7","emoji":"🔥","accent":"#E4572E","m":7,"d":7,"th":"🔥 7.7 ลดจัดเต็ม!","en":"7.7 Sale","tag":"#7_7Sale"},
+    {"key":"mothers","label":"วันแม่","badge":"วันแม่","emoji":"🤍","accent":"#1565C0","m":8,"d":12,"th":"🤍 ของขวัญวันแม่ จากใจ","en":"Mother's Day","tag":"#วันแม่"},
+    {"key":"8.8","label":"8.8","badge":"8.8","emoji":"🔥","accent":"#E4572E","m":8,"d":8,"th":"🔥 8.8 ดีลแรงรับกลางปี!","en":"8.8 Sale","tag":"#8_8Sale"},
+    {"key":"9.9","label":"9.9","badge":"9.9","emoji":"🛍️","accent":"#C0392B","m":9,"d":9,"th":"🛍️ 9.9 ช้อปคุ้มรับสิ้นปี!","en":"9.9 Sale","tag":"#9_9Sale"},
+    {"key":"10.10","label":"10.10","badge":"10.10","emoji":"🛍️","accent":"#C0392B","m":10,"d":10,"th":"🛍️ 10.10 ดีลใหญ่!","en":"10.10 Sale","tag":"#10_10Sale"},
+    {"key":"loykrathong","label":"ลอยกระทง","badge":"ลอยกระทง","emoji":"🪷","accent":"#7B4F9A","m":11,"d":15,"th":"🪷 ลอยกระทง คืนแห่งความสงบ","en":"Loy Krathong","tag":"#ลอยกระทง"},
+    {"key":"11.11","label":"11.11","badge":"11.11","emoji":"🛒","accent":"#B8001F","m":11,"d":11,"th":"🛒 11.11 เซลใหญ่แห่งปี!","en":"11.11 Mega Sale","tag":"#11_11Sale"},
+    {"key":"blackfriday","label":"Black Friday","badge":"BLACK FRIDAY","emoji":"🖤","accent":"#111111","m":11,"d":28,"th":"🖤 Black Friday ลดทั้งร้าน!","en":"Black Friday","tag":"#BlackFriday"},
+    {"key":"fathers","label":"วันพ่อ","badge":"วันพ่อ","emoji":"💛","accent":"#B8860B","m":12,"d":5,"th":"💛 ของขวัญวันพ่อ สุดพิเศษ","en":"Father's Day","tag":"#วันพ่อ"},
+    {"key":"12.12","label":"12.12","badge":"12.12","emoji":"🎉","accent":"#B8860B","m":12,"d":12,"th":"🎉 12.12 ส่งท้ายปีลดสูงสุด!","en":"12.12 Year-End Sale","tag":"#12_12Sale"},
+    {"key":"christmas","label":"คริสต์มาส","badge":"CHRISTMAS","emoji":"🎄","accent":"#2E7D32","m":12,"d":25,"th":"🎄 เติมความอบอุ่นรับคริสต์มาส","en":"Merry Christmas","tag":"#Christmas"}
+  ],
+  "departments": {
+    "graphic": {
+      "role": "Senior Graphic Designer ที่เชี่ยวชาญการเลือก template/composition ให้เข้ากับ mood แบรนด์ BLOOK LIVING (The Class of Calm)",
+      "guides_brand": "คุมโทนสงบ พื้นครีม/ขาว หรือไม้/ดำหรู ตัวหนังสือมินิมอล โลโก้บาง ๆ ไม่มี badge ขายราคา",
+      "guides_sale": "ใส่ badge โปรชัด (เช่น ลด 30%) สีตัดกัน มีคำว่า 'SALE' หรือเปอร์เซ็นต์ใหญ่ ดึงดูดสายตา"
+    },
+    "marketing": {
+      "role": "Senior Marketing Copywriter (ภาษาไทย+อังกฤษ) แบรนด์ BLOOK LIVING",
+      "guides_brand": "เน้น emotional storytelling — ความสงบ ความเรียบง่าย คุณภาพชีวิตในบ้าน ไม่ขายตรง ไม่ใส่ราคา",
+      "guides_sale": "เน้น call-to-action ชัด ระบุส่วนลด ความเร่งด่วน (limited time) ปุ่มชวนคลิก/ทัก แต่ยังคงโทนหรู"
+    },
+    "director": {
+      "role": "Creative Director ที่รวมงานกราฟิก+คอปปี้ ให้สอดคล้อง แบรนด์ดูพรีเมียม",
+      "responsibility": "ตรวจ tone-of-voice, ตรวจว่าใช้คีย์เวิร์ดแบรนด์ครบ, จัดลำดับรูปสำหรับ carousel ให้เล่าเรื่องดี"
+    }
+  },
+  "captions_brand_th": [
+    "BLOOK LIVING — พื้นที่พักใจในบ้านคุณ ใช้ชีวิตช้าลงอย่างมีรสนิยม",
+    "ความสงบที่สัมผัสได้ในทุกมุมของบ้าน · The Class of Calm",
+    "ออกแบบบ้านให้เป็นที่พักใจ เรียบง่าย อบอุ่น และสงบในแบบของคุณ",
+    "บ้านที่ดี ไม่ได้สวยที่สุด แต่ทำให้คุณอยากกลับไปทุกวัน",
+    "ของแต่งบ้านที่เลือกมาเพื่อให้ทุกวันรู้สึกพิเศษขึ้น"
+  ],
+  "captions_sale_th": [
+    "ลดสูงสุด {DISCOUNT}% เฉพาะช่วงนี้ — เปลี่ยนบ้านให้สงบในงบที่คุ้มกว่าเดิม",
+    "รับส่วนลด {DISCOUNT}% กับคอลเลกชัน BLOOK LIVING ของดีมีจำนวนจำกัด",
+    "ดีลพิเศษ ลด {DISCOUNT}% เติมความสงบให้ทุกมุมของบ้านคุณ ✨",
+    "{DISCOUNT}% OFF — ของหรูในราคาที่จับต้องได้ มีจำนวนจำกัดเท่านั้น",
+    "เปลี่ยนบ้านธรรมดาให้พรีเมียม ส่วนลดสูงสุด {DISCOUNT}% วันนี้เท่านั้น"
+  ],
+  "ctas_brand": [
+    "ให้บ้านเป็นที่ที่คุณอยากกลับไปทุกวัน 🤍",
+    "เยี่ยมชมคอลเลกชันที่ blookliving.com",
+    "เริ่มต้นมุมพักใจของคุณวันนี้"
+  ],
+  "ctas_sale": [
+    "📩 ทักแชทสั่งเลย หรือกดลิงก์ช้อปในโพสต์",
+    "สั่งเลยก่อนของหมด — ส่งตรงถึงบ้าน",
+    "ดูสินค้าทั้งหมดที่ blookliving.com",
+    "🔥 ของมีจำนวนจำกัด รีบสั่งก่อนใคร"
+  ],
+  "base_tags": ["#BLOOKLIVING","#TheClassOfCalm","#แต่งบ้าน","#ของแต่งบ้าน","#โซฟาTOGO","#หมอนเพื่อสุขภาพ","#น้ำหอมปรับอากาศ"],
+  "sale_tags": ["#ลดราคา","#โปรโมชั่น","#ดีลของแต่งบ้าน"]
+}
