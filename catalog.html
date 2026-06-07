@@ -88,8 +88,16 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
 .cat-gal-head .p-eyebrow{justify-content:center;display:block}
 .cat-gal-head .p-name{margin:6px 0 6px}
 .cat-gal-head .p-sub{color:var(--neutral)}
-.cat-gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:90px;grid-auto-flow:dense;gap:7px;margin-top:10px}
+.cat-gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;grid-auto-flow:dense;gap:7px;margin-top:10px;flex:1 1 auto}
 .cat-gal-grid .cgi{width:100%;height:100%;background-size:cover;background-position:center;background-repeat:no-repeat;border-radius:6px;display:block;background-color:var(--bg3)}
+/* นิตยสาร · บทความในแคตตาล็อก (สร้างจาก assets/journal/articles.json) */
+.art-mag{}
+.art-mag .am-img{flex:1 1 auto;min-height:0;background-size:cover;background-position:center;background-repeat:no-repeat;border-radius:8px;background-color:var(--bg3);margin-top:12px}
+.art-mag .am-eyebrow{font-size:.62rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin-top:16px}
+.art-mag .am-title{font-family:'Fraunces','Noto Serif Thai',serif;font-size:2.1rem;line-height:1.12;color:var(--primary);margin-top:7px}
+.art-mag .am-body{columns:2;column-gap:22px;font-size:.85rem;line-height:1.8;color:var(--neutral);font-weight:300;margin-top:14px}
+.art-mag .am-body p{margin-bottom:10px;break-inside:avoid}
+.art-mag .am-read{margin-top:14px;font-size:.78rem;letter-spacing:.04em;color:var(--gold);border-top:1px solid var(--border);padding-top:10px}
 .cat-gal-grid .cg-big{grid-column:span 2;grid-row:span 2}
 .cat-gal-grid .cg-wide{grid-column:span 2}
 .cat-gal-grid .cg-tall{grid-row:span 2}
@@ -374,6 +382,32 @@ body{font-family:'Inter','IBM Plex Sans Thai',sans-serif;background:#e9e4dc;colo
   function apply(l){ document.querySelectorAll('[data-th][data-en]').forEach(function(el){ var t=l==='th'?el.dataset.th:el.dataset.en; if(t!==undefined) el.innerHTML=t; }); var b=document.getElementById('lang-toggle'); if(b) b.textContent=l==='th'?'EN':'TH'; }
   function init(){ if(done)return; done=true; var b=document.getElementById('lang-toggle'); apply(lang); if(b) b.addEventListener('click',function(e){e.preventDefault();lang=lang==='th'?'en':'th';localStorage.setItem('blook-lang',lang);apply(lang);}); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+
+// บทความ "นิตยสาร" ในแคตตาล็อก — โหลดจาก assets/journal/articles.json (แก้บทความ/รูปได้โดยไม่แตะโค้ด)
+(function(){
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  function render(list){
+    var cat=document.querySelector('.catalog'); if(!cat||!list||!list.length) return;
+    // หาเลขหน้าเริ่ม (นับ .page ที่มีอยู่)
+    var start=document.querySelectorAll('.catalog .page').length;
+    var html=list.map(function(a,i){
+      var body=(a.body||[]).map(function(p){return '<p>'+esc(p)+'</p>';}).join('');
+      var no=String(start+i+1).padStart(2,'0');
+      return '<section class="page art-mag">'
+        +'<div class="pg-head"><span class="pg-logo">BLOOK</span><span class="pg-cat">Journal · บทความ</span></div>'
+        +'<div class="am-eyebrow">'+esc(a.eyebrow||'BLOOK LIVING')+'</div>'
+        +'<h2 class="am-title">'+esc(a.title||'')+'</h2>'
+        +'<div class="am-body">'+body+'</div>'
+        +'<div class="am-img" style="background-image:url(\''+(a.image||'')+'\')" role="img" aria-label="'+esc(a.title||'')+'"></div>'
+        +'<div class="am-read">อ่านบทความเต็มได้ที่ '+esc(a.url||'blookliving.com')+'</div>'
+        +'<div class="pg-foot"><span>BLOOK LIVING · THE CLASS OF CALM · blookliving.com</span><span>'+no+'</span></div>'
+      +'</section>';
+    }).join('');
+    cat.insertAdjacentHTML('beforeend', html);
+    if(typeof bkFitCatalog==='function') bkFitCatalog();
+  }
+  fetch('assets/journal/articles.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){ if(j&&j.articles) render(j.articles); }).catch(function(){});
 })();
 
 // แสดงตัวอย่างแคตตาล็อกด้วยสัดส่วน A4 เท่าไฟล์ที่ดาวน์โหลด — ย่อทั้งหน้าให้พอดีจอบนมือถือ (zoom)

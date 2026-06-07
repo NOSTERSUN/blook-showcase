@@ -50,8 +50,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 60px;height:80px;
 .rv-link{margin-left:auto;display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-size:.76rem;font-weight:600;letter-spacing:.04em;color:#fff;padding:10px 18px;border-radius:24px;transition:transform .2s,box-shadow .2s}
 .rv-link:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.18)}
 .rv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.rv-tile{margin:0;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#fff;box-shadow:0 4px 16px rgba(120,90,40,.08);cursor:zoom-in;position:relative;aspect-ratio:3/4}
-.rv-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.rv-tile{margin:0;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:linear-gradient(160deg,#FAF8F5,#F2EDE6);box-shadow:0 4px 16px rgba(120,90,40,.08);cursor:zoom-in;position:relative;aspect-ratio:3/4}
+.rv-tile img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .5s}
 .rv-tile:hover img{transform:scale(1.04)}
 .rv-empty{border:1px dashed var(--border2);border-radius:12px;padding:26px;text-align:center;color:var(--dim);font-size:.85rem}
 #lightbox{position:fixed;inset:0;z-index:10000;background:rgba(20,14,8,.95);display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out}
