@@ -1288,7 +1288,7 @@ function saFestChip(x,o,corner){ if(!o.fes||o.fes.k==='none')return; var W=o.W,l
   var tw=x.measureText(label).width,bh=Math.round(W*0.072),bw=tw+W*0.05,bx=(corner==='tl')?o.pad:(W-o.pad-bw),by=o.pad;
   x.fillStyle=o.fes.accent||'#A0784A';x.shadowColor='rgba(0,0,0,.25)';x.shadowBlur=W*0.02;x.shadowOffsetY=2;saRR(x,bx,by,bw,bh,bh/2);x.fill();x.shadowColor='transparent';
   x.fillStyle='#fff';x.textBaseline='middle';x.fillText(label,bx+W*0.025,by+bh/2);x.textBaseline='alphabetic';x.restore(); }
-function saDomain(x,o,color,align){ var W=o.W,H=o.H; x.save();x.textAlign=align||'right';x.fillStyle=color;x.font='600 '+Math.round(W*0.03)+'px Inter,Arial,sans-serif';x.fillText('blookliving.com',align==='center'?W/2:(W-o.pad),H-o.pad);x.restore(); }
+function saDomain(x,o,color,align){ var W=o.W,H=o.H; x.save();x.textAlign=align||'right';x.fillStyle=color;x.font='600 '+Math.round(W*0.03)+'px Inter,Arial,sans-serif';var dx=(align==='center')?W/2:((align==='left')?o.pad:(W-o.pad));x.fillText('blookliving.com',dx,H-o.pad);x.restore(); }
 function saCard(x,X,Y,w,h,r,shadow){ if(shadow){x.save();x.shadowColor=shadow;x.shadowBlur=w*0.06;x.shadowOffsetY=w*0.02;x.fillStyle='#fff';saRR(x,X,Y,w,h,r);x.fill();x.restore();} }
 function saSaleBurst(x,o,cx,cy,rad){ var d=o.discount||30; x.save();
   var g=x.createLinearGradient(cx-rad,cy-rad,cx+rad,cy+rad);g.addColorStop(0,'#E4572E');g.addColorStop(1,'#B8001F');
@@ -1324,11 +1324,12 @@ var SA_STYLES=[
   {key:'burst',label:'Sale Burst',purpose:'sale',layout:'overlay',draw:function(x,img,o){ var W=o.W,H=o.H;
     saCover(x,img,0,0,W,H); saGrade(x,0,0,W,H); x.fillStyle=saVgrad(x,H*0.55,'rgba(10,7,4,0)',H,'rgba(10,7,4,.8)');x.fillRect(0,H*0.55,W,H*0.45);
     saTintLogo(x,o.pad+W*0.07,o.pad+W*0.07,W*0.14,'#fff'); saFestChip(x,o,'tr');
-    saSaleBurst(x,o,W*0.78,H*0.3,W*0.16);
-    x.save();x.textAlign='left';x.fillStyle='#fff';x.font='600 '+Math.round(W*0.052)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('คอลเลกชัน BLOOK LIVING',o.pad,H-o.pad*2.0);x.restore();
-    // gold CTA pill
-    var cw=W*0.42,ch=W*0.1,cx=o.pad,cy=H-o.pad-ch; x.fillStyle=saVgrad(x,cy,'#D8BC86',cy+ch,'#A0784A');saRR(x,cx,cy,cw,ch,ch/2);x.fill();
-    x.fillStyle='#1A0F08';x.textAlign='center';x.font='700 '+Math.round(W*0.036)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('ช้อปเลย · blookliving.com',cx+cw/2,cy+ch*0.64);x.restore?x.restore():0; }},
+    saSaleBurst(x,o,W*0.79,H*0.27,W*0.155);
+    // ด้านล่าง: ชื่อคอลเลกชัน "เหนือ" ปุ่ม CTA (กึ่งกลาง ไม่ทับกัน)
+    var ch=W*0.105,cw=Math.min(W*0.66,W-o.pad*2),cx=(W-cw)/2,cy=H-o.pad-ch;
+    x.save();x.textAlign='center';x.fillStyle='rgba(255,255,255,.95)';x.font='600 '+Math.round(W*0.04)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('คอลเลกชัน BLOOK LIVING',W/2,cy-W*0.03);x.restore();
+    x.save();x.fillStyle=saVgrad(x,cy,'#D8BC86',cy+ch,'#A0784A');saRR(x,cx,cy,cw,ch,ch/2);x.fill();
+    x.fillStyle='#1A0F08';x.textAlign='center';x.font='700 '+Math.round(W*0.038)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('ช้อปเลย · blookliving.com',W/2,cy+ch*0.63);x.restore(); }},
   // sale 2 — Price band bottom
   {key:'priceband',label:'Price Band',purpose:'sale',layout:'band',draw:function(x,img,o){ var W=o.W,H=o.H,band=Math.round(H*0.24),d=o.discount||30;
     saCover(x,img,0,0,W,H-band); saGrade(x,0,0,W,H-band); x.fillStyle='#15110D';x.fillRect(0,H-band,W,band);
