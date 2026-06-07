@@ -19,8 +19,8 @@
     {"key":"brand","label":"✨ Branding (สร้างภาพลักษณ์)","mood":"calm, refined, slow living","desc":"<b>สร้างการจดจำแบรนด์</b> — โพสต์จะเน้นอารมณ์ ไลฟ์สไตล์ ความสงบ ความรู้สึก \"อยากเป็นเจ้าของ\" · <b>ไม่พูดถึงราคา</b> · ภาพหรูสะอาด โลโก้บาง · เหมาะสร้างฐานแฟน ทำให้คนรู้จัก/รักแบรนด์"},
     {"key":"sale","label":"🔥 เน้นขาย (ปิดการขาย)","mood":"urgent, persuasive, promotional","desc":"<b>กระตุ้นให้ซื้อตอนนี้</b> — ชูโปรโมชัน/ส่วนลด + สร้างความเร่งด่วน + CTA ชัด (ทักแชท/กดลิงก์) · ภาพมีป้ายลดราคาที่ออกแบบหรู <b>ไม่กิ๊กก๊อก</b> · เหมาะช่วงแคมเปญ 7.7 / ลดราคา"}
   ],
-  "_contact_note": "ห้อยท้ายทุกแคปชันยกเว้น TikTok · เติมค่าที่ว่างแล้วบันทึก (ปล่อยว่าง = ไม่แสดงช่องนั้น)",
-  "contact": {"web":"blookliving.com","tiktok":"","shopee":"","line":"","phone":""},
+  "_contact_note": "ห้อยท้ายทุกแคปชันยกเว้น TikTok · ดึงจากข้อมูลบริษัทในเว็บ · แก้ได้ที่นี่ (ปล่อยว่าง = ไม่แสดงช่องนั้น)",
+  "contact": {"web":"blookliving.com","tiktok":"@blookliving","shopee":"shopee.co.th/blookliving","lazada":"s.lazada.co.th/s.Z6Iput","line":"@blookliving","phone":"093-736-4796"},
   "festivals": [
     {"key":"none","label":"ไม่มี","m":0,"d":0},
     {"key":"newyear","label":"ปีใหม่","badge":"NEW YEAR","emoji":"🎊","accent":"#A0784A","m":1,"d":1,"th":"🎊 ต้อนรับปีใหม่ด้วยบ้านที่สงบ","en":"Happy New Year","tag":"#HappyNewYear"},

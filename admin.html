@@ -1176,7 +1176,7 @@ function saLoadConfig(cb){
       if(j.aspects&&j.aspects.length) SA_ASPECTS=j.aspects.map(function(a){return {k:a.key,l:a.label,w:a.w,h:a.h};});
       if(j.purposes&&j.purposes.length) SA_PURPOSES=j.purposes.map(function(p){return {k:p.key,l:p.label,d:(p.desc||p.d)};});
       if(j.festivals&&j.festivals.length) SA_FESTIVALS=j.festivals.map(function(f){return {k:f.key,l:f.label,badge:f.badge,emoji:f.emoji,accent:f.accent,m:(f.m!=null?f.m:f.month),d:(f.d!=null?f.d:f.day),th:f.th,en:f.en,tag:f.tag};});
-      if(j.contact) SA_CONTACT=Object.assign({web:'blookliving.com',tiktok:'',shopee:'',line:'',phone:''},j.contact);
+      if(j.contact) SA_CONTACT=Object.assign({web:'blookliving.com',tiktok:'',shopee:'',lazada:'',line:'',phone:''},j.contact);
     }
     cb();
   }).catch(function(){ cb(); });
@@ -1366,11 +1366,12 @@ function saProductTags(k){
   if(k==='reed50'||k==='reed250'||k==='reedgift') return ['#ก้านไม้หอมปรับอากาศ','#ก้านไม้หอมblook','#blookliving','#reeddiffuser','#ห้องหอม'];
   return ['#BLOOKLIVING','#TheClassOfCalm','#แต่งบ้าน','#ของแต่งบ้าน'];
 }
-var SA_CONTACT={web:'blookliving.com',tiktok:'',shopee:'',line:'',phone:''};
+var SA_CONTACT={web:'blookliving.com',tiktok:'@blookliving',shopee:'shopee.co.th/blookliving',lazada:'s.lazada.co.th/s.Z6Iput',line:'@blookliving',phone:'093-736-4796'};
 function saContactBlock(){ var c=SA_CONTACT||{},L=[];
   if(c.web) L.push('🌐 เว็บ : '+c.web);
   if(c.tiktok) L.push('🎵 TikTok : '+c.tiktok);
   if(c.shopee) L.push('🛒 Shopee : '+c.shopee);
+  if(c.lazada) L.push('🛍️ Lazada : '+c.lazada);
   if(c.line) L.push('💬 Line : '+c.line);
   if(c.phone) L.push('📞 โทร : '+c.phone);
   return L.length?('━━━━━━━━━\n📩 สั่งซื้อ / สอบถาม\n'+L.join('\n')):'';
