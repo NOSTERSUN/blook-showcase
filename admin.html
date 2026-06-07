@@ -276,8 +276,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .pm-scroll{position:relative;background:#000}
 .pm-scroll .row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
 .pm-scroll .row::-webkit-scrollbar{display:none}
-.pm-scroll .slide{flex:0 0 100%;scroll-snap-align:start}
-.pm-scroll .slide img{width:100%;display:block}
+.pm-scroll .slide{flex:0 0 100%;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;background:#000}
+.pm-scroll .slide img{max-width:100%;max-height:600px;height:auto;display:block}
 .pm-pager{position:absolute;top:10px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:2px 9px;border-radius:10px}
 /* IG */
 .pm-ig{background:#fff;color:#111}
@@ -300,13 +300,15 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .pm-fb .bar{display:flex;border-top:1px solid #e4e6eb;color:#65676b;font-size:.8rem;font-weight:600}
 .pm-fb .bar div{flex:1;text-align:center;padding:9px}
 /* TikTok */
-.pm-tt{position:relative;background:#000}
-.pm-tt .rail{position:absolute;right:10px;bottom:90px;display:flex;flex-direction:column;gap:16px;align-items:center;color:#fff;font-size:.7rem;text-align:center}
-.pm-tt .rail .ic{font-size:1.5rem}
-.pm-tt .rail .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A0784A);display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #fff}
-.pm-tt .btm{position:absolute;left:12px;right:64px;bottom:16px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.pm-tt{position:relative;background:#000;overflow:hidden}
+.pm-tt::before{content:'';position:absolute;left:0;right:0;top:0;height:20%;background:linear-gradient(rgba(0,0,0,.42),transparent);pointer-events:none;z-index:1}
+.pm-tt::after{content:'';position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(transparent,rgba(0,0,0,.74));pointer-events:none;z-index:1}
+.pm-tt .rail{position:absolute;right:8px;bottom:26px;display:flex;flex-direction:column;gap:9px;align-items:center;color:#fff;font-size:.64rem;text-align:center;z-index:2;text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.pm-tt .rail .ic{font-size:1.25rem}
+.pm-tt .rail .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A0784A);display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #fff;margin-bottom:2px}
+.pm-tt .btm{position:absolute;left:12px;right:58px;bottom:14px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.75);z-index:2}
 .pm-tt .btm .u{font-weight:700;font-size:.9rem}
-.pm-tt .btm .c{font-size:.78rem;line-height:1.45;margin-top:4px;max-height:84px;overflow:auto}
+.pm-tt .btm .c{font-size:.76rem;line-height:1.4;margin-top:4px;max-height:66px;overflow:auto}
 /* X */
 .pm-x{background:#000;color:#e7e9ea}
 .pm-x .hd{display:flex;gap:10px;padding:12px}
@@ -926,7 +928,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     </div>
 
     <div id="sa-result" class="panel" style="display:none">
-      <div class="panel-title">✅ โพสต์พร้อมใช้ <span id="sa-style-label" style="font-size:.74rem;color:var(--gold);font-weight:600;margin-left:8px"></span></div>
+      <div class="panel-title">✅ โพสต์พร้อมใช้ <span id="sa-style-label" style="font-size:.74rem;color:var(--gold);font-weight:600;margin-left:8px"></span> <span id="sa-mode-badge" style="font-size:.7rem;font-weight:700;margin-left:8px;padding:3px 11px;border:1px solid var(--border);border-radius:11px;color:var(--gold2)"></span></div>
       <div class="sa-viewmode" id="sa-viewmode">
         <button type="button" data-vm="mockup" class="on" onclick="saSetView('mockup')">📱 ตัวอย่างบนแอป</button>
         <button type="button" data-vm="grid" onclick="saSetView('grid')">🖼️ รูปทั้งหมด (ที่จะดาวน์โหลด)</button>
@@ -944,9 +946,10 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
           <textarea id="sa-out-cap" spellcheck="false"></textarea>
           <div class="sa-cap-bar">
             <button type="button" onclick="saReshuffleDesign()">🎨 เปลี่ยนดีไซน์</button>
+            <button type="button" onclick="saReshuffleDesign(true)">🎲 สุ่มดีไซน์ (ฟรี)</button>
+            <button type="button" id="sa-regen-ai" onclick="saRegenAI()" style="display:none">✨ วาดฉาก AI ใหม่</button>
             <button type="button" onclick="bkCopyCap()">📋 คัดลอกแคปชัน</button>
             <button type="button" onclick="bkDownloadAll()">⬇️ ดาวน์โหลดรูปทั้งหมด</button>
-            <button type="button" onclick="bkGenerate()">🔄 สุ่มใหม่</button>
           </div>
         </div>
       </div>
@@ -1136,7 +1139,7 @@ var SA_PRODUCTS=[
   {k:'reedgift',l:'ก้านไม้หอม Gift Set',d:'เซ็ทของขวัญก้านไม้หอม BLOOK'}
 ];
 var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',logo:true,styleIdx:0,aiImage:false};
-var saReady=false, saLastUrls=[];
+var saReady=false, saLastUrls=[], saBases=[], saResultMode='template';
 var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
 var saLogoOn=true; // ตั้งจาก saState.logo ใน buildPost — ปิดได้ในขั้นวัตถุประสงค์
 
@@ -1425,12 +1428,27 @@ function saClaude(messages,maxTok){
 // ฝ่ายการตลาด/ไดเรกเตอร์ (Claude) เขียน "art-direction brief" สำหรับฉากภาพ
 function saArtBrief(){
   var prod=saFind(SA_PRODUCTS,saState.product), fes=saFind(SA_FESTIVALS,saState.festival), isSale=saState.purpose==='sale';
-  var ask='คุณคือ Creative Director แบรนด์ BLOOK LIVING (The Class of Calm — เฟอร์นิเจอร์/ของแต่งบ้านหรู สงบ อบอุ่น)\n'
-    +'เขียน art-direction prompt (ภาษาอังกฤษ) สำหรับให้ AI สร้างภาพ "ฉากโฆษณาหรู" จากรูปสินค้าที่แนบ โดย<b>คงตัวสินค้าเดิมไว้</b> แต่จัดฉาก/แสง/พื้นผิว/องค์ประกอบให้ดูพรีเมียมระดับนิตยสาร\n'
-    +'สินค้า: '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK product')+' · โหมด: '+(isSale?'sale/promo':'branding mood')+((fes&&fes.k!=='none')?(' · ธีม: '+fes.l):'')+'\n'
-    +'ตอบเป็น prompt ภาษาอังกฤษล้วน 1 ย่อหน้าสั้น (ไม่เกิน 60 คำ) เน้น: keep the product, luxurious calm scene, soft natural light, premium materials, minimal, editorial. ห้ามใส่ตัวอักษร/โลโก้ในภาพ';
-  var fallback='Place the product in a serene, luxurious minimal interior with soft natural light, premium wood and stone textures, editorial styling, calm warm tones. Keep the product unchanged. No text, no logo.';
-  return saClaude([{role:'user',content:ask}],300).then(function(t){ return (t||'').trim()||fallback; }).catch(function(){ return fallback; });
+  var k=(prod&&prod.k)||'auto';
+  var cat=/reed/.test(k)?'reed':(k==='argo'?'argo':'auto');
+  var sceneMap={
+    reed:'reed-diffuser styling — a calm spa-like vanity, bedside or bathroom corner; honed marble or travertine surface; natural linen, a ceramic tray, dried pampas/eucalyptus; quiet hotel-spa luxury',
+    argo:'ergonomic pillow on a beautifully made bed with crisp oat-and-white linen; serene minimal bedroom; soft folds, morning calm; boutique-hotel feel',
+    auto:'a serene luxurious minimal interior corner; premium wood, stone and linen textures; tasteful props; editorial home-decor mood'
+  };
+  var ask='คุณคือ Creative Director แบรนด์ BLOOK LIVING (The Class of Calm — ของแต่งบ้าน/เฟอร์นิเจอร์หรู สงบ อบอุ่น)\n'
+    +'เขียน art-direction prompt ภาษาอังกฤษ ให้โมเดลวาด "ฉากโฆษณาหรูระดับนิตยสาร" จากรูปสินค้าที่แนบ\n'
+    +'สินค้า: '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK product')+'\n'
+    +'แนวฉากของสินค้านี้: '+sceneMap[cat]+'\n'
+    +'โหมด: '+(isSale?'sale/promo (สด สะดุดตา แต่ยังหรู)':'branding mood (สงบ พรีเมียม)')+((fes&&fes.k!=='none')?(' · ธีมเทศกาล: '+fes.l):'')+'\n'
+    +'พรอมต์ต้องสั่งให้: keep the EXACT same product (shape, colour, label, proportions) unchanged — restyle only the surrounding scene; premium materials; soft natural light (golden-hour / soft window light); gentle diffused shadows; shallow depth of field; warm neutral palette; minimal editorial composition with negative space for text; photorealistic high-end product photography; NO text, NO logo, NO watermark, NO extra products.\n'
+    +'ตอบเป็น prompt ภาษาอังกฤษล้วน 1 ย่อหน้า ~50-80 คำ ไม่ต้องอธิบายอย่างอื่น';
+  var fbMap={
+    reed:'Editorial luxury photo of the exact same reed diffuser — unchanged shape, colour and label — on honed cream marble beside soft natural linen, a ceramic tray and dried botanicals in a serene spa-like corner. Soft golden window light, gentle diffused shadows, shallow depth of field, warm neutral palette, minimal composition with generous negative space. Photorealistic high-end product photography. No text, no logo, no extra products.',
+    argo:'Editorial luxury photo of the exact same ergonomic pillow — unchanged — resting on a beautifully made bed with crisp oat-and-white linen in a serene minimal bedroom. Soft morning light, gentle shadows, shallow depth of field, warm neutral palette, calm negative space. Photorealistic boutique-hotel mood. No text, no logo.',
+    auto:'Editorial luxury photo of the exact same product — unchanged shape and colour — in a serene minimal interior with premium wood, stone and linen textures. Soft natural golden light, gentle diffused shadows, shallow depth of field, warm calm palette, generous negative space. Photorealistic high-end styling. No text, no logo.'
+  };
+  var fallback=fbMap[cat];
+  return saClaude([{role:'user',content:ask}],400).then(function(t){ return (t||'').trim()||fallback; }).catch(function(){ return fallback; });
 }
 // ฝ่ายกราฟิก (Gemini) สร้างฉากหรูจากรูปสินค้า → คืน dataURL (หรือ null ถ้าพลาด)
 function saGeminiImage(dataUrl,prompt){
@@ -1438,7 +1456,8 @@ function saGeminiImage(dataUrl,prompt){
   var model=localStorage.getItem('bk-gemini-model')||'gemini-2.5-flash-image';
   var p=saDataParts(dataUrl); if(!p) return Promise.resolve(null);
   var url='https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key);
-  var body={contents:[{parts:[{text:prompt+' Output a single edited photo only.'},{inline_data:{mime_type:p.mime,data:p.b64}}]}]};
+  var guard=' IMPORTANT: keep the product in the attached photo EXACTLY as-is — identical shape, colour, label, text and proportions; do NOT redraw, distort, recolour, replace or add any product. Restyle ONLY the background, surface, props and lighting. Photorealistic. Output one single edited photo only — no text, no logo, no watermark.';
+  var body={contents:[{parts:[{text:prompt+guard},{inline_data:{mime_type:p.mime,data:p.b64}}]}],generationConfig:{temperature:0.7}};
   return fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Gemini',r.status,t); throw new Error('gemini '+r.status); }); return r.json(); })
     .then(function(j){ var parts=(((j.candidates||[])[0]||{}).content||{}).parts||[]; for(var i=0;i<parts.length;i++){ var d=parts[i].inlineData||parts[i].inline_data; if(d&&d.data) return 'data:'+(d.mimeType||d.mime_type||'image/png')+';base64,'+d.data; } return null; })
@@ -1459,10 +1478,10 @@ function saBuildImagesAI(prog){
   return saArtBrief().then(function(brief){
     prog && prog('marketing','done','คิดคอนเซ็ปต์ + art-direction brief (Claude) ✓');
     prog && prog('graphic','work','Gemini กำลังสร้างฉากหรูจากรูปสินค้า...');
-    var imgs=saState.images.slice(), out=[];
+    var imgs=saState.images.slice(), out=[], bases=[];
     var promptUsed=brief, reviewedNote='', aiCount=0;
-    function compose(idx,im,isAi){ try{ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); }catch(e){ out[idx]=imgs[idx]; } if(isAi) aiCount++; }
-    function loadAndCompose(idx,url,isAi){ return saLoadImg(url).then(function(im){ compose(idx,im,isAi); }); }
+    function compose(idx,im,isAi,baseUrl){ try{ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); }catch(e){ out[idx]=imgs[idx]; } bases[idx]=baseUrl||imgs[idx]; if(isAi) aiCount++; }
+    function loadAndCompose(idx,url,isAi){ return saLoadImg(url).then(function(im){ compose(idx,im,isAi,url); }); }
     function buildOne(idx){
       if(idx>=imgs.length) return Promise.resolve();
       return saSrcToData(imgs[idx]).catch(function(){ return imgs[idx]; }).then(function(orig){
@@ -1470,22 +1489,28 @@ function saBuildImagesAI(prog){
         return saGeminiImage(orig, promptUsed).then(function(aiUrl){
           // ลองวางภาพ AI ก่อน · ถ้าโหลดไม่ขึ้นค่อย fallback รูปเดิม (ไม่ให้ทั้งชุดพัง)
           var step = aiUrl
-            ? loadAndCompose(idx, aiUrl, true).catch(function(){ if(!saLastAiErr) saLastAiErr='ภาพจาก Gemini โหลดไม่ขึ้น'; return loadAndCompose(idx, orig, false).catch(function(){ out[idx]=imgs[idx]; }); })
-            : loadAndCompose(idx, orig, false).catch(function(){ out[idx]=imgs[idx]; });
+            ? loadAndCompose(idx, aiUrl, true).catch(function(){ if(!saLastAiErr) saLastAiErr='ภาพจาก Gemini โหลดไม่ขึ้น'; return loadAndCompose(idx, orig, false).catch(function(){ out[idx]=imgs[idx]; bases[idx]=imgs[idx]; }); })
+            : loadAndCompose(idx, orig, false).catch(function(){ out[idx]=imgs[idx]; bases[idx]=imgs[idx]; });
           return step.then(function(){
-            // รีวิวรูปแรกด้วย Claude vision (เฉพาะเมื่อได้ภาพ AI จริง) แล้วถ้าสั่งแก้ วาดใหม่รูปแรก
-            if(idx===0 && aiUrl && out[0]){ prog && prog('director','work','Claude vision รีวิวรูปแรก...');
-              return saVisionReview(out[0]).then(function(rv){
-                if(rv && !rv.ok && rv.improve){ promptUsed=rv.improve; reviewedNote='ปรับตามรีวิว';
-                  return saGeminiImage(orig,promptUsed).then(function(u2){ if(u2) return loadAndCompose(0,u2,false).catch(function(){}); });
-                }
-              }).catch(function(){});
-            }
+            // ฝ่ายไดเรกเตอร์ — Claude vision รีวิวรูปแรก วนได้ถึง 2 รอบ จนคะแนนถึงเกณฑ์
+            if(idx===0 && aiUrl && out[0]){ return saDirectorLoop(orig,2); }
           });
         });
       }).then(function(){ return buildOne(idx+1); });
     }
-    return buildOne(0).then(function(){ return {out:out, note:reviewedNote, ai:aiCount, total:imgs.length}; });
+    // วนรีวิว-สั่งแก้ภาพแรก ≤ rounds รอบ · prompt ที่ดีขึ้นจะส่งต่อไปรูปถัดไปด้วย
+    function saDirectorLoop(orig0,rounds){
+      if(rounds<=0 || !out[0]) return Promise.resolve();
+      var pass=3-rounds;
+      prog && prog('director','work','Claude vision รีวิวรูปแรก (รอบ '+pass+')...');
+      return saVisionReview(out[0]).then(function(rv){
+        if(rv && !rv.ok && rv.improve){ promptUsed=rv.improve; reviewedNote='ปรับตามรีวิว '+pass+' รอบ';
+          prog && prog('graphic','work','วาดรูปแรกใหม่ตามรีวิว (รอบ '+pass+')...');
+          return saGeminiImage(orig0,promptUsed).then(function(u2){ if(u2) return loadAndCompose(0,u2,false).catch(function(){}); }).then(function(){ return saDirectorLoop(orig0,rounds-1); });
+        }
+      }).catch(function(){});
+    }
+    return buildOne(0).then(function(){ return {out:out, bases:bases, note:reviewedNote, ai:aiCount, total:imgs.length}; });
   }).catch(function(e){ try{ console.error('[BLOOK AI] pipeline error:',e); }catch(_){} if(!saLastAiErr) saAiErrHint('AI',0,e&&e.message); throw e; });
 }
 function saSetDept(d,cls,msg){ var el=document.querySelector('.sa-dept[data-d="'+d+'"]'); if(!el)return; el.classList.remove('work','done'); if(cls)el.classList.add(cls); var s=el.querySelector('span'); if(s)s.textContent=msg||''; }
@@ -1518,6 +1543,7 @@ function bkGenerate(){
         if(r.ai===0){ g='⚠️ Gemini วาดไม่สำเร็จ'+(saLastAiErr?(' ('+saLastAiErr+')'):'')+' — ใช้รูปเดิม + กราฟิกหรูแทน '+r.out.length+' รูป'; d='ตรวจ + จัดลำดับ '+r.out.length+' รูป → อนุมัติ ✓'; }
         else if(r.ai<r.total){ g='AI วาดฉากหรู '+r.ai+'/'+r.total+' รูป (Gemini) · ที่เหลือใช้รูปเดิม + วางโลโก้/ตัวอักษร ✓'; d='ไดเรกเตอร์รีวิวด้วย Claude vision'+(r.note?(' · '+r.note):'')+' → อนุมัติ ✓'; }
         else { g='AI สร้างฉากหรู '+r.out.length+' รูป (Gemini) + วางโลโก้/ตัวอักษรทับ ✓'; d='ไดเรกเตอร์รีวิวด้วย Claude vision'+(r.note?(' · '+r.note):'')+' → อนุมัติ ✓'; }
+        saBases=(r.bases&&r.bases.length)?r.bases.slice():saState.images.slice(); saResultMode=(r.ai>0?'ai':'template');
         finish(r.out,g,d);
       }).catch(function(e){
         // ถ้า AI พลาดทั้งสาย → fallback เทมเพลต พร้อมบอกสาเหตุ (ค้างไว้ไม่ให้หาย)
@@ -1536,7 +1562,7 @@ function bkGenerate(){
           im.onerror=function(){ out[idx]=src; if(++done===n) done2(out); }; im.src=src;
         });
       },300);
-      function done2(out){ finish(out,(failNote?('⚠️ AI วาดภาพล้ม: '+failNote+' → ใช้เทมเพลตหรูแทน · '):'')+'ออกแบบ '+out.length+' รูป · สไตล์ "'+saCurrentStyleLabel()+'" · '+(plat?plat.l:'')+' '+saState.aspect+(saState.logo!==false?' · ใส่โลโก้':' · ไม่ใส่โลโก้')+' ✓','ตรวจให้สื่อสารชัด ตรงแบรนด์ + จัดลำดับ '+out.length+' รูป → อนุมัติพร้อมโพสต์ ✓'); }
+      function done2(out){ saBases=saState.images.slice(); saResultMode='template'; finish(out,(failNote?('⚠️ AI วาดภาพล้ม: '+failNote+' → ใช้เทมเพลตหรูแทน · '):'')+'ออกแบบ '+out.length+' รูป · สไตล์ "'+saCurrentStyleLabel()+'" · '+(plat?plat.l:'')+' '+saState.aspect+(saState.logo!==false?' · ใส่โลโก้':' · ไม่ใส่โลโก้')+' ✓','ตรวจให้สื่อสารชัด ตรงแบรนด์ + จัดลำดับ '+out.length+' รูป → อนุมัติพร้อมโพสต์ ✓'); }
     }
   });
 }
@@ -1547,8 +1573,16 @@ function saShowResult(urls,cap){
   saRenderMockup(urls,cap);
   saRenderGrid(urls);
   saSetView('mockup');
+  saUpdateModeBadge();
   var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel();
   res.scrollIntoView({behavior:'smooth',block:'start'});
+}
+/* ป้ายบอกโหมดผลลัพธ์ + ซ่อน/โชว์ปุ่มวาด AI ใหม่ตามโหมด */
+function saUpdateModeBadge(){
+  var b=document.getElementById('sa-mode-badge');
+  if(b){ if(saResultMode==='ai'){ b.textContent='🎨 ภาพจาก AI (Gemini) — เสียค่าใช้จ่ายแล้ว'; b.style.color='#7ee0a0'; b.style.borderColor='rgba(126,224,160,.4)'; }
+    else { b.textContent='🆓 เทมเพลต (ฟรี)'; b.style.color='var(--gold2)'; b.style.borderColor='var(--border)'; } }
+  var rb=document.getElementById('sa-regen-ai'); if(rb){ var hasAI=saState.aiImage && !!localStorage.getItem('bk-gemini-key'); rb.style.display=hasAI?'inline-block':'none'; var n=saState.images.length||1; rb.textContent='✨ วาดฉาก AI ใหม่ (~'+Math.round(n*1.4)+'฿)'; }
 }
 function saSetView(mode){
   var mv=document.getElementById('sa-mockup-view'), gv=document.getElementById('sa-grid-view');
@@ -1561,16 +1595,28 @@ function saRenderGrid(urls){
   var h=document.getElementById('sa-grid-host'); if(!h) return;
   h.innerHTML=urls.map(function(u,i){ return '<figure><span class="n">'+(i+1)+'</span><img src="'+u+'" alt="โพสต์ '+(i+1)+'"></figure>'; }).join('');
 }
-/* เปลี่ยนดีไซน์กราฟิก (วน style) แล้ว render ใหม่ — ไม่เรียก AI ซ้ำ */
-function saReshuffleDesign(){
-  var n=saState.images.length; if(!n){ return; }
-  saState.styleIdx=(saState.styleIdx||0)+1;
+/* เปลี่ยน/สุ่มดีไซน์กราฟิก — วาง overlay สไตล์ใหม่บน "ฉากเดิม" ที่แคชไว้
+   ✅ ฟรี ไม่เรียก Gemini ซ้ำ · ถ้าเป็นภาพ AI ก็ยังคงฉาก AI เดิม ไม่ถูกรีเซ็ตเป็นรูปต้นฉบับ */
+function saReshuffleDesign(rand){
+  var bases=(saBases&&saBases.length)?saBases:saState.images;
+  var n=bases.length; if(!n){ return; }
+  var k=(typeof SA_STYLES!=='undefined'&&SA_STYLES.length)?SA_STYLES.length:1;
+  if(rand && k>1){ var nx=Math.floor(Math.random()*k); while(nx===(saState.styleIdx||0)) nx=Math.floor(Math.random()*k); saState.styleIdx=nx; }
+  else { saState.styleIdx=((saState.styleIdx||0)+1)%k; }
   var cap=document.getElementById('sa-out-cap').value, out=[],done=0;
-  saState.images.forEach(function(src,idx){ var im=new Image();
+  bases.forEach(function(src,idx){ var im=new Image(); im.crossOrigin='anonymous';
     im.onload=function(){ try{out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92);}catch(e){out[idx]=src;} if(++done===n) fin(); };
     im.onerror=function(){ out[idx]=src; if(++done===n) fin(); }; im.src=src;
   });
-  function fin(){ saLastUrls=out; saRenderMockup(out,cap); saRenderGrid(out); var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel(); }
+  function fin(){ saLastUrls=out; saRenderMockup(out,cap); saRenderGrid(out); saUpdateModeBadge(); var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel(); }
+}
+/* วาดฉากใหม่ด้วย AI จริง (Gemini) — เสียเงิน จึงยืนยันก่อน */
+function saRegenAI(){
+  var hasAI=saState.aiImage && localStorage.getItem('bk-gemini-key');
+  if(!hasAI){ alert('ตอนนี้เป็นโหมดเทมเพลต (ฟรี)\n\nถ้าต้องการให้ AI วาดฉากใหม่ ให้เปิดสวิตช์ "🎨 AI สร้างภาพหรู (Gemini)" + ใส่คีย์ Gemini ที่ ⚙️ AI ก่อนครับ'); return; }
+  var n=saState.images.length||1;
+  if(!confirm('วาดฉากใหม่ด้วย AI (Gemini)\nมีค่าใช้จ่ายประมาณ '+Math.round(n*1.4)+'฿ ('+n+' รูป)\n\n💡 ถ้าแค่อยากเปลี่ยนกรอบ/สี/เลย์เอาต์ ใช้ปุ่ม "🎲 สุ่มดีไซน์" (ฟรี) ได้เลย\n\nยืนยันวาดฉากใหม่ด้วย AI ไหม?')) return;
+  bkGenerate();
 }
 /* mockup เหมือนแอปจริง — เฉพาะแพลตฟอร์มที่เลือก (saState.platform) */
 function saRenderMockup(urls,cap){
@@ -1582,7 +1628,7 @@ function saRenderMockup(urls,cap){
   if(pk==='facebook'){
     html='<div class="pm pm-fb"><div class="hd"><div class="av">BK</div><div class="nm">BLOOK LIVING<span>ได้รับการสนับสนุน · 🌐</span></div></div><div class="cap">'+capHtml+'</div>'+slides()+'<div class="bar"><div>👍 ถูกใจ</div><div>💬 ความคิดเห็น</div><div>↪ แชร์</div></div></div>';
   } else if(pk==='tiktok'){
-    html='<div class="pm pm-tt">'+slides()+'<div class="rail"><div class="av">BK</div><div><div class="ic">♥</div>1.2k</div><div><div class="ic">💬</div>88</div><div><div class="ic">🔖</div>320</div><div><div class="ic">↪</div>45</div></div><div class="btm"><div class="u">@blookliving</div><div class="c">'+capHtml+'</div><div style="font-size:.72rem;margin-top:4px;opacity:.9">♫ เสียงต้นฉบับ · BLOOK LIVING</div></div></div>';
+    html='<div class="pm pm-tt">'+slides()+'<div class="rail"><div class="av">BK</div><div><div class="ic">♥</div>1.2k</div><div><div class="ic">💬</div>88</div><div><div class="ic">🔖</div>320</div></div><div class="btm"><div class="u">@blookliving</div><div class="c">'+capHtml+'</div><div style="font-size:.72rem;margin-top:4px;opacity:.9">♫ เสียงต้นฉบับ · BLOOK LIVING</div></div></div>';
   } else if(pk==='x'){
     html='<div class="pm pm-x"><div class="hd"><div class="av">BK</div><div style="flex:1;min-width:0"><div class="nm">BLOOK LIVING <span>@blookliving · 1ชม.</span></div><div class="tx">'+capHtml+'</div><div class="imgwrap">'+slides()+'</div><div class="bar"><span>💬 12</span><span>🔁 34</span><span>♥ 210</span><span>📊 5.4พัน</span></div></div></div></div>';
   } else if(pk==='lemon8'){
