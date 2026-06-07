@@ -1852,9 +1852,11 @@ function bkDownloadAll(){ (saLastUrls||[]).forEach(function(u,i){ setTimeout(fun
 function bkSaveKey(){
   var k=document.getElementById('sa-aikey').value.trim(), m=document.getElementById('sa-aimodel').value.trim();
   if(k) localStorage.setItem('bk-claude-key',k); else localStorage.removeItem('bk-claude-key'); if(m) localStorage.setItem('bk-claude-model',m);
-  document.getElementById('sa-aistatus').textContent=k?'✅ บันทึกคีย์แล้ว (AI พร้อม)':'ลบคีย์แล้ว (ใช้เทมเพลต)';
+  var st=document.getElementById('sa-aistatus');
+  if(k){ if(st) st.textContent='⏳ กำลังทดสอบคีย์ Claude...'; saLastAiErr=''; saClaude([{role:'user',content:'hi'}],5).then(function(){ if(st){ st.textContent='✅ คีย์ Claude ใช้ได้! พร้อมเขียนแคปชัน+รีวิว'; st.style.color='#7ee0a0'; } }).catch(function(){ if(st){ st.textContent='❌ คีย์ Claude ใช้ไม่ได้: '+(saLastAiErr||'error'); st.style.color='#e88'; } }); }
+  else if(st){ st.textContent='ลบคีย์แล้ว (ใช้เทมเพลต)'; st.style.color='var(--dim)'; }
   var gk=(document.getElementById('sa-gemkey')||{}).value, gm=(document.getElementById('sa-gemmodel')||{}).value;
-  if(gk!=null){ gk=gk.trim(); if(gk) localStorage.setItem('bk-gemini-key',gk); else localStorage.removeItem('bk-gemini-key'); if(gm) localStorage.setItem('bk-gemini-model',gm.trim()); var gs=document.getElementById('sa-gemstatus'); if(gs) gs.textContent=gk?'✅ บันทึกคีย์ Gemini':'ลบคีย์ Gemini'; }
+  if(gk!=null){ gk=gk.trim(); if(gk) localStorage.setItem('bk-gemini-key',gk); else localStorage.removeItem('bk-gemini-key'); if(gm) localStorage.setItem('bk-gemini-model',gm.trim()); var gs=document.getElementById('sa-gemstatus'); if(gs){ gs.textContent=gk?'✅ บันทึกคีย์ Gemini':'ลบคีย์ Gemini'; gs.style.color=gk?'#7ee0a0':'var(--dim)'; } }
 }
 function saToggleAiImage(){ saState.aiImage=!saState.aiImage; localStorage.setItem('bk-aiimg', saState.aiImage?'1':'0'); var b=document.getElementById('sa-aiimg-btn'); if(b) b.classList.toggle('on', saState.aiImage); if(saState.aiImage && !localStorage.getItem('bk-gemini-key')) alert('เปิดโหมด AI สร้างภาพแล้ว — อย่าลืมวาง Gemini API key + คีย์ Claude แล้วกดบันทึก'); }
 function checkGaStatus(){
