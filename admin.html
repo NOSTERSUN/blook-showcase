@@ -1652,7 +1652,7 @@ function saBuildImagesAI(prog){
     saLog('<b>🎯 ไดเรกชันภาพ ('+(saLastBriefAI?'Claude':'สำรอง')+'→Gemini):</b> "'+(brief||'').slice(0,95)+'…"');
     prog && prog('graphic','work','Gemini กำลังสร้างฉากหรูจากรูปสินค้า...');
     var imgs=saState.images.slice(), out=[], bases=[];
-    var promptUsed=brief, reviewedNote='', aiCount=0;
+    var promptUsed=brief, reviewedNote='', aiCount=0, dirPush=false;
     function compose(idx,im,isAi,baseUrl){ try{ out[idx]=buildPost(im,saState,isAi).toDataURL('image/jpeg',0.92); }catch(e){ out[idx]=imgs[idx]; } bases[idx]=baseUrl||imgs[idx]; if(isAi) aiCount++; }
     function loadAndCompose(idx,url,isAi){ return saLoadImg(url).then(function(im){ compose(idx,im,isAi,url); }); }
     function buildOne(idx){
@@ -1671,18 +1671,24 @@ function saBuildImagesAI(prog){
         });
       }).then(function(){ return buildOne(idx+1); });
     }
-    // วนรีวิว-สั่งแก้ภาพแรก ≤ 4 รอบ จนได้ 10/10 · prompt ที่ดีขึ้นส่งต่อไปรูปถัดไปด้วย (คุมต้นทุน Gemini)
+    // วนรีวิว-สั่งแก้ภาพแรก ≤ 4 รอบ · ≤7 วาดใหม่อัตโนมัติ · 8-9 ถามผู้ใช้ก่อนดันถึง 10 (คุมต้นทุน Gemini)
     function saDirectorLoop(orig0,rounds){
       if(rounds<=0 || !out[0]) return Promise.resolve();
       var pass=5-rounds;
       prog && prog('director','work','Claude vision รีวิวรูปแรก (รอบ '+pass+'/4)...');
       return saVisionReview(out[0]).then(function(rv){
-        if(rv && rv.score) reviewedNote='คะแนน '+rv.score+'/10'+(rv.ok?'':' · ปรับรอบ '+pass);
-        if(rv) saLog('<b>🧭 ไดเรกเตอร์ → กราฟิก (รอบ '+pass+'/4):</b> '+(rv.ok?('✅ ผ่าน '+(rv.score||10)+'/10'):('คะแนน '+(rv.score||'?')+'/10 → สั่งวาดใหม่: "'+((rv.improve||'').slice(0,55))+'…"')));
-        if(rv && !rv.ok && rv.improve){ promptUsed=rv.improve;
-          prog && prog('graphic','work','วาดรูปแรกใหม่ตามรีวิว (รอบ '+pass+')...');
-          return saGeminiImage(orig0,promptUsed).then(function(u2){ if(u2) return loadAndCompose(0,u2,false).catch(function(){}); }).then(function(){ return saDirectorLoop(orig0,rounds-1); });
+        if(!rv) return; var sc=rv.score||0;
+        if(sc) reviewedNote='คะแนน '+sc+'/10';
+        if(sc>=10 || !rv.improve){ saLog('<b>🧭 ไดเรกเตอร์ (รอบ '+pass+'/4):</b> ✅ '+(sc||10)+'/10 — อนุมัติ'); return; }
+        if(sc>7 && !dirPush){
+          saLog('<b>🧭 ไดเรกเตอร์ (รอบ '+pass+'/4):</b> '+sc+'/10 (สวยพร้อมโพสต์แล้ว) — ถามผู้ใช้ว่าจะดันถึง 10 ไหม');
+          if(!confirm('🧭 ฝ่ายไดเรกเตอร์: ภาพนี้ได้ '+sc+'/10 — สวย พร้อมโพสต์แล้ว ✓\n\nจะวาดใหม่เพื่อดันให้ถึง 10/10 ไหมครับ?\n• เสียเพิ่ม ~1.4฿/รอบ · เหลือได้อีก '+(rounds-1)+' รอบ\n\nกด "ตกลง" = ดันต่อ  ·  "ยกเลิก" = ใช้ภาพนี้เลย (ประหยัด)')){ reviewedNote=sc+'/10 (ผู้ใช้เลือกใช้เลย)'; saLog('<b>🧭 ผู้ใช้:</b> ใช้ภาพนี้ ('+sc+'/10) — หยุดลูป ไม่เสีย Gemini เพิ่ม'); return; }
+          dirPush=true;
         }
+        promptUsed=rv.improve;
+        saLog('<b>🧭 ไดเรกเตอร์ → กราฟิก (รอบ '+pass+'/4):</b> '+sc+'/10 → สั่งวาดใหม่: "'+((rv.improve||'').slice(0,50))+'…"');
+        prog && prog('graphic','work','วาดรูปแรกใหม่ตามรีวิว (รอบ '+pass+')...');
+        return saGeminiImage(orig0,promptUsed).then(function(u2){ if(u2) return loadAndCompose(0,u2,false).catch(function(){}); }).then(function(){ return saDirectorLoop(orig0,rounds-1); });
       }).catch(function(){});
     }
     return buildOne(0).then(function(){ return {out:out, bases:bases, note:reviewedNote, ai:aiCount, total:imgs.length}; });
