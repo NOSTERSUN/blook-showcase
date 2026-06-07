@@ -279,6 +279,18 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .pm-scroll .slide{flex:0 0 100%;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;background:#000}
 .pm-scroll .slide img{max-width:100%;max-height:600px;height:auto;display:block}
 .pm-pager{position:absolute;top:10px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:2px 9px;border-radius:10px}
+.pm-nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.42);color:#fff;border:none;font-size:1.4rem;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:4;backdrop-filter:blur(3px);padding-bottom:3px}
+.pm-nav:hover{background:rgba(201,162,77,.92);color:#111}
+.pm-nav.prev{left:8px}.pm-nav.next{right:8px}
+.sa-grid-all figure img{cursor:zoom-in}
+#sa-lightbox{position:fixed;inset:0;background:rgba(8,6,4,.93);z-index:99999;display:none;align-items:center;justify-content:center}
+#sa-lightbox img{max-width:92vw;max-height:88vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+#sa-lb-close{position:absolute;top:18px;right:22px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;border:none;font-size:1.3rem;cursor:pointer;z-index:2}
+#sa-lb-close:hover{background:rgba(255,255,255,.25)}
+.sa-lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;border:none;font-size:2rem;line-height:1;cursor:pointer;align-items:center;justify-content:center;padding-bottom:4px}
+.sa-lb-nav:hover{background:rgba(201,162,77,.9);color:#111}
+.sa-lb-nav.prev{left:3vw}.sa-lb-nav.next{right:3vw}
+#sa-lb-pager{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:#fff;background:rgba(0,0,0,.5);padding:5px 16px;border-radius:14px;font-size:.85rem;letter-spacing:.1em}
 /* IG */
 .pm-ig{background:#fff;color:#111}
 .pm-ig .hd{display:flex;align-items:center;gap:9px;padding:10px 12px}
@@ -885,6 +897,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <div class="sa-opts" id="sa-purpose"></div>
       <div id="sa-purpose-desc" style="margin-top:10px;font-size:.8rem;line-height:1.55;color:var(--neutral);background:rgba(201,162,77,.06);border:1px solid var(--border);border-radius:10px;padding:10px 13px"></div>
       <div class="sa-disc" id="sa-discount-wrap" style="display:none;margin-top:12px;font-size:.85rem;color:var(--neutral)">ส่วนลด: <input type="number" id="sa-discount" value="30" min="1" max="90"> %</div>
+      <div class="sa-sub" style="margin-top:14px">การวางข้อความบนรูป <span style="font-size:.72rem;color:var(--dim);font-weight:400">เลือกว่าจะมี "แถบข้อความ" แยก หรือวาง "ทับบนรูป" ทั้งหมด</span></div>
+      <div class="sa-opts" id="sa-layout"></div>
       <div class="sa-logo-row" id="sa-logo-row">
         <span>ใส่โลโก้ <b>BLOOK</b> บนรูป</span>
         <button type="button" id="sa-logo-btn" class="sa-toggle on" onclick="saToggleLogo()"><span class="knob"></span></button>
@@ -1110,6 +1124,11 @@ var SA_PURPOSES=[
   {k:'brand',l:'✨ Branding (สร้างภาพลักษณ์)',d:'<b>สร้างการจดจำแบรนด์</b> — โพสต์จะเน้นอารมณ์ ไลฟ์สไตล์ ความสงบ ความรู้สึก "อยากเป็นเจ้าของ" · <b>ไม่พูดถึงราคา</b> · ภาพหรูสะอาด โลโก้บาง · เหมาะสร้างฐานแฟน ทำให้คนรู้จัก/รักแบรนด์'},
   {k:'sale',l:'🔥 เน้นขาย (ปิดการขาย)',d:'<b>กระตุ้นให้ซื้อตอนนี้</b> — ชูโปรโมชัน/ส่วนลด + สร้างความเร่งด่วน + CTA ชัด (ทักแชท/กดลิงก์) · ภาพมีป้ายลดราคาที่ออกแบบหรู <b>ไม่กิ๊กก๊อก</b> · เหมาะช่วงแคมเปญ 7.7 / ลดราคา'}
 ];
+var SA_LAYOUTS=[
+  {k:'band',l:'▭ แถบข้อความ'},
+  {k:'mix',l:'◑ ผสม (แนะนำ)'},
+  {k:'overlay',l:'▣ ทับบนรูปทั้งหมด'}
+];
 var SA_FESTIVALS=[
   {k:'none',l:'ไม่มี',m:0,d:0},
   {k:'newyear',l:'ปีใหม่',badge:'NEW YEAR',emoji:'🎊',accent:'#A0784A',m:1,d:1,th:'🎊 ต้อนรับปีใหม่ด้วยบ้านที่สงบ',en:'Happy New Year',tag:'#HappyNewYear'},
@@ -1140,9 +1159,10 @@ var SA_PRODUCTS=[
   {k:'argo',l:'Blook Argo Pillow',d:'หมอนเพื่อสุขภาพ Blook Argo (ergonomic pillow)'},
   {k:'reed50',l:'ก้านไม้หอม 50ml',d:'ก้านไม้หอม (reed diffuser) ขนาด 50ml'},
   {k:'reed250',l:'ก้านไม้หอม 250ml',d:'ก้านไม้หอม (reed diffuser) ขนาด 250ml'},
-  {k:'reedgift',l:'ก้านไม้หอม Gift Set',d:'เซ็ทของขวัญก้านไม้หอม BLOOK'}
+  {k:'reedgift',l:'ก้านไม้หอม Gift Set',d:'เซ็ทของขวัญก้านไม้หอม BLOOK'},
+  {k:'togo',l:'TOGO Sofa',d:'โซฟา TOGO ของ BLOOK (โซฟาขี้เกียจ/บีนแบ็กพรีเมียม นั่งสบาย นุ่ม)'}
 ];
-var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',logo:true,styleIdx:0,aiImage:false};
+var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',logo:true,styleIdx:0,aiImage:false,layout:'mix'};
 var saReady=false, saLastUrls=[], saBases=[], saResultMode='template';
 var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
 var saLogoOn=true; // ตั้งจาก saState.logo ใน buildPost — ปิดได้ในขั้นวัตถุประสงค์
@@ -1156,6 +1176,7 @@ function saLoadConfig(cb){
       if(j.aspects&&j.aspects.length) SA_ASPECTS=j.aspects.map(function(a){return {k:a.key,l:a.label,w:a.w,h:a.h};});
       if(j.purposes&&j.purposes.length) SA_PURPOSES=j.purposes.map(function(p){return {k:p.key,l:p.label,d:(p.desc||p.d)};});
       if(j.festivals&&j.festivals.length) SA_FESTIVALS=j.festivals.map(function(f){return {k:f.key,l:f.label,badge:f.badge,emoji:f.emoji,accent:f.accent,m:(f.m!=null?f.m:f.month),d:(f.d!=null?f.d:f.day),th:f.th,en:f.en,tag:f.tag};});
+      if(j.contact) SA_CONTACT=Object.assign({web:'blookliving.com',tiktok:'',shopee:'',line:'',phone:''},j.contact);
     }
     cb();
   }).catch(function(){ cb(); });
@@ -1172,6 +1193,7 @@ function bkSellerInit(){
     saChips('sa-product',SA_PRODUCTS,'product',function(o){ saState.product=o.k; });
     saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; saPurposeDesc(); });
     saPurposeDesc();
+    saChips('sa-layout',SA_LAYOUTS,'layout',function(o){ saState.layout=o.k; });
     saRenderFestivals();
     if(near){ var d=saDaysTo(near); var soon=document.getElementById('sa-fest-soon'); if(soon){ soon.style.display='block'; soon.innerHTML='🔔 <b>เทศกาลถัดไป:</b> '+(near.emoji||'')+' '+(near.l||near.k)+' · อีก <b>'+(d===0?'วันนี้!':d+' วัน')+'</b> ('+near.m+'/'+near.d+') &nbsp;<button type="button" class="sa-chip" style="padding:5px 13px" onclick="saSetFestival(\''+near.k+'\')">ใช้เลย</button>'; } }
     var lb=document.getElementById('sa-logo-btn'); if(lb) lb.classList.toggle('on', saState.logo!==false);
@@ -1278,7 +1300,7 @@ function saSaleBurst(x,o,cx,cy,rad){ var d=o.discount||30; x.save();
 /* ---- 6 premium styles (3 brand · 3 sale) ---- */
 var SA_STYLES=[
   // brand 1 — Editorial (image + cream caption band)
-  {key:'editorial',label:'Editorial',purpose:'brand',draw:function(x,img,o){ var W=o.W,H=o.H,band=Math.round(H*0.26);
+  {key:'editorial',label:'Editorial',purpose:'brand',layout:'band',draw:function(x,img,o){ var W=o.W,H=o.H,band=Math.round(H*0.26);
     saCover(x,img,0,0,W,H-band); saGrade(x,0,0,W,H-band); x.fillStyle=saVgrad(x,H-band,'#F7F0E3',H,'#ECE0CD');x.fillRect(0,H-band,W,band);
     x.strokeStyle=o.gold;x.lineWidth=Math.max(2,W*0.0025);x.beginPath();x.moveTo(0,H-band+1);x.lineTo(W,H-band+1);x.stroke();
     saFestChip(x,o,'tr');
@@ -1286,7 +1308,7 @@ var SA_STYLES=[
     saSpaced(x,'BLOOK LIVING',W/2,H-band+band*0.74,Math.round(W*0.026),Math.round(W*0.018),'#9A8466','600 ');
     saDomain(x,o,'#8B6B3D','center'); }},
   // brand 2 — Gold frame full-bleed
-  {key:'frame',label:'Gold Frame',purpose:'brand',draw:function(x,img,o){ var W=o.W,H=o.H;
+  {key:'frame',label:'Gold Frame',purpose:'brand',layout:'overlay',draw:function(x,img,o){ var W=o.W,H=o.H;
     saCover(x,img,0,0,W,H); saGrade(x,0,0,W,H); x.fillStyle=saVgrad(x,0,'rgba(0,0,0,.35)',H*0.3,'rgba(0,0,0,0)');x.fillRect(0,0,W,H*0.3);
     x.fillStyle=saVgrad(x,H*0.62,'rgba(0,0,0,0)',H,'rgba(0,0,0,.62)');x.fillRect(0,H*0.62,W,H*0.38);
     x.strokeStyle='rgba(201,169,110,.9)';x.lineWidth=Math.max(2,W*0.003);saRR(x,W*0.05,W*0.05,W*0.9,H-W*0.1,W*0.02);x.stroke();
@@ -1294,12 +1316,12 @@ var SA_STYLES=[
     x.save();x.textAlign='center';x.fillStyle='rgba(255,255,255,.96)';x.font='italic 500 '+Math.round(W*0.05)+'px Fraunces,Georgia,serif';x.fillText('The Class of Calm',W/2,H-o.pad*2.1);x.restore();
     saDomain(x,o,'rgba(255,255,255,.9)','center'); }},
   // brand 3 — Spotlight dark + centred logo
-  {key:'spotlight',label:'Spotlight',purpose:'brand',draw:function(x,img,o){ var W=o.W,H=o.H;
+  {key:'spotlight',label:'Spotlight',purpose:'brand',layout:'overlay',draw:function(x,img,o){ var W=o.W,H=o.H;
     saCover(x,img,0,0,W,H); saGrade(x,0,0,W,H); var rg=x.createRadialGradient(W/2,H*0.5,W*0.1,W/2,H*0.5,W*0.8);rg.addColorStop(0,'rgba(10,7,4,.15)');rg.addColorStop(1,'rgba(10,7,4,.72)');x.fillStyle=rg;x.fillRect(0,0,W,H);
     saTintLogo(x,W/2,H*0.46,W*0.34,'#F4EFE6'); saSpaced(x,'THE CLASS OF CALM',W/2,H*0.46+W*0.21,Math.round(W*0.028),Math.round(W*0.014),'rgba(244,239,232,.85)','500 ');
     saFestChip(x,o,'tr'); saDomain(x,o,'rgba(255,255,255,.85)','center'); }},
   // sale 1 — Bold burst
-  {key:'burst',label:'Sale Burst',purpose:'sale',draw:function(x,img,o){ var W=o.W,H=o.H;
+  {key:'burst',label:'Sale Burst',purpose:'sale',layout:'overlay',draw:function(x,img,o){ var W=o.W,H=o.H;
     saCover(x,img,0,0,W,H); saGrade(x,0,0,W,H); x.fillStyle=saVgrad(x,H*0.55,'rgba(10,7,4,0)',H,'rgba(10,7,4,.8)');x.fillRect(0,H*0.55,W,H*0.45);
     saTintLogo(x,o.pad+W*0.07,o.pad+W*0.07,W*0.14,'#fff'); saFestChip(x,o,'tr');
     saSaleBurst(x,o,W*0.78,H*0.3,W*0.16);
@@ -1308,7 +1330,7 @@ var SA_STYLES=[
     var cw=W*0.42,ch=W*0.1,cx=o.pad,cy=H-o.pad-ch; x.fillStyle=saVgrad(x,cy,'#D8BC86',cy+ch,'#A0784A');saRR(x,cx,cy,cw,ch,ch/2);x.fill();
     x.fillStyle='#1A0F08';x.textAlign='center';x.font='700 '+Math.round(W*0.036)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('ช้อปเลย · blookliving.com',cx+cw/2,cy+ch*0.64);x.restore?x.restore():0; }},
   // sale 2 — Price band bottom
-  {key:'priceband',label:'Price Band',purpose:'sale',draw:function(x,img,o){ var W=o.W,H=o.H,band=Math.round(H*0.24),d=o.discount||30;
+  {key:'priceband',label:'Price Band',purpose:'sale',layout:'band',draw:function(x,img,o){ var W=o.W,H=o.H,band=Math.round(H*0.24),d=o.discount||30;
     saCover(x,img,0,0,W,H-band); saGrade(x,0,0,W,H-band); x.fillStyle='#15110D';x.fillRect(0,H-band,W,band);
     x.strokeStyle='#E4572E';x.lineWidth=Math.max(2,W*0.004);x.beginPath();x.moveTo(0,H-band+1);x.lineTo(W,H-band+1);x.stroke();
     saTintLogo(x,o.pad+W*0.07,o.pad+W*0.07,W*0.14,'#fff'); saFestChip(x,o,'tr');
@@ -1316,7 +1338,7 @@ var SA_STYLES=[
     x.fillStyle='#FFCF3A';x.font='800 '+Math.round(W*0.12)+'px Inter,Arial,sans-serif';x.fillText('-'+d+'%',o.pad,H-band+band*0.9);x.restore();
     x.save();x.textAlign='right';x.fillStyle='#C9A96E';x.font='600 '+Math.round(W*0.03)+'px Inter,Arial,sans-serif';x.fillText('blookliving.com',W-o.pad,H-band+band*0.5);x.fillStyle='rgba(255,255,255,.7)';x.font='500 '+Math.round(W*0.026)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('สั่งเลยก่อนของหมด',W-o.pad,H-band+band*0.82);x.restore(); }},
   // sale 3 — Diagonal ribbon
-  {key:'ribbon',label:'Sale Ribbon',purpose:'sale',draw:function(x,img,o){ var W=o.W,H=o.H,d=o.discount||30;
+  {key:'ribbon',label:'Sale Ribbon',purpose:'sale',layout:'overlay',draw:function(x,img,o){ var W=o.W,H=o.H,d=o.discount||30;
     saCover(x,img,0,0,W,H); saGrade(x,0,0,W,H); x.fillStyle=saVgrad(x,H*0.6,'rgba(10,7,4,0)',H,'rgba(10,7,4,.78)');x.fillRect(0,H*0.6,W,H*0.4);
     saTintLogo(x,o.pad+W*0.07,o.pad+W*0.07,W*0.14,'#fff');
     // diagonal ribbon top-right
@@ -1325,18 +1347,34 @@ var SA_STYLES=[
     x.save();x.textAlign='left';x.fillStyle='rgba(255,255,255,.97)';x.font='italic 500 '+Math.round(W*0.05)+'px Fraunces,Georgia,serif';x.fillText('The Class of Calm',o.pad,H-o.pad*2.0);x.restore();
     saDomain(x,o,'rgba(255,255,255,.9)','left'); var t2={W:W,H:H,pad:o.pad}; x.save();x.textAlign='right';x.fillStyle='#FFCF3A';x.font='600 '+Math.round(W*0.032)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('🔥 จำนวนจำกัด',W-o.pad,H-o.pad);x.restore(); }}
 ];
-function saStylesFor(purpose){ var r=SA_STYLES.filter(function(s){return s.purpose===purpose||s.purpose==='both';}); return r.length?r:SA_STYLES; }
+function saStylesFor(purpose,layout){ var byP=SA_STYLES.filter(function(s){return s.purpose===purpose||s.purpose==='both';}); if(!byP.length) byP=SA_STYLES; if(!layout||layout==='mix') return byP; var r=byP.filter(function(s){return s.layout===layout;}); return r.length?r:byP; }
 function buildPost(img,o){
   saLogoOn=(o.logo!==false);
   var asp=null,i; for(i=0;i<SA_ASPECTS.length;i++){if(SA_ASPECTS[i].k===o.aspect){asp=SA_ASPECTS[i];break;}} if(!asp)asp=SA_ASPECTS[0];
   var W=asp.w,H=asp.h,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
   var fes=null; for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===o.festival){fes=SA_FESTIVALS[i];break;}}
-  var styles=saStylesFor(o.purpose), st=styles[(o.styleIdx||0)%styles.length];
+  var styles=saStylesFor(o.purpose,o.layout), st=styles[(o.styleIdx||0)%styles.length];
   var ctx2={W:W,H:H,pad:Math.round(W*0.055),fes:fes,purpose:o.purpose,discount:o.discount,gold:'#A0784A'};
   try{ st.draw(x,img,ctx2); }catch(e){ saCover(x,img,0,0,W,H); }
   return c;
 }
-function saCurrentStyleLabel(){ var styles=saStylesFor(saState.purpose); return styles[(saState.styleIdx||0)%styles.length].label; }
+function saCurrentStyleLabel(){ var styles=saStylesFor(saState.purpose,saState.layout); return styles[(saState.styleIdx||0)%styles.length].label; }
+function saProductTags(k){
+  if(k==='argo') return ['#blookliving','#หมอนเพื่อสุขภาพ','#หมอนเพื่อสุขภาพblook','#หมอนblook','#BLOOKARGOPILLOW'];
+  if(k==='togo') return ['#blookliving','#togosofa','#sofablook','#beanbag','#โซฟาขี้เกียจ'];
+  if(k==='reed50'||k==='reed250'||k==='reedgift') return ['#ก้านไม้หอมปรับอากาศ','#ก้านไม้หอมblook','#blookliving','#reeddiffuser','#ห้องหอม'];
+  return ['#BLOOKLIVING','#TheClassOfCalm','#แต่งบ้าน','#ของแต่งบ้าน'];
+}
+var SA_CONTACT={web:'blookliving.com',tiktok:'',shopee:'',line:'',phone:''};
+function saContactBlock(){ var c=SA_CONTACT||{},L=[];
+  if(c.web) L.push('🌐 เว็บ : '+c.web);
+  if(c.tiktok) L.push('🎵 TikTok : '+c.tiktok);
+  if(c.shopee) L.push('🛒 Shopee : '+c.shopee);
+  if(c.line) L.push('💬 Line : '+c.line);
+  if(c.phone) L.push('📞 โทร : '+c.phone);
+  return L.length?('━━━━━━━━━\n📩 สั่งซื้อ / สอบถาม\n'+L.join('\n')):'';
+}
+function saWithContact(cap,platform){ if(platform==='tiktok') return cap; var b=saContactBlock(); return b?(cap+'\n\n'+b):cap; }
 function saPick(a){ return a[Math.floor(Math.random()*a.length)]; }
 function composeCaption(o){
   var fes=null,plat=null,i;
@@ -1365,16 +1403,15 @@ function composeCaption(o){
     : 'BLOOK LIVING — The Class of Calm. Slow living, beautifully designed. blookliving.com';
   if(fes&&fes.k!=='none'&&fes.en) en=fes.en+' · '+en;
   var prod=null; for(i=0;i<SA_PRODUCTS.length;i++){if(SA_PRODUCTS[i].k===o.product){prod=SA_PRODUCTS[i];break;}}
-  var tags=['#BLOOKLIVING','#TheClassOfCalm','#แต่งบ้าน','#ของแต่งบ้าน'];
-  if(prod&&prod.k==='argo') tags=tags.concat(['#หมอนเพื่อสุขภาพ','#หมอนArgo']);
-  else if(prod&&(prod.k==='reed50'||prod.k==='reed250')) tags=tags.concat(['#ก้านไม้หอม','#น้ำหอมปรับอากาศ','#reeddiffuser']);
-  else if(prod&&prod.k==='reedgift') tags=tags.concat(['#เซ็ทของขวัญ','#ของขวัญพรีเมียม','#ก้านไม้หอม']);
-  else tags=tags.concat(['#โซฟาTOGO','#หมอนเพื่อสุขภาพ','#น้ำหอมปรับอากาศ']);
+  var tags=saProductTags(o.product).concat(['#TheClassOfCalm','#แต่งบ้าน']);
   if(o.purpose==='sale') tags=tags.concat(['#ลดราคา','#โปรโมชั่น']);
   if(fes&&fes.tag) tags.push(fes.tag);
   if(plat&&plat.tags) tags=tags.concat(plat.tags);
   var uniq=[]; tags.forEach(function(t){ if(uniq.indexOf(t)<0)uniq.push(t); });
-  return th+'\n\n'+en+'\n\n'+uniq.join(' ');
+  var pname=(prod&&prod.k!=='auto')?prod.l:'';
+  var thF=(pname?('✦ '+pname+'\n'):'')+th;
+  if(pname) en=pname+' — '+en;
+  return thF+'\n\n'+en+'\n\n'+uniq.join(' ');
 }
 var saLastAiErr='';
 function saAiErrHint(svc,status,body){
@@ -1421,12 +1458,13 @@ function saAiCaption(){
     +'บรีฟงานนี้ ('+dep.marketing.role+'):\n'
     +'• แพลตฟอร์ม: '+tone+'\n'
     +'• สินค้าในรูป: '+prodTxt+' — สอดแทรกประโยชน์/อารมณ์ของสินค้านี้อย่างเป็นธรรมชาติ\n'
+    +'• ระบุ "ชื่อ + ขนาด" สินค้าให้ชัดในแคปชัน: '+((pr&&pr.k!=='auto')?pr.l:'BLOOK LIVING')+'\n'
     +'• '+modeBrief+'\n'
     +((fes&&fes.k!=='none')?('• ธีมเทศกาล: '+(fes.l||'')+(fes.th?(' — แนว "'+fes.th+'"'):'')+'\n'):'')
     +'\nเขียนผลลัพธ์ "พร้อมโพสต์" (ห้ามอธิบาย ห้ามใส่หัวข้อกำกับ ห้ามขึ้นต้นว่า "นี่คือ"):\n'
     +'1) แคปชันไทย: ฮุกบรรทัดแรกที่สะดุด + เนื้อหา 2-4 บรรทัด (ลื่น เป็นธรรมชาติ มีรสนิยม)\n'
     +'2) บรรทัดภาษาอังกฤษ 1 บรรทัด (โทนเดียวกัน)\n'
-    +'3) แฮชแท็ก 6-10 อันบรรทัดสุดท้าย (ผสมแบรนด์ + สินค้า + คำที่คนค้นหาจริง เช่น #ก้านไม้หอม #แต่งบ้าน'+(isSale?' #โปรโมชั่น':'')+')';
+    +'3) แฮชแท็กบรรทัดสุดท้าย — ใช้กลุ่มนี้เป็นหลัก: '+saProductTags(saState.product).join(' ')+(isSale?' #โปรโมชั่น':'')+' (เพิ่มได้ตามบริบทรวม 6-10 อัน)';
   return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:700,messages:[{role:'user',content:p}]})})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Claude',r.status,t); throw new Error('api '+r.status); }); return r.json(); })
     .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; })
@@ -1450,25 +1488,29 @@ function saClaude(messages,maxTok){
 function saArtBrief(){
   var prod=saFind(SA_PRODUCTS,saState.product), fes=saFind(SA_FESTIVALS,saState.festival), isSale=saState.purpose==='sale';
   var k=(prod&&prod.k)||'auto';
-  var cat=/reed/.test(k)?'reed':(k==='argo'?'argo':'auto');
+  var cat=/reed/.test(k)?'reed':(k==='argo'?'argo':(k==='togo'?'sofa':'auto'));
   var sceneMap={
     reed:'reed-diffuser styling — a calm spa-like vanity, bedside or bathroom corner; honed marble or travertine surface; natural linen, a ceramic tray, dried pampas/eucalyptus; quiet hotel-spa luxury',
     argo:'ergonomic pillow on a beautifully made bed with crisp oat-and-white linen; serene minimal bedroom; soft folds, morning calm; boutique-hotel feel',
+    sofa:'low lounge / bean-bag style sofa as the hero in a serene luxurious living room; soft linen & boucle textures, a low wood coffee table, a plant, large window with soft daylight; cozy modern-luxe calm interior',
     auto:'a serene luxurious minimal interior corner; premium wood, stone and linen textures; tasteful props; editorial home-decor mood'
   };
+  var festTxt=(fes&&fes.k!=='none')?('• ตกแต่งฉากให้เข้าธีมเทศกาล "'+(fes.l||'')+'" อย่างมีรสนิยม — ใส่พร็อพ/สี/บรรยากาศของเทศกาลนี้เข้าไปในฉากจริง (เช่น คริสต์มาส=กิ่งสน ไฟอุ่นนวลโบเก้ ออร์นาเมนต์ทอง/แดงเล็กน้อย · ปีใหม่=ประกายทองหรู · วาเลนไทน์=โทนอบอุ่น+ดอกไม้) คงความพรีเมียม ไม่รก ไม่บังตัวสินค้า\n'):'';
   var ask='คุณคือ Creative Director แบรนด์ BLOOK LIVING (The Class of Calm — ของแต่งบ้าน/เฟอร์นิเจอร์หรู สงบ อบอุ่น)\n'
     +'เขียน art-direction prompt ภาษาอังกฤษ ให้โมเดลวาด "ฉากโฆษณาหรูระดับนิตยสาร" จากรูปสินค้าที่แนบ\n'
     +'สินค้า: '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK product')+'\n'
     +'แนวฉากของสินค้านี้: '+sceneMap[cat]+'\n'
-    +'โหมด: '+(isSale?'sale/promo (สด สะดุดตา แต่ยังหรู)':'branding mood (สงบ พรีเมียม)')+((fes&&fes.k!=='none')?(' · ธีมเทศกาล: '+fes.l):'')+'\n'
-    +'พรอมต์ต้องสั่งให้: keep the EXACT same product unchanged (shape, colour, proportions, and ALL text/letters/logo on the label — do NOT regenerate or invent any label text) — restyle only the surrounding scene; premium materials; soft natural light (golden-hour / soft window light); gentle diffused shadows; shallow depth of field; warm neutral palette; minimal editorial composition with negative space for text; photorealistic high-end product photography; NO text, NO logo, NO watermark, NO extra products.\n'
-    +'ตอบเป็น prompt ภาษาอังกฤษล้วน 1 ย่อหน้า ~50-80 คำ ไม่ต้องอธิบายอย่างอื่น';
+    +'โหมด: '+(isSale?'sale/promo (สด สะดุดตา แต่ยังหรู)':'branding mood (สงบ พรีเมียม)')+'\n'
+    +festTxt
+    +'พรอมต์ต้องสั่งให้: keep the EXACT same product unchanged (shape, colour, proportions, and ALL text/letters/logo on the label — do NOT regenerate or invent any label text) — restyle only the surrounding scene; premium materials; soft natural light (golden-hour / soft window light); gentle diffused shadows; shallow depth of field; warm neutral palette; minimal editorial composition with negative space for text; photorealistic high-end product photography; NO added text, NO logo, NO watermark, NO extra products.\n'
+    +'ตอบเป็น prompt ภาษาอังกฤษล้วน 1 ย่อหน้า ~50-90 คำ ไม่ต้องอธิบายอย่างอื่น';
   var fbMap={
     reed:'Editorial luxury photo of the exact same reed diffuser — unchanged shape, colour and label — on honed cream marble beside soft natural linen, a ceramic tray and dried botanicals in a serene spa-like corner. Soft golden window light, gentle diffused shadows, shallow depth of field, warm neutral palette, minimal composition with generous negative space. Photorealistic high-end product photography. No text, no logo, no extra products.',
     argo:'Editorial luxury photo of the exact same ergonomic pillow — unchanged — resting on a beautifully made bed with crisp oat-and-white linen in a serene minimal bedroom. Soft morning light, gentle shadows, shallow depth of field, warm neutral palette, calm negative space. Photorealistic boutique-hotel mood. No text, no logo.',
+    sofa:'Editorial luxury photo of the exact same sofa — unchanged shape, colour and proportions — as the hero in a serene minimal living room with soft linen textures, a low wood table and a plant by a large window. Soft natural daylight, gentle shadows, shallow depth of field, warm calm palette, generous negative space. Photorealistic high-end interior styling. No text, no logo.',
     auto:'Editorial luxury photo of the exact same product — unchanged shape and colour — in a serene minimal interior with premium wood, stone and linen textures. Soft natural golden light, gentle diffused shadows, shallow depth of field, warm calm palette, generous negative space. Photorealistic high-end styling. No text, no logo.'
   };
-  var fallback=fbMap[cat];
+  var fallback=fbMap[cat]+((fes&&fes.k!=='none')?(' Add tasteful '+((fes.en||fes.l||'').replace(/[^\x00-\x7F]+/g,'').trim()||'seasonal')+' seasonal styling/props to the scene, keep it premium and uncluttered.'):'');
   return saClaude([{role:'user',content:ask}],400).then(function(t){ return (t||'').trim()||fallback; }).catch(function(){ return fallback; });
 }
 // ฝ่ายกราฟิก (Gemini) สร้างฉากหรูจากรูปสินค้า → คืน dataURL (หรือ null ถ้าพลาด)
@@ -1514,7 +1556,7 @@ function saDirectorReview(urls){
     return saClaude([{role:'user',content:content}],260).then(function(t){ try{ var j=JSON.parse((t.match(/\{[\s\S]*\}/)||['{}'])[0]); return {order:(j.order||[]),warnings:(j.warnings||''),score:(+j.score||0)}; }catch(e){ return null; } }).catch(function(){ return null; });
   });
 }
-function saPickStyleForMode(){ if(typeof SA_STYLES==='undefined'||!SA_STYLES.length) return; var want=(saState.purpose==='sale')?'sale':'brand', idxs=[]; for(var i=0;i<SA_STYLES.length;i++){ if(SA_STYLES[i].purpose===want) idxs.push(i); } if(idxs.length) saState.styleIdx=idxs[Math.floor(Math.random()*idxs.length)]; }
+function saPickStyleForMode(){ var styles=saStylesFor(saState.purpose,saState.layout); if(styles&&styles.length) saState.styleIdx=Math.floor(Math.random()*styles.length); }
 // สร้างรูปทั้งชุดด้วย AI pipeline (brief → gemini → overlay → vision loop ≤2 รอบ)
 function saBuildImagesAI(prog){
   return saArtBrief().then(function(brief){
@@ -1572,7 +1614,7 @@ function bkGenerate(){
   // 1) ฝ่ายการตลาด — คิดก่อน
   var capP = useAI ? saAiCaption().catch(function(){return null;}) : Promise.resolve(null);
   capP.then(function(aiTxt){
-    var cap=aiTxt||composeCaption(saState);
+    var cap=saWithContact(aiTxt||composeCaption(saState), saState.platform);
     saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':('จากเทมเพลต'+(useAI&&saLastAiErr?(' — ⚠️ '+saLastAiErr):(useAI?'':' (ยังไม่ใส่คีย์ Claude)'))))+' ✓');
     function finish(out,gNote,dNote){
       saSetDept('graphic','done',gNote); saSetDept('director','work','Claude vision ตรวจคุณภาพ + จัดลำดับ + เช็คโลโก้ทับสินค้า...');
@@ -1644,15 +1686,28 @@ function saSetView(mode){
 }
 function saRenderGrid(urls){
   var h=document.getElementById('sa-grid-host'); if(!h) return;
-  h.innerHTML=urls.map(function(u,i){ return '<figure><span class="n">'+(i+1)+'</span><img src="'+u+'" alt="โพสต์ '+(i+1)+'"></figure>'; }).join('');
+  h.innerHTML=urls.map(function(u,i){ return '<figure><span class="n">'+(i+1)+'</span><img src="'+u+'" alt="โพสต์ '+(i+1)+'" onclick="saZoom('+i+')" title="คลิกเพื่อดูขนาดเต็ม"></figure>'; }).join('');
 }
+/* เลื่อนรูปในตัวอย่างแอป (ปุ่ม ‹ ›) */
+function saMScroll(dir){ var scr=document.getElementById('sa-mscr'); if(!scr) return; scr.scrollBy({left:dir*scr.clientWidth,behavior:'smooth'}); }
+/* ไลท์บ็อกซ์ — คลิกรูปเพื่อดูขนาดเต็ม + เลื่อนซ้าย/ขวา */
+var saZoomI=0;
+function saZoom(i){ var urls=saLastUrls||[]; if(!urls.length) return; saZoomI=((i%urls.length)+urls.length)%urls.length;
+  var lb=document.getElementById('sa-lightbox'); if(!lb){ lb=document.createElement('div'); lb.id='sa-lightbox'; lb.onclick=function(e){ if(e.target.id==='sa-lightbox'||e.target.id==='sa-lb-close') saZoomClose(); };
+    lb.innerHTML='<button type="button" id="sa-lb-close" aria-label="ปิด">✕</button><button type="button" class="sa-lb-nav prev" onclick="saZoom(saZoomI-1)" aria-label="ก่อนหน้า">‹</button><img id="sa-lb-img" alt="ดูเต็ม"><button type="button" class="sa-lb-nav next" onclick="saZoom(saZoomI+1)" aria-label="ถัดไป">›</button><div id="sa-lb-pager"></div>'; document.body.appendChild(lb); }
+  document.getElementById('sa-lb-img').src=urls[saZoomI];
+  var pg=document.getElementById('sa-lb-pager'); if(pg) pg.textContent=(saZoomI+1)+' / '+urls.length;
+  [].forEach.call(lb.querySelectorAll('.sa-lb-nav'),function(b){ b.style.display=urls.length>1?'flex':'none'; });
+  lb.style.display='flex';
+}
+function saZoomClose(){ var lb=document.getElementById('sa-lightbox'); if(lb) lb.style.display='none'; }
 /* เปลี่ยน/สุ่มดีไซน์กราฟิก — วาง overlay สไตล์ใหม่บน "ฉากเดิม" ที่แคชไว้
    ✅ ฟรี ไม่เรียก Gemini ซ้ำ · ถ้าเป็นภาพ AI ก็ยังคงฉาก AI เดิม ไม่ถูกรีเซ็ตเป็นรูปต้นฉบับ */
 function saReshuffleDesign(rand){
   var bases=(saBases&&saBases.length)?saBases:saState.images;
   var n=bases.length; if(!n){ return; }
-  var k=(typeof SA_STYLES!=='undefined'&&SA_STYLES.length)?SA_STYLES.length:1;
-  if(rand && k>1){ var nx=Math.floor(Math.random()*k); while(nx===(saState.styleIdx||0)) nx=Math.floor(Math.random()*k); saState.styleIdx=nx; }
+  var styles=saStylesFor(saState.purpose,saState.layout), k=(styles&&styles.length)?styles.length:1;
+  if(rand && k>1){ var nx=Math.floor(Math.random()*k); while(nx===(saState.styleIdx||0)%k) nx=Math.floor(Math.random()*k); saState.styleIdx=nx; }
   else { saState.styleIdx=((saState.styleIdx||0)+1)%k; }
   var cap=document.getElementById('sa-out-cap').value, out=[],done=0;
   bases.forEach(function(src,idx){ var im=new Image(); im.crossOrigin='anonymous';
@@ -1674,7 +1729,7 @@ function saRenderMockup(urls,cap){
   var host=document.getElementById('sa-mockup-host'); if(!host) return;
   var pk=saState.platform;
   var capEsc=(cap||'').replace(/</g,'&lt;'), capHtml=capEsc.replace(/\n/g,'<br>'), first=capEsc.split('\n')[0]||'';
-  function slides(){ return '<div class="pm-scroll"><div class="row" id="sa-mscr">'+urls.map(function(u){return '<div class="slide"><img src="'+u+'" alt=""></div>';}).join('')+'</div>'+(urls.length>1?'<div class="pm-pager" id="sa-mpag">1/'+urls.length+'</div>':'')+'</div>'; }
+  function slides(){ return '<div class="pm-scroll"><div class="row" id="sa-mscr">'+urls.map(function(u,i){return '<div class="slide"><img src="'+u+'" alt="" onclick="saZoom('+i+')"></div>';}).join('')+'</div>'+(urls.length>1?('<button type="button" class="pm-nav prev" onclick="saMScroll(-1)" aria-label="ก่อนหน้า">‹</button><button type="button" class="pm-nav next" onclick="saMScroll(1)" aria-label="ถัดไป">›</button><div class="pm-pager" id="sa-mpag">1/'+urls.length+'</div>'):'')+'</div>'; }
   var html;
   if(pk==='facebook'){
     html='<div class="pm pm-fb"><div class="hd"><div class="av">BK</div><div class="nm">BLOOK LIVING<span>ได้รับการสนับสนุน · 🌐</span></div></div><div class="cap">'+capHtml+'</div>'+slides()+'<div class="bar"><div>👍 ถูกใจ</div><div>💬 ความคิดเห็น</div><div>↪ แชร์</div></div></div>';
