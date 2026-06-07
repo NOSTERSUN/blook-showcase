@@ -1453,7 +1453,7 @@ function saVisionReview(composedDataUrl){
   return saClaude([{role:'user',content:[{type:'text',text:ask},{type:'image',source:{type:'base64',media_type:p.mime,data:p.b64}}]}],300)
     .then(function(t){ try{ var j=JSON.parse((t.match(/\{[\s\S]*\}/)||['{}'])[0]); return {ok:(+j.score>=8)||!j.improve, improve:j.improve||''}; }catch(e){ return {ok:true}; } });
 }
-function saLoadImg(src){ return new Promise(function(res,rej){ var im=new Image(); im.crossOrigin='anonymous'; im.onload=function(){res(im);}; im.onerror=function(){rej();}; im.src=src; }); }
+function saLoadImg(src){ return new Promise(function(res,rej){ var im=new Image(); im.crossOrigin='anonymous'; im.onload=function(){res(im);}; im.onerror=function(){ rej(new Error('โหลดรูปไม่ขึ้น')); }; im.src=src; }); }
 // สร้างรูปทั้งชุดด้วย AI pipeline (brief → gemini → overlay → vision loop ≤2 รอบ)
 function saBuildImagesAI(prog){
   return saArtBrief().then(function(brief){
@@ -1461,29 +1461,32 @@ function saBuildImagesAI(prog){
     prog && prog('graphic','work','Gemini กำลังสร้างฉากหรูจากรูปสินค้า...');
     var imgs=saState.images.slice(), out=[];
     var promptUsed=brief, reviewedNote='', aiCount=0;
+    function compose(idx,im,isAi){ try{ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); }catch(e){ out[idx]=imgs[idx]; } if(isAi) aiCount++; }
+    function loadAndCompose(idx,url,isAi){ return saLoadImg(url).then(function(im){ compose(idx,im,isAi); }); }
     function buildOne(idx){
       if(idx>=imgs.length) return Promise.resolve();
-      return saSrcToData(imgs[idx]).then(function(orig){
+      return saSrcToData(imgs[idx]).catch(function(){ return imgs[idx]; }).then(function(orig){
         prog && prog('graphic','work','Gemini รูป '+(idx+1)+'/'+imgs.length+'...');
         return saGeminiImage(orig, promptUsed).then(function(aiUrl){
-          if(aiUrl) aiCount++;
-          var baseUrl=aiUrl||orig; // ถ้า Gemini พลาด ใช้รูปเดิม
-          return saLoadImg(baseUrl).then(function(im){ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); })
-            .then(function(){
-              // รีวิวเฉพาะรูปแรก แล้วถ้าต้องปรับ ใช้ prompt ใหม่กับรูปที่เหลือ (ลูปรอบ 2)
-              if(idx===0 && aiUrl){ prog && prog('director','work','Claude vision รีวิวรูปแรก...');
-                return saVisionReview(out[0]).then(function(rv){
-                  if(!rv.ok && rv.improve){ promptUsed=rv.improve; reviewedNote='ปรับตามรีวิว';
-                    return saGeminiImage(orig,promptUsed).then(function(u2){ if(u2) return saLoadImg(u2).then(function(im2){ out[0]=buildPost(im2,saState).toDataURL('image/jpeg',0.92); }); });
-                  }
-                });
-              }
-            });
+          // ลองวางภาพ AI ก่อน · ถ้าโหลดไม่ขึ้นค่อย fallback รูปเดิม (ไม่ให้ทั้งชุดพัง)
+          var step = aiUrl
+            ? loadAndCompose(idx, aiUrl, true).catch(function(){ if(!saLastAiErr) saLastAiErr='ภาพจาก Gemini โหลดไม่ขึ้น'; return loadAndCompose(idx, orig, false).catch(function(){ out[idx]=imgs[idx]; }); })
+            : loadAndCompose(idx, orig, false).catch(function(){ out[idx]=imgs[idx]; });
+          return step.then(function(){
+            // รีวิวรูปแรกด้วย Claude vision (เฉพาะเมื่อได้ภาพ AI จริง) แล้วถ้าสั่งแก้ วาดใหม่รูปแรก
+            if(idx===0 && aiUrl && out[0]){ prog && prog('director','work','Claude vision รีวิวรูปแรก...');
+              return saVisionReview(out[0]).then(function(rv){
+                if(rv && !rv.ok && rv.improve){ promptUsed=rv.improve; reviewedNote='ปรับตามรีวิว';
+                  return saGeminiImage(orig,promptUsed).then(function(u2){ if(u2) return loadAndCompose(0,u2,false).catch(function(){}); });
+                }
+              }).catch(function(){});
+            }
+          });
         });
       }).then(function(){ return buildOne(idx+1); });
     }
     return buildOne(0).then(function(){ return {out:out, note:reviewedNote, ai:aiCount, total:imgs.length}; });
-  });
+  }).catch(function(e){ try{ console.error('[BLOOK AI] pipeline error:',e); }catch(_){} if(!saLastAiErr) saAiErrHint('AI',0,e&&e.message); throw e; });
 }
 function saSetDept(d,cls,msg){ var el=document.querySelector('.sa-dept[data-d="'+d+'"]'); if(!el)return; el.classList.remove('work','done'); if(cls)el.classList.add(cls); var s=el.querySelector('span'); if(s)s.textContent=msg||''; }
 function saFind(arr,k){ for(var i=0;i<arr.length;i++){if(arr[i].k===k)return arr[i];} return null; }
@@ -1517,14 +1520,14 @@ function bkGenerate(){
         else { g='AI สร้างฉากหรู '+r.out.length+' รูป (Gemini) + วางโลโก้/ตัวอักษรทับ ✓'; d='ไดเรกเตอร์รีวิวด้วย Claude vision'+(r.note?(' · '+r.note):'')+' → อนุมัติ ✓'; }
         finish(r.out,g,d);
       }).catch(function(e){
-        // ถ้า AI พลาด → fallback เทมเพลต
-        saSetDept('graphic','work','AI ไม่สำเร็จ'+(saLastAiErr?(' ('+saLastAiErr+')'):'')+' — ใช้เทมเพลตแทน...');
-        templateGraphic();
+        // ถ้า AI พลาดทั้งสาย → fallback เทมเพลต พร้อมบอกสาเหตุ (ค้างไว้ไม่ให้หาย)
+        var why=saLastAiErr||(e&&e.message)||'ไม่ทราบสาเหตุ';
+        templateGraphic(why);
       });
     } else {
       templateGraphic();
     }
-    function templateGraphic(){
+    function templateGraphic(failNote){
       saSetDept('graphic','work','กำลังออกแบบกราฟิกตามคอนเซ็ปต์...');
       setTimeout(function(){
         var out=[],done=0,n=saState.images.length;
@@ -1533,7 +1536,7 @@ function bkGenerate(){
           im.onerror=function(){ out[idx]=src; if(++done===n) done2(out); }; im.src=src;
         });
       },300);
-      function done2(out){ finish(out,'ออกแบบ '+out.length+' รูป · สไตล์ "'+saCurrentStyleLabel()+'" · '+(plat?plat.l:'')+' '+saState.aspect+(saState.logo!==false?' · ใส่โลโก้':' · ไม่ใส่โลโก้')+' ✓','ตรวจให้สื่อสารชัด ตรงแบรนด์ + จัดลำดับ '+out.length+' รูป → อนุมัติพร้อมโพสต์ ✓'); }
+      function done2(out){ finish(out,(failNote?('⚠️ AI วาดภาพล้ม: '+failNote+' → ใช้เทมเพลตหรูแทน · '):'')+'ออกแบบ '+out.length+' รูป · สไตล์ "'+saCurrentStyleLabel()+'" · '+(plat?plat.l:'')+' '+saState.aspect+(saState.logo!==false?' · ใส่โลโก้':' · ไม่ใส่โลโก้')+' ✓','ตรวจให้สื่อสารชัด ตรงแบรนด์ + จัดลำดับ '+out.length+' รูป → อนุมัติพร้อมโพสต์ ✓'); }
     }
   });
 }
