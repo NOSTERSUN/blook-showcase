@@ -1479,7 +1479,7 @@ function composeCaption(o){
   return thF+'\n\n'+en+'\n\n'+uniq.join(' ');
 }
 var saLastAiErr='';
-var saCost={img:0,claude:0}; var saRevision='';
+var saCost={img:0,claude:0}; var saRevision=''; var saLastBriefAI=false;
 function saCostText(){ var g=saCost.img*1.4, c=saCost.claude*0.15; return 'Gemini '+saCost.img+' รูป ×1.4฿ + Claude '+saCost.claude+' ครั้ง ×0.15฿ ≈ '+(g+c).toFixed(1)+'฿'; }
 function saLog(msg){ var L=document.getElementById('sa-pipe-log'); if(!L)return; var d=document.createElement('div'); d.className='sa-log-line'; d.innerHTML=msg; L.appendChild(d); L.scrollTop=L.scrollHeight; }
 function saAiErrHint(svc,status,body){
@@ -1597,7 +1597,7 @@ function saArtBrief(){
     if(saRevision){ extra+=' TOP-PRIORITY change requested by the brand owner (follow this exactly): '+saRevision+'.'; }
     return (base+extra).trim();
   }
-  return saClaude([{role:'user',content:ask}],400).then(function(t){ return finalize((t||'').trim()||fallback); }).catch(function(){ return finalize(fallback); });
+  return saClaude([{role:'user',content:ask}],400).then(function(t){ saLastBriefAI=!!((t||'').trim()); return finalize((t||'').trim()||fallback); }).catch(function(){ saLastBriefAI=false; return finalize(fallback); });
 }
 // ฝ่ายกราฟิก (Gemini) สร้างฉากหรูจากรูปสินค้า → คืน dataURL (หรือ null ถ้าพลาด)
 function saGeminiImage(dataUrl,prompt){
@@ -1648,8 +1648,8 @@ function saPickStyleForMode(){ var styles=saStylesFor(saState.purpose,saState.la
 // สร้างรูปทั้งชุดด้วย AI pipeline (brief → gemini → overlay → vision loop ≤2 รอบ)
 function saBuildImagesAI(prog){
   return saArtBrief().then(function(brief){
-    prog && prog('marketing','done','คิดคอนเซ็ปต์ + art-direction brief (Claude) ✓');
-    saLog('<b>🎯 ไดเรกชันภาพ (Claude→Gemini):</b> "'+(brief||'').slice(0,95)+'…"');
+    prog && prog('marketing','done','คิดคอนเซ็ปต์ + บรีฟภาพ '+(saLastBriefAI?'(Claude) ✓':'⚠️ (สำรอง — Claude ใช้ไม่ได้'+(saLastAiErr?': '+saLastAiErr:'')+')'));
+    saLog('<b>🎯 ไดเรกชันภาพ ('+(saLastBriefAI?'Claude':'สำรอง')+'→Gemini):</b> "'+(brief||'').slice(0,95)+'…"');
     prog && prog('graphic','work','Gemini กำลังสร้างฉากหรูจากรูปสินค้า...');
     var imgs=saState.images.slice(), out=[], bases=[];
     var promptUsed=brief, reviewedNote='', aiCount=0;
@@ -1711,6 +1711,7 @@ function bkGenerate(){
     saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':('จากเทมเพลต'+(useAI&&saLastAiErr?(' — ⚠️ '+saLastAiErr):(useAI?'':' (ยังไม่ใส่คีย์ Claude)'))))+' ✓');
     saLog('<b>📣 การตลาด → กราฟิก:</b> ทำภาพ "'+((prod&&prod.k!=='auto')?prod.l:'สินค้า BLOOK')+'" · โหมด '+purposeL+(festL?(' · เทศกาล '+festL):'')+' · '+(plat?plat.l:'')+' '+saState.aspect+(saRevision?(' · ⭐ ปรับตามที่สั่ง: "'+saRevision.slice(0,50)+'"'):''));
     saLog('<b>✍️ การตลาด (แคปชัน '+(useAI&&aiTxt?'AI':'เทมเพลต')+'):</b> "'+((cap.split('\n')[0]||'').slice(0,64))+'…"');
+    if(useAI && !aiTxt) saLog('<b style="color:#e88">⚠️ Claude ใช้ไม่ได้:</b> '+(saLastAiErr||'ไม่ทราบสาเหตุ')+' → แคปชันใช้เทมเพลต + ข้ามลูปรีวิว 10/10 (ภาพยังวาดด้วย Gemini ได้)');
     function finish(out,gNote,dNote){
       saSetDept('graphic','done',gNote); saSetDept('director','work','Claude vision ตรวจคุณภาพ + จัดลำดับ + เช็คโลโก้ทับสินค้า...');
       saDirectorReview(out).then(function(rv){
