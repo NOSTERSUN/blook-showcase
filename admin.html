@@ -225,6 +225,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .sa-cap-bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .sa-cap-bar button{padding:10px 15px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600}
 .sa-cap-bar button:hover{border-color:var(--gold);color:var(--gold)}
+.sa-cap-bar button.sa-regen-hot{background:linear-gradient(135deg,#D8BC86,#A0784A);color:#1A0F08;border-color:transparent;animation:saPulse 1.4s ease-in-out infinite}
+@keyframes saPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,162,77,.5)}50%{box-shadow:0 0 0 6px rgba(201,162,77,0)}}
 @media(max-width:768px){.sa-result-grid{grid-template-columns:1fr}}
 .sa-fest-month{margin:14px 0 4px;font-size:.68rem;letter-spacing:.22em;color:var(--gold);font-weight:700;text-transform:uppercase}
 .sa-fest-soon{margin-top:8px;padding:10px 14px;background:rgba(184,134,11,.08);border:1px solid rgba(184,134,11,.4);border-radius:10px;font-size:.82rem;color:var(--text)}
@@ -991,8 +993,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         <div class="sa-cap">
           <textarea id="sa-out-cap" spellcheck="false"></textarea>
           <div id="sa-revision-wrap" style="margin-top:10px;display:none">
-            <div class="sa-sub" style="margin-top:0">💬 อยากปรับแก้อะไร? (สั่ง 3 แผนกได้)</div>
-            <input type="text" id="sa-revision" placeholder="เช่น: ฉากสว่างขึ้น · เพิ่มต้นคริสต์มาส · ฟอนต์ใหญ่ขึ้น · โทนอุ่นกว่านี้ — แล้วกด ✨ วาดฉาก AI ใหม่" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--gold);background:var(--bg2);color:var(--text);font-family:inherit;font-size:.82rem">
+            <div class="sa-sub" style="margin-top:0">💬 อยากปรับแก้อะไร? <span style="color:var(--gold2);font-weight:700">พิมพ์แล้วกด Enter หรือปุ่ม "✨ วาดฉาก AI ใหม่"</span> → ส่งให้ 3 แผนกแก้</div>
+            <input type="text" id="sa-revision" placeholder="เช่น: เปลี่ยนฉากหลังเป็นสีเข้มดำเทา · เพิ่มต้นคริสต์มาส · ฟอนต์ใหญ่ขึ้น (พิมพ์เสร็จกด Enter)" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--gold);background:var(--bg2);color:var(--text);font-family:inherit;font-size:.82rem">
           </div>
           <div class="sa-cap-bar">
             <button type="button" onclick="saReshuffleDesign()" title="เปลี่ยนดีไซน์/กรอบ/สไตล์บนฉากเดิม — ฟรี ไม่เรียก AI ซ้ำ">🎨 เปลี่ยนดีไซน์ (ฟรี) <span id="sa-style-count" style="opacity:.65;font-weight:400"></span></button>
@@ -1236,6 +1238,7 @@ function bkSellerInit(){
     var di=document.getElementById('sa-discount'); if(di){ saState.discount=+di.value||30; di.addEventListener('input',function(){ saState.discount=Math.max(1,Math.min(90,+this.value||30)); }); }
     var pp=document.getElementById('sa-price'); if(pp){ pp.addEventListener('input',function(){ saState.price=+this.value||0; }); }
     var ss=document.getElementById('sa-saleshow'); if(ss){ saChips('sa-saleshow',SA_SALESHOW,'saleShow',function(o){ saState.saleShow=o.k; }); }
+    var ri=document.getElementById('sa-revision'); if(ri){ ri.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); saRegenAI(); } }); ri.addEventListener('input',function(){ var rb=document.getElementById('sa-regen-ai'); if(rb) rb.classList.toggle('sa-regen-hot', !!this.value.trim()); }); }
     var dz=document.getElementById('sa-drop'), fi=document.getElementById('sa-file');
     dz.addEventListener('click',function(){fi.click();});
     fi.addEventListener('change',function(){ saAddFiles(fi.files); fi.value=''; });
@@ -1312,11 +1315,13 @@ function saTintLogo(x,cx,cy,w,color){ if(saLogoOn===false||!SA_LOGO_OK)return fa
 /* ---- premium graphic helpers (ออกแบบหรู ไม่ทื่อ) ---- */
 function saVgrad(x,y0,c0,y1,c1){var g=x.createLinearGradient(0,y0,0,y1);g.addColorStop(0,c0);g.addColorStop(1,c1);return g;}
 /* เกรดสีฟิล์มอบอุ่น + vignette → รูปสินค้าธรรมดาดูพรีเมียม/โทนเดียวกัน */
+var saGradeLight=false; /* AI scene: ใช้เกรดเบาลง เพราะ Gemini จัดโทนตามบรีฟแล้ว (ไม่งั้นจะอุ่นทับ ขัดคำสั่ง เช่น "ดำเทา") */
 function saGrade(x,X,Y,w,h){
-  x.save(); x.globalCompositeOperation='multiply'; x.fillStyle='rgba(58,40,18,0.12)'; x.fillRect(X,Y,w,h); x.restore();
-  x.save(); x.globalCompositeOperation='soft-light'; x.fillStyle='rgba(201,169,110,0.16)'; x.fillRect(X,Y,w,h); x.restore();
+  var m=saGradeLight?0.04:0.12, s=saGradeLight?0.06:0.16, v=saGradeLight?0.20:0.34;
+  x.save(); x.globalCompositeOperation='multiply'; x.fillStyle='rgba(58,40,18,'+m+')'; x.fillRect(X,Y,w,h); x.restore();
+  x.save(); x.globalCompositeOperation='soft-light'; x.fillStyle='rgba(201,169,110,'+s+')'; x.fillRect(X,Y,w,h); x.restore();
   var cx=X+w/2, cy=Y+h/2, r=Math.max(w,h)*0.74;
-  var vg=x.createRadialGradient(cx,cy,r*0.5,cx,cy,r); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(18,11,5,0.34)');
+  var vg=x.createRadialGradient(cx,cy,r*0.5,cx,cy,r); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(18,11,5,'+v+')');
   x.save(); x.fillStyle=vg; x.fillRect(X,Y,w,h); x.restore();
 }
 function saSpaced(x,str,cx,y,px,sp,color,weight,fam){x.save();x.textAlign='left';x.fillStyle=color;x.font=(weight||'600 ')+px+'px '+(fam||'Inter,Arial,sans-serif');var w=[],tot=0,i;for(i=0;i<str.length;i++){var ww=x.measureText(str[i]).width;w.push(ww);tot+=ww+sp;}tot-=sp;var sx=cx-tot/2;for(i=0;i<str.length;i++){x.fillText(str[i],sx,y);sx+=w[i]+sp;}x.restore();}
@@ -1411,7 +1416,9 @@ function buildPost(img,o,aiScene){
   var fes=null; for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===o.festival){fes=SA_FESTIVALS[i];break;}}
   var styles=saStylesFor(o.purpose,o.layout), st=styles[(o.styleIdx||0)%styles.length];
   var ctx2={W:W,H:H,pad:Math.round(W*0.055),fes:fes,purpose:o.purpose,discount:o.discount,price:o.price,saleShow:o.saleShow,aiScene:!!aiScene,gold:'#A0784A'};
+  saGradeLight=!!aiScene;
   try{ st.draw(x,img,ctx2); }catch(e){ saCover(x,img,0,0,W,H); }
+  saGradeLight=false;
   return c;
 }
 function saCurrentStyleLabel(){ var styles=saStylesFor(saState.purpose,saState.layout); return styles[(saState.styleIdx||0)%styles.length].label; }
