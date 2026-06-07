@@ -161,7 +161,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .biz-card>*{position:relative;z-index:1}
 .biz-card::before{content:'';position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.18),transparent 70%);z-index:0}
 .biz-card::after{content:'';position:absolute;left:0;top:0;width:4px;height:100%;background:linear-gradient(var(--gold),var(--gold2));z-index:2}
-.biz-bk{position:absolute;right:12px;top:50%;transform:translateY(-50%) scaleX(.58) scaleY(2.05) skewX(-22deg) rotate(-5deg);transform-origin:right center;font-family:'Fraunces','Playfair Display',serif;font-style:italic;font-weight:700;font-size:6.6rem;line-height:1;color:rgba(184,134,11,.17);z-index:0;pointer-events:none;user-select:none;letter-spacing:-.02em}
+.biz-bk{position:absolute;right:12px;top:50%;transform:translateY(-50%) scaleX(.58) scaleY(2.05) skewX(-22deg) rotate(0deg);transform-origin:right center;font-family:'Fraunces','Playfair Display',serif;font-style:italic;font-weight:700;font-size:6.6rem;line-height:1;color:rgba(184,134,11,.17);z-index:0;pointer-events:none;user-select:none;letter-spacing:-.02em}
 /* Tracking / SEO tab */
 .track-links{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .track-card{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-decoration:none;color:var(--text);transition:all .25s}
@@ -901,6 +901,20 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         <span id="sa-aistatus" style="font-size:.76rem;color:var(--dim)"></span>
       </div>
       <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 <b>ขอคีย์ที่ console.anthropic.com</b> → API Keys → Create Key (บัญชี API จ่ายตามใช้ · haiku ถูกมาก · คนละอย่างกับ Claude Code/Claude.ai — ดึงคีย์จาก Claude Code มาใช้ไม่ได้)<br>🔒 คีย์เก็บใน <b>เครื่องนี้เท่านั้น</b> (localStorage) ไม่ขึ้น GitHub · <b>ไม่ใส่ก็ใช้งานได้เต็มที่</b>ด้วยเทมเพลต</p>
+
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
+        <div class="sa-logo-row" style="margin-top:0">
+          <span>🎨 <b>AI สร้างภาพหรู</b> (Gemini) — เปลี่ยนรูปสินค้าเป็นฉากพรีเมียม + ลูป Director รีวิว</span>
+          <button type="button" id="sa-aiimg-btn" class="sa-toggle" onclick="saToggleAiImage()"><span class="knob"></span></button>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <input type="password" id="sa-gemkey" placeholder="AIza... (Gemini API key)">
+          <input type="text" id="sa-gemmodel" value="gemini-2.5-flash-image" style="flex:0 0 210px" title="โมเดลภาพ">
+          <button type="button" onclick="bkSaveKey()">บันทึก</button>
+          <span id="sa-gemstatus" style="font-size:.76rem;color:var(--dim)"></span>
+        </div>
+        <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 ขอคีย์ที่ <b>aistudio.google.com/apikey</b> (Gemini) · ⚠️ <b>มีค่าใช้จ่ายต่อรูป + ช้ากว่า</b> (สร้างภาพ AI + Claude vision รีวิว) · ต้องมีคีย์ Claude ด้านบนด้วยจึงจะมีลูปรีวิว · ตัวอักษรไทย/โลโก้ยังวางด้วยโค้ดเพื่อความคมชัด</p>
+      </div>
     </details>
 
     <button class="sa-go" type="button" onclick="bkGenerate()">✨ ให้ 3 ฝ่ายช่วยกันสร้างโพสต์</button>
@@ -1121,7 +1135,7 @@ var SA_PRODUCTS=[
   {k:'reed250',l:'ก้านไม้หอม 250ml',d:'ก้านไม้หอม (reed diffuser) ขนาด 250ml'},
   {k:'reedgift',l:'ก้านไม้หอม Gift Set',d:'เซ็ทของขวัญก้านไม้หอม BLOOK'}
 ];
-var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',logo:true,styleIdx:0};
+var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',logo:true,styleIdx:0,aiImage:false};
 var saReady=false, saLastUrls=[];
 var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
 var saLogoOn=true; // ตั้งจาก saState.logo ใน buildPost — ปิดได้ในขั้นวัตถุประสงค์
@@ -1161,6 +1175,9 @@ function bkSellerInit(){
     dz.addEventListener('drop',function(ev){ if(ev.dataTransfer&&ev.dataTransfer.files) saAddFiles(ev.dataTransfer.files); });
     var k=localStorage.getItem('bk-claude-key'); if(k){ document.getElementById('sa-aikey').value=k; document.getElementById('sa-aistatus').textContent='✅ มีคีย์ (AI พร้อม)'; }
     var m=localStorage.getItem('bk-claude-model'); if(m) document.getElementById('sa-aimodel').value=m;
+    var gk=localStorage.getItem('bk-gemini-key'); if(gk){ document.getElementById('sa-gemkey').value=gk; document.getElementById('sa-gemstatus').textContent='✅ มีคีย์ Gemini'; }
+    var gm=localStorage.getItem('bk-gemini-model'); if(gm) document.getElementById('sa-gemmodel').value=gm;
+    saState.aiImage=(localStorage.getItem('bk-aiimg')==='1'); var ab=document.getElementById('sa-aiimg-btn'); if(ab) ab.classList.toggle('on', saState.aiImage);
     saThumbs();
   });
 }
@@ -1368,6 +1385,80 @@ function saAiCaption(){
     .then(function(r){ if(!r.ok) throw new Error('api '+r.status); return r.json(); })
     .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; });
 }
+/* ===== AI-IMAGE PIPELINE (Gemini ฉากหรู + Claude vision รีวิว) ===== */
+function saSrcToData(src){
+  if(/^data:/.test(src)) return Promise.resolve(src);
+  return fetch(src).then(function(r){return r.blob();}).then(function(b){ return new Promise(function(res){ var fr=new FileReader(); fr.onload=function(){res(fr.result);}; fr.readAsDataURL(b); }); });
+}
+function saDataParts(dataUrl){ var m=/^data:([^;]+);base64,(.*)$/.exec(dataUrl); return m?{mime:m[1],b64:m[2]}:null; }
+function saClaude(messages,maxTok){
+  var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve(null);
+  var model=localStorage.getItem('bk-claude-model')||'claude-3-5-haiku-latest';
+  return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:maxTok||500,messages:messages})})
+    .then(function(r){ if(!r.ok) throw new Error('claude '+r.status); return r.json(); })
+    .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||''; });
+}
+// ฝ่ายการตลาด/ไดเรกเตอร์ (Claude) เขียน "art-direction brief" สำหรับฉากภาพ
+function saArtBrief(){
+  var prod=saFind(SA_PRODUCTS,saState.product), fes=saFind(SA_FESTIVALS,saState.festival), isSale=saState.purpose==='sale';
+  var ask='คุณคือ Creative Director แบรนด์ BLOOK LIVING (The Class of Calm — เฟอร์นิเจอร์/ของแต่งบ้านหรู สงบ อบอุ่น)\n'
+    +'เขียน art-direction prompt (ภาษาอังกฤษ) สำหรับให้ AI สร้างภาพ "ฉากโฆษณาหรู" จากรูปสินค้าที่แนบ โดย<b>คงตัวสินค้าเดิมไว้</b> แต่จัดฉาก/แสง/พื้นผิว/องค์ประกอบให้ดูพรีเมียมระดับนิตยสาร\n'
+    +'สินค้า: '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK product')+' · โหมด: '+(isSale?'sale/promo':'branding mood')+((fes&&fes.k!=='none')?(' · ธีม: '+fes.l):'')+'\n'
+    +'ตอบเป็น prompt ภาษาอังกฤษล้วน 1 ย่อหน้าสั้น (ไม่เกิน 60 คำ) เน้น: keep the product, luxurious calm scene, soft natural light, premium materials, minimal, editorial. ห้ามใส่ตัวอักษร/โลโก้ในภาพ';
+  return saClaude([{role:'user',content:ask}],300).then(function(t){ return (t||'').trim()|| 'Place the product in a serene, luxurious minimal interior with soft natural light, premium wood and stone textures, editorial styling, calm warm tones. Keep the product unchanged. No text, no logo.'; });
+}
+// ฝ่ายกราฟิก (Gemini) สร้างฉากหรูจากรูปสินค้า → คืน dataURL (หรือ null ถ้าพลาด)
+function saGeminiImage(dataUrl,prompt){
+  var key=localStorage.getItem('bk-gemini-key'); if(!key) return Promise.resolve(null);
+  var model=localStorage.getItem('bk-gemini-model')||'gemini-2.5-flash-image';
+  var p=saDataParts(dataUrl); if(!p) return Promise.resolve(null);
+  var url='https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key);
+  var body={contents:[{parts:[{text:prompt+' Output a single edited photo only.'},{inline_data:{mime_type:p.mime,data:p.b64}}]}]};
+  return fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
+    .then(function(r){ if(!r.ok) throw new Error('gemini '+r.status); return r.json(); })
+    .then(function(j){ var parts=(((j.candidates||[])[0]||{}).content||{}).parts||[]; for(var i=0;i<parts.length;i++){ var d=parts[i].inlineData||parts[i].inline_data; if(d&&d.data) return 'data:'+(d.mimeType||d.mime_type||'image/png')+';base64,'+d.data; } return null; })
+    .catch(function(){ return null; });
+}
+// ฝ่ายไดเรกเตอร์ (Claude vision) รีวิวภาพที่ประกอบเสร็จ → {ok, improve}
+function saVisionReview(composedDataUrl){
+  var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve({ok:true});
+  var p=saDataParts(composedDataUrl); if(!p) return Promise.resolve({ok:true});
+  var ask='คุณคือ Creative Director รีวิวโพสต์โฆษณา BLOOK LIVING (แบรนด์หรู สงบ). ดูภาพนี้แล้วประเมินว่าสวย พรีเมียม ดึงดูด ตรงแบรนด์พอจะโพสต์ไหม\n'
+    +'ตอบเป็น JSON บรรทัดเดียว: {"score": <1-10>, "improve": "<art-direction prompt ภาษาอังกฤษที่ปรับให้ดีขึ้น ถ้า score<8 ไม่งั้นเว้นว่าง>"}';
+  return saClaude([{role:'user',content:[{type:'text',text:ask},{type:'image',source:{type:'base64',media_type:p.mime,data:p.b64}}]}],300)
+    .then(function(t){ try{ var j=JSON.parse((t.match(/\{[\s\S]*\}/)||['{}'])[0]); return {ok:(+j.score>=8)||!j.improve, improve:j.improve||''}; }catch(e){ return {ok:true}; } });
+}
+function saLoadImg(src){ return new Promise(function(res,rej){ var im=new Image(); im.crossOrigin='anonymous'; im.onload=function(){res(im);}; im.onerror=function(){rej();}; im.src=src; }); }
+// สร้างรูปทั้งชุดด้วย AI pipeline (brief → gemini → overlay → vision loop ≤2 รอบ)
+function saBuildImagesAI(prog){
+  return saArtBrief().then(function(brief){
+    prog && prog('marketing','done','คิดคอนเซ็ปต์ + art-direction brief (Claude) ✓');
+    prog && prog('graphic','work','Gemini กำลังสร้างฉากหรูจากรูปสินค้า...');
+    var imgs=saState.images.slice(), out=[];
+    var promptUsed=brief, reviewedNote='';
+    function buildOne(idx){
+      if(idx>=imgs.length) return Promise.resolve();
+      return saSrcToData(imgs[idx]).then(function(orig){
+        prog && prog('graphic','work','Gemini รูป '+(idx+1)+'/'+imgs.length+'...');
+        return saGeminiImage(orig, promptUsed).then(function(aiUrl){
+          var baseUrl=aiUrl||orig; // ถ้า Gemini พลาด ใช้รูปเดิม
+          return saLoadImg(baseUrl).then(function(im){ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); })
+            .then(function(){
+              // รีวิวเฉพาะรูปแรก แล้วถ้าต้องปรับ ใช้ prompt ใหม่กับรูปที่เหลือ (ลูปรอบ 2)
+              if(idx===0 && aiUrl){ prog && prog('director','work','Claude vision รีวิวรูปแรก...');
+                return saVisionReview(out[0]).then(function(rv){
+                  if(!rv.ok && rv.improve){ promptUsed=rv.improve; reviewedNote='ปรับตามรีวิว';
+                    return saGeminiImage(orig,promptUsed).then(function(u2){ if(u2) return saLoadImg(u2).then(function(im2){ out[0]=buildPost(im2,saState).toDataURL('image/jpeg',0.92); }); });
+                  }
+                });
+              }
+            });
+        });
+      }).then(function(){ return buildOne(idx+1); });
+    }
+    return buildOne(0).then(function(){ return {out:out, note:reviewedNote}; });
+  });
+}
 function saSetDept(d,cls,msg){ var el=document.querySelector('.sa-dept[data-d="'+d+'"]'); if(!el)return; el.classList.remove('work','done'); if(cls)el.classList.add(cls); var s=el.querySelector('span'); if(s)s.textContent=msg||''; }
 function saFind(arr,k){ for(var i=0;i<arr.length;i++){if(arr[i].k===k)return arr[i];} return null; }
 function bkGenerate(){
@@ -1379,25 +1470,39 @@ function bkGenerate(){
   var festL=(fes&&fes.k!=='none')?fes.l:'';
   saSetDept('marketing','work','กำลังคิดคอนเซ็ปต์ + เขียนแคปชัน...'); saSetDept('graphic',null,'รอ'); saSetDept('director',null,'รอ');
   var useAI=!!localStorage.getItem('bk-claude-key');
+  var useAIimg=saState.aiImage && !!localStorage.getItem('bk-gemini-key');
   // 1) ฝ่ายการตลาด — คิดก่อน
   var capP = useAI ? saAiCaption().catch(function(){return null;}) : Promise.resolve(null);
   capP.then(function(aiTxt){
     var cap=aiTxt||composeCaption(saState);
     saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':'จากเทมเพลต')+' ✓');
-    // 2) ฝ่ายกราฟิก — ทำตามคอนเซ็ปต์
-    saSetDept('graphic','work','กำลังออกแบบกราฟิกตามคอนเซ็ปต์...');
-    setTimeout(function(){
-      var out=[],done=0,n=saState.images.length;
-      saState.images.forEach(function(src,idx){
-        var im=new Image(); im.onload=function(){ try{out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92);}catch(e){out[idx]=src;} if(++done===n) afterG(out); };
-        im.onerror=function(){ out[idx]=src; if(++done===n) afterG(out); }; im.src=src;
+    function finish(out,gNote,dNote){
+      saSetDept('graphic','done',gNote); saSetDept('director','work','กำลังตรวจโทนแบรนด์ + จัดลำดับ...');
+      setTimeout(function(){ saSetDept('director','done',dNote); saShowResult(out,cap); },400);
+    }
+    if(useAIimg){
+      // 2-3) ฝ่ายกราฟิก (Gemini ฉากหรู) + ไดเรกเตอร์ (vision รีวิว/สั่งแก้)
+      saSetDept('graphic','work','เตรียม AI สร้างภาพ...');
+      saBuildImagesAI(function(d,cls,msg){ saSetDept(d,cls,msg); }).then(function(r){
+        finish(r.out,'AI สร้างฉากหรู '+r.out.length+' รูป (Gemini) + วางโลโก้/ตัวอักษรทับ ✓','ไดเรกเตอร์รีวิวด้วย Claude vision'+(r.note?(' · '+r.note):'')+' → อนุมัติ ✓');
+      }).catch(function(e){
+        // ถ้า AI พลาด → fallback เทมเพลต
+        saSetDept('graphic','work','AI ไม่สำเร็จ — ใช้เทมเพลตแทน...');
+        templateGraphic();
       });
-    },300);
-    function afterG(out){
-      saSetDept('graphic','done','ออกแบบ '+out.length+' รูป · สไตล์ "'+saCurrentStyleLabel()+'" · '+(plat?plat.l:'')+' '+saState.aspect+(saState.logo!==false?' · ใส่โลโก้':' · ไม่ใส่โลโก้')+' ✓');
-      // 3) ครีเอทีฟไดเรกเตอร์ — ตรวจ+อนุมัติ
-      saSetDept('director','work','กำลังตรวจโทนแบรนด์ + จัดลำดับ...');
-      setTimeout(function(){ saSetDept('director','done','ตรวจให้สื่อสารชัด ตรงแบรนด์ + จัดลำดับ '+out.length+' รูป → อนุมัติพร้อมโพสต์ ✓'); saShowResult(out,cap); },500);
+    } else {
+      templateGraphic();
+    }
+    function templateGraphic(){
+      saSetDept('graphic','work','กำลังออกแบบกราฟิกตามคอนเซ็ปต์...');
+      setTimeout(function(){
+        var out=[],done=0,n=saState.images.length;
+        saState.images.forEach(function(src,idx){
+          var im=new Image(); im.onload=function(){ try{out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92);}catch(e){out[idx]=src;} if(++done===n) done2(out); };
+          im.onerror=function(){ out[idx]=src; if(++done===n) done2(out); }; im.src=src;
+        });
+      },300);
+      function done2(out){ finish(out,'ออกแบบ '+out.length+' รูป · สไตล์ "'+saCurrentStyleLabel()+'" · '+(plat?plat.l:'')+' '+saState.aspect+(saState.logo!==false?' · ใส่โลโก้':' · ไม่ใส่โลโก้')+' ✓','ตรวจให้สื่อสารชัด ตรงแบรนด์ + จัดลำดับ '+out.length+' รูป → อนุมัติพร้อมโพสต์ ✓'); }
     }
   });
 }
@@ -1457,7 +1562,14 @@ function saRenderMockup(urls,cap){
 }
 function bkCopyCap(){ var t=document.getElementById('sa-out-cap'); t.select(); try{ navigator.clipboard.writeText(t.value); }catch(e){ try{document.execCommand('copy');}catch(e2){} } alert('คัดลอกแคปชันแล้ว ✓'); }
 function bkDownloadAll(){ (saLastUrls||[]).forEach(function(u,i){ setTimeout(function(){ var a=document.createElement('a'); a.href=u; a.download='blook-post-'+(i+1)+'.jpg'; document.body.appendChild(a); a.click(); a.remove(); }, i*250); }); }
-function bkSaveKey(){ var k=document.getElementById('sa-aikey').value.trim(), m=document.getElementById('sa-aimodel').value.trim(); if(k) localStorage.setItem('bk-claude-key',k); else localStorage.removeItem('bk-claude-key'); if(m) localStorage.setItem('bk-claude-model',m); document.getElementById('sa-aistatus').textContent=k?'✅ บันทึกคีย์แล้ว (AI พร้อม)':'ลบคีย์แล้ว (ใช้เทมเพลต)'; }
+function bkSaveKey(){
+  var k=document.getElementById('sa-aikey').value.trim(), m=document.getElementById('sa-aimodel').value.trim();
+  if(k) localStorage.setItem('bk-claude-key',k); else localStorage.removeItem('bk-claude-key'); if(m) localStorage.setItem('bk-claude-model',m);
+  document.getElementById('sa-aistatus').textContent=k?'✅ บันทึกคีย์แล้ว (AI พร้อม)':'ลบคีย์แล้ว (ใช้เทมเพลต)';
+  var gk=(document.getElementById('sa-gemkey')||{}).value, gm=(document.getElementById('sa-gemmodel')||{}).value;
+  if(gk!=null){ gk=gk.trim(); if(gk) localStorage.setItem('bk-gemini-key',gk); else localStorage.removeItem('bk-gemini-key'); if(gm) localStorage.setItem('bk-gemini-model',gm.trim()); var gs=document.getElementById('sa-gemstatus'); if(gs) gs.textContent=gk?'✅ บันทึกคีย์ Gemini':'ลบคีย์ Gemini'; }
+}
+function saToggleAiImage(){ saState.aiImage=!saState.aiImage; localStorage.setItem('bk-aiimg', saState.aiImage?'1':'0'); var b=document.getElementById('sa-aiimg-btn'); if(b) b.classList.toggle('on', saState.aiImage); if(saState.aiImage && !localStorage.getItem('bk-gemini-key')) alert('เปิดโหมด AI สร้างภาพแล้ว — อย่าลืมวาง Gemini API key + คีย์ Claude แล้วกดบันทึก'); }
 function checkGaStatus(){
   var el=document.getElementById('ga-status'); if(!el) return;
   fetch('assets/analytics.js',{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
