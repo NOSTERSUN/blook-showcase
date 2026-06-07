@@ -850,6 +850,9 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         <div style="font-size:.78rem;color:var(--dim);margin-top:4px">ลากรูป → เลือกแพลตฟอร์ม/วัตถุประสงค์/เทศกาล → 3 ฝ่ายช่วยกันออก "รูป + แคปชัน" พร้อมโพสต์</div>
       </div>
     </div>
+    <div class="panel" style="background:linear-gradient(135deg,rgba(201,162,77,.1),rgba(201,162,77,.03));border-color:rgba(201,162,77,.3)">
+      <div style="font-size:.84rem;line-height:1.6;color:var(--text)">💡 <b>ทุกตัวเลือกด้านล่างคือ "โจทย์" ที่ส่งให้ AI 3 ฝ่ายไปคิด</b> — สินค้า · แพลตฟอร์ม · วัตถุประสงค์ · เทศกาล ทั้งหมดนี้ AI จะเอาไป<b>คิดแคปชันใหม่ + ออกแบบ/วาดภาพใหม่ทุกครั้ง</b> ไม่ใช่เทมเพลตตายตัว · <span style="color:var(--gold2)">ยิ่งเลือกละเอียดและตรง ผลลัพธ์ยิ่งหรูและตรงใจ</span></div>
+    </div>
 
     <div class="panel">
       <div class="sa-step">ขั้นที่ 0</div>
@@ -878,8 +881,9 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 
     <div class="panel">
       <div class="sa-step">ขั้นที่ 3</div>
-      <div class="panel-title">วัตถุประสงค์</div>
+      <div class="panel-title">วัตถุประสงค์ <span style="font-size:.72rem;color:var(--dim);font-weight:400;margin-left:6px">ข้อนี้สำคัญสุด — กำหนดทั้งโทนภาพและแคปชัน</span></div>
       <div class="sa-opts" id="sa-purpose"></div>
+      <div id="sa-purpose-desc" style="margin-top:10px;font-size:.8rem;line-height:1.55;color:var(--neutral);background:rgba(201,162,77,.06);border:1px solid var(--border);border-radius:10px;padding:10px 13px"></div>
       <div class="sa-disc" id="sa-discount-wrap" style="display:none;margin-top:12px;font-size:.85rem;color:var(--neutral)">ส่วนลด: <input type="number" id="sa-discount" value="30" min="1" max="90"> %</div>
       <div class="sa-logo-row" id="sa-logo-row">
         <span>ใส่โลโก้ <b>BLOOK</b> บนรูป</span>
@@ -1103,8 +1107,8 @@ var SA_ASPECTS=[
   {k:'16:9',l:'แนวนอน 16:9',w:1600,h:900}
 ];
 var SA_PURPOSES=[
-  {k:'brand',l:'Branding (ไม่ขายตรง · เน้นภาพลักษณ์)'},
-  {k:'sale',l:'เน้นขาย (เน้นแรงจูงใจซื้อ)'}
+  {k:'brand',l:'✨ Branding (สร้างภาพลักษณ์)',d:'<b>สร้างการจดจำแบรนด์</b> — โพสต์จะเน้นอารมณ์ ไลฟ์สไตล์ ความสงบ ความรู้สึก "อยากเป็นเจ้าของ" · <b>ไม่พูดถึงราคา</b> · ภาพหรูสะอาด โลโก้บาง · เหมาะสร้างฐานแฟน ทำให้คนรู้จัก/รักแบรนด์'},
+  {k:'sale',l:'🔥 เน้นขาย (ปิดการขาย)',d:'<b>กระตุ้นให้ซื้อตอนนี้</b> — ชูโปรโมชัน/ส่วนลด + สร้างความเร่งด่วน + CTA ชัด (ทักแชท/กดลิงก์) · ภาพมีป้ายลดราคาที่ออกแบบหรู <b>ไม่กิ๊กก๊อก</b> · เหมาะช่วงแคมเปญ 7.7 / ลดราคา'}
 ];
 var SA_FESTIVALS=[
   {k:'none',l:'ไม่มี',m:0,d:0},
@@ -1150,7 +1154,7 @@ function saLoadConfig(cb){
       SA_CFG=j;
       if(j.platforms&&j.platforms.length) SA_PLATFORMS=j.platforms.map(function(p){return {k:p.key,l:p.label,aspect:p.aspect,tags:p.tags||[]};});
       if(j.aspects&&j.aspects.length) SA_ASPECTS=j.aspects.map(function(a){return {k:a.key,l:a.label,w:a.w,h:a.h};});
-      if(j.purposes&&j.purposes.length) SA_PURPOSES=j.purposes.map(function(p){return {k:p.key,l:p.label};});
+      if(j.purposes&&j.purposes.length) SA_PURPOSES=j.purposes.map(function(p){return {k:p.key,l:p.label,d:(p.desc||p.d)};});
       if(j.festivals&&j.festivals.length) SA_FESTIVALS=j.festivals.map(function(f){return {k:f.key,l:f.label,badge:f.badge,emoji:f.emoji,accent:f.accent,m:(f.m!=null?f.m:f.month),d:(f.d!=null?f.d:f.day),th:f.th,en:f.en,tag:f.tag};});
     }
     cb();
@@ -1166,7 +1170,8 @@ function bkSellerInit(){
     saChips('sa-platform',SA_PLATFORMS,'platform',function(o){ saState.platform=o.k; saState.aspect=o.aspect; saState.previewPlatform=o.k; saSyncAspect(); });
     saChips('sa-aspect',SA_ASPECTS,'aspect',function(o){ saState.aspect=o.k; });
     saChips('sa-product',SA_PRODUCTS,'product',function(o){ saState.product=o.k; });
-    saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; });
+    saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; saPurposeDesc(); });
+    saPurposeDesc();
     saRenderFestivals();
     if(near){ var d=saDaysTo(near); var soon=document.getElementById('sa-fest-soon'); if(soon){ soon.style.display='block'; soon.innerHTML='🔔 <b>เทศกาลถัดไป:</b> '+(near.emoji||'')+' '+(near.l||near.k)+' · อีก <b>'+(d===0?'วันนี้!':d+' วัน')+'</b> ('+near.m+'/'+near.d+') &nbsp;<button type="button" class="sa-chip" style="padding:5px 13px" onclick="saSetFestival(\''+near.k+'\')">ใช้เลย</button>'; } }
     var lb=document.getElementById('sa-logo-btn'); if(lb) lb.classList.toggle('on', saState.logo!==false);
@@ -1190,6 +1195,9 @@ function saChips(id,arr,key,onPick,nearKey){
   c.className='sa-opts';
   [].forEach.call(c.querySelectorAll('.sa-chip'),function(b){ b.addEventListener('click',function(){ var o; for(var i=0;i<arr.length;i++){if(arr[i].k===b.getAttribute('data-k')){o=arr[i];break;}} [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){z.classList.remove('on');}); b.classList.add('on'); onPick(o); }); });
 }
+function saPurposeDesc(){ var el=document.getElementById('sa-purpose-desc'); if(!el) return; var o=null; for(var i=0;i<SA_PURPOSES.length;i++){if(SA_PURPOSES[i].k===saState.purpose){o=SA_PURPOSES[i];break;}}
+  var def={ brand:'<b>สร้างการจดจำแบรนด์</b> — โพสต์จะเน้นอารมณ์ ไลฟ์สไตล์ ความสงบ ความรู้สึก "อยากเป็นเจ้าของ" · <b>ไม่พูดถึงราคา</b> · ภาพหรูสะอาด โลโก้บาง · เหมาะสร้างฐานแฟน ทำให้คนรู้จัก/รักแบรนด์', sale:'<b>กระตุ้นให้ซื้อตอนนี้</b> — ชูโปรโมชัน/ส่วนลด + สร้างความเร่งด่วน + CTA ชัด (ทักแชท/กดลิงก์) · ภาพมีป้ายลดราคาที่ออกแบบหรู <b>ไม่กิ๊กก๊อก</b> · เหมาะช่วงแคมเปญ 7.7 / ลดราคา' };
+  el.innerHTML=(o&&o.d)?o.d:(def[saState.purpose]||''); }
 /* เทศกาล: dropdown กระชับ จัดกลุ่มตามเดือน (อ่านง่าย ไม่กินพื้นที่) */
 function saRenderFestivals(){
   var c=document.getElementById('sa-festival'); if(!c)return;
@@ -1395,17 +1403,30 @@ function saAiCaption(){
     director:{role:'Creative Director คุม tone-of-voice',responsibility:'ตรวจคีย์เวิร์ดแบรนด์ครบ จัดลำดับรูปให้เล่าเรื่องดี'}
   };
   var isSale=saState.purpose==='sale';
-  var p='คุณคือทีมการตลาด BLOOK LIVING (เฟอร์นิเจอร์ & ไลฟ์สไตล์ "The Class of Calm" · โซฟา TOGO / หมอนเพื่อสุขภาพ Argo / น้ำหอมปรับอากาศ–ก้านหอมกลิ่นโรงแรม / เซ็ทของขวัญ · blookliving.com)\n\n'
-    +'─ ฝ่ายกราฟิก: '+dep.graphic.role+' — '+(isSale?dep.graphic.guides_sale:dep.graphic.guides_brand)+'\n'
-    +'─ ฝ่ายการตลาด: '+dep.marketing.role+' — '+(isSale?dep.marketing.guides_sale:dep.marketing.guides_brand)+'\n'
-    +'─ ครีเอทีฟไดเรกเตอร์: '+dep.director.role+' — '+(dep.director.responsibility||'')+'\n\n'
-    +'งานวันนี้: เขียนแคปชันสำหรับโพสต์ '+(plat?plat.l:'')+' '
-    +((function(){var pr=null;for(var z=0;z<SA_PRODUCTS.length;z++){if(SA_PRODUCTS[z].k===saState.product){pr=SA_PRODUCTS[z];break;}} return (pr&&pr.k!=='auto')?('· สินค้าในรูป: '+(pr.d||pr.l)+' '):'';})())
-    +(isSale?('โหมด "เน้นขาย" ส่วนลด '+(saState.discount||30)+'%'):'โหมด "Branding" — ไม่ขายตรง เน้นภาพลักษณ์/อารมณ์ความสงบ')
-    +((fes&&fes.k!=='none')?(' · ธีมเทศกาล: '+(fes.l||'')+(fes.th?' ("'+fes.th+'")':'')):'')+'\n'
-    +'รูปแบบผลลัพธ์ (พร้อมโพสต์ ไม่ต้องอธิบาย):\n'
-    +'1) ภาษาไทย 2-4 บรรทัด · 2) ภาษาอังกฤษ 1 บรรทัด · 3) แฮชแท็ก 6-10 อันบรรทัดสุดท้าย\n'
-    +'โทน: หรูแต่อบอุ่น สอดคล้องโหมดที่เลือก';
+  var pr=null; for(var z=0;z<SA_PRODUCTS.length;z++){if(SA_PRODUCTS[z].k===saState.product){pr=SA_PRODUCTS[z];break;}}
+  var prodTxt=(pr&&pr.k!=='auto')?(pr.d||pr.l):'สินค้า BLOOK LIVING';
+  var platTone={
+    facebook:'Facebook — น้ำเสียงอบอุ่นเป็นกันเอง เล่าได้ยาวขึ้นนิด สร้างความรู้สึกชุมชน ปิดด้วย CTA ที่ชัด',
+    instagram:'Instagram — สวยมีสุนทรียะ 2-3 บรรทัดสั้น กระตุ้นภาพในหัว/อารมณ์ ใช้อิโมจิพองาม',
+    lemon8:'Lemon8 — สไตล์ทิป/รีวิวที่ให้คุณค่า ชวน "เซฟไว้" ให้ประโยชน์ก่อนขาย',
+    tiktok:'TikTok — ฮุกบรรทัดแรกต้องสะดุดทันที สั้น กระชับ ทันสมัยแต่ยังพรีเมียม',
+    x:'X (Twitter) — สั้นคม 1-2 บรรทัด ได้ใจความทันที'
+  };
+  var tone=platTone[saState.platform]||platTone.instagram;
+  var modeBrief = isSale
+    ? 'โหมด "เน้นขาย" (ลด '+(saState.discount||30)+'%): เปิดด้วยฮุกที่ดึงดูด → สื่อโปรโมชันด้วย "การให้คุณค่า" (ไม่ใช่ลดราคาแบบถูกๆ) → สร้างความเร่งด่วนแบบนุ่มนวล (จำนวนจำกัด/เฉพาะช่วง) → ปิดด้วย CTA หรูแต่ชัด (ทักแชท/กดลิงก์ช้อป). ห้ามตะโกนขาย/กิ๊กก๊อก คงความพรีเมียมของแบรนด์'
+    : 'โหมด "Branding" (ไม่ขายตรง): เน้น emotional + ประสาทสัมผัส (กลิ่น/สัมผัส/แสง/ความสงบ) วาดภาพไลฟ์สไตล์ที่ "อยากเป็นเจ้าของ" · ห้ามใส่ราคา/ส่วนลด · ปิดด้วย soft CTA (ชวนสัมผัสคอลเลกชัน/เยี่ยมชม blookliving.com)';
+  var p='คุณคือ "ทีมการตลาดมือโปร" ของ BLOOK LIVING — แบรนด์ของแต่งบ้าน/ไลฟ์สไตล์ระดับพรีเมียม "The Class of Calm" (โซฟา TOGO / หมอนเพื่อสุขภาพ Argo / ก้านไม้หอม–น้ำหอมปรับอากาศกลิ่นโรงแรม / เซ็ทของขวัญ · blookliving.com)\n\n'
+    +'น้ำเสียงแบรนด์: อบอุ่น มีรสนิยม สงบ พรีเมียม กระตุ้นประสาทสัมผัส/อารมณ์ — ไม่ตะโกนขาย ไม่กิ๊กก๊อก ไม่คลีเช่ ไม่ใช้คำเว่อร์เกินจริง\n\n'
+    +'บรีฟงานนี้ ('+dep.marketing.role+'):\n'
+    +'• แพลตฟอร์ม: '+tone+'\n'
+    +'• สินค้าในรูป: '+prodTxt+' — สอดแทรกประโยชน์/อารมณ์ของสินค้านี้อย่างเป็นธรรมชาติ\n'
+    +'• '+modeBrief+'\n'
+    +((fes&&fes.k!=='none')?('• ธีมเทศกาล: '+(fes.l||'')+(fes.th?(' — แนว "'+fes.th+'"'):'')+'\n'):'')
+    +'\nเขียนผลลัพธ์ "พร้อมโพสต์" (ห้ามอธิบาย ห้ามใส่หัวข้อกำกับ ห้ามขึ้นต้นว่า "นี่คือ"):\n'
+    +'1) แคปชันไทย: ฮุกบรรทัดแรกที่สะดุด + เนื้อหา 2-4 บรรทัด (ลื่น เป็นธรรมชาติ มีรสนิยม)\n'
+    +'2) บรรทัดภาษาอังกฤษ 1 บรรทัด (โทนเดียวกัน)\n'
+    +'3) แฮชแท็ก 6-10 อันบรรทัดสุดท้าย (ผสมแบรนด์ + สินค้า + คำที่คนค้นหาจริง เช่น #ก้านไม้หอม #แต่งบ้าน'+(isSale?' #โปรโมชั่น':'')+')';
   return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:700,messages:[{role:'user',content:p}]})})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Claude',r.status,t); throw new Error('api '+r.status); }); return r.json(); })
     .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; })
@@ -1475,6 +1496,25 @@ function saVisionReview(composedDataUrl){
     .then(function(t){ try{ var j=JSON.parse((t.match(/\{[\s\S]*\}/)||['{}'])[0]); return {ok:(+j.score>=8)||!j.improve, improve:j.improve||''}; }catch(e){ return {ok:true}; } });
 }
 function saLoadImg(src){ return new Promise(function(res,rej){ var im=new Image(); im.crossOrigin='anonymous'; im.onload=function(){res(im);}; im.onerror=function(){ rej(new Error('โหลดรูปไม่ขึ้น')); }; im.src=src; }); }
+function saDownscale(dataUrl,maxW){ return new Promise(function(res){ var im=new Image(); im.onload=function(){ var w=im.naturalWidth||im.width,h=im.naturalHeight||im.height,s=Math.min(1,(maxW||512)/w); var c=document.createElement('canvas'); c.width=Math.max(1,Math.round(w*s)); c.height=Math.max(1,Math.round(h*s)); try{ c.getContext('2d').drawImage(im,0,0,c.width,c.height); res(c.toDataURL('image/jpeg',0.8)); }catch(e){ res(dataUrl); } }; im.onerror=function(){ res(dataUrl); }; im.src=dataUrl; }); }
+function saApplyOrder(urls,order){ if(!order||!order.length||order.length>urls.length) return urls; var out=[],used={}; order.forEach(function(i){ i=+i; if(i>=0&&i<urls.length&&!used[i]){ out.push(urls[i]); used[i]=1; } }); for(var i=0;i<urls.length;i++){ if(!used[i]) out.push(urls[i]); } return out.length===urls.length?out:urls; }
+// ฝ่ายไดเรกเตอร์ (Claude vision) รีวิวชุดโพสต์ที่ทำเสร็จ → จัดลำดับ + เตือนทับ + ให้คะแนน · ทำงานทั้งโหมด AI และเทมเพลต
+function saDirectorReview(urls){
+  var key=localStorage.getItem('bk-claude-key'); if(!key||!urls||!urls.length) return Promise.resolve(null);
+  var picks=urls.slice(0,3);
+  return Promise.all(picks.map(function(u){ return saDownscale(u,512); })).then(function(small){
+    var content=[{type:'text',text:
+      'คุณคือ Creative Director มือโปรของ BLOOK LIVING (แบรนด์ของแต่งบ้านพรีเมียม สงบ "The Class of Calm").\n'
+      +'รีวิวชุดภาพโพสต์ '+picks.length+' รูปนี้ (โหมด '+(saState.purpose==='sale'?'เน้นขาย/โปรโมชัน':'Branding')+') แบบมืออาชีพ แล้วตัดสินใจ:\n'
+      +'1) order = ลำดับที่ควรโพสต์ (รูปสะดุดตา/เล่าเรื่องดีสุดเป็นรูปแรก) เป็น array ของ index เริ่มที่ 0\n'
+      +'2) warnings = เตือนสั้นๆ ถ้าโลโก้/ตัวอักษร/ป้ายราคาทับตัวสินค้า หรือองค์ประกอบไม่สมดุล/อ่านยาก (ไม่มีให้ใส่ "")\n'
+      +'3) score = 1-10 คุณภาพรวมระดับใช้งานจริง\n'
+      +'ตอบ JSON บรรทัดเดียวเท่านั้น: {"order":[..],"warnings":"..","score":n}'}];
+    small.forEach(function(d){ var p=saDataParts(d); if(p) content.push({type:'image',source:{type:'base64',media_type:p.mime,data:p.b64}}); });
+    return saClaude([{role:'user',content:content}],260).then(function(t){ try{ var j=JSON.parse((t.match(/\{[\s\S]*\}/)||['{}'])[0]); return {order:(j.order||[]),warnings:(j.warnings||''),score:(+j.score||0)}; }catch(e){ return null; } }).catch(function(){ return null; });
+  });
+}
+function saPickStyleForMode(){ if(typeof SA_STYLES==='undefined'||!SA_STYLES.length) return; var want=(saState.purpose==='sale')?'sale':'brand', idxs=[]; for(var i=0;i<SA_STYLES.length;i++){ if(SA_STYLES[i].purpose===want) idxs.push(i); } if(idxs.length) saState.styleIdx=idxs[Math.floor(Math.random()*idxs.length)]; }
 // สร้างรูปทั้งชุดด้วย AI pipeline (brief → gemini → overlay → vision loop ≤2 รอบ)
 function saBuildImagesAI(prog){
   return saArtBrief().then(function(brief){
@@ -1526,6 +1566,7 @@ function bkGenerate(){
   var festL=(fes&&fes.k!=='none')?fes.l:'';
   saSetDept('marketing','work','กำลังคิดคอนเซ็ปต์ + เขียนแคปชัน...'); saSetDept('graphic',null,'รอ'); saSetDept('director',null,'รอ');
   saLastAiErr='';
+  saPickStyleForMode(); // ไดเรกเตอร์เลือกสไตล์ให้เหมาะกับโหมด (Branding/เน้นขาย) อัตโนมัติ
   var useAI=!!localStorage.getItem('bk-claude-key');
   var useAIimg=saState.aiImage && !!localStorage.getItem('bk-gemini-key');
   // 1) ฝ่ายการตลาด — คิดก่อน
@@ -1534,8 +1575,16 @@ function bkGenerate(){
     var cap=aiTxt||composeCaption(saState);
     saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':('จากเทมเพลต'+(useAI&&saLastAiErr?(' — ⚠️ '+saLastAiErr):(useAI?'':' (ยังไม่ใส่คีย์ Claude)'))))+' ✓');
     function finish(out,gNote,dNote){
-      saSetDept('graphic','done',gNote); saSetDept('director','work','กำลังตรวจโทนแบรนด์ + จัดลำดับ...');
-      setTimeout(function(){ saSetDept('director','done',dNote); saShowResult(out,cap); },400);
+      saSetDept('graphic','done',gNote); saSetDept('director','work','Claude vision ตรวจคุณภาพ + จัดลำดับ + เช็คโลโก้ทับสินค้า...');
+      saDirectorReview(out).then(function(rv){
+        var finalOut=out, note=dNote;
+        if(rv){
+          if(rv.order&&rv.order.length>1){ finalOut=saApplyOrder(out,rv.order); if(saBases&&saBases.length===out.length) saBases=saApplyOrder(saBases,rv.order); }
+          var extra=[]; if(rv.score) extra.push('คุณภาพ '+rv.score+'/10'); if(rv.order&&rv.order.length>1) extra.push('จัดลำดับให้แล้ว'); if(rv.warnings) extra.push('⚠️ '+rv.warnings);
+          if(extra.length) note=dNote+' · '+extra.join(' · ');
+        }
+        saSetDept('director','done',note); saShowResult(finalOut,cap);
+      });
     }
     if(useAIimg){
       // 2-3) ฝ่ายกราฟิก (Gemini ฉากหรู) + ไดเรกเตอร์ (vision รีวิว/สั่งแก้)
