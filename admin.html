@@ -1365,6 +1365,20 @@ function composeCaption(o){
   var uniq=[]; tags.forEach(function(t){ if(uniq.indexOf(t)<0)uniq.push(t); });
   return th+'\n\n'+en+'\n\n'+uniq.join(' ');
 }
+var saLastAiErr='';
+function saAiErrHint(svc,status,body){
+  var b=(body||'').toLowerCase(), h;
+  if(status===401||status===403) h='คีย์ '+svc+' ไม่ถูกต้อง/หมดสิทธิ์ (เช็คว่าวางครบ ไม่มีเว้นวรรค)';
+  else if(status===404) h='ชื่อโมเดล '+svc+' ผิด (ลองเปลี่ยนในช่องโมเดล)';
+  else if(status===429) h=svc+' เกินลิมิต — รอสักครู่แล้วลองใหม่';
+  else if(/credit|billing|quota|insufficient/.test(b)) h='เครดิต/โควต้า '+svc+' ไม่พอ';
+  else if(status===400) h=svc+' คำขอผิดรูปแบบ';
+  else if(!status) h=svc+' เชื่อมต่อไม่ได้ (เน็ต/CORS)';
+  else h=svc+' error';
+  saLastAiErr=h+(status?(' ['+status+']'):'');
+  try{ console.warn('[BLOOK AI] '+svc+' '+(status||'net')+': '+(body||'')); }catch(e){}
+  return saLastAiErr;
+}
 function saAiCaption(){
   var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve(null);
   var model=localStorage.getItem('bk-claude-model')||'claude-3-5-haiku-latest';
@@ -1390,8 +1404,9 @@ function saAiCaption(){
     +'1) ภาษาไทย 2-4 บรรทัด · 2) ภาษาอังกฤษ 1 บรรทัด · 3) แฮชแท็ก 6-10 อันบรรทัดสุดท้าย\n'
     +'โทน: หรูแต่อบอุ่น สอดคล้องโหมดที่เลือก';
   return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:700,messages:[{role:'user',content:p}]})})
-    .then(function(r){ if(!r.ok) throw new Error('api '+r.status); return r.json(); })
-    .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; });
+    .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Claude',r.status,t); throw new Error('api '+r.status); }); return r.json(); })
+    .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; })
+    .catch(function(e){ if(!saLastAiErr) saAiErrHint('Claude',0,e&&e.message); throw e; });
 }
 /* ===== AI-IMAGE PIPELINE (Gemini ฉากหรู + Claude vision รีวิว) ===== */
 function saSrcToData(src){
@@ -1403,8 +1418,9 @@ function saClaude(messages,maxTok){
   var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve(null);
   var model=localStorage.getItem('bk-claude-model')||'claude-3-5-haiku-latest';
   return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:maxTok||500,messages:messages})})
-    .then(function(r){ if(!r.ok) throw new Error('claude '+r.status); return r.json(); })
-    .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||''; });
+    .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Claude',r.status,t); throw new Error('claude '+r.status); }); return r.json(); })
+    .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||''; })
+    .catch(function(e){ if(!saLastAiErr) saAiErrHint('Claude',0,e&&e.message); throw e; });
 }
 // ฝ่ายการตลาด/ไดเรกเตอร์ (Claude) เขียน "art-direction brief" สำหรับฉากภาพ
 function saArtBrief(){
@@ -1413,7 +1429,8 @@ function saArtBrief(){
     +'เขียน art-direction prompt (ภาษาอังกฤษ) สำหรับให้ AI สร้างภาพ "ฉากโฆษณาหรู" จากรูปสินค้าที่แนบ โดย<b>คงตัวสินค้าเดิมไว้</b> แต่จัดฉาก/แสง/พื้นผิว/องค์ประกอบให้ดูพรีเมียมระดับนิตยสาร\n'
     +'สินค้า: '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK product')+' · โหมด: '+(isSale?'sale/promo':'branding mood')+((fes&&fes.k!=='none')?(' · ธีม: '+fes.l):'')+'\n'
     +'ตอบเป็น prompt ภาษาอังกฤษล้วน 1 ย่อหน้าสั้น (ไม่เกิน 60 คำ) เน้น: keep the product, luxurious calm scene, soft natural light, premium materials, minimal, editorial. ห้ามใส่ตัวอักษร/โลโก้ในภาพ';
-  return saClaude([{role:'user',content:ask}],300).then(function(t){ return (t||'').trim()|| 'Place the product in a serene, luxurious minimal interior with soft natural light, premium wood and stone textures, editorial styling, calm warm tones. Keep the product unchanged. No text, no logo.'; });
+  var fallback='Place the product in a serene, luxurious minimal interior with soft natural light, premium wood and stone textures, editorial styling, calm warm tones. Keep the product unchanged. No text, no logo.';
+  return saClaude([{role:'user',content:ask}],300).then(function(t){ return (t||'').trim()||fallback; }).catch(function(){ return fallback; });
 }
 // ฝ่ายกราฟิก (Gemini) สร้างฉากหรูจากรูปสินค้า → คืน dataURL (หรือ null ถ้าพลาด)
 function saGeminiImage(dataUrl,prompt){
@@ -1423,9 +1440,9 @@ function saGeminiImage(dataUrl,prompt){
   var url='https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key);
   var body={contents:[{parts:[{text:prompt+' Output a single edited photo only.'},{inline_data:{mime_type:p.mime,data:p.b64}}]}]};
   return fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
-    .then(function(r){ if(!r.ok) throw new Error('gemini '+r.status); return r.json(); })
+    .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Gemini',r.status,t); throw new Error('gemini '+r.status); }); return r.json(); })
     .then(function(j){ var parts=(((j.candidates||[])[0]||{}).content||{}).parts||[]; for(var i=0;i<parts.length;i++){ var d=parts[i].inlineData||parts[i].inline_data; if(d&&d.data) return 'data:'+(d.mimeType||d.mime_type||'image/png')+';base64,'+d.data; } return null; })
-    .catch(function(){ return null; });
+    .catch(function(e){ if(!saLastAiErr) saAiErrHint('Gemini',0,e&&e.message); return null; });
 }
 // ฝ่ายไดเรกเตอร์ (Claude vision) รีวิวภาพที่ประกอบเสร็จ → {ok, improve}
 function saVisionReview(composedDataUrl){
@@ -1443,12 +1460,13 @@ function saBuildImagesAI(prog){
     prog && prog('marketing','done','คิดคอนเซ็ปต์ + art-direction brief (Claude) ✓');
     prog && prog('graphic','work','Gemini กำลังสร้างฉากหรูจากรูปสินค้า...');
     var imgs=saState.images.slice(), out=[];
-    var promptUsed=brief, reviewedNote='';
+    var promptUsed=brief, reviewedNote='', aiCount=0;
     function buildOne(idx){
       if(idx>=imgs.length) return Promise.resolve();
       return saSrcToData(imgs[idx]).then(function(orig){
         prog && prog('graphic','work','Gemini รูป '+(idx+1)+'/'+imgs.length+'...');
         return saGeminiImage(orig, promptUsed).then(function(aiUrl){
+          if(aiUrl) aiCount++;
           var baseUrl=aiUrl||orig; // ถ้า Gemini พลาด ใช้รูปเดิม
           return saLoadImg(baseUrl).then(function(im){ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); })
             .then(function(){
@@ -1464,7 +1482,7 @@ function saBuildImagesAI(prog){
         });
       }).then(function(){ return buildOne(idx+1); });
     }
-    return buildOne(0).then(function(){ return {out:out, note:reviewedNote}; });
+    return buildOne(0).then(function(){ return {out:out, note:reviewedNote, ai:aiCount, total:imgs.length}; });
   });
 }
 function saSetDept(d,cls,msg){ var el=document.querySelector('.sa-dept[data-d="'+d+'"]'); if(!el)return; el.classList.remove('work','done'); if(cls)el.classList.add(cls); var s=el.querySelector('span'); if(s)s.textContent=msg||''; }
@@ -1477,13 +1495,14 @@ function bkGenerate(){
   var purposeL=(saState.purpose==='sale')?('เน้นขาย · ลด '+(saState.discount||30)+'%'):'Branding (เน้นภาพลักษณ์)';
   var festL=(fes&&fes.k!=='none')?fes.l:'';
   saSetDept('marketing','work','กำลังคิดคอนเซ็ปต์ + เขียนแคปชัน...'); saSetDept('graphic',null,'รอ'); saSetDept('director',null,'รอ');
+  saLastAiErr='';
   var useAI=!!localStorage.getItem('bk-claude-key');
   var useAIimg=saState.aiImage && !!localStorage.getItem('bk-gemini-key');
   // 1) ฝ่ายการตลาด — คิดก่อน
   var capP = useAI ? saAiCaption().catch(function(){return null;}) : Promise.resolve(null);
   capP.then(function(aiTxt){
     var cap=aiTxt||composeCaption(saState);
-    saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':'จากเทมเพลต')+' ✓');
+    saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':('จากเทมเพลต'+(useAI&&saLastAiErr?(' — ⚠️ '+saLastAiErr):(useAI?'':' (ยังไม่ใส่คีย์ Claude)'))))+' ✓');
     function finish(out,gNote,dNote){
       saSetDept('graphic','done',gNote); saSetDept('director','work','กำลังตรวจโทนแบรนด์ + จัดลำดับ...');
       setTimeout(function(){ saSetDept('director','done',dNote); saShowResult(out,cap); },400);
@@ -1492,10 +1511,14 @@ function bkGenerate(){
       // 2-3) ฝ่ายกราฟิก (Gemini ฉากหรู) + ไดเรกเตอร์ (vision รีวิว/สั่งแก้)
       saSetDept('graphic','work','เตรียม AI สร้างภาพ...');
       saBuildImagesAI(function(d,cls,msg){ saSetDept(d,cls,msg); }).then(function(r){
-        finish(r.out,'AI สร้างฉากหรู '+r.out.length+' รูป (Gemini) + วางโลโก้/ตัวอักษรทับ ✓','ไดเรกเตอร์รีวิวด้วย Claude vision'+(r.note?(' · '+r.note):'')+' → อนุมัติ ✓');
+        var g,d;
+        if(r.ai===0){ g='⚠️ Gemini วาดไม่สำเร็จ'+(saLastAiErr?(' ('+saLastAiErr+')'):'')+' — ใช้รูปเดิม + กราฟิกหรูแทน '+r.out.length+' รูป'; d='ตรวจ + จัดลำดับ '+r.out.length+' รูป → อนุมัติ ✓'; }
+        else if(r.ai<r.total){ g='AI วาดฉากหรู '+r.ai+'/'+r.total+' รูป (Gemini) · ที่เหลือใช้รูปเดิม + วางโลโก้/ตัวอักษร ✓'; d='ไดเรกเตอร์รีวิวด้วย Claude vision'+(r.note?(' · '+r.note):'')+' → อนุมัติ ✓'; }
+        else { g='AI สร้างฉากหรู '+r.out.length+' รูป (Gemini) + วางโลโก้/ตัวอักษรทับ ✓'; d='ไดเรกเตอร์รีวิวด้วย Claude vision'+(r.note?(' · '+r.note):'')+' → อนุมัติ ✓'; }
+        finish(r.out,g,d);
       }).catch(function(e){
         // ถ้า AI พลาด → fallback เทมเพลต
-        saSetDept('graphic','work','AI ไม่สำเร็จ — ใช้เทมเพลตแทน...');
+        saSetDept('graphic','work','AI ไม่สำเร็จ'+(saLastAiErr?(' ('+saLastAiErr+')'):'')+' — ใช้เทมเพลตแทน...');
         templateGraphic();
       });
     } else {
