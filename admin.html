@@ -1593,8 +1593,8 @@ function saArtBrief(){
   // ผนวก "Hero เทศกาล + คำสั่งปรับแก้" เข้าไปทุกครั้งเสมอ — ส่งตรงถึง Gemini แม้ Claude จะล้ม (บรีฟสำรองก็มีครบ)
   function finalize(base){
     var extra='';
-    if(fes&&fes.k!=='none'){ extra+=' The scene MUST clearly feature '+(heroDesc||((fes.en||fes.l)+' theme'))+' prominently in the background, with strong festive colours — make the '+(fes.en||fes.l)+' theme obvious and unmistakable.'; }
-    if(saRevision){ extra+=' TOP-PRIORITY change requested by the brand owner (follow this exactly): '+saRevision+'.'; }
+    if(fes&&fes.k!=='none'){ extra+=' MANDATORY festive transformation: ADD '+(heroDesc||((fes.en||fes.l)+' decorations'))+' clearly visible in the background behind and around the product — these are NOT in the original photo, you MUST add them in. Shift the whole scene to strong '+(fes.en||fes.l)+' festive colours and mood. This festive change is the MOST important requirement (override any "minimal / keep scene" wording); keep ONLY the product itself unchanged.'; }
+    if(saRevision){ extra+=' TOP-PRIORITY change from the brand owner — you MUST apply this exactly, even if it changes the scene a lot (override minimalism): '+saRevision+'.'; }
     return (base+extra).trim();
   }
   return saClaude([{role:'user',content:ask}],400).then(function(t){ saLastBriefAI=!!((t||'').trim()); return finalize((t||'').trim()||fallback); }).catch(function(){ saLastBriefAI=false; return finalize(fallback); });
@@ -1605,8 +1605,9 @@ function saGeminiImage(dataUrl,prompt){
   var model=localStorage.getItem('bk-gemini-model')||'gemini-2.5-flash-image';
   var p=saDataParts(dataUrl); if(!p) return Promise.resolve(null);
   var url='https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key);
-  var guard=' CRITICAL — PRODUCT LOCK: Treat the product (bottle, cap, label, reeds/sticks) as a LOCKED layer copied pixel-for-pixel from the attached photo, in the SAME position and size. Do NOT redraw, distort, recolour, move, resize, replace or add any product. Keep every letter, logo and number on the label EXACTLY as in the photo — do NOT regenerate, translate, re-letter, or invent any text; never turn label text into random/garbled letters. Change ONLY the background, surface, props and lighting around the product. Photorealistic. Output one single edited photo only — no added text, no watermark.';
-  var body={contents:[{parts:[{text:prompt+guard},{inline_data:{mime_type:p.mime,data:p.b64}}]}],generationConfig:{temperature:0.35}};
+  var guard=' CRITICAL — PRODUCT LOCK: Treat the product (bottle, cap, label, reeds/sticks) as a LOCKED layer copied pixel-for-pixel from the attached photo, in the SAME position and size. Do NOT redraw, distort, recolour, move, resize, replace the product or add a different product. Keep every letter, logo and number on the label EXACTLY as in the photo — do NOT regenerate, translate, re-letter, or invent any text; never turn label text into random/garbled letters. You SHOULD freely redesign EVERYTHING ELSE — background, surface, props, decor and lighting — and ADD any new background/decor elements the prompt asks for (e.g. festive decorations), even if they are not in the original photo. Photorealistic. Output one single edited photo only — no added text overlay, no watermark.';
+  var creative=(saState.festival&&saState.festival!=='none')||!!saRevision;
+  var body={contents:[{parts:[{text:prompt+guard},{inline_data:{mime_type:p.mime,data:p.b64}}]}],generationConfig:{temperature:creative?0.62:0.4}};
   saCost.img++;
   return fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Gemini',r.status,t); throw new Error('gemini '+r.status); }); return r.json(); })
