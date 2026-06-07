@@ -1589,8 +1589,15 @@ function saArtBrief(){
     sofa:'Editorial luxury photo of the exact same sofa — unchanged shape, colour and proportions — as the hero in a serene minimal living room with soft linen textures, a low wood table and a plant by a large window. Soft natural daylight, gentle shadows, shallow depth of field, warm calm palette, generous negative space. Photorealistic high-end interior styling. No text, no logo.',
     auto:'Editorial luxury photo of the exact same product — unchanged shape and colour — in a serene minimal interior with premium wood, stone and linen textures. Soft natural golden light, gentle diffused shadows, shallow depth of field, warm calm palette, generous negative space. Photorealistic high-end styling. No text, no logo.'
   };
-  var fallback=fbMap[cat]+((fes&&fes.k!=='none')?(' Add tasteful '+((fes.en||fes.l||'').replace(/[^\x00-\x7F]+/g,'').trim()||'seasonal')+' seasonal styling/props to the scene, keep it premium and uncluttered.'):'');
-  return saClaude([{role:'user',content:ask}],400).then(function(t){ return (t||'').trim()||fallback; }).catch(function(){ return fallback; });
+  var fallback=fbMap[cat];
+  // ผนวก "Hero เทศกาล + คำสั่งปรับแก้" เข้าไปทุกครั้งเสมอ — ส่งตรงถึง Gemini แม้ Claude จะล้ม (บรีฟสำรองก็มีครบ)
+  function finalize(base){
+    var extra='';
+    if(fes&&fes.k!=='none'){ extra+=' The scene MUST clearly feature '+(heroDesc||((fes.en||fes.l)+' theme'))+' prominently in the background, with strong festive colours — make the '+(fes.en||fes.l)+' theme obvious and unmistakable.'; }
+    if(saRevision){ extra+=' TOP-PRIORITY change requested by the brand owner (follow this exactly): '+saRevision+'.'; }
+    return (base+extra).trim();
+  }
+  return saClaude([{role:'user',content:ask}],400).then(function(t){ return finalize((t||'').trim()||fallback); }).catch(function(){ return finalize(fallback); });
 }
 // ฝ่ายกราฟิก (Gemini) สร้างฉากหรูจากรูปสินค้า → คืน dataURL (หรือ null ถ้าพลาด)
 function saGeminiImage(dataUrl,prompt){
