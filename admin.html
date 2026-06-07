@@ -944,7 +944,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:4px">🧠 Claude <span style="font-weight:400;color:var(--dim);font-size:.78rem">— ฝ่ายการตลาด (เขียนแคปชัน) + ฝ่ายไดเรกเตอร์ (รีวิวภาพ)</span></div>
       <div class="row">
         <input type="password" id="sa-aikey" placeholder="🔑 API key: sk-ant-...">
-        <input type="text" id="sa-aimodel" value="claude-3-5-haiku-latest" style="flex:0 0 200px" title="ชื่อโมเดล Claude" placeholder="โมเดล">
+        <input type="text" id="sa-aimodel" value="claude-haiku-4-5" style="flex:0 0 200px" title="ชื่อโมเดล Claude" placeholder="โมเดล">
         <button type="button" onclick="bkSaveKey()">บันทึก</button>
         <span id="sa-aistatus" style="font-size:.76rem;color:var(--dim)"></span>
       </div>
@@ -1246,7 +1246,7 @@ function bkSellerInit(){
     ['dragleave','drop'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.remove('over');});});
     dz.addEventListener('drop',function(ev){ if(ev.dataTransfer&&ev.dataTransfer.files) saAddFiles(ev.dataTransfer.files); });
     var k=localStorage.getItem('bk-claude-key'); if(k){ document.getElementById('sa-aikey').value=k; document.getElementById('sa-aistatus').textContent='✅ มีคีย์ (AI พร้อม)'; }
-    var m=localStorage.getItem('bk-claude-model'); if(m) document.getElementById('sa-aimodel').value=m;
+    var m=localStorage.getItem('bk-claude-model'); if(m && /claude-3/.test(m)){ localStorage.removeItem('bk-claude-model'); m=null; } /* โมเดลเก่าถูกปลดระวาง → ใช้ค่าใหม่ */ if(m) document.getElementById('sa-aimodel').value=m;
     var gk=localStorage.getItem('bk-gemini-key'); if(gk){ document.getElementById('sa-gemkey').value=gk; document.getElementById('sa-gemstatus').textContent='✅ มีคีย์ Gemini'; }
     var gm=localStorage.getItem('bk-gemini-model'); if(gm) document.getElementById('sa-gemmodel').value=gm;
     saState.aiImage=(localStorage.getItem('bk-aiimg')==='1'); var ab=document.getElementById('sa-aiimg-btn'); if(ab) ab.classList.toggle('on', saState.aiImage);
@@ -1497,7 +1497,7 @@ function saAiErrHint(svc,status,body){
 }
 function saAiCaption(){
   var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve(null);
-  var model=localStorage.getItem('bk-claude-model')||'claude-3-5-haiku-latest';
+  var model=localStorage.getItem('bk-claude-model')||'claude-haiku-4-5';
   var fes=null,plat=null,i;
   for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===saState.festival){fes=SA_FESTIVALS[i];break;}}
   for(i=0;i<SA_PLATFORMS.length;i++){if(SA_PLATFORMS[i].k===saState.platform){plat=SA_PLATFORMS[i];break;}}
@@ -1548,7 +1548,7 @@ function saSrcToData(src){
 function saDataParts(dataUrl){ var m=/^data:([^;]+);base64,(.*)$/.exec(dataUrl); return m?{mime:m[1],b64:m[2]}:null; }
 function saClaude(messages,maxTok){
   var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve(null);
-  var model=localStorage.getItem('bk-claude-model')||'claude-3-5-haiku-latest';
+  var model=localStorage.getItem('bk-claude-model')||'claude-haiku-4-5';
   saCost.claude++;
   return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:maxTok||500,messages:messages})})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Claude',r.status,t); throw new Error('claude '+r.status); }); return r.json(); })
