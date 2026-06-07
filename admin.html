@@ -285,6 +285,9 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .pm-nav:hover{background:rgba(201,162,77,.92);color:#111}
 .pm-nav.prev{left:8px}.pm-nav.next{right:8px}
 .sa-grid-all figure img{cursor:zoom-in}
+.sa-pipe-log{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;margin-bottom:16px;max-height:180px;overflow:auto}
+.sa-pipe-log .sa-log-line{font-size:.76rem;color:var(--neutral);line-height:1.55;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sa-pipe-log .sa-log-line b{color:var(--gold2)}
 .sa-step0-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-top:10px}
 .sa-step0-col .sa-drop{min-height:170px;margin-top:8px}
 .sa-step0-col .sa-thumbs{margin-top:8px}
@@ -935,23 +938,25 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     </div>
 
     <details class="panel sa-ai">
-      <summary>⚙️ AI (ออปชัน) — ใส่ Claude API key เพื่อให้ AI เขียนแคปชันสด</summary>
+      <summary>⚙️ AI (ออปชัน) — เชื่อม 2 AI เพื่อยกระดับโพสต์ · ไม่ใส่ก็ใช้เทมเพลต (ฟรี) ได้เต็มที่</summary>
+      <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:4px">🧠 Claude <span style="font-weight:400;color:var(--dim);font-size:.78rem">— ฝ่ายการตลาด (เขียนแคปชัน) + ฝ่ายไดเรกเตอร์ (รีวิวภาพ)</span></div>
       <div class="row">
-        <input type="password" id="sa-aikey" placeholder="sk-ant-... (วางคีย์ของคุณ)">
-        <input type="text" id="sa-aimodel" value="claude-3-5-haiku-latest" style="flex:0 0 200px" title="ชื่อโมเดล">
+        <input type="password" id="sa-aikey" placeholder="🔑 API key: sk-ant-...">
+        <input type="text" id="sa-aimodel" value="claude-3-5-haiku-latest" style="flex:0 0 200px" title="ชื่อโมเดล Claude" placeholder="โมเดล">
         <button type="button" onclick="bkSaveKey()">บันทึก</button>
         <span id="sa-aistatus" style="font-size:.76rem;color:var(--dim)"></span>
       </div>
       <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 <b>ขอคีย์ที่ console.anthropic.com</b> → API Keys → Create Key (บัญชี API จ่ายตามใช้ · haiku ถูกมาก · คนละอย่างกับ Claude Code/Claude.ai — ดึงคีย์จาก Claude Code มาใช้ไม่ได้)<br>🔒 คีย์เก็บใน <b>เครื่องนี้เท่านั้น</b> (localStorage) ไม่ขึ้น GitHub · <b>ไม่ใส่ก็ใช้งานได้เต็มที่</b>ด้วยเทมเพลต</p>
 
       <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
+        <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:6px">🎨 Gemini <span style="font-weight:400;color:var(--dim);font-size:.78rem">— ฝ่ายกราฟิก (วาดภาพฉากหรูจากรูปสินค้า)</span></div>
         <div class="sa-logo-row" style="margin-top:0">
-          <span>🎨 <b>AI สร้างภาพหรู</b> (Gemini) — เปลี่ยนรูปสินค้าเป็นฉากพรีเมียม + ลูป Director รีวิว</span>
+          <span>เปิด <b>AI วาดภาพ</b> — เปลี่ยนรูปสินค้าเป็นฉากพรีเมียม + ลูป Director รีวิว (มีค่าใช้จ่าย)</span>
           <button type="button" id="sa-aiimg-btn" class="sa-toggle" onclick="saToggleAiImage()"><span class="knob"></span></button>
         </div>
         <div class="row" style="margin-top:10px">
-          <input type="password" id="sa-gemkey" placeholder="AIza... (Gemini API key)">
-          <input type="text" id="sa-gemmodel" value="gemini-2.5-flash-image" style="flex:0 0 210px" title="โมเดลภาพ">
+          <input type="password" id="sa-gemkey" placeholder="🔑 API key: AIza...">
+          <input type="text" id="sa-gemmodel" value="gemini-2.5-flash-image" style="flex:0 0 210px" title="โมเดลภาพ Gemini" placeholder="โมเดลภาพ">
           <button type="button" onclick="bkSaveKey()">บันทึก</button>
           <span id="sa-gemstatus" style="font-size:.76rem;color:var(--dim)"></span>
         </div>
@@ -959,13 +964,14 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       </div>
     </details>
 
-    <button class="sa-go" type="button" onclick="bkGenerate()">✨ ให้ 3 ฝ่ายช่วยกันสร้างโพสต์</button>
+    <button class="sa-go" type="button" onclick="saRevision='';bkGenerate()">✨ ให้ 3 ฝ่ายช่วยกันสร้างโพสต์</button>
 
     <div id="sa-pipeline" class="sa-pipeline" style="display:none">
       <div class="sa-dept" data-d="marketing" title="Senior Copywriter — เขียนแคปชันให้เข้าน้ำเสียงแบรนด์ + ปรับตามแพลตฟอร์ม (IG/FB/Lemon8/TikTok/X) + โหมด (Branding/เน้นขาย) + ใส่ชื่อ-ขนาดสินค้า + แฮชแท็กตรงสินค้า + ข้อมูลติดต่อ (ยกเว้น TikTok)"><b>1 · ✍️ ฝ่ายการตลาด</b><i class="sa-skill">แคปชัน · แบรนด์/แพลตฟอร์ม/โหมด/แฮชแท็ก</i><span>รอ</span></div>
       <div class="sa-dept" data-d="graphic" title="Art Director + Gemini — เขียน art-direction brief แล้วให้ Gemini วาดฉากหรูจากรูปสินค้า โดยล็อกตัวสินค้า/ฉลากไม่ให้เพี้ยน + วางโลโก้/ตัวอักษร/ป้ายด้วยโค้ดให้คมชัด · เทศกาลแต่งฉากจริง"><b>2 · 🎨 ฝ่ายกราฟิก</b><i class="sa-skill">วาดฉาก AI · คงสินค้า · วางตัวอักษรคม</i><span>รอ</span></div>
       <div class="sa-dept" data-d="director" title="Creative Director + Claude vision — รีวิวภาพอย่างเข้มงวด วนแก้จนได้ 10/10 (สูงสุด 4 รอบ คุมต้นทุน) + จัดลำดับรูปให้โพสต์ + เตือนถ้าโลโก้/ตัวอักษรทับสินค้า + ตรวจฉลากไม่ให้มั่ว"><b>3 · 🧭 ครีเอทีฟไดเรกเตอร์</b><i class="sa-skill">รีวิว 10/10 · จัดลำดับ · เตือนทับ</i><span>รอ</span></div>
     </div>
+    <div id="sa-pipe-log" class="sa-pipe-log" style="display:none"><div style="font-size:.72rem;color:var(--gold2);font-weight:700;margin-bottom:5px">💬 บันทึกการทำงาน / คำสั่งระหว่างแผนก</div></div>
 
     <div id="sa-result" class="panel" style="display:none">
       <div class="panel-title">✅ โพสต์พร้อมใช้ <span id="sa-style-label" style="font-size:.74rem;color:var(--gold);font-weight:600;margin-left:8px"></span> <span id="sa-mode-badge" style="font-size:.7rem;font-weight:700;margin-left:8px;padding:3px 11px;border:1px solid var(--border);border-radius:11px;color:var(--gold2)"></span></div>
@@ -984,9 +990,12 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         </div>
         <div class="sa-cap">
           <textarea id="sa-out-cap" spellcheck="false"></textarea>
+          <div id="sa-revision-wrap" style="margin-top:10px;display:none">
+            <div class="sa-sub" style="margin-top:0">💬 อยากปรับแก้อะไร? (สั่ง 3 แผนกได้)</div>
+            <input type="text" id="sa-revision" placeholder="เช่น: ฉากสว่างขึ้น · เพิ่มต้นคริสต์มาส · ฟอนต์ใหญ่ขึ้น · โทนอุ่นกว่านี้ — แล้วกด ✨ วาดฉาก AI ใหม่" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--gold);background:var(--bg2);color:var(--text);font-family:inherit;font-size:.82rem">
+          </div>
           <div class="sa-cap-bar">
-            <button type="button" onclick="saReshuffleDesign()">🎨 เปลี่ยนดีไซน์</button>
-            <button type="button" onclick="saReshuffleDesign(true)">🎲 สุ่มดีไซน์ (ฟรี)</button>
+            <button type="button" onclick="saReshuffleDesign()" title="เปลี่ยนดีไซน์/กรอบ/สไตล์บนฉากเดิม — ฟรี ไม่เรียก AI ซ้ำ">🎨 เปลี่ยนดีไซน์ (ฟรี) <span id="sa-style-count" style="opacity:.65;font-weight:400"></span></button>
             <button type="button" id="sa-regen-ai" onclick="saRegenAI()" style="display:none">✨ วาดฉาก AI ใหม่</button>
             <button type="button" onclick="bkCopyCap()">📋 คัดลอกแคปชัน</button>
             <button type="button" onclick="bkDownloadAll()">⬇️ ดาวน์โหลดรูปทั้งหมด</button>
@@ -1314,7 +1323,7 @@ function saSpaced(x,str,cx,y,px,sp,color,weight,fam){x.save();x.textAlign='left'
 function saWordmark(x,cx,topY,W,light){ if(saLogoOn===false) return; if(saTintLogo(x,cx,topY+W*0.085,W*0.18,light?'#F4EFE6':'#A0784A')) return;
   x.save();x.textAlign='center';x.fillStyle=light?'#F0E6D2':'#A0784A';x.font='600 '+Math.round(W*0.075)+'px Fraunces,Georgia,serif';x.fillText('BLOOK',cx,topY+W*0.07);x.restore();
   saSpaced(x,'THE CLASS OF CALM',cx,topY+W*0.11,Math.round(W*0.02),Math.round(W*0.012),light?'rgba(240,230,210,.8)':'#8B6B3D','500 '); }
-function saFestChip(x,o,corner){ if(!o.fes||o.fes.k==='none')return; var W=o.W,label=(o.fes.badge||o.fes.l||'').toUpperCase();
+function saFestChip(x,o,corner){ if(!o.fes||o.fes.k==='none')return; if(o.aiScene) return; /* โหมด AI: เทศกาลอยู่ในฉากแล้ว ไม่ต้องแปะป้าย */ var W=o.W,label=(o.fes.badge||o.fes.l||'').toUpperCase();
   x.save();x.font='700 '+Math.round(W*0.036)+'px Inter,Arial,sans-serif';x.textAlign='left';
   var tw=x.measureText(label).width,bh=Math.round(W*0.072),bw=tw+W*0.05;
   var bx=(corner==='tl'||corner==='tlLow')?o.pad:(W-o.pad-bw),by=(corner==='tlLow')?Math.round(o.pad+W*0.15):o.pad;
@@ -1330,11 +1339,14 @@ function saSaleInfo(o){ var d=o.discount||30, p=+o.price||0, show=o.saleShow||'d
   return {label:'ลดสูงสุด', big:'-'+d+'%', small:''};
 }
 function saSaleBurst(x,o,cx,cy,rad){ var info=saSaleInfo(o); x.save();
-  var g=x.createLinearGradient(cx-rad,cy-rad,cx+rad,cy+rad);g.addColorStop(0,'#E4572E');g.addColorStop(1,'#B8001F');
-  x.fillStyle=g;x.shadowColor='rgba(0,0,0,.3)';x.shadowBlur=o.W*0.03;x.shadowOffsetY=3;
-  x.beginPath();for(var i=0;i<24;i++){var a=Math.PI*2*i/24,rr=(i%2?rad*0.86:rad);x[i?'lineTo':'moveTo'](cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);}x.closePath();x.fill();x.shadowColor='transparent';
-  x.textAlign='center';x.fillStyle='#fff';x.font='600 '+Math.round(rad*0.3)+'px "IBM Plex Sans Thai",sans-serif';x.fillText(info.label,cx,cy-rad*0.2);
-  var bigSize=info.big.length>4?rad*0.5:rad*0.66; x.font='800 '+Math.round(bigSize)+'px Inter,"IBM Plex Sans Thai",sans-serif';x.fillText(info.big,cx,cy+rad*0.4);x.restore(); }
+  // ป้ายโปรพรีเมียม: ดิสก์ไวน์เข้ม + ขอบทอง (แทนป้ายแดงแหลมๆ ที่ดูถูก)
+  x.shadowColor='rgba(0,0,0,.4)';x.shadowBlur=o.W*0.04;x.shadowOffsetY=o.W*0.006;
+  var g=x.createRadialGradient(cx-rad*0.35,cy-rad*0.35,rad*0.15,cx,cy,rad);g.addColorStop(0,'#8E2236');g.addColorStop(1,'#460C19');
+  x.beginPath();x.arc(cx,cy,rad,0,Math.PI*2);x.fillStyle=g;x.fill();x.shadowColor='transparent';
+  x.beginPath();x.arc(cx,cy,rad*0.88,0,Math.PI*2);x.strokeStyle='rgba(214,182,122,.95)';x.lineWidth=Math.max(2,rad*0.035);x.stroke();
+  x.textAlign='center';
+  x.fillStyle='#E9D0A4';x.font='italic 600 '+Math.round(rad*0.24)+'px Fraunces,Georgia,serif';x.fillText(info.label,cx,cy-rad*0.24);
+  var bigSize=info.big.length>4?rad*0.46:rad*0.6; x.fillStyle='#FFF7EC';x.font='800 '+Math.round(bigSize)+'px Inter,"IBM Plex Sans Thai",sans-serif';x.fillText(info.big,cx,cy+rad*0.36);x.restore(); }
 
 /* ---- 6 premium styles (3 brand · 3 sale) ---- */
 var SA_STYLES=[
@@ -1372,10 +1384,10 @@ var SA_STYLES=[
   // sale 2 — Price band bottom
   {key:'priceband',label:'Price Band',purpose:'sale',layout:'band',draw:function(x,img,o){ var W=o.W,H=o.H,band=Math.round(H*0.24),d=o.discount||30;
     saCover(x,img,0,0,W,H-band); saGrade(x,0,0,W,H-band); x.fillStyle='#15110D';x.fillRect(0,H-band,W,band);
-    x.strokeStyle='#E4572E';x.lineWidth=Math.max(2,W*0.004);x.beginPath();x.moveTo(0,H-band+1);x.lineTo(W,H-band+1);x.stroke();
+    x.strokeStyle='#C9A96E';x.lineWidth=Math.max(2,W*0.004);x.beginPath();x.moveTo(0,H-band+1);x.lineTo(W,H-band+1);x.stroke();
     saTintLogo(x,o.pad+W*0.07,o.pad+W*0.07,W*0.14,'#fff'); saFestChip(x,o,'tr');
-    var pinfo=saSaleInfo(o); x.save();x.textAlign='left';x.fillStyle='#fff';x.font='600 '+Math.round(W*0.05)+'px "IBM Plex Sans Thai",sans-serif';x.fillText(pinfo.label,o.pad,H-band+band*0.46);
-    x.fillStyle='#FFCF3A';var pbs=(pinfo.big.length>4?W*0.092:W*0.12);x.font='800 '+Math.round(pbs)+'px Inter,"IBM Plex Sans Thai",sans-serif';x.fillText(pinfo.big,o.pad,H-band+band*0.9);x.restore();
+    var pinfo=saSaleInfo(o); x.save();x.textAlign='left';x.fillStyle='rgba(255,255,255,.92)';x.font='600 '+Math.round(W*0.05)+'px "IBM Plex Sans Thai",sans-serif';x.fillText(pinfo.label,o.pad,H-band+band*0.46);
+    x.fillStyle='#E8C766';var pbs=(pinfo.big.length>4?W*0.092:W*0.12);x.font='800 '+Math.round(pbs)+'px Inter,"IBM Plex Sans Thai",sans-serif';x.fillText(pinfo.big,o.pad,H-band+band*0.9);x.restore();
     x.save();x.textAlign='right';x.fillStyle='#C9A96E';x.font='600 '+Math.round(W*0.03)+'px Inter,Arial,sans-serif';x.fillText('blookliving.com',W-o.pad,H-band+band*0.5);x.fillStyle='rgba(255,255,255,.7)';x.font='500 '+Math.round(W*0.026)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('สั่งเลยก่อนของหมด',W-o.pad,H-band+band*0.82);x.restore(); }},
   // sale 3 — Diagonal ribbon
   {key:'ribbon',label:'Sale Ribbon',purpose:'sale',layout:'overlay',draw:function(x,img,o){ var W=o.W,H=o.H,d=o.discount||30;
@@ -1384,23 +1396,26 @@ var SA_STYLES=[
     // corner ribbon top-right (สมมาตร ไม่ตกขอบ)
     var info=saSaleInfo(o), tag=(info.big.charAt(0)==='฿')?info.big:('SALE '+info.big);
     var rw=W*0.5,rh=W*0.105; x.save();x.translate(W,0);x.rotate(Math.PI/4);
-    x.fillStyle='#D7361B';x.shadowColor='rgba(0,0,0,.28)';x.shadowBlur=W*0.02;x.shadowOffsetY=2;x.fillRect(-rw/2,W*0.03,rw,rh);x.shadowColor='transparent';
-    x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.font='800 '+Math.round(W*0.044)+'px Inter,"IBM Plex Sans Thai",sans-serif';x.fillText(tag,0,W*0.03+rh/2);x.textBaseline='alphabetic';x.restore();
+    var rg=x.createLinearGradient(-rw/2,0,rw/2,0);rg.addColorStop(0,'#8E2236');rg.addColorStop(1,'#5E1322');
+    x.fillStyle=rg;x.shadowColor='rgba(0,0,0,.3)';x.shadowBlur=W*0.02;x.shadowOffsetY=2;x.fillRect(-rw/2,W*0.03,rw,rh);x.shadowColor='transparent';
+    x.strokeStyle='rgba(214,182,122,.85)';x.lineWidth=Math.max(1.5,W*0.004);x.strokeRect(-rw/2+W*0.012,W*0.03+W*0.012,rw-W*0.024,rh-W*0.024);
+    x.fillStyle='#FBEFD8';x.textAlign='center';x.textBaseline='middle';x.font='800 '+Math.round(W*0.042)+'px Inter,"IBM Plex Sans Thai",sans-serif';x.fillText(tag,0,W*0.03+rh/2);x.textBaseline='alphabetic';x.restore();
     x.save();x.textAlign='left';x.fillStyle='rgba(255,255,255,.97)';x.font='italic 500 '+Math.round(W*0.05)+'px Fraunces,Georgia,serif';x.fillText('The Class of Calm',o.pad,H-o.pad*2.0);x.restore();
     saDomain(x,o,'rgba(255,255,255,.9)','left'); x.save();x.textAlign='right';x.fillStyle='#FFCF3A';x.font='600 '+Math.round(W*0.032)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('จำนวนจำกัด',W-o.pad,H-o.pad);x.restore(); }}
 ];
 function saStylesFor(purpose,layout){ var byP=SA_STYLES.filter(function(s){return s.purpose===purpose||s.purpose==='both';}); if(!byP.length) byP=SA_STYLES; if(!layout||layout==='mix') return byP; var r=byP.filter(function(s){return s.layout===layout;}); return r.length?r:byP; }
-function buildPost(img,o){
+function buildPost(img,o,aiScene){
   saLogoOn=(o.logo!==false);
   var asp=null,i; for(i=0;i<SA_ASPECTS.length;i++){if(SA_ASPECTS[i].k===o.aspect){asp=SA_ASPECTS[i];break;}} if(!asp)asp=SA_ASPECTS[0];
   var W=asp.w,H=asp.h,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
   var fes=null; for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===o.festival){fes=SA_FESTIVALS[i];break;}}
   var styles=saStylesFor(o.purpose,o.layout), st=styles[(o.styleIdx||0)%styles.length];
-  var ctx2={W:W,H:H,pad:Math.round(W*0.055),fes:fes,purpose:o.purpose,discount:o.discount,price:o.price,saleShow:o.saleShow,gold:'#A0784A'};
+  var ctx2={W:W,H:H,pad:Math.round(W*0.055),fes:fes,purpose:o.purpose,discount:o.discount,price:o.price,saleShow:o.saleShow,aiScene:!!aiScene,gold:'#A0784A'};
   try{ st.draw(x,img,ctx2); }catch(e){ saCover(x,img,0,0,W,H); }
   return c;
 }
 function saCurrentStyleLabel(){ var styles=saStylesFor(saState.purpose,saState.layout); return styles[(saState.styleIdx||0)%styles.length].label; }
+function saUpdateStyleLabel(){ var styles=saStylesFor(saState.purpose,saState.layout),n=styles.length||1,i=((saState.styleIdx||0)%n)+1; var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel(); var c=document.getElementById('sa-style-count'); if(c) c.textContent='· แบบ '+i+'/'+n; }
 function saProductTags(k){
   if(k==='argo') return ['#blookliving','#หมอนเพื่อสุขภาพ','#หมอนเพื่อสุขภาพblook','#หมอนblook','#BLOOKARGOPILLOW'];
   if(k==='togo') return ['#blookliving','#togosofa','#sofablook','#beanbag','#โซฟาขี้เกียจ'];
@@ -1457,6 +1472,9 @@ function composeCaption(o){
   return thF+'\n\n'+en+'\n\n'+uniq.join(' ');
 }
 var saLastAiErr='';
+var saCost={img:0,claude:0}; var saRevision='';
+function saCostText(){ var b=(saCost.img*1.4)+(saCost.claude*0.15); return 'Gemini '+saCost.img+' รูป + Claude '+saCost.claude+' ครั้ง ≈ '+b.toFixed(1)+'฿'; }
+function saLog(msg){ var L=document.getElementById('sa-pipe-log'); if(!L)return; var d=document.createElement('div'); d.className='sa-log-line'; d.innerHTML=msg; L.appendChild(d); L.scrollTop=L.scrollHeight; }
 function saAiErrHint(svc,status,body){
   var b=(body||'').toLowerCase(), h;
   if(status===401||status===403) h='คีย์ '+svc+' ไม่ถูกต้อง/หมดสิทธิ์ (เช็คว่าวางครบ ไม่มีเว้นวรรค)';
@@ -1504,10 +1522,12 @@ function saAiCaption(){
     +'• ระบุ "ชื่อ + ขนาด" สินค้าให้ชัดในแคปชัน: '+((pr&&pr.k!=='auto')?pr.l:'BLOOK LIVING')+'\n'
     +'• '+modeBrief+'\n'
     +((fes&&fes.k!=='none')?('• ธีมเทศกาล: '+(fes.l||'')+(fes.th?(' — แนว "'+fes.th+'"'):'')+'\n'):'')
+    +(saRevision?('• ⭐⭐ คำสั่งปรับแก้จากเจ้าของแบรนด์ (สำคัญสุด ทำตามนี้ก่อน): '+saRevision+'\n'):'')
     +'\nเขียนผลลัพธ์ "พร้อมโพสต์" (ห้ามอธิบาย ห้ามใส่หัวข้อกำกับ ห้ามขึ้นต้นว่า "นี่คือ"):\n'
     +'1) แคปชันไทย: ฮุกบรรทัดแรกที่สะดุด + เนื้อหา 2-4 บรรทัด (ลื่น เป็นธรรมชาติ มีรสนิยม)\n'
     +'2) บรรทัดภาษาอังกฤษ 1 บรรทัด (โทนเดียวกัน)\n'
     +'3) แฮชแท็กบรรทัดสุดท้าย — ใช้กลุ่มนี้เป็นหลัก: '+saProductTags(saState.product).join(' ')+(isSale?' #โปรโมชั่น':'')+' (เพิ่มได้ตามบริบทรวม 6-10 อัน)';
+  saCost.claude++;
   return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:700,messages:[{role:'user',content:p}]})})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Claude',r.status,t); throw new Error('api '+r.status); }); return r.json(); })
     .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; })
@@ -1522,6 +1542,7 @@ function saDataParts(dataUrl){ var m=/^data:([^;]+);base64,(.*)$/.exec(dataUrl);
 function saClaude(messages,maxTok){
   var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve(null);
   var model=localStorage.getItem('bk-claude-model')||'claude-3-5-haiku-latest';
+  saCost.claude++;
   return fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:model,max_tokens:maxTok||500,messages:messages})})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Claude',r.status,t); throw new Error('claude '+r.status); }); return r.json(); })
     .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||''; })
@@ -1538,13 +1559,21 @@ function saArtBrief(){
     sofa:'low lounge / bean-bag style sofa as the hero in a serene luxurious living room; soft linen & boucle textures, a low wood coffee table, a plant, large window with soft daylight; cozy modern-luxe calm interior',
     auto:'a serene luxurious minimal interior corner; premium wood, stone and linen textures; tasteful props; editorial home-decor mood'
   };
-  var festTxt=(fes&&fes.k!=='none')?('• ⭐ ทำให้เทศกาล "'+(fes.l||'')+'" โดดเด่นชัดในภาพ — ใช้ "สีประจำเทศกาล" และองค์ประกอบที่จำได้ทันทีให้เห็นชัด (คริสต์มาส=โทนเขียว+แดง+ทอง กิ่งสน ไฟอุ่นโบเก้ ออร์นาเมนต์ · ปีใหม่=ประกายทอง/พลุนุ่ม · วาเลนไทน์=แดง-ชมพู+ดอกไม้ · สงกรานต์=โทนสดชื่น+ดอกไม้ไทย · 5.5/7.7/แคมเปญเลข=ป้ายตัวเลขหรือพร็อพที่สื่อแคมเปญ) ผสานเข้ากับฉากอย่างมีรสนิยม ให้รู้สึกถึงเทศกาลทันทีแต่ยังพรีเมียม ไม่บังตัวสินค้า\n'):'';
+  var festHero={christmas:'a decorated Christmas tree, pine garland, warm fairy-light bokeh, a few red/gold baubles',newyear:'golden sparkles, soft fireworks bokeh, metallic gold accents, "Happy New Year" feel',valentine:'red roses and soft pink blooms, warm romantic glow, heart-shaped accents',songkran:'fresh Thai flowers, water droplets, bright airy summer mood',mother:'jasmine flowers and soft warm tones',father:'elegant warm tones with subtle Thai motifs'};
+  var heroDesc=(fes&&fes.k&&festHero[fes.k])?festHero[fes.k]:((fes&&fes.k!=='none')?('clear signature props/colours of '+(fes.en||fes.l)):'');
+  var festTxt=(fes&&fes.k!=='none')?(
+      '• 🎯 ฝ่ายการตลาดสั่งฝ่ายกราฟิก: ทำให้เทศกาล "'+(fes.l||'')+'" โดดเด่นในภาพ "เพิ่มความเข้มของเทศกาลอีก ~40%" (ของเดิมมักจืดเกินไป)\n'
+    + '• ใส่ HERO ของเทศกาลในฉากหลังให้เห็นชัด: '+heroDesc+' — ตั้งไว้ด้านหลัง/ข้างสินค้า เป็นพระรองที่สังเกตเห็นทันที (อย่าบังตัวสินค้า)\n'
+    + '• ใช้ "สีประจำเทศกาล" คุมโทนทั้งภาพให้รู้สึกถึงเทศกาลทันที (เช่น คริสต์มาส=เขียว+แดง+ทอง)\n'
+    + '• อาจมีป้าย/ตัวอักษรชื่อเทศกาลเป็นพร็อพในฉาก (เช่น ป้ายไม้เล็ก) ได้ ถ้าทำให้สวยและสะกดถูก — แต่ห้ามแตะฉลากสินค้า · คงความพรีเมียม ไม่รก\n'
+  ):'';
   var ask='คุณคือ Creative Director แบรนด์ BLOOK LIVING (The Class of Calm — ของแต่งบ้าน/เฟอร์นิเจอร์หรู สงบ อบอุ่น)\n'
     +'เขียน art-direction prompt ภาษาอังกฤษ ให้โมเดลวาด "ฉากโฆษณาหรูระดับนิตยสาร" จากรูปสินค้าที่แนบ\n'
     +'สินค้า: '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK product')+'\n'
     +'แนวฉากของสินค้านี้: '+sceneMap[cat]+'\n'
     +'โหมด: '+(isSale?'sale/promo (สด สะดุดตา แต่ยังหรู)':'branding mood (สงบ พรีเมียม)')+'\n'
     +festTxt
+    +(saRevision?('• ⭐⭐ คำสั่งปรับแก้จากเจ้าของแบรนด์ (สำคัญสุด ทำตามนี้ก่อนเสมอ): '+saRevision+'\n'):'')
     +'พรอมต์ต้องสั่งให้: keep the EXACT same product unchanged (shape, colour, proportions, and ALL text/letters/logo on the label — do NOT regenerate or invent any label text) — restyle only the surrounding scene; premium materials; soft natural light (golden-hour / soft window light); gentle diffused shadows; shallow depth of field; warm neutral palette; minimal editorial composition with negative space for text; photorealistic high-end product photography; NO added text, NO logo, NO watermark, NO extra products.\n'
     +'ตอบเป็น prompt ภาษาอังกฤษล้วน 1 ย่อหน้า ~50-90 คำ ไม่ต้องอธิบายอย่างอื่น';
   var fbMap={
@@ -1564,6 +1593,7 @@ function saGeminiImage(dataUrl,prompt){
   var url='https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key);
   var guard=' CRITICAL — PRODUCT LOCK: Treat the product (bottle, cap, label, reeds/sticks) as a LOCKED layer copied pixel-for-pixel from the attached photo, in the SAME position and size. Do NOT redraw, distort, recolour, move, resize, replace or add any product. Keep every letter, logo and number on the label EXACTLY as in the photo — do NOT regenerate, translate, re-letter, or invent any text; never turn label text into random/garbled letters. Change ONLY the background, surface, props and lighting around the product. Photorealistic. Output one single edited photo only — no added text, no watermark.';
   var body={contents:[{parts:[{text:prompt+guard},{inline_data:{mime_type:p.mime,data:p.b64}}]}],generationConfig:{temperature:0.35}};
+  saCost.img++;
   return fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Gemini',r.status,t); throw new Error('gemini '+r.status); }); return r.json(); })
     .then(function(j){ var parts=(((j.candidates||[])[0]||{}).content||{}).parts||[]; for(var i=0;i<parts.length;i++){ var d=parts[i].inlineData||parts[i].inline_data; if(d&&d.data) return 'data:'+(d.mimeType||d.mime_type||'image/png')+';base64,'+d.data; } return null; })
@@ -1605,10 +1635,11 @@ function saPickStyleForMode(){ var styles=saStylesFor(saState.purpose,saState.la
 function saBuildImagesAI(prog){
   return saArtBrief().then(function(brief){
     prog && prog('marketing','done','คิดคอนเซ็ปต์ + art-direction brief (Claude) ✓');
+    saLog('<b>🎯 ไดเรกชันภาพ (Claude→Gemini):</b> "'+(brief||'').slice(0,95)+'…"');
     prog && prog('graphic','work','Gemini กำลังสร้างฉากหรูจากรูปสินค้า...');
     var imgs=saState.images.slice(), out=[], bases=[];
     var promptUsed=brief, reviewedNote='', aiCount=0;
-    function compose(idx,im,isAi,baseUrl){ try{ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); }catch(e){ out[idx]=imgs[idx]; } bases[idx]=baseUrl||imgs[idx]; if(isAi) aiCount++; }
+    function compose(idx,im,isAi,baseUrl){ try{ out[idx]=buildPost(im,saState,isAi).toDataURL('image/jpeg',0.92); }catch(e){ out[idx]=imgs[idx]; } bases[idx]=baseUrl||imgs[idx]; if(isAi) aiCount++; }
     function loadAndCompose(idx,url,isAi){ return saLoadImg(url).then(function(im){ compose(idx,im,isAi,url); }); }
     function buildOne(idx){
       if(idx>=imgs.length) return Promise.resolve();
@@ -1633,6 +1664,7 @@ function saBuildImagesAI(prog){
       prog && prog('director','work','Claude vision รีวิวรูปแรก (รอบ '+pass+'/4)...');
       return saVisionReview(out[0]).then(function(rv){
         if(rv && rv.score) reviewedNote='คะแนน '+rv.score+'/10'+(rv.ok?'':' · ปรับรอบ '+pass);
+        if(rv) saLog('<b>🧭 ไดเรกเตอร์ → กราฟิก (รอบ '+pass+'/4):</b> '+(rv.ok?('✅ ผ่าน '+(rv.score||10)+'/10'):('คะแนน '+(rv.score||'?')+'/10 → สั่งวาดใหม่: "'+((rv.improve||'').slice(0,55))+'…"')));
         if(rv && !rv.ok && rv.improve){ promptUsed=rv.improve;
           prog && prog('graphic','work','วาดรูปแรกใหม่ตามรีวิว (รอบ '+pass+')...');
           return saGeminiImage(orig0,promptUsed).then(function(u2){ if(u2) return loadAndCompose(0,u2,false).catch(function(){}); }).then(function(){ return saDirectorLoop(orig0,rounds-1); });
@@ -1648,6 +1680,8 @@ function bkGenerate(){
   if(!saState.images.length){ alert('กรุณาเพิ่มรูปอย่างน้อย 1 รูปก่อนครับ'); return; }
   var pipe=document.getElementById('sa-pipeline'); pipe.style.display='flex';
   document.getElementById('sa-result').style.display='none';
+  saCost={img:0,claude:0};
+  var plog=document.getElementById('sa-pipe-log'); if(plog){ plog.style.display='block'; [].forEach.call(plog.querySelectorAll('.sa-log-line'),function(n){n.remove();}); }
   var plat=saFind(SA_PLATFORMS,saState.platform), fes=saFind(SA_FESTIVALS,saState.festival), prod=saFind(SA_PRODUCTS,saState.product);
   var purposeL=(saState.purpose==='sale')?('เน้นขาย · ลด '+(saState.discount||30)+'%'):'Branding (เน้นภาพลักษณ์)';
   var festL=(fes&&fes.k!=='none')?fes.l:'';
@@ -1661,6 +1695,8 @@ function bkGenerate(){
   capP.then(function(aiTxt){
     var cap=saWithContact(aiTxt||composeCaption(saState), saState.platform);
     saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':('จากเทมเพลต'+(useAI&&saLastAiErr?(' — ⚠️ '+saLastAiErr):(useAI?'':' (ยังไม่ใส่คีย์ Claude)'))))+' ✓');
+    saLog('<b>📣 การตลาด → กราฟิก:</b> ทำภาพ "'+((prod&&prod.k!=='auto')?prod.l:'สินค้า BLOOK')+'" · โหมด '+purposeL+(festL?(' · เทศกาล '+festL):'')+' · '+(plat?plat.l:'')+' '+saState.aspect+(saRevision?(' · ⭐ ปรับตามที่สั่ง: "'+saRevision.slice(0,50)+'"'):''));
+    saLog('<b>✍️ การตลาด (แคปชัน '+(useAI&&aiTxt?'AI':'เทมเพลต')+'):</b> "'+((cap.split('\n')[0]||'').slice(0,64))+'…"');
     function finish(out,gNote,dNote){
       saSetDept('graphic','done',gNote); saSetDept('director','work','Claude vision ตรวจคุณภาพ + จัดลำดับ + เช็คโลโก้ทับสินค้า...');
       saDirectorReview(out).then(function(rv){
@@ -1670,6 +1706,9 @@ function bkGenerate(){
           var extra=[]; if(rv.score) extra.push('คุณภาพ '+rv.score+'/10'); if(rv.order&&rv.order.length>1) extra.push('จัดลำดับให้แล้ว'); if(rv.warnings) extra.push('⚠️ '+rv.warnings);
           if(extra.length) note=dNote+' · '+extra.join(' · ');
         }
+        if(saCost.img||saCost.claude) note+=' · 💰 '+saCostText();
+        if(rv){ saLog('<b>🧭 ไดเรกเตอร์:</b> '+(rv.score?('คุณภาพ '+rv.score+'/10 · '):'')+(rv.order&&rv.order.length>1?'จัดลำดับรูปใหม่ · ':'')+(rv.warnings?('⚠️ '+rv.warnings+' · '):'')+'อนุมัติพร้อมโพสต์'); }
+        if(saCost.img||saCost.claude) saLog('<b>💰 ต้นทุนรวมงานนี้:</b> '+saCostText());
         saSetDept('director','done',note); saShowResult(finalOut,cap);
       });
     }
@@ -1712,7 +1751,7 @@ function saShowResult(urls,cap){
   saRenderGrid(urls);
   saSetView('mockup');
   saUpdateModeBadge();
-  var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel();
+  saUpdateStyleLabel();
   res.scrollIntoView({behavior:'smooth',block:'start'});
 }
 /* ป้ายบอกโหมดผลลัพธ์ + ซ่อน/โชว์ปุ่มวาด AI ใหม่ตามโหมด */
@@ -1720,7 +1759,8 @@ function saUpdateModeBadge(){
   var b=document.getElementById('sa-mode-badge');
   if(b){ if(saResultMode==='ai'){ b.textContent='🎨 ภาพจาก AI (Gemini) — เสียค่าใช้จ่ายแล้ว'; b.style.color='#7ee0a0'; b.style.borderColor='rgba(126,224,160,.4)'; }
     else { b.textContent='🆓 เทมเพลต (ฟรี)'; b.style.color='var(--gold2)'; b.style.borderColor='var(--border)'; } }
-  var rb=document.getElementById('sa-regen-ai'); if(rb){ var hasAI=saState.aiImage && !!localStorage.getItem('bk-gemini-key'); rb.style.display=hasAI?'inline-block':'none'; var n=saState.images.length||1; rb.textContent='✨ วาดฉาก AI ใหม่ (~'+Math.round(n*1.4)+'฿)'; }
+  var rb=document.getElementById('sa-regen-ai'); var hasAI=saState.aiImage && !!localStorage.getItem('bk-gemini-key'); if(rb){ rb.style.display=hasAI?'inline-block':'none'; var n=saState.images.length||1; rb.textContent='✨ วาดฉาก AI ใหม่ (~'+Math.round(n*1.4)+'฿)'; }
+  var rw=document.getElementById('sa-revision-wrap'); if(rw) rw.style.display=hasAI?'block':'none';
 }
 function saSetView(mode){
   var mv=document.getElementById('sa-mockup-view'), gv=document.getElementById('sa-grid-view');
@@ -1754,19 +1794,20 @@ function saReshuffleDesign(rand){
   var styles=saStylesFor(saState.purpose,saState.layout), k=(styles&&styles.length)?styles.length:1;
   if(rand && k>1){ var nx=Math.floor(Math.random()*k); while(nx===(saState.styleIdx||0)%k) nx=Math.floor(Math.random()*k); saState.styleIdx=nx; }
   else { saState.styleIdx=((saState.styleIdx||0)+1)%k; }
-  var cap=document.getElementById('sa-out-cap').value, out=[],done=0;
+  var cap=document.getElementById('sa-out-cap').value, out=[],done=0, aiScene=(saResultMode==='ai');
   bases.forEach(function(src,idx){ var im=new Image(); im.crossOrigin='anonymous';
-    im.onload=function(){ try{out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92);}catch(e){out[idx]=src;} if(++done===n) fin(); };
+    im.onload=function(){ try{out[idx]=buildPost(im,saState,aiScene).toDataURL('image/jpeg',0.92);}catch(e){out[idx]=src;} if(++done===n) fin(); };
     im.onerror=function(){ out[idx]=src; if(++done===n) fin(); }; im.src=src;
   });
-  function fin(){ saLastUrls=out; saRenderMockup(out,cap); saRenderGrid(out); saUpdateModeBadge(); var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel(); }
+  function fin(){ saLastUrls=out; saRenderMockup(out,cap); saRenderGrid(out); saUpdateModeBadge(); saUpdateStyleLabel(); }
 }
 /* วาดฉากใหม่ด้วย AI จริง (Gemini) — เสียเงิน จึงยืนยันก่อน */
 function saRegenAI(){
   var hasAI=saState.aiImage && localStorage.getItem('bk-gemini-key');
   if(!hasAI){ alert('ตอนนี้เป็นโหมดเทมเพลต (ฟรี)\n\nถ้าต้องการให้ AI วาดฉากใหม่ ให้เปิดสวิตช์ "🎨 AI สร้างภาพหรู (Gemini)" + ใส่คีย์ Gemini ที่ ⚙️ AI ก่อนครับ'); return; }
+  var ri=document.getElementById('sa-revision'); saRevision=ri?ri.value.trim():'';
   var n=saState.images.length||1;
-  if(!confirm('วาดฉากใหม่ด้วย AI (Gemini)\nมีค่าใช้จ่ายประมาณ '+Math.round(n*1.4)+'฿ ('+n+' รูป)\n\n💡 ถ้าแค่อยากเปลี่ยนกรอบ/สี/เลย์เอาต์ ใช้ปุ่ม "🎲 สุ่มดีไซน์" (ฟรี) ได้เลย\n\nยืนยันวาดฉากใหม่ด้วย AI ไหม?')) return;
+  if(!confirm('วาดฉากใหม่ด้วย AI (Gemini)\nมีค่าใช้จ่ายประมาณ '+Math.round(n*1.4)+'฿/รอบ ('+n+' รูป)'+(saRevision?('\n\n⭐ ปรับตามที่สั่ง: "'+saRevision+'"\n3 แผนกจะทำตามคำสั่งนี้'):'')+'\n\n💡 ถ้าแค่อยากเปลี่ยนกรอบ/สี/เลย์เอาต์ ใช้ปุ่ม "🎨 เปลี่ยนดีไซน์" (ฟรี) ได้เลย\n\nยืนยันวาดฉากใหม่ด้วย AI ไหม?')) return;
   bkGenerate();
 }
 /* mockup เหมือนแอปจริง — เฉพาะแพลตฟอร์มที่เลือก (saState.platform) */
