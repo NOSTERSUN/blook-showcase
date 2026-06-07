@@ -1440,7 +1440,7 @@ function saArtBrief(){
     +'สินค้า: '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK product')+'\n'
     +'แนวฉากของสินค้านี้: '+sceneMap[cat]+'\n'
     +'โหมด: '+(isSale?'sale/promo (สด สะดุดตา แต่ยังหรู)':'branding mood (สงบ พรีเมียม)')+((fes&&fes.k!=='none')?(' · ธีมเทศกาล: '+fes.l):'')+'\n'
-    +'พรอมต์ต้องสั่งให้: keep the EXACT same product (shape, colour, label, proportions) unchanged — restyle only the surrounding scene; premium materials; soft natural light (golden-hour / soft window light); gentle diffused shadows; shallow depth of field; warm neutral palette; minimal editorial composition with negative space for text; photorealistic high-end product photography; NO text, NO logo, NO watermark, NO extra products.\n'
+    +'พรอมต์ต้องสั่งให้: keep the EXACT same product unchanged (shape, colour, proportions, and ALL text/letters/logo on the label — do NOT regenerate or invent any label text) — restyle only the surrounding scene; premium materials; soft natural light (golden-hour / soft window light); gentle diffused shadows; shallow depth of field; warm neutral palette; minimal editorial composition with negative space for text; photorealistic high-end product photography; NO text, NO logo, NO watermark, NO extra products.\n'
     +'ตอบเป็น prompt ภาษาอังกฤษล้วน 1 ย่อหน้า ~50-80 คำ ไม่ต้องอธิบายอย่างอื่น';
   var fbMap={
     reed:'Editorial luxury photo of the exact same reed diffuser — unchanged shape, colour and label — on honed cream marble beside soft natural linen, a ceramic tray and dried botanicals in a serene spa-like corner. Soft golden window light, gentle diffused shadows, shallow depth of field, warm neutral palette, minimal composition with generous negative space. Photorealistic high-end product photography. No text, no logo, no extra products.',
@@ -1456,8 +1456,8 @@ function saGeminiImage(dataUrl,prompt){
   var model=localStorage.getItem('bk-gemini-model')||'gemini-2.5-flash-image';
   var p=saDataParts(dataUrl); if(!p) return Promise.resolve(null);
   var url='https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key);
-  var guard=' IMPORTANT: keep the product in the attached photo EXACTLY as-is — identical shape, colour, label, text and proportions; do NOT redraw, distort, recolour, replace or add any product. Restyle ONLY the background, surface, props and lighting. Photorealistic. Output one single edited photo only — no text, no logo, no watermark.';
-  var body={contents:[{parts:[{text:prompt+guard},{inline_data:{mime_type:p.mime,data:p.b64}}]}],generationConfig:{temperature:0.7}};
+  var guard=' CRITICAL — PRODUCT LOCK: Treat the product (bottle, cap, label, reeds/sticks) as a LOCKED layer copied pixel-for-pixel from the attached photo, in the SAME position and size. Do NOT redraw, distort, recolour, move, resize, replace or add any product. Keep every letter, logo and number on the label EXACTLY as in the photo — do NOT regenerate, translate, re-letter, or invent any text; never turn label text into random/garbled letters. Change ONLY the background, surface, props and lighting around the product. Photorealistic. Output one single edited photo only — no added text, no watermark.';
+  var body={contents:[{parts:[{text:prompt+guard},{inline_data:{mime_type:p.mime,data:p.b64}}]}],generationConfig:{temperature:0.35}};
   return fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
     .then(function(r){ if(!r.ok) return r.text().then(function(t){ saAiErrHint('Gemini',r.status,t); throw new Error('gemini '+r.status); }); return r.json(); })
     .then(function(j){ var parts=(((j.candidates||[])[0]||{}).content||{}).parts||[]; for(var i=0;i<parts.length;i++){ var d=parts[i].inlineData||parts[i].inline_data; if(d&&d.data) return 'data:'+(d.mimeType||d.mime_type||'image/png')+';base64,'+d.data; } return null; })
@@ -1467,8 +1467,10 @@ function saGeminiImage(dataUrl,prompt){
 function saVisionReview(composedDataUrl){
   var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve({ok:true});
   var p=saDataParts(composedDataUrl); if(!p) return Promise.resolve({ok:true});
-  var ask='คุณคือ Creative Director รีวิวโพสต์โฆษณา BLOOK LIVING (แบรนด์หรู สงบ). ดูภาพนี้แล้วประเมินว่าสวย พรีเมียม ดึงดูด ตรงแบรนด์พอจะโพสต์ไหม\n'
-    +'ตอบเป็น JSON บรรทัดเดียว: {"score": <1-10>, "improve": "<art-direction prompt ภาษาอังกฤษที่ปรับให้ดีขึ้น ถ้า score<8 ไม่งั้นเว้นว่าง>"}';
+  var ask='คุณคือ Creative Director รีวิวภาพโฆษณา BLOOK LIVING (แบรนด์หรู สงบ).\n'
+    +'ประเมิน 2 อย่าง: (1) ความสวย/พรีเมียม/ตรงแบรนด์ (2) ตัวสินค้าและ "ฉลาก/ตัวอักษรบนสินค้า" ต้องคมชัด ไม่เพี้ยน ไม่มั่ว ไม่กลายเป็นตัวอักษรประหลาดหรือสะกดผิด\n'
+    +'⚠️ ถ้าฉลาก/ตัวอักษรบนสินค้ามั่วหรือเพี้ยน ให้ score ≤ 4 เสมอ (สำคัญกว่าความสวยของฉาก)\n'
+    +'ตอบเป็น JSON บรรทัดเดียว: {"score": <1-10>, "improve": "<art-direction prompt ภาษาอังกฤษที่ดีขึ้น ถ้า score<8; ต้องย้ำเสมอว่า keep the product and its label pixel-identical to the original photo, do NOT regenerate or invent any text/letters on the label; ไม่งั้นเว้นว่าง>"}';
   return saClaude([{role:'user',content:[{type:'text',text:ask},{type:'image',source:{type:'base64',media_type:p.mime,data:p.b64}}]}],300)
     .then(function(t){ try{ var j=JSON.parse((t.match(/\{[\s\S]*\}/)||['{}'])[0]); return {ok:(+j.score>=8)||!j.improve, improve:j.improve||''}; }catch(e){ return {ok:true}; } });
 }
