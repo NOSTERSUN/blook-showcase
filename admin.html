@@ -285,7 +285,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .pm-nav:hover{background:rgba(201,162,77,.92);color:#111}
 .pm-nav.prev{left:8px}.pm-nav.next{right:8px}
 .sa-grid-all figure img{cursor:zoom-in}
-.sa-pipe-log{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;margin-bottom:16px;max-height:180px;overflow:auto}
+.sa-pipe-log{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;margin-bottom:16px;max-height:300px;overflow:auto}
 .sa-pipe-log .sa-log-line{font-size:.76rem;color:var(--neutral);line-height:1.55;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.05)}
 .sa-pipe-log .sa-log-line b{color:var(--gold2)}
 .sa-step0-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-top:10px}
@@ -1473,7 +1473,7 @@ function composeCaption(o){
 }
 var saLastAiErr='';
 var saCost={img:0,claude:0}; var saRevision='';
-function saCostText(){ var b=(saCost.img*1.4)+(saCost.claude*0.15); return 'Gemini '+saCost.img+' รูป + Claude '+saCost.claude+' ครั้ง ≈ '+b.toFixed(1)+'฿'; }
+function saCostText(){ var g=saCost.img*1.4, c=saCost.claude*0.15; return 'Gemini '+saCost.img+' รูป ×1.4฿ + Claude '+saCost.claude+' ครั้ง ×0.15฿ ≈ '+(g+c).toFixed(1)+'฿'; }
 function saLog(msg){ var L=document.getElementById('sa-pipe-log'); if(!L)return; var d=document.createElement('div'); d.className='sa-log-line'; d.innerHTML=msg; L.appendChild(d); L.scrollTop=L.scrollHeight; }
 function saAiErrHint(svc,status,body){
   var b=(body||'').toLowerCase(), h;
