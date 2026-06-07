@@ -846,7 +846,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     </div>
 
     <div id="sa-result" class="panel" style="display:none">
-      <div class="panel-title">✅ โพสต์พร้อมใช้</div>
+      <div class="panel-title">✅ โพสต์พร้อมใช้ <span id="sa-style-label" style="font-size:.74rem;color:var(--gold);font-weight:600;margin-left:8px"></span></div>
       <div class="sa-viewmode" id="sa-viewmode">
         <button type="button" data-vm="mockup" class="on" onclick="saSetView('mockup')">📱 ตัวอย่างบนแอป</button>
         <button type="button" data-vm="grid" onclick="saSetView('grid')">🖼️ รูปทั้งหมด (ที่จะดาวน์โหลด)</button>
@@ -864,6 +864,7 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         <div class="sa-cap">
           <textarea id="sa-out-cap" spellcheck="false"></textarea>
           <div class="sa-cap-bar">
+            <button type="button" onclick="saReshuffleDesign()">🎨 เปลี่ยนดีไซน์</button>
             <button type="button" onclick="bkCopyCap()">📋 คัดลอกแคปชัน</button>
             <button type="button" onclick="bkDownloadAll()">⬇️ ดาวน์โหลดรูปทั้งหมด</button>
             <button type="button" onclick="bkGenerate()">🔄 สุ่มใหม่</button>
@@ -1048,7 +1049,7 @@ var SA_FESTIVALS=[
   {k:'christmas',l:'คริสต์มาส',badge:'CHRISTMAS',emoji:'🎄',accent:'#2E7D32',m:12,d:25,th:'🎄 เติมความอบอุ่นรับคริสต์มาส',en:'Merry Christmas',tag:'#Christmas'}
 ];
 var SA_MAX_IMAGES=12, SA_MONTHS=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-var saState={images:[],platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',previewPlatform:'instagram'};
+var saState={images:[],platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',previewPlatform:'instagram',styleIdx:0};
 var saReady=false, saLastUrls=[];
 var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
 
@@ -1148,37 +1149,87 @@ function saWireSort(c){
 function saCover(x,img,X,Y,w,h){ var ir=img.width/img.height,tr=w/h,sw,sh,sx,sy; if(ir>tr){sh=img.height;sw=sh*tr;sx=(img.width-sw)/2;sy=0;}else{sw=img.width;sh=sw/tr;sx=0;sy=(img.height-sh)/2;} x.drawImage(img,sx,sy,sw,sh,X,Y,w,h); }
 function saRR(x,X,Y,w,h,r){ x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath(); }
 function saTintLogo(x,cx,cy,w,color){ if(!SA_LOGO_OK)return false; var s=Math.max(2,Math.round(w)),oc=document.createElement('canvas');oc.width=oc.height=s;var o=oc.getContext('2d');o.drawImage(SA_LOGO,0,0,s,s);o.globalCompositeOperation='source-in';o.fillStyle=color;o.fillRect(0,0,s,s);x.drawImage(oc,cx-w/2,cy-w/2,w,w);return true; }
+/* ---- premium graphic helpers (ออกแบบหรู ไม่ทื่อ) ---- */
+function saVgrad(x,y0,c0,y1,c1){var g=x.createLinearGradient(0,y0,0,y1);g.addColorStop(0,c0);g.addColorStop(1,c1);return g;}
+function saSpaced(x,str,cx,y,px,sp,color,weight,fam){x.save();x.textAlign='left';x.fillStyle=color;x.font=(weight||'600 ')+px+'px '+(fam||'Inter,Arial,sans-serif');var w=[],tot=0,i;for(i=0;i<str.length;i++){var ww=x.measureText(str[i]).width;w.push(ww);tot+=ww+sp;}tot-=sp;var sx=cx-tot/2;for(i=0;i<str.length;i++){x.fillText(str[i],sx,y);sx+=w[i]+sp;}x.restore();}
+function saWordmark(x,cx,topY,W,light){ if(saTintLogo(x,cx,topY+W*0.085,W*0.18,light?'#F4EFE6':'#A0784A')) return;
+  x.save();x.textAlign='center';x.fillStyle=light?'#F0E6D2':'#A0784A';x.font='600 '+Math.round(W*0.075)+'px Georgia,serif';x.fillText('BLOOK',cx,topY+W*0.07);x.restore();
+  saSpaced(x,'THE CLASS OF CALM',cx,topY+W*0.11,Math.round(W*0.02),Math.round(W*0.012),light?'rgba(240,230,210,.8)':'#8B6B3D','500 '); }
+function saFestChip(x,o,corner){ if(!o.fes||o.fes.k==='none')return; var W=o.W,label=(o.fes.emoji?o.fes.emoji+' ':'')+(o.fes.badge||o.fes.l);
+  x.save();x.font='700 '+Math.round(W*0.036)+'px Inter,Arial,sans-serif';x.textAlign='left';
+  var tw=x.measureText(label).width,bh=Math.round(W*0.072),bw=tw+W*0.05,bx=(corner==='tl')?o.pad:(W-o.pad-bw),by=o.pad;
+  x.fillStyle=o.fes.accent||'#A0784A';x.shadowColor='rgba(0,0,0,.25)';x.shadowBlur=W*0.02;x.shadowOffsetY=2;saRR(x,bx,by,bw,bh,bh/2);x.fill();x.shadowColor='transparent';
+  x.fillStyle='#fff';x.textBaseline='middle';x.fillText(label,bx+W*0.025,by+bh/2);x.textBaseline='alphabetic';x.restore(); }
+function saDomain(x,o,color,align){ var W=o.W,H=o.H; x.save();x.textAlign=align||'right';x.fillStyle=color;x.font='600 '+Math.round(W*0.03)+'px Inter,Arial,sans-serif';x.fillText('blookliving.com',align==='center'?W/2:(W-o.pad),H-o.pad);x.restore(); }
+function saCard(x,X,Y,w,h,r,shadow){ if(shadow){x.save();x.shadowColor=shadow;x.shadowBlur=w*0.06;x.shadowOffsetY=w*0.02;x.fillStyle='#fff';saRR(x,X,Y,w,h,r);x.fill();x.restore();} }
+function saSaleBurst(x,o,cx,cy,rad){ var d=o.discount||30; x.save();
+  var g=x.createLinearGradient(cx-rad,cy-rad,cx+rad,cy+rad);g.addColorStop(0,'#E4572E');g.addColorStop(1,'#B8001F');
+  x.fillStyle=g;x.shadowColor='rgba(0,0,0,.3)';x.shadowBlur=o.W*0.03;x.shadowOffsetY=3;
+  x.beginPath();for(var i=0;i<24;i++){var a=Math.PI*2*i/24,rr=(i%2?rad*0.86:rad);x[i?'lineTo':'moveTo'](cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);}x.closePath();x.fill();x.shadowColor='transparent';
+  x.textAlign='center';x.fillStyle='#fff';x.font='600 '+Math.round(rad*0.34)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('ลดสูงสุด',cx,cy-rad*0.18);
+  x.font='800 '+Math.round(rad*0.72)+'px Inter,Arial,sans-serif';x.fillText('-'+d+'%',cx,cy+rad*0.42);x.restore(); }
+
+/* ---- 6 premium styles (3 brand · 3 sale) ---- */
+var SA_STYLES=[
+  // brand 1 — Editorial (image + cream caption band)
+  {key:'editorial',label:'Editorial',purpose:'brand',draw:function(x,img,o){ var W=o.W,H=o.H,band=Math.round(H*0.26);
+    saCover(x,img,0,0,W,H-band); x.fillStyle=saVgrad(x,H-band,'#F7F0E3',H,'#ECE0CD');x.fillRect(0,H-band,W,band);
+    x.strokeStyle=o.gold;x.lineWidth=Math.max(2,W*0.0025);x.beginPath();x.moveTo(0,H-band+1);x.lineTo(W,H-band+1);x.stroke();
+    saFestChip(x,o,'tr');
+    x.save();x.textAlign='center';x.fillStyle='#2C2016';x.font='italic 500 '+Math.round(W*0.06)+'px Georgia,serif';x.fillText('The Class of Calm',W/2,H-band+band*0.5);x.restore();
+    saSpaced(x,'BLOOK LIVING',W/2,H-band+band*0.74,Math.round(W*0.026),Math.round(W*0.018),'#9A8466','600 ');
+    saDomain(x,o,'#8B6B3D','center'); }},
+  // brand 2 — Gold frame full-bleed
+  {key:'frame',label:'Gold Frame',purpose:'brand',draw:function(x,img,o){ var W=o.W,H=o.H;
+    saCover(x,img,0,0,W,H); x.fillStyle=saVgrad(x,0,'rgba(0,0,0,.35)',H*0.3,'rgba(0,0,0,0)');x.fillRect(0,0,W,H*0.3);
+    x.fillStyle=saVgrad(x,H*0.62,'rgba(0,0,0,0)',H,'rgba(0,0,0,.62)');x.fillRect(0,H*0.62,W,H*0.38);
+    x.strokeStyle='rgba(201,169,110,.9)';x.lineWidth=Math.max(2,W*0.003);saRR(x,W*0.05,W*0.05,W*0.9,H-W*0.1,W*0.02);x.stroke();
+    saWordmark(x,W/2,o.pad*1.1,W,true); saFestChip(x,o,'tr');
+    x.save();x.textAlign='center';x.fillStyle='rgba(255,255,255,.96)';x.font='italic 500 '+Math.round(W*0.05)+'px Georgia,serif';x.fillText('The Class of Calm',W/2,H-o.pad*2.1);x.restore();
+    saDomain(x,o,'rgba(255,255,255,.9)','center'); }},
+  // brand 3 — Spotlight dark + centred logo
+  {key:'spotlight',label:'Spotlight',purpose:'brand',draw:function(x,img,o){ var W=o.W,H=o.H;
+    saCover(x,img,0,0,W,H); var rg=x.createRadialGradient(W/2,H*0.5,W*0.1,W/2,H*0.5,W*0.8);rg.addColorStop(0,'rgba(10,7,4,.15)');rg.addColorStop(1,'rgba(10,7,4,.72)');x.fillStyle=rg;x.fillRect(0,0,W,H);
+    saTintLogo(x,W/2,H*0.46,W*0.34,'#F4EFE6'); saSpaced(x,'THE CLASS OF CALM',W/2,H*0.46+W*0.21,Math.round(W*0.028),Math.round(W*0.014),'rgba(244,239,232,.85)','500 ');
+    saFestChip(x,o,'tr'); saDomain(x,o,'rgba(255,255,255,.85)','center'); }},
+  // sale 1 — Bold burst
+  {key:'burst',label:'Sale Burst',purpose:'sale',draw:function(x,img,o){ var W=o.W,H=o.H;
+    saCover(x,img,0,0,W,H); x.fillStyle=saVgrad(x,H*0.55,'rgba(10,7,4,0)',H,'rgba(10,7,4,.8)');x.fillRect(0,H*0.55,W,H*0.45);
+    saTintLogo(x,o.pad+W*0.07,o.pad+W*0.07,W*0.14,'#fff'); saFestChip(x,o,'tr');
+    saSaleBurst(x,o,W*0.78,H*0.3,W*0.16);
+    x.save();x.textAlign='left';x.fillStyle='#fff';x.font='600 '+Math.round(W*0.052)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('คอลเลกชัน BLOOK LIVING',o.pad,H-o.pad*2.0);x.restore();
+    // gold CTA pill
+    var cw=W*0.42,ch=W*0.1,cx=o.pad,cy=H-o.pad-ch; x.fillStyle=saVgrad(x,cy,'#D8BC86',cy+ch,'#A0784A');saRR(x,cx,cy,cw,ch,ch/2);x.fill();
+    x.fillStyle='#1A0F08';x.textAlign='center';x.font='700 '+Math.round(W*0.036)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('ช้อปเลย · blookliving.com',cx+cw/2,cy+ch*0.64);x.restore?x.restore():0; }},
+  // sale 2 — Price band bottom
+  {key:'priceband',label:'Price Band',purpose:'sale',draw:function(x,img,o){ var W=o.W,H=o.H,band=Math.round(H*0.24),d=o.discount||30;
+    saCover(x,img,0,0,W,H-band); x.fillStyle='#15110D';x.fillRect(0,H-band,W,band);
+    x.strokeStyle='#E4572E';x.lineWidth=Math.max(2,W*0.004);x.beginPath();x.moveTo(0,H-band+1);x.lineTo(W,H-band+1);x.stroke();
+    saTintLogo(x,o.pad+W*0.07,o.pad+W*0.07,W*0.14,'#fff'); saFestChip(x,o,'tr');
+    x.save();x.textAlign='left';x.fillStyle='#fff';x.font='600 '+Math.round(W*0.05)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('ลดสูงสุด',o.pad,H-band+band*0.46);
+    x.fillStyle='#FFCF3A';x.font='800 '+Math.round(W*0.12)+'px Inter,Arial,sans-serif';x.fillText('-'+d+'%',o.pad,H-band+band*0.9);x.restore();
+    x.save();x.textAlign='right';x.fillStyle='#C9A96E';x.font='600 '+Math.round(W*0.03)+'px Inter,Arial,sans-serif';x.fillText('blookliving.com',W-o.pad,H-band+band*0.5);x.fillStyle='rgba(255,255,255,.7)';x.font='500 '+Math.round(W*0.026)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('สั่งเลยก่อนของหมด',W-o.pad,H-band+band*0.82);x.restore(); }},
+  // sale 3 — Diagonal ribbon
+  {key:'ribbon',label:'Sale Ribbon',purpose:'sale',draw:function(x,img,o){ var W=o.W,H=o.H,d=o.discount||30;
+    saCover(x,img,0,0,W,H); x.fillStyle=saVgrad(x,H*0.6,'rgba(10,7,4,0)',H,'rgba(10,7,4,.78)');x.fillRect(0,H*0.6,W,H*0.4);
+    saTintLogo(x,o.pad+W*0.07,o.pad+W*0.07,W*0.14,'#fff');
+    // diagonal ribbon top-right
+    x.save();x.translate(W,0);x.rotate(Math.PI/4);x.fillStyle='#E4572E';x.fillRect(-W*0.18,W*0.06,W*0.55,W*0.11);
+    x.fillStyle='#fff';x.textAlign='center';x.font='800 '+Math.round(W*0.05)+'px Inter,Arial,sans-serif';x.fillText('SALE -'+d+'%',W*0.095,W*0.135);x.restore();
+    x.save();x.textAlign='left';x.fillStyle='rgba(255,255,255,.97)';x.font='italic 500 '+Math.round(W*0.05)+'px Georgia,serif';x.fillText('The Class of Calm',o.pad,H-o.pad*2.0);x.restore();
+    saDomain(x,o,'rgba(255,255,255,.9)','left'); var t2={W:W,H:H,pad:o.pad}; x.save();x.textAlign='right';x.fillStyle='#FFCF3A';x.font='600 '+Math.round(W*0.032)+'px "IBM Plex Sans Thai",sans-serif';x.fillText('🔥 จำนวนจำกัด',W-o.pad,H-o.pad);x.restore(); }}
+];
+function saStylesFor(purpose){ var r=SA_STYLES.filter(function(s){return s.purpose===purpose||s.purpose==='both';}); return r.length?r:SA_STYLES; }
 function buildPost(img,o){
-  var asp=null; for(var i=0;i<SA_ASPECTS.length;i++){if(SA_ASPECTS[i].k===o.aspect){asp=SA_ASPECTS[i];break;}} if(!asp)asp=SA_ASPECTS[0];
+  var asp=null,i; for(i=0;i<SA_ASPECTS.length;i++){if(SA_ASPECTS[i].k===o.aspect){asp=SA_ASPECTS[i];break;}} if(!asp)asp=SA_ASPECTS[0];
   var W=asp.w,H=asp.h,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
-  saCover(x,img,0,0,W,H);
-  var tg=x.createLinearGradient(0,0,0,H*0.22);tg.addColorStop(0,'rgba(10,7,4,.45)');tg.addColorStop(1,'rgba(10,7,4,0)');x.fillStyle=tg;x.fillRect(0,0,W,H*0.22);
-  var bg=x.createLinearGradient(0,H*0.5,0,H);bg.addColorStop(0,'rgba(10,7,4,0)');bg.addColorStop(1,'rgba(10,7,4,.82)');x.fillStyle=bg;x.fillRect(0,H*0.5,W,H*0.5);
-  var pad=Math.round(W*0.055);
-  saTintLogo(x,pad+W*0.075,pad+W*0.075,W*0.15,'#ffffff');
-  var fes=null; for(var j=0;j<SA_FESTIVALS.length;j++){if(SA_FESTIVALS[j].k===o.festival){fes=SA_FESTIVALS[j];break;}}
-  if(fes&&fes.k!=='none'){
-    var label=(fes.emoji?fes.emoji+' ':'')+(fes.badge||fes.l);
-    x.font='700 '+Math.round(W*0.04)+'px Inter,Arial,sans-serif';x.textAlign='left';
-    var tw=x.measureText(label).width,bh=Math.round(W*0.082),bw=tw+Math.round(W*0.06),bx=W-pad-bw,by=pad;
-    x.fillStyle=fes.accent||'#A0784A';saRR(x,bx,by,bw,bh,bh/2);x.fill();
-    x.fillStyle='#fff';x.textBaseline='middle';x.fillText(label,bx+Math.round(W*0.03),by+bh/2);x.textBaseline='alphabetic';
-  }
-  x.textAlign='left';
-  if(o.purpose==='sale'){
-    var d=o.discount||30;
-    x.fillStyle='#fff';x.font='600 '+Math.round(W*0.045)+'px "IBM Plex Sans Thai","Noto Sans Thai",sans-serif';
-    x.fillText('ลดสูงสุด',pad,H-pad-Math.round(W*0.115));
-    x.fillStyle='#FFCF3A';x.font='800 '+Math.round(W*0.135)+'px Inter,Arial,sans-serif';
-    x.fillText('-'+d+'%',pad,H-pad-Math.round(W*0.012));
-  } else {
-    x.fillStyle='rgba(255,255,255,.96)';x.font='italic 500 '+Math.round(W*0.058)+'px Georgia,"Times New Roman",serif';
-    x.fillText('The Class of Calm',pad,H-pad-Math.round(W*0.05));
-  }
-  x.textAlign='right';x.fillStyle='rgba(255,255,255,.92)';x.font='600 '+Math.round(W*0.032)+'px Inter,Arial,sans-serif';
-  x.fillText('blookliving.com',W-pad,H-pad);
+  var fes=null; for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===o.festival){fes=SA_FESTIVALS[i];break;}}
+  var styles=saStylesFor(o.purpose), st=styles[(o.styleIdx||0)%styles.length];
+  var ctx2={W:W,H:H,pad:Math.round(W*0.055),fes:fes,purpose:o.purpose,discount:o.discount,gold:'#A0784A'};
+  try{ st.draw(x,img,ctx2); }catch(e){ saCover(x,img,0,0,W,H); }
   return c;
 }
+function saCurrentStyleLabel(){ var styles=saStylesFor(saState.purpose); return styles[(saState.styleIdx||0)%styles.length].label; }
 function saPick(a){ return a[Math.floor(Math.random()*a.length)]; }
 function composeCaption(o){
   var fes=null,plat=null,i;
@@ -1278,6 +1329,7 @@ function saShowResult(urls,cap){
   saRenderMockup(urls,cap);
   saRenderGrid(urls);
   saSetView('mockup');
+  var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel();
   res.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function saSetView(mode){
@@ -1290,6 +1342,17 @@ function saSetView(mode){
 function saRenderGrid(urls){
   var h=document.getElementById('sa-grid-host'); if(!h) return;
   h.innerHTML=urls.map(function(u,i){ return '<figure><span class="n">'+(i+1)+'</span><img src="'+u+'" alt="โพสต์ '+(i+1)+'"></figure>'; }).join('');
+}
+/* เปลี่ยนดีไซน์กราฟิก (วน style) แล้ว render ใหม่ — ไม่เรียก AI ซ้ำ */
+function saReshuffleDesign(){
+  var n=saState.images.length; if(!n){ return; }
+  saState.styleIdx=(saState.styleIdx||0)+1;
+  var cap=document.getElementById('sa-out-cap').value, out=[],done=0;
+  saState.images.forEach(function(src,idx){ var im=new Image();
+    im.onload=function(){ try{out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92);}catch(e){out[idx]=src;} if(++done===n) fin(); };
+    im.onerror=function(){ out[idx]=src; if(++done===n) fin(); }; im.src=src;
+  });
+  function fin(){ saLastUrls=out; saRenderMockup(out,cap); saRenderGrid(out); var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel(); }
 }
 function saRenderMockup(urls,cap){
   var host=document.getElementById('sa-mockup-host'); if(!host) return;
