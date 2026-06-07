@@ -1566,8 +1566,30 @@ function saArtBrief(){
     sofa:'low lounge / bean-bag style sofa as the hero in a serene luxurious living room; soft linen & boucle textures, a low wood coffee table, a plant, large window with soft daylight; cozy modern-luxe calm interior',
     auto:'a serene luxurious minimal interior corner; premium wood, stone and linen textures; tasteful props; editorial home-decor mood'
   };
-  var festHero={christmas:'a decorated Christmas tree, pine garland, warm fairy-light bokeh, a few red/gold baubles',newyear:'golden sparkles, soft fireworks bokeh, metallic gold accents, "Happy New Year" feel',valentine:'red roses and soft pink blooms, warm romantic glow, heart-shaped accents',songkran:'fresh Thai flowers, water droplets, bright airy summer mood',mother:'jasmine flowers and soft warm tones',father:'elegant warm tones with subtle Thai motifs'};
-  var heroDesc=(fes&&fes.k&&festHero[fes.k])?festHero[fes.k]:((fes&&fes.k!=='none')?('clear signature props/colours of '+(fes.en||fes.l)):'');
+  var festHero={
+    newyear:'gold sparkles and soft fireworks bokeh, champagne-gold accents, an elegant New-Year celebration mood',
+    '1.1':'an elegant "1.1" number sign as a hero prop, fresh new-year gold accents, clean premium sale energy',
+    cny:'Chinese-New-Year styling — rich red and gold tones, a few red lanterns and plum-blossom branches, auspicious gold accents',
+    '2.2':'a stylish "2.2" number prop, warm red-pink accents leading into the month of love',
+    valentine:'red roses and soft pink blooms, warm romantic candle glow, subtle heart accents',
+    '3.3':'a "3.3" number prop, fresh spring pastel tones and soft blossoms',
+    '4.4':'a "4.4" number prop, bright airy summer light and fresh tones',
+    songkran:'Songkran styling — fresh water droplets, Thai jasmine and marigold flowers, bright airy cool-and-cream summer mood',
+    '5.5':'a bold "5.5" number prop, mid-year sale energy with warm gold-red accents',
+    '6.6':'a bold "6.6" number prop, energetic mega-sale mood with a warm spotlight',
+    '7.7':'a bold elegant "7.7" number sign as a hero prop, premium mid-year-sale energy, warm gold and red accents',
+    mothers:'Mother’s-Day styling — white jasmine flowers, soft blue-and-white tones, gentle warm light',
+    '8.8':'a bold "8.8" number sign as a hero prop, mega-sale energy with gold accents',
+    '9.9':'a bold "9.9" number prop, late-year sale energy with warm tones',
+    '10.10':'a big "10.10" number prop, major-sale energy with bold accents',
+    loykrathong:'Loy-Krathong styling — a softly glowing krathong of banana leaf and marigold, candlelight and warm reflections, serene night mood',
+    '11.11':'a bold "11.11" number sign as a hero prop, biggest-sale-of-the-year energy with striking premium accents',
+    blackfriday:'Black-Friday styling — sleek matte-black backdrop, dramatic spotlight, gold "SALE" accents, luxe dark mood',
+    fathers:'Father’s-Day styling — warm gold tones, refined masculine wood-and-leather textures, elegant calm',
+    '12.12':'a big "12.12" number sign as a hero prop, year-end celebration with gold sparkle accents',
+    christmas:'a decorated Christmas tree, pine garland, warm fairy-light bokeh, a few red and gold baubles'
+  };
+  var heroDesc=(fes&&fes.k&&festHero[fes.k])?festHero[fes.k]:((fes&&fes.k!=='none')?(/^\d+(\.\d+)?$/.test(fes.k)?('a bold elegant "'+(fes.badge||fes.k)+'" number sign as a hero prop, premium sale energy with warm gold/red accents'):('clear signature props and colours of the '+(fes.en||fes.l)+' theme')):'');
   var festTxt=(fes&&fes.k!=='none')?(
       '• 🎯 ฝ่ายการตลาดสั่งฝ่ายกราฟิก: ทำให้เทศกาล "'+(fes.l||'')+'" โดดเด่นในภาพ "เพิ่มความเข้มของเทศกาลอีก ~40%" (ของเดิมมักจืดเกินไป)\n'
     + '• ใส่ HERO ของเทศกาลในฉากหลังให้เห็นชัด: '+heroDesc+' — ตั้งไว้ด้านหลัง/ข้างสินค้า เป็นพระรองที่สังเกตเห็นทันที (อย่าบังตัวสินค้า)\n'
