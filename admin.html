@@ -257,6 +257,72 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .sa-explain summary{cursor:pointer;color:var(--gold);font-size:.85rem;font-weight:600;list-style:none}
 .sa-explain .body{font-size:.8rem;color:var(--neutral);line-height:1.9;margin-top:10px}
 .sa-explain .body b{color:var(--text)}
+/* logo toggle */
+.sa-logo-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-size:.86rem;color:var(--text)}
+.sa-toggle{width:46px;height:26px;border-radius:14px;border:none;background:#555;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;padding:0}
+.sa-toggle.on{background:var(--gold)}
+.sa-toggle .knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.sa-toggle.on .knob{left:23px}
+/* festival select */
+.sa-select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:.92rem;cursor:pointer}
+.sa-select:focus{outline:none;border-color:var(--gold)}
+.sa-fest-quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+/* pipeline action panel */
+.sa-pipeline{flex-direction:column;gap:8px}
+.sa-dept b{font-size:.85rem;color:var(--text);display:block}
+.sa-dept span{display:block;font-size:.74rem;color:var(--dim);margin-top:3px}
+/* platform-specific mockups */
+.pm{max-width:400px;margin:0 auto;border-radius:14px;overflow:hidden;font-family:Inter,'IBM Plex Sans Thai',sans-serif;border:1px solid var(--border)}
+.pm-scroll{position:relative;background:#000}
+.pm-scroll .row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.pm-scroll .row::-webkit-scrollbar{display:none}
+.pm-scroll .slide{flex:0 0 100%;scroll-snap-align:start}
+.pm-scroll .slide img{width:100%;display:block}
+.pm-pager{position:absolute;top:10px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:2px 9px;border-radius:10px}
+/* IG */
+.pm-ig{background:#fff;color:#111}
+.pm-ig .hd{display:flex;align-items:center;gap:9px;padding:10px 12px}
+.pm-ig .hd .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A0784A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.78rem}
+.pm-ig .hd .nm{font-weight:600;font-size:.84rem;flex:1}
+.pm-ig .hd .dots{color:#111;font-weight:700}
+.pm-ig .act{display:flex;gap:14px;padding:10px 12px 4px;font-size:1.2rem}
+.pm-ig .act .sp{flex:1}
+.pm-ig .likes{padding:0 12px;font-size:.8rem;font-weight:600}
+.pm-ig .cap{padding:4px 12px 14px;font-size:.8rem;line-height:1.5;color:#222;max-height:120px;overflow:auto}
+.pm-ig .cap b{font-weight:600}
+/* FB */
+.pm-fb{background:#fff;color:#111}
+.pm-fb .hd{display:flex;align-items:center;gap:9px;padding:11px 12px}
+.pm-fb .hd .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A0784A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.82rem}
+.pm-fb .hd .nm{font-weight:600;font-size:.85rem}
+.pm-fb .hd .nm span{display:block;font-size:.68rem;color:#65676b;font-weight:400}
+.pm-fb .cap{padding:0 12px 10px;font-size:.82rem;line-height:1.5;color:#111;max-height:110px;overflow:auto}
+.pm-fb .bar{display:flex;border-top:1px solid #e4e6eb;color:#65676b;font-size:.8rem;font-weight:600}
+.pm-fb .bar div{flex:1;text-align:center;padding:9px}
+/* TikTok */
+.pm-tt{position:relative;background:#000}
+.pm-tt .rail{position:absolute;right:10px;bottom:90px;display:flex;flex-direction:column;gap:16px;align-items:center;color:#fff;font-size:.7rem;text-align:center}
+.pm-tt .rail .ic{font-size:1.5rem}
+.pm-tt .rail .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A0784A);display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #fff}
+.pm-tt .btm{position:absolute;left:12px;right:64px;bottom:16px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.pm-tt .btm .u{font-weight:700;font-size:.9rem}
+.pm-tt .btm .c{font-size:.78rem;line-height:1.45;margin-top:4px;max-height:84px;overflow:auto}
+/* X */
+.pm-x{background:#000;color:#e7e9ea}
+.pm-x .hd{display:flex;gap:10px;padding:12px}
+.pm-x .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A0784A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0}
+.pm-x .nm{font-weight:700;font-size:.86rem}
+.pm-x .nm span{color:#71767b;font-weight:400}
+.pm-x .tx{font-size:.86rem;line-height:1.5;margin:2px 0 10px;max-height:110px;overflow:auto}
+.pm-x .imgwrap{border-radius:14px;overflow:hidden;border:1px solid #2f3336}
+.pm-x .bar{display:flex;justify-content:space-between;color:#71767b;font-size:.8rem;padding:10px 4px 2px}
+/* Lemon8 */
+.pm-l8{background:#fff;color:#111}
+.pm-l8 .ttl{padding:10px 12px 4px;font-weight:700;font-size:.92rem;line-height:1.4}
+.pm-l8 .hd{display:flex;align-items:center;gap:8px;padding:8px 12px 12px}
+.pm-l8 .hd .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#A0784A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.66rem}
+.pm-l8 .hd .nm{font-size:.78rem;color:#444;flex:1}
+.pm-l8 .hd .save{color:#111;font-weight:700}
 .biz-logo{font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:.18em;color:#B8860B;line-height:1}
 .biz-logo small{display:block;font-size:.46rem;letter-spacing:.3em;color:#9A8E7F;margin-top:4px;font-family:'Inter',sans-serif}
 .biz-person{display:flex;align-items:center;gap:14px;margin-top:16px}
@@ -796,6 +862,12 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 
     <div class="panel">
       <div class="sa-step">ขั้นที่ 1</div>
+      <div class="panel-title">สินค้าในรูปคืออะไร <span style="font-size:.72rem;color:var(--dim);font-weight:400;margin-left:6px">เพื่อให้ AI/เทมเพลตเลือกถูกแม่นยำ</span></div>
+      <div class="sa-opts" id="sa-product"></div>
+    </div>
+
+    <div class="panel">
+      <div class="sa-step">ขั้นที่ 2</div>
       <div class="panel-title">แพลตฟอร์มที่จะโพสต์</div>
       <div class="sa-opts" id="sa-platform"></div>
       <div class="sa-sub">รูปแบบรูป (สัดส่วน — ครอปอัตโนมัติ)</div>
@@ -803,14 +875,18 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
     </div>
 
     <div class="panel">
-      <div class="sa-step">ขั้นที่ 2</div>
+      <div class="sa-step">ขั้นที่ 3</div>
       <div class="panel-title">วัตถุประสงค์</div>
       <div class="sa-opts" id="sa-purpose"></div>
       <div class="sa-disc" id="sa-discount-wrap" style="display:none;margin-top:12px;font-size:.85rem;color:var(--neutral)">ส่วนลด: <input type="number" id="sa-discount" value="30" min="1" max="90"> %</div>
+      <div class="sa-logo-row" id="sa-logo-row">
+        <span>ใส่โลโก้ <b>BLOOK</b> บนรูป</span>
+        <button type="button" id="sa-logo-btn" class="sa-toggle on" onclick="saToggleLogo()"><span class="knob"></span></button>
+      </div>
     </div>
 
     <div class="panel">
-      <div class="sa-step">ขั้นที่ 3</div>
+      <div class="sa-step">ขั้นที่ 4</div>
       <div class="panel-title">เทศกาล / แคมเปญ</div>
       <div id="sa-fest-soon" class="sa-fest-soon" style="display:none"></div>
       <div id="sa-festival"></div>
@@ -824,25 +900,15 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         <button type="button" onclick="bkSaveKey()">บันทึก</button>
         <span id="sa-aistatus" style="font-size:.76rem;color:var(--dim)"></span>
       </div>
-      <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 <b>ขอคีย์ที่ console.anthropic.com</b> → API Keys → Create Key (บัญชี API จ่ายตามใช้ · haiku ถูกมาก · คนละอย่างกับ Claude Code/Claude.ai — ดึงคีย์จาก Claude Code มาใช้ไม่ได้)<br>🔒 คีย์เก็บใน <b>เครื่องนี้เท่านั้น</b> (localStorage) ไม่ขึ้น GitHub · <b>ไม่ใส่ก็ใช้งานได้เต็มที่</b>ด้วยเทมเพลต · มีคีย์เมื่อไหร่ ฝ่ายการตลาดจะใช้ AI เขียนสดแทน</p>
-    </details>
-
-    <details class="panel sa-explain">
-      <summary>ℹ️ "3 ฝ่าย" ทำงานยังไง? (มี/ไม่มี AI ต่างกันแค่ไหน)</summary>
-      <div class="body">
-        🎨 <b>ฝ่ายกราฟิก</b> — สร้างรูปด้วยโค้ด (canvas) <b>เสมอ</b> ทั้งมี/ไม่มี AI: ใส่โลโก้ + สัดส่วนตามแพลตฟอร์ม + ป้ายลดราคา/เทศกาล <i>(AI ไม่ได้วาดรูป)</i><br>
-        ✍️ <b>ฝ่ายการตลาด</b> — เขียนแคปชัน: <b>มีคีย์ AI</b> = AI เขียนสดตาม brief / <b>ไม่มีคีย์</b> = เลือกจากคลังประโยคที่เขียนตาม brief เดียวกัน<br>
-        🧭 <b>ครีเอทีฟไดเรกเตอร์</b> — รวมงานกราฟิก+แคปชัน จัดลำดับรูป แล้วออกเป็นโพสต์พร้อมใช้<br>
-        <b style="color:var(--gold)">สรุป:</b> ไม่มี AI ก็ครบทั้ง 3 ฝ่าย (ฟรี) — AI แค่ทำให้แคปชัน "สด/หลากหลาย" ขึ้น · brief ของ 3 ฝ่ายแก้ได้ที่ <b>sale assis/config.json</b>
-      </div>
+      <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 <b>ขอคีย์ที่ console.anthropic.com</b> → API Keys → Create Key (บัญชี API จ่ายตามใช้ · haiku ถูกมาก · คนละอย่างกับ Claude Code/Claude.ai — ดึงคีย์จาก Claude Code มาใช้ไม่ได้)<br>🔒 คีย์เก็บใน <b>เครื่องนี้เท่านั้น</b> (localStorage) ไม่ขึ้น GitHub · <b>ไม่ใส่ก็ใช้งานได้เต็มที่</b>ด้วยเทมเพลต</p>
     </details>
 
     <button class="sa-go" type="button" onclick="bkGenerate()">✨ ให้ 3 ฝ่ายช่วยกันสร้างโพสต์</button>
 
     <div id="sa-pipeline" class="sa-pipeline" style="display:none">
-      <div class="sa-dept" data-d="graphic">🎨 ฝ่ายกราฟิก<span>รอ</span></div>
-      <div class="sa-dept" data-d="marketing">✍️ ฝ่ายการตลาด<span>รอ</span></div>
-      <div class="sa-dept" data-d="director">🧭 ครีเอทีฟไดเรกเตอร์<span>รอ</span></div>
+      <div class="sa-dept" data-d="marketing"><b>1 · ✍️ ฝ่ายการตลาด</b><span>รอ</span></div>
+      <div class="sa-dept" data-d="graphic"><b>2 · 🎨 ฝ่ายกราฟิก</b><span>รอ</span></div>
+      <div class="sa-dept" data-d="director"><b>3 · 🧭 ครีเอทีฟไดเรกเตอร์</b><span>รอ</span></div>
     </div>
 
     <div id="sa-result" class="panel" style="display:none">
@@ -854,7 +920,6 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <div class="sa-result-grid">
         <div>
           <div id="sa-mockup-view">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="sa-preview-tabs"></div>
             <div id="sa-mockup-host"></div>
           </div>
           <div id="sa-grid-view" style="display:none">
@@ -1049,9 +1114,17 @@ var SA_FESTIVALS=[
   {k:'christmas',l:'คริสต์มาส',badge:'CHRISTMAS',emoji:'🎄',accent:'#2E7D32',m:12,d:25,th:'🎄 เติมความอบอุ่นรับคริสต์มาส',en:'Merry Christmas',tag:'#Christmas'}
 ];
 var SA_MAX_IMAGES=12, SA_MONTHS=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-var saState={images:[],platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',previewPlatform:'instagram',styleIdx:0};
+var SA_PRODUCTS=[
+  {k:'auto',l:'ทั่วไป / หลายอย่าง',d:'สินค้า BLOOK LIVING'},
+  {k:'argo',l:'Blook Argo Pillow',d:'หมอนเพื่อสุขภาพ Blook Argo (ergonomic pillow)'},
+  {k:'reed50',l:'ก้านไม้หอม 50ml',d:'ก้านไม้หอม (reed diffuser) ขนาด 50ml'},
+  {k:'reed250',l:'ก้านไม้หอม 250ml',d:'ก้านไม้หอม (reed diffuser) ขนาด 250ml'},
+  {k:'reedgift',l:'ก้านไม้หอม Gift Set',d:'เซ็ทของขวัญก้านไม้หอม BLOOK'}
+];
+var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,festival:'none',logo:true,styleIdx:0};
 var saReady=false, saLastUrls=[];
 var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
+var saLogoOn=true; // ตั้งจาก saState.logo ใน buildPost — ปิดได้ในขั้นวัตถุประสงค์
 
 /* โหลด config จาก sale assis/config.json (ถ้ามี — override ค่า inline ด้านบน) */
 function saLoadConfig(cb){
@@ -1075,9 +1148,11 @@ function bkSellerInit(){
     var near=saNearestFestival(); if(near) saState.festival=near.k; saState.previewPlatform=saState.platform;
     saChips('sa-platform',SA_PLATFORMS,'platform',function(o){ saState.platform=o.k; saState.aspect=o.aspect; saState.previewPlatform=o.k; saSyncAspect(); });
     saChips('sa-aspect',SA_ASPECTS,'aspect',function(o){ saState.aspect=o.k; });
+    saChips('sa-product',SA_PRODUCTS,'product',function(o){ saState.product=o.k; });
     saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; });
-    saRenderFestivals(near?near.k:null);
-    if(near){ var d=saDaysTo(near); var soon=document.getElementById('sa-fest-soon'); if(soon){ soon.style.display='block'; soon.innerHTML='🔔 <b>เทศกาลถัดไป:</b> '+(near.emoji||'')+' '+(near.l||near.k)+' · อีก <b>'+(d===0?'วันนี้!':d+' วัน')+'</b> ('+near.m+'/'+near.d+')'; } }
+    saRenderFestivals();
+    if(near){ var d=saDaysTo(near); var soon=document.getElementById('sa-fest-soon'); if(soon){ soon.style.display='block'; soon.innerHTML='🔔 <b>เทศกาลถัดไป:</b> '+(near.emoji||'')+' '+(near.l||near.k)+' · อีก <b>'+(d===0?'วันนี้!':d+' วัน')+'</b> ('+near.m+'/'+near.d+') &nbsp;<button type="button" class="sa-chip" style="padding:5px 13px" onclick="saSetFestival(\''+near.k+'\')">ใช้เลย</button>'; } }
+    var lb=document.getElementById('sa-logo-btn'); if(lb) lb.classList.toggle('on', saState.logo!==false);
     var dz=document.getElementById('sa-drop'), fi=document.getElementById('sa-file');
     dz.addEventListener('click',function(){fi.click();});
     fi.addEventListener('change',function(){ saAddFiles(fi.files); fi.value=''; });
@@ -1095,26 +1170,21 @@ function saChips(id,arr,key,onPick,nearKey){
   c.className='sa-opts';
   [].forEach.call(c.querySelectorAll('.sa-chip'),function(b){ b.addEventListener('click',function(){ var o; for(var i=0;i<arr.length;i++){if(arr[i].k===b.getAttribute('data-k')){o=arr[i];break;}} [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){z.classList.remove('on');}); b.classList.add('on'); onPick(o); }); });
 }
-/* เทศกาล: จัดกลุ่มตามเดือน + เรียงไทม์ไลน์ + ไฮไลต์เทศกาลที่ใกล้สุด */
-function saRenderFestivals(nearKey){
+/* เทศกาล: dropdown กระชับ จัดกลุ่มตามเดือน (อ่านง่าย ไม่กินพื้นที่) */
+function saRenderFestivals(){
   var c=document.getElementById('sa-festival'); if(!c)return;
   var none=SA_FESTIVALS.filter(function(f){return !f.m;});
   var rest=SA_FESTIVALS.filter(function(f){return f.m;}).sort(function(a,b){return (a.m-b.m)||(a.d-b.d);});
-  var html='<div class="sa-opts" style="margin-bottom:6px">'+none.map(function(o){var on=saState.festival===o.k?' on':''; return '<button type="button" class="sa-chip'+on+'" data-k="'+o.k+'">'+o.l+'</button>';}).join('')+'</div>';
-  var lastMonth=-1;
-  rest.forEach(function(o){
-    if(o.m!==lastMonth){ html+='<div class="sa-fest-month">'+SA_MONTHS[o.m]+'</div><div class="sa-opts">'; lastMonth=o.m; } else if(!html.endsWith('<div class="sa-opts">')) {}
-    var on=saState.festival===o.k?' on':''; var now=(nearKey===o.k)?'<span class="now">🔔 ตอนนี้</span>':'';
-    html+='<button type="button" class="sa-chip'+on+'" data-k="'+o.k+'">'+(o.emoji?o.emoji+' ':'')+(o.l||o.k)+now+'</button>';
-  });
-  html+='</div>';
+  var html='<select class="sa-select" id="sa-festival-sel" onchange="saState.festival=this.value">';
+  none.forEach(function(o){ html+='<option value="'+o.k+'"'+(saState.festival===o.k?' selected':'')+'>'+o.l+'</option>'; });
+  var lastM=-1, open=false;
+  rest.forEach(function(o){ if(o.m!==lastM){ if(open) html+='</optgroup>'; html+='<optgroup label="'+SA_MONTHS[o.m]+'">'; lastM=o.m; open=true; } html+='<option value="'+o.k+'"'+(saState.festival===o.k?' selected':'')+'>'+(o.emoji?o.emoji+' ':'')+(o.l||o.k)+' ('+o.m+'/'+o.d+')</option>'; });
+  if(open) html+='</optgroup>';
+  html+='</select>';
   c.innerHTML=html; c.className='';
-  [].forEach.call(c.querySelectorAll('.sa-chip'),function(b){ b.addEventListener('click',function(){
-    saState.festival=b.getAttribute('data-k');
-    [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){z.classList.remove('on');});
-    b.classList.add('on');
-  }); });
 }
+function saSetFestival(k){ saState.festival=k; var s=document.getElementById('sa-festival-sel'); if(s) s.value=k; }
+function saToggleLogo(){ saState.logo=!saState.logo; var b=document.getElementById('sa-logo-btn'); if(b) b.classList.toggle('on', saState.logo); }
 function saSyncAspect(){ var c=document.getElementById('sa-aspect'); if(!c)return; [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){ z.classList.toggle('on', z.getAttribute('data-k')===saState.aspect); }); }
 function saAddFiles(files){ [].forEach.call(files,function(f){ if(saState.images.length>=SA_MAX_IMAGES)return; if(!/^image\//.test(f.type))return; var r=new FileReader(); r.onload=function(){ saState.images.push(r.result); saThumbs(); }; r.readAsDataURL(f); }); }
 function saThumbs(){
@@ -1148,11 +1218,11 @@ function saWireSort(c){
 
 function saCover(x,img,X,Y,w,h){ var ir=img.width/img.height,tr=w/h,sw,sh,sx,sy; if(ir>tr){sh=img.height;sw=sh*tr;sx=(img.width-sw)/2;sy=0;}else{sw=img.width;sh=sw/tr;sx=0;sy=(img.height-sh)/2;} x.drawImage(img,sx,sy,sw,sh,X,Y,w,h); }
 function saRR(x,X,Y,w,h,r){ x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath(); }
-function saTintLogo(x,cx,cy,w,color){ if(!SA_LOGO_OK)return false; var s=Math.max(2,Math.round(w)),oc=document.createElement('canvas');oc.width=oc.height=s;var o=oc.getContext('2d');o.drawImage(SA_LOGO,0,0,s,s);o.globalCompositeOperation='source-in';o.fillStyle=color;o.fillRect(0,0,s,s);x.drawImage(oc,cx-w/2,cy-w/2,w,w);return true; }
+function saTintLogo(x,cx,cy,w,color){ if(saLogoOn===false||!SA_LOGO_OK)return false; var s=Math.max(2,Math.round(w)),oc=document.createElement('canvas');oc.width=oc.height=s;var o=oc.getContext('2d');o.drawImage(SA_LOGO,0,0,s,s);o.globalCompositeOperation='source-in';o.fillStyle=color;o.fillRect(0,0,s,s);x.drawImage(oc,cx-w/2,cy-w/2,w,w);return true; }
 /* ---- premium graphic helpers (ออกแบบหรู ไม่ทื่อ) ---- */
 function saVgrad(x,y0,c0,y1,c1){var g=x.createLinearGradient(0,y0,0,y1);g.addColorStop(0,c0);g.addColorStop(1,c1);return g;}
 function saSpaced(x,str,cx,y,px,sp,color,weight,fam){x.save();x.textAlign='left';x.fillStyle=color;x.font=(weight||'600 ')+px+'px '+(fam||'Inter,Arial,sans-serif');var w=[],tot=0,i;for(i=0;i<str.length;i++){var ww=x.measureText(str[i]).width;w.push(ww);tot+=ww+sp;}tot-=sp;var sx=cx-tot/2;for(i=0;i<str.length;i++){x.fillText(str[i],sx,y);sx+=w[i]+sp;}x.restore();}
-function saWordmark(x,cx,topY,W,light){ if(saTintLogo(x,cx,topY+W*0.085,W*0.18,light?'#F4EFE6':'#A0784A')) return;
+function saWordmark(x,cx,topY,W,light){ if(saLogoOn===false) return; if(saTintLogo(x,cx,topY+W*0.085,W*0.18,light?'#F4EFE6':'#A0784A')) return;
   x.save();x.textAlign='center';x.fillStyle=light?'#F0E6D2':'#A0784A';x.font='600 '+Math.round(W*0.075)+'px Georgia,serif';x.fillText('BLOOK',cx,topY+W*0.07);x.restore();
   saSpaced(x,'THE CLASS OF CALM',cx,topY+W*0.11,Math.round(W*0.02),Math.round(W*0.012),light?'rgba(240,230,210,.8)':'#8B6B3D','500 '); }
 function saFestChip(x,o,corner){ if(!o.fes||o.fes.k==='none')return; var W=o.W,label=(o.fes.emoji?o.fes.emoji+' ':'')+(o.fes.badge||o.fes.l);
@@ -1221,6 +1291,7 @@ var SA_STYLES=[
 ];
 function saStylesFor(purpose){ var r=SA_STYLES.filter(function(s){return s.purpose===purpose||s.purpose==='both';}); return r.length?r:SA_STYLES; }
 function buildPost(img,o){
+  saLogoOn=(o.logo!==false);
   var asp=null,i; for(i=0;i<SA_ASPECTS.length;i++){if(SA_ASPECTS[i].k===o.aspect){asp=SA_ASPECTS[i];break;}} if(!asp)asp=SA_ASPECTS[0];
   var W=asp.w,H=asp.h,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
   var fes=null; for(i=0;i<SA_FESTIVALS.length;i++){if(SA_FESTIVALS[i].k===o.festival){fes=SA_FESTIVALS[i];break;}}
@@ -1257,7 +1328,12 @@ function composeCaption(o){
     ? 'Up to '+(o.discount||30)+'% OFF — bring calm home for less. Shop now at blookliving.com'
     : 'BLOOK LIVING — The Class of Calm. Slow living, beautifully designed. blookliving.com';
   if(fes&&fes.k!=='none'&&fes.en) en=fes.en+' · '+en;
-  var tags=['#BLOOKLIVING','#TheClassOfCalm','#แต่งบ้าน','#ของแต่งบ้าน','#โซฟาTOGO','#หมอนเพื่อสุขภาพ','#น้ำหอมปรับอากาศ'];
+  var prod=null; for(i=0;i<SA_PRODUCTS.length;i++){if(SA_PRODUCTS[i].k===o.product){prod=SA_PRODUCTS[i];break;}}
+  var tags=['#BLOOKLIVING','#TheClassOfCalm','#แต่งบ้าน','#ของแต่งบ้าน'];
+  if(prod&&prod.k==='argo') tags=tags.concat(['#หมอนเพื่อสุขภาพ','#หมอนArgo']);
+  else if(prod&&(prod.k==='reed50'||prod.k==='reed250')) tags=tags.concat(['#ก้านไม้หอม','#น้ำหอมปรับอากาศ','#reeddiffuser']);
+  else if(prod&&prod.k==='reedgift') tags=tags.concat(['#เซ็ทของขวัญ','#ของขวัญพรีเมียม','#ก้านไม้หอม']);
+  else tags=tags.concat(['#โซฟาTOGO','#หมอนเพื่อสุขภาพ','#น้ำหอมปรับอากาศ']);
   if(o.purpose==='sale') tags=tags.concat(['#ลดราคา','#โปรโมชั่น']);
   if(fes&&fes.tag) tags.push(fes.tag);
   if(plat&&plat.tags) tags=tags.concat(plat.tags);
@@ -1282,6 +1358,7 @@ function saAiCaption(){
     +'─ ฝ่ายการตลาด: '+dep.marketing.role+' — '+(isSale?dep.marketing.guides_sale:dep.marketing.guides_brand)+'\n'
     +'─ ครีเอทีฟไดเรกเตอร์: '+dep.director.role+' — '+(dep.director.responsibility||'')+'\n\n'
     +'งานวันนี้: เขียนแคปชันสำหรับโพสต์ '+(plat?plat.l:'')+' '
+    +((function(){var pr=null;for(var z=0;z<SA_PRODUCTS.length;z++){if(SA_PRODUCTS[z].k===saState.product){pr=SA_PRODUCTS[z];break;}} return (pr&&pr.k!=='auto')?('· สินค้าในรูป: '+(pr.d||pr.l)+' '):'';})())
     +(isSale?('โหมด "เน้นขาย" ส่วนลด '+(saState.discount||30)+'%'):'โหมด "Branding" — ไม่ขายตรง เน้นภาพลักษณ์/อารมณ์ความสงบ')
     +((fes&&fes.k!=='none')?(' · ธีมเทศกาล: '+(fes.l||'')+(fes.th?' ("'+fes.th+'")':'')):'')+'\n'
     +'รูปแบบผลลัพธ์ (พร้อมโพสต์ ไม่ต้องอธิบาย):\n'
@@ -1292,39 +1369,41 @@ function saAiCaption(){
     .then(function(j){ return (j&&j.content&&j.content[0]&&j.content[0].text)||null; });
 }
 function saSetDept(d,cls,msg){ var el=document.querySelector('.sa-dept[data-d="'+d+'"]'); if(!el)return; el.classList.remove('work','done'); if(cls)el.classList.add(cls); var s=el.querySelector('span'); if(s)s.textContent=msg||''; }
+function saFind(arr,k){ for(var i=0;i<arr.length;i++){if(arr[i].k===k)return arr[i];} return null; }
 function bkGenerate(){
   if(!saState.images.length){ alert('กรุณาเพิ่มรูปอย่างน้อย 1 รูปก่อนครับ'); return; }
   var pipe=document.getElementById('sa-pipeline'); pipe.style.display='flex';
   document.getElementById('sa-result').style.display='none';
-  saSetDept('graphic','work','กำลังออกแบบรูป...'); saSetDept('marketing',null,'รอ'); saSetDept('director',null,'รอ');
-  setTimeout(function(){
-    var out=[],done=0,n=saState.images.length;
-    saState.images.forEach(function(src,idx){
-      var im=new Image(); im.onload=function(){ try{ out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92); }catch(e){ out[idx]=src; } if(++done===n) afterGraphic(out); };
-      im.onerror=function(){ out[idx]=src; if(++done===n) afterGraphic(out); };
-      im.src=src;
-    });
-  },350);
-  function afterGraphic(out){
-    saSetDept('graphic','done',out.length+' รูปเสร็จ');
-    saSetDept('marketing','work','กำลังเขียนแคปชัน...');
-    var useAI=!!localStorage.getItem('bk-claude-key');
-    var capP = useAI ? saAiCaption().catch(function(){return null;}) : Promise.resolve(null);
-    capP.then(function(aiTxt){
-      var cap=aiTxt||composeCaption(saState);
-      saSetDept('marketing','done', useAI&&aiTxt?'แคปชัน AI เสร็จ':'แคปชันเสร็จ');
-      saSetDept('director','work','กำลังตรวจ + ประกอบ...');
-      setTimeout(function(){ saSetDept('director','done','พร้อมโพสต์ ✓'); saShowResult(out,cap); },450);
-    });
-  }
+  var plat=saFind(SA_PLATFORMS,saState.platform), fes=saFind(SA_FESTIVALS,saState.festival), prod=saFind(SA_PRODUCTS,saState.product);
+  var purposeL=(saState.purpose==='sale')?('เน้นขาย · ลด '+(saState.discount||30)+'%'):'Branding (เน้นภาพลักษณ์)';
+  var festL=(fes&&fes.k!=='none')?fes.l:'';
+  saSetDept('marketing','work','กำลังคิดคอนเซ็ปต์ + เขียนแคปชัน...'); saSetDept('graphic',null,'รอ'); saSetDept('director',null,'รอ');
+  var useAI=!!localStorage.getItem('bk-claude-key');
+  // 1) ฝ่ายการตลาด — คิดก่อน
+  var capP = useAI ? saAiCaption().catch(function(){return null;}) : Promise.resolve(null);
+  capP.then(function(aiTxt){
+    var cap=aiTxt||composeCaption(saState);
+    saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':'จากเทมเพลต')+' ✓');
+    // 2) ฝ่ายกราฟิก — ทำตามคอนเซ็ปต์
+    saSetDept('graphic','work','กำลังออกแบบกราฟิกตามคอนเซ็ปต์...');
+    setTimeout(function(){
+      var out=[],done=0,n=saState.images.length;
+      saState.images.forEach(function(src,idx){
+        var im=new Image(); im.onload=function(){ try{out[idx]=buildPost(im,saState).toDataURL('image/jpeg',0.92);}catch(e){out[idx]=src;} if(++done===n) afterG(out); };
+        im.onerror=function(){ out[idx]=src; if(++done===n) afterG(out); }; im.src=src;
+      });
+    },300);
+    function afterG(out){
+      saSetDept('graphic','done','ออกแบบ '+out.length+' รูป · สไตล์ "'+saCurrentStyleLabel()+'" · '+(plat?plat.l:'')+' '+saState.aspect+(saState.logo!==false?' · ใส่โลโก้':' · ไม่ใส่โลโก้')+' ✓');
+      // 3) ครีเอทีฟไดเรกเตอร์ — ตรวจ+อนุมัติ
+      saSetDept('director','work','กำลังตรวจโทนแบรนด์ + จัดลำดับ...');
+      setTimeout(function(){ saSetDept('director','done','ตรวจให้สื่อสารชัด ตรงแบรนด์ + จัดลำดับ '+out.length+' รูป → อนุมัติพร้อมโพสต์ ✓'); saShowResult(out,cap); },500);
+    }
+  });
 }
 function saShowResult(urls,cap){
   saLastUrls=urls;
   var res=document.getElementById('sa-result'); res.style.display='block';
-  // platform preview tabs
-  var tabs=document.getElementById('sa-preview-tabs');
-  tabs.innerHTML=SA_PLATFORMS.map(function(p){ var on=(saState.previewPlatform===p.k)?' on':''; return '<button type="button" class="sa-platform-preview'+on+'" data-pp="'+p.k+'">'+p.l+'</button>'; }).join('');
-  [].forEach.call(tabs.querySelectorAll('button'),function(b){ b.addEventListener('click',function(){ saState.previewPlatform=b.getAttribute('data-pp'); [].forEach.call(tabs.querySelectorAll('button'),function(z){z.classList.remove('on');}); b.classList.add('on'); saRenderMockup(urls,cap); }); });
   document.getElementById('sa-out-cap').value=cap;
   saRenderMockup(urls,cap);
   saRenderGrid(urls);
@@ -1354,28 +1433,27 @@ function saReshuffleDesign(){
   });
   function fin(){ saLastUrls=out; saRenderMockup(out,cap); saRenderGrid(out); var l=document.getElementById('sa-style-label'); if(l) l.textContent='🎨 '+saCurrentStyleLabel(); }
 }
+/* mockup เหมือนแอปจริง — เฉพาะแพลตฟอร์มที่เลือก (saState.platform) */
 function saRenderMockup(urls,cap){
   var host=document.getElementById('sa-mockup-host'); if(!host) return;
-  var pk=saState.previewPlatform, plat=null;
-  for(var i=0;i<SA_PLATFORMS.length;i++){if(SA_PLATFORMS[i].k===pk){plat=SA_PLATFORMS[i];break;}}
-  if(!plat) plat=SA_PLATFORMS[0];
-  var capShort=(cap||'').split('\n').slice(0,3).join(' ');
-  var html='<div class="sa-mockup">'
-    +'<div class="sa-mockup-head"><div class="av">BK</div><div class="name">blookliving<span>'+plat.l+'</span></div></div>'
-    +'<div class="sa-mockup-frame"><div class="sa-mockup-scroll" id="sa-mscr">'
-      +urls.map(function(u){return '<div class="sa-mockup-slide"><img src="'+u+'" alt=""></div>';}).join('')
-    +'</div></div>'
-    +(urls.length>1?'<div class="sa-mockup-pager" id="sa-mpag">'+urls.map(function(_,j){return '<span class="'+(j===0?'on':'')+'"></span>';}).join('')+'</div>':'')
-    +'<div class="sa-mockup-bar">'
-      +'<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'
-      +'<svg viewBox="0 0 24 24"><path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/></svg>'
-      +'<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>'
-    +'</div>'
-    +'<div class="sa-mockup-cap"><b>blookliving</b> '+capShort.replace(/</g,'&lt;')+'</div>'
-  +'</div>';
+  var pk=saState.platform;
+  var capEsc=(cap||'').replace(/</g,'&lt;'), capHtml=capEsc.replace(/\n/g,'<br>'), first=capEsc.split('\n')[0]||'';
+  function slides(){ return '<div class="pm-scroll"><div class="row" id="sa-mscr">'+urls.map(function(u){return '<div class="slide"><img src="'+u+'" alt=""></div>';}).join('')+'</div>'+(urls.length>1?'<div class="pm-pager" id="sa-mpag">1/'+urls.length+'</div>':'')+'</div>'; }
+  var html;
+  if(pk==='facebook'){
+    html='<div class="pm pm-fb"><div class="hd"><div class="av">BK</div><div class="nm">BLOOK LIVING<span>ได้รับการสนับสนุน · 🌐</span></div></div><div class="cap">'+capHtml+'</div>'+slides()+'<div class="bar"><div>👍 ถูกใจ</div><div>💬 ความคิดเห็น</div><div>↪ แชร์</div></div></div>';
+  } else if(pk==='tiktok'){
+    html='<div class="pm pm-tt">'+slides()+'<div class="rail"><div class="av">BK</div><div><div class="ic">♥</div>1.2k</div><div><div class="ic">💬</div>88</div><div><div class="ic">🔖</div>320</div><div><div class="ic">↪</div>45</div></div><div class="btm"><div class="u">@blookliving</div><div class="c">'+capHtml+'</div><div style="font-size:.72rem;margin-top:4px;opacity:.9">♫ เสียงต้นฉบับ · BLOOK LIVING</div></div></div>';
+  } else if(pk==='x'){
+    html='<div class="pm pm-x"><div class="hd"><div class="av">BK</div><div style="flex:1;min-width:0"><div class="nm">BLOOK LIVING <span>@blookliving · 1ชม.</span></div><div class="tx">'+capHtml+'</div><div class="imgwrap">'+slides()+'</div><div class="bar"><span>💬 12</span><span>🔁 34</span><span>♥ 210</span><span>📊 5.4พัน</span></div></div></div></div>';
+  } else if(pk==='lemon8'){
+    html='<div class="pm pm-l8"><div class="ttl">'+first+'</div>'+slides()+'<div class="hd"><div class="av">BK</div><div class="nm">blookliving · แต่งบ้าน</div><div class="save">🔖 บันทึก</div></div></div>';
+  } else {
+    html='<div class="pm pm-ig"><div class="hd"><div class="av">BK</div><div class="nm">blookliving</div><div class="dots">⋯</div></div>'+slides()+'<div class="act">♥&nbsp;&nbsp;💬&nbsp;&nbsp;➤<span class="sp"></span>🔖</div><div class="likes">ถูกใจ 1,240 ครั้ง</div><div class="cap"><b>blookliving</b> '+capHtml+'</div></div>';
+  }
   host.innerHTML=html;
   var scr=document.getElementById('sa-mscr'), pag=document.getElementById('sa-mpag');
-  if(scr && pag){ scr.addEventListener('scroll',function(){ var idx=Math.round(scr.scrollLeft/scr.clientWidth); [].forEach.call(pag.querySelectorAll('span'),function(s,i){s.classList.toggle('on',i===idx);}); }); }
+  if(scr&&pag){ scr.addEventListener('scroll',function(){ var idx=Math.round(scr.scrollLeft/scr.clientWidth)+1; pag.textContent=idx+'/'+urls.length; }); }
 }
 function bkCopyCap(){ var t=document.getElementById('sa-out-cap'); t.select(); try{ navigator.clipboard.writeText(t.value); }catch(e){ try{document.execCommand('copy');}catch(e2){} } alert('คัดลอกแคปชันแล้ว ✓'); }
 function bkDownloadAll(){ (saLastUrls||[]).forEach(function(u,i){ setTimeout(function(){ var a=document.createElement('a'); a.href=u; a.download='blook-post-'+(i+1)+'.jpg'; document.body.appendChild(a); a.click(); a.remove(); }, i*250); }); }

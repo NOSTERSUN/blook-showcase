@@ -95,7 +95,8 @@
       "Bash(curl -s \"https://blookliving.com/assets/share-story.js?nuke=$\\(date +%s\\)\")",
       "Bash(curl -sI \"https://blookliving.com/assets/share-story.js\")",
       "Bash(cd \"C:/Users/PC/Desktop/BLOOK DEV/assets/LOGO\")",
-      "Bash(python -c 'from PIL import Image; import sys; im=Image.open\\(r'\\\\''__TRACKED_VAR__'\\\\''\\); print\\(r'\\\\''__TRACKED_VAR__'\\\\'', im.size, im.mode\\)')"
+      "Bash(python -c 'from PIL import Image; import sys; im=Image.open\\(r'\\\\''__TRACKED_VAR__'\\\\''\\); print\\(r'\\\\''__TRACKED_VAR__'\\\\'', im.size, im.mode\\)')",
+      "PowerShell(cd \"C:\\\\Users\\\\PC\\\\Desktop\\\\BLOOK DEV\"; $node=\\(Get-Command node -ErrorAction SilentlyContinue\\).Source; if\\($node\\){ & $node --check __chk.js; if\\($?\\){\"JS OK\"} } else { \"node not found; trying npx/where\"; where.exe node 2>$null })"
     ]
   }
 }
