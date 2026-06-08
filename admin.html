@@ -294,6 +294,20 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .sa-step0-col .sa-drop{min-height:170px;margin-top:8px}
 .sa-step0-col .sa-thumbs{margin-top:8px}
 @media(max-width:768px){.sa-step0-grid{grid-template-columns:1fr}}
+#sa-askmodal{position:fixed;inset:0;background:rgba(8,6,4,.86);z-index:100000;display:none;align-items:center;justify-content:center;padding:20px}
+.sa-ask-card{background:var(--bg2);border:1px solid var(--gold);border-radius:16px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.sa-ask-imgwrap{position:relative;background:#000}
+.sa-ask-imgwrap img{width:100%;max-height:48vh;object-fit:contain;display:block}
+.sa-ask-badge{position:absolute;top:10px;left:12px;background:rgba(0,0,0,.62);color:#E8C766;font-size:.78rem;font-weight:700;padding:4px 12px;border-radius:12px}
+.sa-ask-body{padding:16px 18px}
+.sa-ask-score{font-size:.92rem;color:var(--text);margin-bottom:6px}
+.sa-ask-q{font-size:.82rem;color:var(--neutral);line-height:1.5;margin-bottom:14px}
+.sa-ask-q span{color:var(--dim);font-size:.76rem}
+.sa-ask-btns{display:flex;gap:10px}
+.sa-ask-btns button{flex:1;padding:11px;border-radius:9px;border:1px solid var(--border);font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
+.sa-ask-btns .use{background:linear-gradient(135deg,#D8BC86,#A0784A);color:#1A0F08;border-color:transparent}
+.sa-ask-btns .push{background:var(--bg2);color:var(--text)}
+.sa-ask-btns .push:hover{border-color:var(--gold);color:var(--gold)}
 #sa-lightbox{position:fixed;inset:0;background:rgba(8,6,4,.93);z-index:99999;display:none;align-items:center;justify-content:center}
 #sa-lightbox img{max-width:92vw;max-height:88vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
 #sa-lb-close{position:absolute;top:18px;right:22px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;border:none;font-size:1.3rem;cursor:pointer;z-index:2}
@@ -877,6 +891,12 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <div style="font-size:.84rem;line-height:1.6;color:var(--text)">💡 <b>ทุกตัวเลือกด้านล่างคือ "โจทย์" ที่ส่งให้ AI 3 ฝ่ายไปคิด</b> — สินค้า · แพลตฟอร์ม · วัตถุประสงค์ · เทศกาล ทั้งหมดนี้ AI จะเอาไป<b>คิดแคปชันใหม่ + ออกแบบ/วาดภาพใหม่ทุกครั้ง</b> ไม่ใช่เทมเพลตตายตัว · <span style="color:var(--gold2)">ยิ่งเลือกละเอียดและตรง ผลลัพธ์ยิ่งหรูและตรงใจ</span></div>
     </div>
 
+    <div class="panel" style="border-color:rgba(201,162,77,.35)">
+      <div class="panel-title">วิธีทำโพสต์ <span style="font-size:.72rem;color:var(--dim);font-weight:400;margin-left:6px">— เลือกว่าจะใช้ AI แค่ไหน (คุมค่าใช้จ่าย)</span></div>
+      <div class="sa-opts" id="sa-mode"></div>
+      <div id="sa-mode-desc" style="margin-top:10px;font-size:.8rem;line-height:1.55;color:var(--neutral);background:rgba(201,162,77,.06);border:1px solid var(--border);border-radius:10px;padding:10px 13px"></div>
+    </div>
+
     <div class="panel">
       <div class="sa-step">ขั้นที่ 0</div>
       <div class="panel-title">รูปภาพ (1–12 รูป) <span id="sa-count" style="font-size:.78rem;color:var(--dim);font-weight:400;margin-left:8px">0 / 12</span></div>
@@ -1167,6 +1187,11 @@ var SA_SALESHOW=[
   {k:'price',l:'฿ ราคาขาย'},
   {k:'both',l:'ทั้งคู่ (ราคา+ลด)'}
 ];
+var SA_MODES=[
+  {k:'frame',l:'① กรอบเทมเพลต (ฟรี)',d:'<b>มีรูปสวยอยู่แล้ว</b> → ใส่กรอบ/สไตล์เทมเพลต + แคปชันสำเร็จรูป (ตามที่เลือก) · <b>ไม่ใช้ AI · ไม่เสียเงิน · ไม่วน loop</b>'},
+  {k:'caption',l:'② เทมเพลต + แคปชัน AI',d:'<b>มีรูปแล้ว</b> → ใส่กรอบเทมเพลต + ให้ Claude เขียนแคปชันสด · <b>ไม่วาดภาพใหม่ · ไม่วน loop</b> · เสียแค่ค่าแคปชัน (~0.2฿)'},
+  {k:'full',l:'③ AI เต็มระบบ (รูป RAW)',d:'<b>รูปดิบ</b> → Gemini วาดฉากหรู + Claude แคปชัน + ไดเรกเตอร์รีวิว/วน loop → <b>พร้อมโพสต์</b> · มีค่า Gemini'}
+];
 var SA_FESTIVALS=[
   {k:'none',l:'ไม่มี',m:0,d:0},
   {k:'newyear',l:'ปีใหม่',badge:'NEW YEAR',emoji:'🎊',accent:'#A0784A',m:1,d:1,th:'🎊 ต้อนรับปีใหม่ด้วยบ้านที่สงบ',en:'Happy New Year',tag:'#HappyNewYear'},
@@ -1200,7 +1225,7 @@ var SA_PRODUCTS=[
   {k:'reedgift',l:'ก้านไม้หอม Gift Set',d:'เซ็ทของขวัญก้านไม้หอม BLOOK'},
   {k:'togo',l:'TOGO Sofa',d:'โซฟา TOGO ของ BLOOK (โซฟาขี้เกียจ/บีนแบ็กพรีเมียม นั่งสบาย นุ่ม)'}
 ];
-var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,price:0,saleShow:'discount',festival:'none',logo:true,styleIdx:0,aiImage:false,layout:'mix'};
+var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,price:0,saleShow:'discount',festival:'none',logo:true,styleIdx:0,aiImage:false,layout:'mix',genMode:'caption'};
 var saReady=false, saLastUrls=[], saBases=[], saResultMode='template';
 var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
 var saLogoOn=true; // ตั้งจาก saState.logo ใน buildPost — ปิดได้ในขั้นวัตถุประสงค์
@@ -1232,6 +1257,7 @@ function bkSellerInit(){
     saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; saPurposeDesc(); });
     saPurposeDesc();
     saChips('sa-layout',SA_LAYOUTS,'layout',function(o){ saState.layout=o.k; });
+    saChips('sa-mode',SA_MODES,'genMode',function(o){ saState.genMode=o.k; saState.aiImage=(o.k==='full'); var ab=document.getElementById('sa-aiimg-btn'); if(ab) ab.classList.toggle('on', saState.aiImage); saModeDesc(); }); saModeDesc();
     saRenderFestivals();
     if(near){ var d=saDaysTo(near); var soon=document.getElementById('sa-fest-soon'); if(soon){ soon.style.display='block'; soon.innerHTML='🔔 <b>เทศกาลถัดไป:</b> '+(near.emoji||'')+' '+(near.l||near.k)+' · อีก <b>'+(d===0?'วันนี้!':d+' วัน')+'</b> ('+near.m+'/'+near.d+') &nbsp;<button type="button" class="sa-chip" style="padding:5px 13px" onclick="saSetFestival(\''+near.k+'\')">ใช้เลย</button>'; } }
     var lb=document.getElementById('sa-logo-btn'); if(lb) lb.classList.toggle('on', saState.logo!==false);
@@ -1259,6 +1285,7 @@ function saChips(id,arr,key,onPick,nearKey){
   c.className='sa-opts';
   [].forEach.call(c.querySelectorAll('.sa-chip'),function(b){ b.addEventListener('click',function(){ var o; for(var i=0;i<arr.length;i++){if(arr[i].k===b.getAttribute('data-k')){o=arr[i];break;}} [].forEach.call(c.querySelectorAll('.sa-chip'),function(z){z.classList.remove('on');}); b.classList.add('on'); onPick(o); }); });
 }
+function saModeDesc(){ var el=document.getElementById('sa-mode-desc'); if(!el) return; var o=null; for(var i=0;i<SA_MODES.length;i++){if(SA_MODES[i].k===saState.genMode){o=SA_MODES[i];break;}} el.innerHTML=(o&&o.d)||''; }
 function saPurposeDesc(){ var el=document.getElementById('sa-purpose-desc'); if(!el) return; var o=null; for(var i=0;i<SA_PURPOSES.length;i++){if(SA_PURPOSES[i].k===saState.purpose){o=SA_PURPOSES[i];break;}}
   var def={ brand:'<b>สร้างการจดจำแบรนด์</b> — โพสต์จะเน้นอารมณ์ ไลฟ์สไตล์ ความสงบ ความรู้สึก "อยากเป็นเจ้าของ" · <b>ไม่พูดถึงราคา</b> · ภาพหรูสะอาด โลโก้บาง · เหมาะสร้างฐานแฟน ทำให้คนรู้จัก/รักแบรนด์', sale:'<b>กระตุ้นให้ซื้อตอนนี้</b> — ชูโปรโมชัน/ส่วนลด + สร้างความเร่งด่วน + CTA ชัด (ทักแชท/กดลิงก์) · ภาพมีป้ายลดราคาที่ออกแบบหรู <b>ไม่กิ๊กก๊อก</b> · เหมาะช่วงแคมเปญ 7.7 / ลดราคา' };
   el.innerHTML=(o&&o.d)?o.d:(def[saState.purpose]||''); }
@@ -1328,7 +1355,9 @@ function saSpaced(x,str,cx,y,px,sp,color,weight,fam){x.save();x.textAlign='left'
 function saWordmark(x,cx,topY,W,light){ if(saLogoOn===false) return; if(saTintLogo(x,cx,topY+W*0.085,W*0.18,light?'#F4EFE6':'#A0784A')) return;
   x.save();x.textAlign='center';x.fillStyle=light?'#F0E6D2':'#A0784A';x.font='600 '+Math.round(W*0.075)+'px Fraunces,Georgia,serif';x.fillText('BLOOK',cx,topY+W*0.07);x.restore();
   saSpaced(x,'THE CLASS OF CALM',cx,topY+W*0.11,Math.round(W*0.02),Math.round(W*0.012),light?'rgba(240,230,210,.8)':'#8B6B3D','500 '); }
-function saFestChip(x,o,corner){ if(!o.fes||o.fes.k==='none')return; if(o.aiScene) return; /* โหมด AI: เทศกาลอยู่ในฉากแล้ว ไม่ต้องแปะป้าย */ var W=o.W,label=(o.fes.badge||o.fes.l||'').toUpperCase();
+/* คีย์เวิร์ดแคมเปญ (เลข X.X / เทศกาลขาย) เช่น FLASH SALE · PAY DAY · SHOPPING DAY */
+function saFestKW(fes){ if(!fes||fes.k==='none') return ''; if(fes.kw) return fes.kw; if(/^\d+(\.\d+)?$/.test(fes.k)||/sale/i.test(fes.en||'')) return 'FLASH SALE'; return ''; }
+function saFestChip(x,o,corner){ if(!o.fes||o.fes.k==='none')return; if(o.aiScene) return; /* โหมด AI: เทศกาลอยู่ในฉากแล้ว ไม่ต้องแปะป้าย */ var W=o.W,kw=saFestKW(o.fes),label=(o.fes.badge||o.fes.l||'').toUpperCase()+(kw?(' · '+kw):'');
   x.save();x.font='700 '+Math.round(W*0.036)+'px Inter,Arial,sans-serif';x.textAlign='left';
   var tw=x.measureText(label).width,bh=Math.round(W*0.072),bw=tw+W*0.05;
   var bx=(corner==='tl'||corner==='tlLow')?o.pad:(W-o.pad-bw),by=(corner==='tlLow')?Math.round(o.pad+W*0.15):o.pad;
@@ -1354,12 +1383,13 @@ function saSaleBurst(x,o,cx,cy,rad){ var info=saSaleInfo(o); x.save();
   var bigSize=info.big.length>4?rad*0.46:rad*0.6; x.fillStyle='#FFF7EC';x.font='800 '+Math.round(bigSize)+'px Inter,"IBM Plex Sans Thai",sans-serif';x.fillText(info.big,cx,cy+rad*0.36);x.restore(); }
 
 /* ---- ชุดสีพรีเมียม 5 แบบ × 6 เลย์เอาต์ = 30 เทมเพลต (ฟรี) ---- */
+/* ชุดสี neutral/มินิมอล สไตล์ IG Story (ไม่มีฟิล์มสี/สีคาสบนรูป) — สกริมดำกลางๆ ล้วน */
 var SA_PALETTES=[
-  {key:'ivory',label:'Ivory',band1:'#F7F0E3',band2:'#ECE0CD',ink:'#2C2016',sub:'#9A8466',accent:'#A0784A',dom:'#8B6B3D',over:'rgba(255,250,240,.96)',scrim:'10,7,4',saleNum:'#9E2533'},
-  {key:'charcoal',label:'Charcoal',band1:'#23201B',band2:'#15120E',ink:'#F2E8D5',sub:'#C9A96E',accent:'#C9A96E',dom:'#D6B67A',over:'rgba(247,238,221,.97)',scrim:'10,8,5',saleNum:'#E8C766'},
-  {key:'sand',label:'Sand',band1:'#E7DAC4',band2:'#D4C0A2',ink:'#3A2C1C',sub:'#8B6B45',accent:'#8B6B3D',dom:'#7A5A30',over:'rgba(255,250,240,.96)',scrim:'34,22,10',saleNum:'#9E2533'},
-  {key:'forest',label:'Forest',band1:'#22302A',band2:'#162019',ink:'#EAE2D0',sub:'#A9B7A0',accent:'#C9A96E',dom:'#CDB682',over:'rgba(239,231,212,.97)',scrim:'12,24,17',saleNum:'#E8C766'},
-  {key:'wine',label:'Wine',band1:'#4A1320',band2:'#2C0810',ink:'#F5E9DA',sub:'#D9A8A0',accent:'#D6B67A',dom:'#E0C58A',over:'rgba(247,236,221,.97)',scrim:'42,12,18',saleNum:'#E8C766'}
+  {key:'ivory',label:'Ivory',band1:'#F6F0E6',band2:'#EBE2D2',ink:'#2C2419',sub:'#9A8A74',accent:'#A8895C',dom:'#8B7350',over:'rgba(255,252,246,.97)',scrim:'14,12,9',saleNum:'#2C2419'},
+  {key:'white',label:'Pure White',band1:'#FFFFFF',band2:'#F4F1EC',ink:'#1E1B17',sub:'#8C8579',accent:'#A8895C',dom:'#7C7468',over:'rgba(255,255,255,.98)',scrim:'12,12,12',saleNum:'#1E1B17'},
+  {key:'greige',label:'Greige',band1:'#E9E3D8',band2:'#D8CFC0',ink:'#332E25',sub:'#857C6C',accent:'#8B7350',dom:'#6F6555',over:'rgba(252,250,245,.97)',scrim:'20,18,14',saleNum:'#332E25'},
+  {key:'charcoal',label:'Charcoal',band1:'#2A2723',band2:'#1B1916',ink:'#F1EADB',sub:'#B8AE9C',accent:'#C9A96E',dom:'#CBB488',over:'rgba(245,238,225,.97)',scrim:'14,13,11',saleNum:'#E8C766'},
+  {key:'noir',label:'Noir',band1:'#16140F',band2:'#0C0B08',ink:'#F3ECDD',sub:'#B0A690',accent:'#C9A96E',dom:'#CBB488',over:'rgba(245,238,225,.97)',scrim:'8,8,8',saleNum:'#E8C766'}
 ];
 var SA_BASES=[
   // 1 — Editorial (band)
@@ -1536,7 +1566,7 @@ function saAiCaption(){
     +'• สินค้าในรูป: '+prodTxt+' — สอดแทรกประโยชน์/อารมณ์ของสินค้านี้อย่างเป็นธรรมชาติ\n'
     +'• ระบุ "ชื่อ + ขนาด" สินค้าให้ชัดในแคปชัน: '+((pr&&pr.k!=='auto')?pr.l:'BLOOK LIVING')+'\n'
     +'• '+modeBrief+'\n'
-    +((fes&&fes.k!=='none')?('• ธีมเทศกาล: '+(fes.l||'')+(fes.th?(' — แนว "'+fes.th+'"'):'')+'\n'):'')
+    +((fes&&fes.k!=='none')?('• ธีมเทศกาล: '+(fes.l||'')+(fes.th?(' — แนว "'+fes.th+'"'):'')+(saFestKW(fes)?(' · ใส่คำแคมเปญ "'+saFestKW(fes)+'" ในแคปชัน'):'')+'\n'):'')
     +(saRevision?('• ⭐⭐ คำสั่งปรับแก้จากเจ้าของแบรนด์ (สำคัญสุด ทำตามนี้ก่อน): '+saRevision+'\n'):'')
     +'\nเขียนผลลัพธ์ "พร้อมโพสต์" (ห้ามอธิบาย ห้ามใส่หัวข้อกำกับ ห้ามขึ้นต้นว่า "นี่คือ"):\n'
     +'1) แคปชันไทย: ฮุกบรรทัดแรกที่สะดุด + เนื้อหา 2-4 บรรทัด (ลื่น เป็นธรรมชาติ มีรสนิยม)\n'
@@ -1598,6 +1628,7 @@ function saArtBrief(){
     christmas:'a decorated Christmas tree, pine garland, warm fairy-light bokeh, a few red and gold baubles'
   };
   var heroDesc=(fes&&fes.k&&festHero[fes.k])?festHero[fes.k]:((fes&&fes.k!=='none')?(/^\d+(\.\d+)?$/.test(fes.k)?('a bold elegant "'+(fes.badge||fes.k)+'" number sign as a hero prop, premium sale energy with warm gold/red accents'):('clear signature props and colours of the '+(fes.en||fes.l)+' theme')):'');
+  var festKW=saFestKW(fes); if(festKW && heroDesc) heroDesc+=' plus a small tasteful "'+festKW+'" sign as a prop';
   var festTxt=(fes&&fes.k!=='none')?(
       '• 🎯 ฝ่ายการตลาดสั่งฝ่ายกราฟิก: ทำให้เทศกาล "'+(fes.l||'')+'" โดดเด่นในภาพ "เพิ่มความเข้มของเทศกาลอีก ~40%" (ของเดิมมักจืดเกินไป)\n'
     + '• ใส่ HERO ของเทศกาลในฉากหลังให้เห็นชัด: '+heroDesc+' — ตั้งไว้ด้านหลัง/ข้างสินค้า เป็นพระรองที่สังเกตเห็นทันที (อย่าบังตัวสินค้า)\n'
@@ -1702,7 +1733,7 @@ function saBuildImagesAI(prog){
         });
       }).then(function(){ return buildOne(idx+1); });
     }
-    // วนรีวิว-สั่งแก้ภาพแรก ≤ 4 รอบ · ≤7 วาดใหม่อัตโนมัติ · 8-9 ถามผู้ใช้ก่อนดันถึง 10 (คุมต้นทุน Gemini)
+    // วนรีวิว-สั่งแก้ภาพแรก ≤ 4 รอบ · ≤7 วาดใหม่อัตโนมัติ · >7 "ถามทุกรอบ" พร้อมพรีวิวรูป (คุมต้นทุน ไม่ไหลเอง)
     function saDirectorLoop(orig0,rounds){
       if(rounds<=0 || !out[0]) return Promise.resolve();
       var pass=5-rounds;
@@ -1711,15 +1742,20 @@ function saBuildImagesAI(prog){
         if(!rv) return; var sc=rv.score||0;
         if(sc) reviewedNote='คะแนน '+sc+'/10';
         if(sc>=10 || !rv.improve){ saLog('<b>🧭 ไดเรกเตอร์ (รอบ '+pass+'/4):</b> ✅ '+(sc||10)+'/10 — อนุมัติ'); return; }
-        if(sc>7 && !dirPush){
-          saLog('<b>🧭 ไดเรกเตอร์ (รอบ '+pass+'/4):</b> '+sc+'/10 (สวยพร้อมโพสต์แล้ว) — ถามผู้ใช้ว่าจะดันถึง 10 ไหม');
-          if(!confirm('🧭 ฝ่ายไดเรกเตอร์: ภาพนี้ได้ '+sc+'/10 — สวย พร้อมโพสต์แล้ว ✓\n\nจะวาดใหม่เพื่อดันให้ถึง 10/10 ไหมครับ?\n• เสียเพิ่ม ~1.4฿/รอบ · เหลือได้อีก '+(rounds-1)+' รอบ\n\nกด "ตกลง" = ดันต่อ  ·  "ยกเลิก" = ใช้ภาพนี้เลย (ประหยัด)')){ reviewedNote=sc+'/10 (ผู้ใช้เลือกใช้เลย)'; saLog('<b>🧭 ผู้ใช้:</b> ใช้ภาพนี้ ('+sc+'/10) — หยุดลูป ไม่เสีย Gemini เพิ่ม'); return; }
-          dirPush=true;
+        function regen(){ promptUsed=rv.improve;
+          saLog('<b>🧭 ไดเรกเตอร์ → กราฟิก (รอบ '+pass+'/4):</b> '+sc+'/10 → สั่งวาดใหม่: "'+((rv.improve||'').slice(0,50))+'…"');
+          prog && prog('graphic','work','วาดรูปแรกใหม่ตามรีวิว (รอบ '+pass+')...');
+          return saGeminiImage(orig0,promptUsed).then(function(u2){ if(u2) return loadAndCompose(0,u2,false).catch(function(){}); }).then(function(){ return saDirectorLoop(orig0,rounds-1); });
         }
-        promptUsed=rv.improve;
-        saLog('<b>🧭 ไดเรกเตอร์ → กราฟิก (รอบ '+pass+'/4):</b> '+sc+'/10 → สั่งวาดใหม่: "'+((rv.improve||'').slice(0,50))+'…"');
-        prog && prog('graphic','work','วาดรูปแรกใหม่ตามรีวิว (รอบ '+pass+')...');
-        return saGeminiImage(orig0,promptUsed).then(function(u2){ if(u2) return loadAndCompose(0,u2,false).catch(function(){}); }).then(function(){ return saDirectorLoop(orig0,rounds-1); });
+        if(sc>7){ // >7 = สวยพอแล้ว → ถามทุกรอบ พร้อมพรีวิวรูปของรอบนี้
+          saLog('<b>🧭 ไดเรกเตอร์ (รอบ '+pass+'/4):</b> '+sc+'/10 (สวยพร้อมโพสต์) — ถามผู้ใช้ก่อนวาดใหม่');
+          prog && prog('director','work','รอผู้ใช้ตัดสินใจ (รอบ '+pass+'/4)...');
+          return saAskPush(out[0],sc,rounds-1,pass).then(function(push){
+            if(!push){ reviewedNote=sc+'/10 (ผู้ใช้เลือกใช้เลย)'; saLog('<b>🧭 ผู้ใช้:</b> ใช้ภาพรอบ '+pass+' ('+sc+'/10) — หยุด ไม่เสีย Gemini เพิ่ม'); return; }
+            return regen();
+          });
+        }
+        return regen(); // ≤7 วาดใหม่อัตโนมัติ
       }).catch(function(){});
     }
     return buildOne(0).then(function(){ return {out:out, bases:bases, note:reviewedNote, ai:aiCount, total:imgs.length}; });
@@ -1739,8 +1775,9 @@ function bkGenerate(){
   saSetDept('marketing','work','กำลังคิดคอนเซ็ปต์ + เขียนแคปชัน...'); saSetDept('graphic',null,'รอ'); saSetDept('director',null,'รอ');
   saLastAiErr='';
   saPickStyleForMode(); // ไดเรกเตอร์เลือกสไตล์ให้เหมาะกับโหมด (Branding/เน้นขาย) อัตโนมัติ
-  var useAI=!!localStorage.getItem('bk-claude-key');
-  var useAIimg=saState.aiImage && !!localStorage.getItem('bk-gemini-key');
+  var gMode=saState.genMode||'caption';
+  var useAI=(gMode!=='frame') && !!localStorage.getItem('bk-claude-key');   // frame = ไม่ใช้ AI แคปชัน
+  var useAIimg=(gMode==='full') && !!localStorage.getItem('bk-gemini-key'); // เฉพาะโหมดเต็มระบบเท่านั้นที่วาดภาพ AI + วน loop
   // 1) ฝ่ายการตลาด — คิดก่อน
   var capP = useAI ? saAiCaption().catch(function(){return null;}) : Promise.resolve(null);
   capP.then(function(aiTxt){
@@ -1811,7 +1848,7 @@ function saUpdateModeBadge(){
   var b=document.getElementById('sa-mode-badge');
   if(b){ if(saResultMode==='ai'){ b.textContent='🎨 ภาพจาก AI (Gemini) — เสียค่าใช้จ่ายแล้ว'; b.style.color='#7ee0a0'; b.style.borderColor='rgba(126,224,160,.4)'; }
     else { b.textContent='🆓 เทมเพลต (ฟรี)'; b.style.color='var(--gold2)'; b.style.borderColor='var(--border)'; } }
-  var rb=document.getElementById('sa-regen-ai'); var hasAI=saState.aiImage && !!localStorage.getItem('bk-gemini-key'); if(rb){ rb.style.display=hasAI?'inline-block':'none'; var n=saState.images.length||1; rb.textContent='✨ วาดฉาก AI ใหม่ (~'+Math.round(n*1.4)+'฿)'; }
+  var rb=document.getElementById('sa-regen-ai'); var hasAI=(saState.genMode==='full') && !!localStorage.getItem('bk-gemini-key'); if(rb){ rb.style.display=hasAI?'inline-block':'none'; var n=saState.images.length||1; rb.textContent='✨ วาดฉาก AI ใหม่ (~'+Math.round(n*1.4)+'฿)'; }
   var rw=document.getElementById('sa-revision-wrap'); if(rw) rw.style.display=hasAI?'block':'none';
 }
 function saSetView(mode){
@@ -1838,6 +1875,25 @@ function saZoom(i){ var urls=saLastUrls||[]; if(!urls.length) return; saZoomI=((
   lb.style.display='flex';
 }
 function saZoomClose(){ var lb=document.getElementById('sa-lightbox'); if(lb) lb.style.display='none'; }
+/* โมดัลถามก่อนวาดใหม่ (ทุกรอบที่ >7/10) พร้อมพรีวิวรูปของรอบนั้น → คืน Promise(true=ดันต่อ, false=ใช้เลย) */
+function saAskPush(imgUrl,score,roundsLeft,pass){
+  return new Promise(function(resolve){
+    var m=document.getElementById('sa-askmodal');
+    if(!m){ m=document.createElement('div'); m.id='sa-askmodal'; document.body.appendChild(m); }
+    m.innerHTML='<div class="sa-ask-card">'
+      +'<div class="sa-ask-imgwrap"><img src="'+imgUrl+'" alt="พรีวิว"><span class="sa-ask-badge">รอบ '+pass+' · '+score+'/10</span></div>'
+      +'<div class="sa-ask-body">'
+        +'<div class="sa-ask-score">🧭 ไดเรกเตอร์ให้ <b>'+score+'/10</b> — สวย พร้อมโพสต์แล้ว ✓</div>'
+        +'<div class="sa-ask-q">จะวาดใหม่เพื่อดันให้ถึง 10/10 ไหม?<br><span>เสีย ~1.4฿/รอบ · เหลือได้อีก '+roundsLeft+' รอบ</span></div>'
+        +'<div class="sa-ask-btns"><button type="button" id="sa-ask-use" class="use">✅ ใช้รูปนี้เลย</button><button type="button" id="sa-ask-push" class="push">✨ วาดใหม่ดันต่อ</button></div>'
+      +'</div></div>';
+    m.style.display='flex';
+    function done(v){ m.style.display='none'; resolve(v); }
+    document.getElementById('sa-ask-use').onclick=function(){ done(false); };
+    document.getElementById('sa-ask-push').onclick=function(){ done(true); };
+    m.onclick=function(e){ if(e.target.id==='sa-askmodal') done(false); };
+  });
+}
 /* เปลี่ยน/สุ่มดีไซน์กราฟิก — วาง overlay สไตล์ใหม่บน "ฉากเดิม" ที่แคชไว้
    ✅ ฟรี ไม่เรียก Gemini ซ้ำ · ถ้าเป็นภาพ AI ก็ยังคงฉาก AI เดิม ไม่ถูกรีเซ็ตเป็นรูปต้นฉบับ */
 function saReshuffleDesign(rand){
@@ -1855,7 +1911,7 @@ function saReshuffleDesign(rand){
 }
 /* วาดฉากใหม่ด้วย AI จริง (Gemini) — เสียเงิน จึงยืนยันก่อน */
 function saRegenAI(){
-  var hasAI=saState.aiImage && localStorage.getItem('bk-gemini-key');
+  var hasAI=(saState.genMode==='full') && localStorage.getItem('bk-gemini-key');
   if(!hasAI){ alert('ตอนนี้เป็นโหมดเทมเพลต (ฟรี)\n\nถ้าต้องการให้ AI วาดฉากใหม่ ให้เปิดสวิตช์ "🎨 AI สร้างภาพหรู (Gemini)" + ใส่คีย์ Gemini ที่ ⚙️ AI ก่อนครับ'); return; }
   var ri=document.getElementById('sa-revision'); saRevision=ri?ri.value.trim():'';
   var n=saState.images.length||1;
@@ -1895,7 +1951,7 @@ function bkSaveKey(){
   var gk=(document.getElementById('sa-gemkey')||{}).value, gm=(document.getElementById('sa-gemmodel')||{}).value;
   if(gk!=null){ gk=gk.trim(); if(gk) localStorage.setItem('bk-gemini-key',gk); else localStorage.removeItem('bk-gemini-key'); if(gm) localStorage.setItem('bk-gemini-model',gm.trim()); var gs=document.getElementById('sa-gemstatus'); if(gs){ gs.textContent=gk?'✅ บันทึกคีย์ Gemini':'ลบคีย์ Gemini'; gs.style.color=gk?'#7ee0a0':'var(--dim)'; } }
 }
-function saToggleAiImage(){ saState.aiImage=!saState.aiImage; localStorage.setItem('bk-aiimg', saState.aiImage?'1':'0'); var b=document.getElementById('sa-aiimg-btn'); if(b) b.classList.toggle('on', saState.aiImage); if(saState.aiImage && !localStorage.getItem('bk-gemini-key')) alert('เปิดโหมด AI สร้างภาพแล้ว — อย่าลืมวาง Gemini API key + คีย์ Claude แล้วกดบันทึก'); }
+function saToggleAiImage(){ saState.aiImage=!saState.aiImage; saState.genMode=saState.aiImage?'full':'caption'; localStorage.setItem('bk-aiimg', saState.aiImage?'1':'0'); var b=document.getElementById('sa-aiimg-btn'); if(b) b.classList.toggle('on', saState.aiImage); [].forEach.call(document.querySelectorAll('#sa-mode .sa-chip'),function(c){ c.classList.toggle('on', c.getAttribute('data-k')===saState.genMode); }); if(typeof saModeDesc==='function') saModeDesc(); if(saState.aiImage && !localStorage.getItem('bk-gemini-key')) alert('เปิดโหมด AI สร้างภาพแล้ว — อย่าลืมวาง Gemini API key + คีย์ Claude แล้วกดบันทึก'); }
 function checkGaStatus(){
   var el=document.getElementById('ga-status'); if(!el) return;
   fetch('assets/analytics.js',{cache:'no-store'}).then(function(r){return r.text();}).then(function(t){
