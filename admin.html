@@ -288,7 +288,8 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 .pm-nav.prev{left:8px}.pm-nav.next{right:8px}
 .sa-grid-all figure img{cursor:zoom-in}
 .sa-pipe-log{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;margin-bottom:16px;max-height:300px;overflow:auto}
-.sa-pipe-log .sa-log-line{font-size:.76rem;color:var(--neutral);line-height:1.55;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sa-pipe-log .sa-log-line{font-size:.76rem;color:var(--neutral);line-height:1.55;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.05);overflow-wrap:anywhere}
+.pm .cap,.pm .c,.pm .tx,#sa-out-cap{overflow-wrap:anywhere}
 .sa-pipe-log .sa-log-line b{color:var(--gold2)}
 .sa-step0-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-top:10px}
 .sa-step0-col .sa-drop{min-height:170px;margin-top:8px}
@@ -887,9 +888,28 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         <div style="font-size:.78rem;color:var(--dim);margin-top:4px">ลากรูป → เลือกแพลตฟอร์ม/วัตถุประสงค์/เทศกาล → 3 ฝ่ายช่วยกันออก "รูป + แคปชัน" พร้อมโพสต์</div>
       </div>
     </div>
-    <div class="panel" style="background:linear-gradient(135deg,rgba(201,162,77,.1),rgba(201,162,77,.03));border-color:rgba(201,162,77,.3)">
-      <div style="font-size:.84rem;line-height:1.6;color:var(--text)">💡 <b>ทุกตัวเลือกด้านล่างคือ "โจทย์" ที่ส่งให้ AI 3 ฝ่ายไปคิด</b> — สินค้า · แพลตฟอร์ม · วัตถุประสงค์ · เทศกาล ทั้งหมดนี้ AI จะเอาไป<b>คิดแคปชันใหม่ + ออกแบบ/วาดภาพใหม่ทุกครั้ง</b> ไม่ใช่เทมเพลตตายตัว · <span style="color:var(--gold2)">ยิ่งเลือกละเอียดและตรง ผลลัพธ์ยิ่งหรูและตรงใจ</span></div>
-    </div>
+    <details class="panel sa-ai">
+      <summary>⚙️ เชื่อม AI ก่อน (ออปชัน) — ใส่คีย์ครั้งเดียว · ไม่ใส่ก็ใช้เทมเพลตฟรีได้เต็มที่</summary>
+      <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:4px">🧠 Claude <span style="font-weight:400;color:var(--dim);font-size:.78rem">— แคปชัน + ไดเรกเตอร์รีวิว</span></div>
+      <div class="row">
+        <input type="password" id="sa-aikey" placeholder="🔑 API key: sk-ant-...">
+        <input type="text" id="sa-aimodel" value="claude-haiku-4-5" style="flex:0 0 180px" title="ชื่อโมเดล Claude" placeholder="โมเดล">
+        <button type="button" onclick="bkSaveKey()">บันทึก</button>
+        <span id="sa-aistatus" style="font-size:.76rem;color:var(--dim)"></span>
+      </div>
+      <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 <b>ขอคีย์ที่ console.anthropic.com</b> → API Keys → Create Key · 🔒 เก็บในเครื่องนี้เท่านั้น ไม่ขึ้น GitHub</p>
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
+        <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:6px">🎨 Gemini <span style="font-weight:400;color:var(--dim);font-size:.78rem">— วาดภาพฉากหรูจากรูปสินค้า</span></div>
+        <div class="row" style="margin-top:4px">
+          <input type="password" id="sa-gemkey" placeholder="🔑 API key: AIza...">
+          <input type="text" id="sa-gemmodel" value="gemini-2.5-flash-image" style="flex:0 0 190px" title="โมเดลภาพ Gemini" placeholder="โมเดลภาพ">
+          <button type="button" onclick="bkSaveKey()">บันทึก</button>
+          <span id="sa-gemstatus" style="font-size:.76rem;color:var(--dim)"></span>
+        </div>
+        <button type="button" id="sa-aiimg-btn" class="sa-toggle" onclick="saToggleAiImage()" style="display:none"><span class="knob"></span></button>
+        <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 ขอคีย์ที่ <b>aistudio.google.com/apikey</b> · ⚠️ มีค่าใช้จ่ายต่อรูป (เปิดใช้เมื่อเลือกโหมด ③ AI เต็มระบบ)</p>
+      </div>
+    </details>
 
     <div class="panel" style="border-color:rgba(201,162,77,.35)">
       <div class="panel-title">วิธีทำโพสต์ <span style="font-size:.72rem;color:var(--dim);font-weight:400;margin-left:6px">— เลือกว่าจะใช้ AI แค่ไหน (คุมค่าใช้จ่าย)</span></div>
@@ -959,39 +979,13 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
       <div id="sa-festival"></div>
     </div>
 
-    <details class="panel sa-ai">
-      <summary>⚙️ AI (ออปชัน) — เชื่อม 2 AI เพื่อยกระดับโพสต์ · ไม่ใส่ก็ใช้เทมเพลต (ฟรี) ได้เต็มที่</summary>
-      <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:4px">🧠 Claude <span style="font-weight:400;color:var(--dim);font-size:.78rem">— ฝ่ายการตลาด (เขียนแคปชัน) + ฝ่ายไดเรกเตอร์ (รีวิวภาพ)</span></div>
-      <div class="row">
-        <input type="password" id="sa-aikey" placeholder="🔑 API key: sk-ant-...">
-        <input type="text" id="sa-aimodel" value="claude-haiku-4-5" style="flex:0 0 200px" title="ชื่อโมเดล Claude" placeholder="โมเดล">
-        <button type="button" onclick="bkSaveKey()">บันทึก</button>
-        <span id="sa-aistatus" style="font-size:.76rem;color:var(--dim)"></span>
-      </div>
-      <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 <b>ขอคีย์ที่ console.anthropic.com</b> → API Keys → Create Key (บัญชี API จ่ายตามใช้ · haiku ถูกมาก · คนละอย่างกับ Claude Code/Claude.ai — ดึงคีย์จาก Claude Code มาใช้ไม่ได้)<br>🔒 คีย์เก็บใน <b>เครื่องนี้เท่านั้น</b> (localStorage) ไม่ขึ้น GitHub · <b>ไม่ใส่ก็ใช้งานได้เต็มที่</b>ด้วยเทมเพลต</p>
-
-      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
-        <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:6px">🎨 Gemini <span style="font-weight:400;color:var(--dim);font-size:.78rem">— ฝ่ายกราฟิก (วาดภาพฉากหรูจากรูปสินค้า)</span></div>
-        <div class="sa-logo-row" style="margin-top:0">
-          <span>เปิด <b>AI วาดภาพ</b> — เปลี่ยนรูปสินค้าเป็นฉากพรีเมียม + ลูป Director รีวิว (มีค่าใช้จ่าย)</span>
-          <button type="button" id="sa-aiimg-btn" class="sa-toggle" onclick="saToggleAiImage()"><span class="knob"></span></button>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <input type="password" id="sa-gemkey" placeholder="🔑 API key: AIza...">
-          <input type="text" id="sa-gemmodel" value="gemini-2.5-flash-image" style="flex:0 0 210px" title="โมเดลภาพ Gemini" placeholder="โมเดลภาพ">
-          <button type="button" onclick="bkSaveKey()">บันทึก</button>
-          <span id="sa-gemstatus" style="font-size:.76rem;color:var(--dim)"></span>
-        </div>
-        <p style="font-size:.72rem;color:var(--dim);margin-top:8px">🔑 ขอคีย์ที่ <b>aistudio.google.com/apikey</b> (Gemini) · ⚠️ <b>มีค่าใช้จ่ายต่อรูป + ช้ากว่า</b> (สร้างภาพ AI + Claude vision รีวิว) · ต้องมีคีย์ Claude ด้านบนด้วยจึงจะมีลูปรีวิว · ตัวอักษรไทย/โลโก้ยังวางด้วยโค้ดเพื่อความคมชัด</p>
-      </div>
-    </details>
-
-    <button class="sa-go" type="button" onclick="saRevision='';bkGenerate()">✨ ให้ 3 ฝ่ายช่วยกันสร้างโพสต์</button>
+    <button class="sa-go" type="button" onclick="saRevision='';bkGenerate()">✨ ให้ทีมช่วยกันสร้างโพสต์ (ไดเรกเตอร์ → การตลาด → กราฟิก)</button>
 
     <div id="sa-pipeline" class="sa-pipeline" style="display:none">
-      <div class="sa-dept" data-d="marketing" title="Senior Copywriter — เขียนแคปชันให้เข้าน้ำเสียงแบรนด์ + ปรับตามแพลตฟอร์ม (IG/FB/Lemon8/TikTok/X) + โหมด (Branding/เน้นขาย) + ใส่ชื่อ-ขนาดสินค้า + แฮชแท็กตรงสินค้า + ข้อมูลติดต่อ (ยกเว้น TikTok)"><b>1 · ✍️ ฝ่ายการตลาด</b><i class="sa-skill">แคปชัน · แบรนด์/แพลตฟอร์ม/โหมด/แฮชแท็ก</i><span>รอ</span></div>
-      <div class="sa-dept" data-d="graphic" title="Art Director + Gemini — เขียน art-direction brief แล้วให้ Gemini วาดฉากหรูจากรูปสินค้า โดยล็อกตัวสินค้า/ฉลากไม่ให้เพี้ยน + วางโลโก้/ตัวอักษร/ป้ายด้วยโค้ดให้คมชัด · เทศกาลแต่งฉากจริง"><b>2 · 🎨 ฝ่ายกราฟิก</b><i class="sa-skill">วาดฉาก AI · คงสินค้า · วางตัวอักษรคม</i><span>รอ</span></div>
-      <div class="sa-dept" data-d="director" title="Creative Director + Claude vision — รีวิวภาพอย่างเข้มงวด วนแก้จนได้ 10/10 (สูงสุด 4 รอบ คุมต้นทุน) + จัดลำดับรูปให้โพสต์ + เตือนถ้าโลโก้/ตัวอักษรทับสินค้า + ตรวจฉลากไม่ให้มั่ว"><b>3 · 🧭 ครีเอทีฟไดเรกเตอร์</b><i class="sa-skill">รีวิว 10/10 · จัดลำดับ · เตือนทับ</i><span>รอ</span></div>
+      <div class="sa-dept" data-d="concept" title="Creative Director (วางคอนเซ็ปต์) — รับโจทย์+รูป → กำหนดทิศทางการตลาดและภาพ, ตัดสินใจรูปแรกเป็น 'ปก' หรือทุกรูปโทนเดียวกัน, ย้ำกันสินค้าไม่ให้ถูกป้าย/กรอบบดบัง → กระจายบรีฟให้ฝ่ายการตลาด+กราฟิก"><b>1 · 🧭 ไดเรกเตอร์ · คอนเซ็ปต์</b><i class="sa-skill">วางทิศทาง + กระจายบรีฟให้ทีม</i><span>รอ</span></div>
+      <div class="sa-dept" data-d="marketing" title="Senior Copywriter — รับคอนเซ็ปต์จากไดเรกเตอร์ → เขียนแคปชันตามแบรนด์/แพลตฟอร์ม/โหมด + บรีฟสิ่งที่ต้องการให้ฝ่ายกราฟิก"><b>2 · ✍️ ฝ่ายการตลาด</b><i class="sa-skill">แคปชัน + บรีฟกราฟิก</i><span>รอ</span></div>
+      <div class="sa-dept" data-d="graphic" title="Art Director + Gemini — รับบรีฟจากไดเรกเตอร์+การตลาด → วาดฉากหรูจากรูปสินค้า (ล็อกสินค้า/ฉลาก) + วางโลโก้/ตัวอักษร/ป้ายให้คม ไม่บังสินค้า"><b>3 · 🎨 ฝ่ายกราฟิก</b><i class="sa-skill">วาดภาพตามบรีฟ · คงสินค้า</i><span>รอ</span></div>
+      <div class="sa-dept" data-d="director" title="Creative Director (รีวิว) — ตรวจภาพที่กราฟิกส่งมา ให้คะแนน + สั่งแก้/วน loop จนได้ 10/10 + จัดลำดับ + เตือนโลโก้ทับสินค้า"><b>4 · 🧭 ไดเรกเตอร์ · รีวิว</b><i class="sa-skill">ตรวจ+ให้คะแนน+สั่งแก้ (loop)</i><span>รอ</span></div>
     </div>
     <div id="sa-pipe-log" class="sa-pipe-log" style="display:none"><div style="font-size:.72rem;color:var(--gold2);font-weight:700;margin-bottom:5px">💬 บันทึกการทำงาน / คำสั่งระหว่างแผนก</div></div>
 
@@ -1178,9 +1172,9 @@ var SA_PURPOSES=[
   {k:'sale',l:'🔥 เน้นขาย (ปิดการขาย)',d:'<b>กระตุ้นให้ซื้อตอนนี้</b> — ชูโปรโมชัน/ส่วนลด + สร้างความเร่งด่วน + CTA ชัด (ทักแชท/กดลิงก์) · ภาพมีป้ายลดราคาที่ออกแบบหรู <b>ไม่กิ๊กก๊อก</b> · เหมาะช่วงแคมเปญ 7.7 / ลดราคา'}
 ];
 var SA_LAYOUTS=[
-  {k:'band',l:'▭ แถบข้อความ'},
-  {k:'mix',l:'◑ ผสม (แนะนำ)'},
-  {k:'overlay',l:'▣ ทับบนรูปทั้งหมด'}
+  {k:'overlay',l:'▣ ทับบนรูปทั้งหมด'},
+  {k:'mix',l:'◑ ผสม'},
+  {k:'band',l:'▭ แถบข้อความ'}
 ];
 var SA_SALESHOW=[
   {k:'discount',l:'% ส่วนลด'},
@@ -1225,7 +1219,7 @@ var SA_PRODUCTS=[
   {k:'reedgift',l:'ก้านไม้หอม Gift Set',d:'เซ็ทของขวัญก้านไม้หอม BLOOK'},
   {k:'togo',l:'TOGO Sofa',d:'โซฟา TOGO ของ BLOOK (โซฟาขี้เกียจ/บีนแบ็กพรีเมียม นั่งสบาย นุ่ม)'}
 ];
-var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,price:0,saleShow:'discount',festival:'none',logo:true,styleIdx:0,aiImage:false,layout:'mix',genMode:'caption'};
+var saState={images:[],product:'auto',platform:'instagram',aspect:'4:5',purpose:'brand',discount:30,price:0,saleShow:'discount',festival:'none',logo:true,styleIdx:0,aiImage:false,layout:'overlay',genMode:'caption'};
 var saReady=false, saLastUrls=[], saBases=[], saResultMode='template';
 var SA_LOGO=new Image(); var SA_LOGO_OK=false; SA_LOGO.onload=function(){SA_LOGO_OK=true;}; SA_LOGO.src='assets/blook-logo.png';
 var saLogoOn=true; // ตั้งจาก saState.logo ใน buildPost — ปิดได้ในขั้นวัตถุประสงค์
@@ -1257,7 +1251,9 @@ function bkSellerInit(){
     saChips('sa-purpose',SA_PURPOSES,'purpose',function(o){ saState.purpose=o.k; document.getElementById('sa-discount-wrap').style.display=(o.k==='sale')?'block':'none'; saPurposeDesc(); });
     saPurposeDesc();
     saChips('sa-layout',SA_LAYOUTS,'layout',function(o){ saState.layout=o.k; });
-    saChips('sa-mode',SA_MODES,'genMode',function(o){ saState.genMode=o.k; saState.aiImage=(o.k==='full'); var ab=document.getElementById('sa-aiimg-btn'); if(ab) ab.classList.toggle('on', saState.aiImage); saModeDesc(); }); saModeDesc();
+    saChips('sa-mode',SA_MODES,'genMode',function(o){ saState.genMode=o.k; saState.aiImage=(o.k==='full'); var ab=document.getElementById('sa-aiimg-btn'); if(ab) ab.classList.toggle('on', saState.aiImage); saModeDesc();
+      if(o.k==='full' && !localStorage.getItem('bk-gemini-key')) alert('โหมด ③ AI เต็มระบบ ต้องใส่ Gemini key (+ Claude) ที่ ⚙️ ด้านบนก่อนครับ — ถ้ายังไม่ใส่ ระบบจะใช้เทมเพลตแทนให้');
+      else if(o.k==='caption' && !localStorage.getItem('bk-claude-key')) alert('โหมด ② แคปชัน AI ต้องใส่ Claude key ที่ ⚙️ ด้านบนก่อนครับ — ถ้ายังไม่ใส่ จะใช้แคปชันสำเร็จรูปแทน'); }); saModeDesc();
     saRenderFestivals();
     if(near){ var d=saDaysTo(near); var soon=document.getElementById('sa-fest-soon'); if(soon){ soon.style.display='block'; soon.innerHTML='🔔 <b>เทศกาลถัดไป:</b> '+(near.emoji||'')+' '+(near.l||near.k)+' · อีก <b>'+(d===0?'วันนี้!':d+' วัน')+'</b> ('+near.m+'/'+near.d+') &nbsp;<button type="button" class="sa-chip" style="padding:5px 13px" onclick="saSetFestival(\''+near.k+'\')">ใช้เลย</button>'; } }
     var lb=document.getElementById('sa-logo-btn'); if(lb) lb.classList.toggle('on', saState.logo!==false);
@@ -1517,7 +1513,19 @@ function composeCaption(o){
   return thF+'\n\n'+en+'\n\n'+uniq.join(' ');
 }
 var saLastAiErr='';
-var saCost={img:0,claude:0}; var saRevision=''; var saLastBriefAI=false;
+var saCost={img:0,claude:0}; var saRevision=''; var saLastBriefAI=false; var saConcept='';
+/* ฝ่ายไดเรกเตอร์ (ขั้นแรก) — รับโจทย์+รูป แล้ววางคอนเซ็ปต์/ทิศทาง กระจายบรีฟให้ทีม */
+function saDirectorConcept(){
+  var key=localStorage.getItem('bk-claude-key'); if(!key) return Promise.resolve('');
+  var prod=saFind(SA_PRODUCTS,saState.product), fes=saFind(SA_FESTIVALS,saState.festival), isSale=saState.purpose==='sale', n=saState.images.length||1;
+  var plat=saFind(SA_PLATFORMS,saState.platform);
+  var ask='คุณคือ Creative Director แบรนด์ BLOOK LIVING (The Class of Calm — ของแต่งบ้านหรู สงบ อบอุ่น)\n'
+    +'โจทย์: สินค้า '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK')+' · แพลตฟอร์ม '+((plat&&plat.l)||saState.platform)+' · โหมด '+(isSale?('เน้นขาย ลด '+(saState.discount||30)+'%'):'Branding')+((fes&&fes.k!=='none')?(' · เทศกาล '+fes.l):'')+' · มี '+n+' รูป\n'
+    +'วางคอนเซ็ปต์แคมเปญ แล้วสั่งทีมสั้นๆ: (1) ทิศทาง/อารมณ์ให้ฝ่ายการตลาดเขียนแคปชัน (2) ทิศทางภาพให้ฝ่ายกราฟิก (โทน/มุม/พร็อพ) (3) รูปแรกควรเป็น "ปก" ที่เด่นกว่ารูปอื่น หรือให้ทุกรูปโทนเดียวกัน — เลือกอย่างชัดเจน (4) ย้ำเตือน: อย่าให้ป้ายราคา/กรอบ/ตัวอักษรบดบังตัวสินค้า\n'
+    +(saRevision?('หมายเหตุ: เจ้าของสั่งปรับ "'+saRevision+'" ให้รวมในคอนเซ็ปต์ด้วย\n'):'')
+    +'ตอบสั้น 2-4 บรรทัด (ไทย) เป็นบรีฟสรุปให้ทีม';
+  return saClaude([{role:'user',content:ask}],300).then(function(t){ return (t||'').trim(); }).catch(function(){ return ''; });
+}
 function saCostText(){ var g=saCost.img*1.4, c=saCost.claude*0.15; return 'Gemini '+saCost.img+' รูป ×1.4฿ + Claude '+saCost.claude+' ครั้ง ×0.15฿ ≈ '+(g+c).toFixed(1)+'฿'; }
 function saLog(msg){ var L=document.getElementById('sa-pipe-log'); if(!L)return; var d=document.createElement('div'); d.className='sa-log-line'; d.innerHTML=msg; L.appendChild(d); L.scrollTop=L.scrollHeight; }
 function saAiErrHint(svc,status,body){
@@ -1562,6 +1570,7 @@ function saAiCaption(){
   var p='คุณคือ "ทีมการตลาดมือโปร" ของ BLOOK LIVING — แบรนด์ของแต่งบ้าน/ไลฟ์สไตล์ระดับพรีเมียม "The Class of Calm" (โซฟา TOGO / หมอนเพื่อสุขภาพ Argo / ก้านไม้หอม–น้ำหอมปรับอากาศกลิ่นโรงแรม / เซ็ทของขวัญ · blookliving.com)\n\n'
     +'น้ำเสียงแบรนด์: อบอุ่น มีรสนิยม สงบ พรีเมียม กระตุ้นประสาทสัมผัส/อารมณ์ — ไม่ตะโกนขาย ไม่กิ๊กก๊อก ไม่คลีเช่ ไม่ใช้คำเว่อร์เกินจริง\n\n'
     +'บรีฟงานนี้ ('+dep.marketing.role+'):\n'
+    +(saConcept?('• 🧭 ทิศทางจากไดเรกเตอร์ (ทำตามนี้): '+saConcept+'\n'):'')
     +'• แพลตฟอร์ม: '+tone+'\n'
     +'• สินค้าในรูป: '+prodTxt+' — สอดแทรกประโยชน์/อารมณ์ของสินค้านี้อย่างเป็นธรรมชาติ\n'
     +'• ระบุ "ชื่อ + ขนาด" สินค้าให้ชัดในแคปชัน: '+((pr&&pr.k!=='auto')?pr.l:'BLOOK LIVING')+'\n'
@@ -1639,6 +1648,7 @@ function saArtBrief(){
     +'เขียน art-direction prompt ภาษาอังกฤษ ให้โมเดลวาด "ฉากโฆษณาหรูระดับนิตยสาร" จากรูปสินค้าที่แนบ\n'
     +'สินค้า: '+((prod&&prod.k!=='auto')?(prod.d||prod.l):'BLOOK product')+'\n'
     +'แนวฉากของสินค้านี้: '+sceneMap[cat]+'\n'
+    +(saConcept?('ทิศทางจากไดเรกเตอร์ (ทำตามนี้): '+saConcept+'\n'):'')
     +'โหมด: '+(isSale?'sale/promo (สด สะดุดตา แต่ยังหรู)':'branding mood (สงบ พรีเมียม)')+'\n'
     +festTxt
     +(saRevision?('• ⭐⭐ คำสั่งปรับแก้จากเจ้าของแบรนด์ (สำคัญสุด ทำตามนี้ก่อนเสมอ): '+saRevision+'\n'):'')
@@ -1772,15 +1782,22 @@ function bkGenerate(){
   var plat=saFind(SA_PLATFORMS,saState.platform), fes=saFind(SA_FESTIVALS,saState.festival), prod=saFind(SA_PRODUCTS,saState.product);
   var purposeL=(saState.purpose==='sale')?('เน้นขาย · ลด '+(saState.discount||30)+'%'):'Branding (เน้นภาพลักษณ์)';
   var festL=(fes&&fes.k!=='none')?fes.l:'';
-  saSetDept('marketing','work','กำลังคิดคอนเซ็ปต์ + เขียนแคปชัน...'); saSetDept('graphic',null,'รอ'); saSetDept('director',null,'รอ');
-  saLastAiErr='';
+  saSetDept('concept','work','ไดเรกเตอร์กำลังวางคอนเซ็ปต์...'); saSetDept('marketing',null,'รอ'); saSetDept('graphic',null,'รอ'); saSetDept('director',null,'รอ');
+  saLastAiErr=''; saConcept='';
   saPickStyleForMode(); // ไดเรกเตอร์เลือกสไตล์ให้เหมาะกับโหมด (Branding/เน้นขาย) อัตโนมัติ
   var gMode=saState.genMode||'caption';
   var useAI=(gMode!=='frame') && !!localStorage.getItem('bk-claude-key');   // frame = ไม่ใช้ AI แคปชัน
   var useAIimg=(gMode==='full') && !!localStorage.getItem('bk-gemini-key'); // เฉพาะโหมดเต็มระบบเท่านั้นที่วาดภาพ AI + วน loop
-  // 1) ฝ่ายการตลาด — คิดก่อน
+  // 0) ฝ่ายไดเรกเตอร์ — วางคอนเซ็ปต์/ทิศทางก่อน แล้วกระจายบรีฟให้ทีม
+  var conceptP = useAI ? saDirectorConcept() : Promise.resolve('');
+  conceptP.then(function(concept){
+   saConcept=concept||'';
+   saSetDept('concept','done', concept?'วางคอนเซ็ปต์ + กระจายบรีฟให้ทีม ✓':'ใช้คอนเซ็ปต์มาตรฐาน ✓');
+   if(concept) saLog('<b>🧭 ไดเรกเตอร์ → ทีม (คอนเซ็ปต์):</b> '+concept.replace(/\n/g,' · ').slice(0,160)+'…');
+   saSetDept('marketing','work','ฝ่ายการตลาดเขียนแคปชัน + บรีฟให้กราฟิก...');
+  // 1) ฝ่ายการตลาด — รับคอนเซ็ปต์แล้วเขียน
   var capP = useAI ? saAiCaption().catch(function(){return null;}) : Promise.resolve(null);
-  capP.then(function(aiTxt){
+  return capP.then(function(aiTxt){
     var cap=saWithContact(aiTxt||composeCaption(saState), saState.platform);
     saSetDept('marketing','done','วางมุม "'+purposeL+'"'+((prod&&prod.k!=='auto')?(' · สินค้า: '+prod.l):'')+(festL?(' · '+festL):'')+' → เขียนแคปชัน '+(useAI&&aiTxt?'ด้วย AI':('จากเทมเพลต'+(useAI&&saLastAiErr?(' — ⚠️ '+saLastAiErr):(useAI?'':' (ยังไม่ใส่คีย์ Claude)'))))+' ✓');
     saLog('<b>📣 การตลาด → กราฟิก:</b> ทำภาพ "'+((prod&&prod.k!=='auto')?prod.l:'สินค้า BLOOK')+'" · โหมด '+purposeL+(festL?(' · เทศกาล '+festL):'')+' · '+(plat?plat.l:'')+' '+saState.aspect+(saRevision?(' · ⭐ ปรับตามที่สั่ง: "'+saRevision.slice(0,50)+'"'):''));
@@ -1831,6 +1848,7 @@ function bkGenerate(){
       function done2(out){ saBases=saState.images.slice(); saResultMode='template'; finish(out,(failNote?('⚠️ AI วาดภาพล้ม: '+failNote+' → ใช้เทมเพลตหรูแทน · '):'')+'ออกแบบ '+out.length+' รูป · สไตล์ "'+saCurrentStyleLabel()+'" · '+(plat?plat.l:'')+' '+saState.aspect+(saState.logo!==false?' · ใส่โลโก้':' · ไม่ใส่โลโก้')+' ✓','ตรวจให้สื่อสารชัด ตรงแบรนด์ + จัดลำดับ '+out.length+' รูป → อนุมัติพร้อมโพสต์ ✓'); }
     }
   });
+  }); /* ปิด conceptP.then (ไดเรกเตอร์วางคอนเซ็ปต์ก่อน) */
 }
 function saShowResult(urls,cap){
   saLastUrls=urls;
