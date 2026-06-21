@@ -556,9 +556,9 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l15-5v13L3 14z"/><path d="M11.5 17.5a3 3 0 01-5.6-1.5"/><path d="M18 8a3 3 0 010 6"/></svg>
         ผู้ช่วยการขาย
       </button>
-      <a href="index.html" class="sidebar-home">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10"/></svg>
-        หน้าหลัก
+      <a href="#" onclick="bkSignOut()" class="sidebar-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        หน้าหลัก/ออกจากระบบ
       </a>
     </nav>
   </aside>
@@ -2001,6 +2001,12 @@ function checkGaStatus(){
   }).catch(function(){ el.textContent='เปิด assets/analytics.js แล้วใส่ Measurement ID เพื่อเริ่มเก็บข้อมูล'; });
   bkRefreshOwnerUI();
 }
+function bkSignOut(){
+  try{ sessionStorage.removeItem('bk-admin-email'); sessionStorage.removeItem('bk-admin-tier'); }catch(e){}
+  if(typeof google!=='undefined') google.accounts.id.disableAutoSelect();
+  window.location.href='index.html';
+}
+
 function bkRefreshOwnerUI(){
   var s=document.getElementById('ga-owner-state'), b=document.getElementById('ga-owner-btn'); if(!s||!b) return;
   var on=false; try{ on=(localStorage.getItem('bk-owner')==='yes'); }catch(e){}
