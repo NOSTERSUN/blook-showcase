@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -12,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#111;--bg2:#1A1A1A;--bg3:#222;--gold:#C9A24D;--gold2:#E6C45A;--text:#F2F2F2;--dim:#999;--border:#333;--blue:#1E5AA8;--green:#2E7D32;--red:#8B0000;--orange:#E67E22}
@@ -22,10 +23,6 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 #login-gate{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px}
 #login-gate.hidden{display:none}
 #login-gate h2{font-size:1.4rem;color:var(--gold);letter-spacing:.1em}
-#login-gate input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:14px 24px;font-size:1rem;text-align:center;width:200px;border-radius:4px;letter-spacing:.2em;font-family:inherit}
-#login-gate input:focus{outline:none;border-color:var(--gold)}
-#login-gate button{background:var(--gold);color:#111;border:none;padding:12px 36px;font-size:.85rem;letter-spacing:.15em;cursor:pointer;border-radius:4px;font-family:inherit;font-weight:500}
-#login-gate button:hover{background:var(--gold2)}
 #login-gate .err{color:#e74c3c;font-size:.85rem;min-height:20px}
 
 /* -- MAIN APP -- */
@@ -504,9 +501,20 @@ body{font-family:'Inter','Noto Sans Thai',sans-serif;background:var(--bg);color:
 <div id="login-gate">
   <div style="font-size:2rem;color:var(--gold);letter-spacing:.2em;margin-bottom:8px">BLOOK</div>
   <h2 style="margin-bottom:24px;font-size:1.1rem;letter-spacing:.2em;color:var(--gold);font-weight:500">ADMIN PORTAL</h2>
-  <p style="color:var(--dim);font-size:.85rem;margin-bottom:24px">กรุณากรอกรหัสเข้าใช้งาน</p>
-  <input type="password" id="pwd-input" placeholder="รหัสผ่าน" autofocus>
-  <button onclick="checkLogin()">เข้าสู่ระบบ</button>
+  <p style="color:var(--dim);font-size:.85rem;margin-bottom:16px">ลงชื่อเข้าใช้ด้วย Google Account</p>
+  <div id="g_id_onload"
+    data-client_id="187430986755-f3h34erhircplu09d30oftc3lik8pibi.apps.googleusercontent.com"
+    data-callback="handleGoogleLogin"
+    data-auto_select="false"
+    data-context="signin">
+  </div>
+  <div class="g_id_signin"
+    data-type="standard"
+    data-theme="filled_black"
+    data-size="large"
+    data-text="signin_with"
+    data-width="280">
+  </div>
   <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--dim);font-size:.85rem;text-decoration:none;letter-spacing:.1em;padding:10px 24px;border:1px solid var(--border);border-radius:4px;transition:all .25s" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--dim)';this.style.borderColor='var(--border)'">
     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     กลับ
@@ -1097,39 +1105,53 @@ const NOTE_TEMPLATES = {
   TAX_RECEIPT:"1. สินค้าจะได้รับภายใน 3-5 วัน หลังจากลูกค้าชำระเงิน"
 };
 
-// ============ LOGIN ============
-function checkLogin(){
-  const pwd = document.getElementById('pwd-input').value.trim();
-  const TIERS = { 'BK1M':'staff', 'BKA':'bka', 'BKC':'bkc' };
-  if(TIERS[pwd]){
-    window.bkTier = TIERS[pwd];   // staff=ใช้ลายเซ็นอัตโนมัติทั้งหมด · bka=ใช้ที่เหลือ(ไม่รวม sawarin/wongsatorn) · bkc=ไม่ใช้อัตโนมัติ
-    // เครื่องนี้คือ "เจ้าของ/พนักงาน" → กรองออกจาก GA4 ตั้งแต่นี้เป็นต้นไป (ทุกหน้า ทุกอุปกรณ์ที่ login)
-    try{ localStorage.setItem('bk-owner','yes'); localStorage.setItem('bk-owner-since', new Date().toISOString().slice(0,10)); }catch(e){}
-    document.getElementById('login-gate').classList.add('hidden');
-    document.getElementById('app').classList.add('active');
-    initApp();
-    if(typeof updateSellerSigUI === 'function') updateSellerSigUI();
-  } else {
-    document.getElementById('pwd-err').textContent = '❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่';
-    document.getElementById('pwd-input').value = '';
-    document.getElementById('pwd-input').focus();
+// ============ LOGIN (Google Sign-In) ============
+const EMAIL_TIERS = {
+  'info@blookliving.com':        'staff',
+  'wongsatornsomtana@gmail.com': 'staff',
+  // เพิ่ม email พนักงาน: 'staff@blookliving.com': 'bka',
+};
+
+function handleGoogleLogin(response) {
+  try {
+    const b64     = response.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+    const payload = JSON.parse(atob(b64.padEnd(b64.length + (4 - b64.length % 4) % 4, '=')));
+    const email   = payload.email;
+    const tier    = EMAIL_TIERS[email];
+    if (tier) {
+      window.bkTier  = tier;
+      window.bkEmail = email;
+      try {
+        sessionStorage.setItem('bk-admin-email', email);
+        sessionStorage.setItem('bk-admin-tier',  tier);
+        localStorage.setItem('bk-owner', 'yes');
+        localStorage.setItem('bk-owner-since', new Date().toISOString().slice(0,10));
+      } catch(e) {}
+      document.getElementById('login-gate').classList.add('hidden');
+      document.getElementById('app').classList.add('active');
+      initApp();
+      if (typeof updateSellerSigUI === 'function') updateSellerSigUI();
+    } else {
+      document.getElementById('pwd-err').textContent = '❌ ' + email + ' ไม่มีสิทธิ์เข้าใช้งาน';
+      if (typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
+    }
+  } catch(e) {
+    document.getElementById('pwd-err').textContent = '❌ เกิดข้อผิดพลาด กรุณาลองใหม่';
   }
 }
 
-// Secure download — requires BK2M before downloading sensitive files
-function secureDownload(url, filename){
-  const code = prompt('🔒 กรุณากรอกรหัสเพื่อดาวน์โหลด (Download code):');
-  if(code === null) return;
-  if(code.trim() === 'BK2M'){
-    const a = document.createElement('a');
-    a.href = url; a.download = filename || '';
-    document.body.appendChild(a); a.click(); a.remove();
-  } else {
-    alert('❌ รหัสดาวน์โหลดไม่ถูกต้อง');
+// Session restore
+window.addEventListener('DOMContentLoaded', function() {
+  const email = sessionStorage.getItem('bk-admin-email');
+  const tier  = sessionStorage.getItem('bk-admin-tier');
+  if (email && EMAIL_TIERS[email]) {
+    window.bkTier  = tier || EMAIL_TIERS[email];
+    window.bkEmail = email;
+    document.getElementById('login-gate').classList.add('hidden');
+    document.getElementById('app').classList.add('active');
+    initApp();
+    if (typeof updateSellerSigUI === 'function') updateSellerSigUI();
   }
-}
-document.getElementById('pwd-input').addEventListener('keydown',e=>{
-  if(e.key==='Enter') checkLogin();
 });
 
 // ============ TAB SYSTEM ============
